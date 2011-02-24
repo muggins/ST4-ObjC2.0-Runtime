@@ -1,0 +1,9 @@
+All of the files in 'compiler' now compile.
+All of the files in 'debug' now compile
+none of the files in 'gui' compile
+1 file in 'misc' that won't compile (objectModelAdaptor)
+4 files in 'main' that won't compile (STGroup, STGroupDir and STGroupFile and Interpreter).
+
+Then the hard work begins, finding any and all bugs in translation.
+
+Do you have any testing files that I should convert to test with?
