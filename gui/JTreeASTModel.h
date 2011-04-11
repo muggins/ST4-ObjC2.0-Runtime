@@ -4,7 +4,7 @@
 #import "TreePath.h"
 
 @interface JTreeASTModel : NSObject <TreeModel> {
-  TreeAdaptor * adaptor;
+  TreeAdaptor *adaptor;
   id root;
 }
 

@@ -13,10 +13,10 @@
 
 }
 
-+ (id) new;
++ (id) newWriter;
 + (id) stringWithCapacity:(NSUInteger)aLen;
 
 - (id) initWithCapacity:(NSUInteger)aLen;
-- (NSString *) description;
+- (id) initWithWriter:(Writer *)aWriter;
 
 @end

@@ -1,28 +1,58 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import "CompiledST.h"
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
 #import "ST.h"
 #import "STGroup.h"
 #import "Interval.h"
 #import "Misc.h"
-//#import "PrintWriter.h"
-//#import "StringWriter.h"
+#import "PrintWriter.h"
+#import "StringWriter.h"
 #import "BytecodeDisassembler.h"
+#import "AMutableArray.h"
+#import "GroupParser.h"
+#import "Bytecode.h"
 
 @implementation CompiledST
 
 @synthesize name;
 @synthesize template;
+@synthesize templateDefStartToken;
 @synthesize tokens;
 @synthesize ast;
 @synthesize formalArguments;
 @synthesize hasFormalArgs;
+@synthesize numberOfArgsWithDefaultValues;
 @synthesize implicitlyDefinedTemplates;
 @synthesize nativeGroup;
 @synthesize isRegion;
-//@synthesize numberOfArgsWithDefaultValues;
-//@synthesize templateSource;
-//@synthesize templateRange;
 @synthesize regionDefType;
 @synthesize isAnonSubtemplate;
 @synthesize strings;
@@ -32,111 +62,135 @@
 
 + (id) newCompiledST
 {
-    return [[CompiledST alloc] init];
+    return [[[CompiledST alloc] init] retain];
 }
 
 - (id) init
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         nativeGroup = STGroup.defaultGroup;
         instrs = [MemBuffer newMemBufferWithLen:100];
-        sourceMap = [NSArray array];
+        sourceMap = [AMutableArray arrayWithCapacity:30];
+        strings = [AMutableArray arrayWithCapacity:16];
         template = @"";
     }
     return self;
 }
 
+- (id) copyWithZone:(NSZone *)aZone
+{
+    CompiledST *copy;
+    
+    copy = [[[self class] allocWithZone:aZone] init];
+    if ( instrs ) {
+        [copy.instrs release];
+        copy.instrs = [instrs copyWithZone:aZone];
+    }
+    if ( sourceMap ) {
+        [copy.sourceMap release];
+        copy.sourceMap = [sourceMap copyWithZone:aZone];
+    }
+    if ( strings ) {
+        [copy.strings release];
+        copy.strings = [strings copyWithZone:aZone];
+    }
+    return copy;
+}
+
 - (void) addImplicitlyDefinedTemplate:(CompiledST *)sub
 {
-    if (implicitlyDefinedTemplates == nil) {
-        implicitlyDefinedTemplates = [NSMutableArray arrayWithCapacity:16];
+    if ( implicitlyDefinedTemplates == nil ) {
+        implicitlyDefinedTemplates = [AMutableArray arrayWithCapacity:16];
     }
     [implicitlyDefinedTemplates addObject:sub];
 }
 
-- (NSInteger) getNumberOfArgsWithDefaultValues
-{
-    if (formalArguments == nil)
-        return 0;
-    NSInteger n = 0;
-    
-    for (NSString * arg in [formalArguments allKeys]) {
-        if (((FormalArgument *)[formalArguments objectForKey:arg]).defaultValueToken != nil)
-            n++;
-    }
-    
-    return n;
-}
-
 - (void) defineArgDefaultValueTemplates:(STGroup *)group
 {
-    if (formalArguments == nil)
+    if ( formalArguments == nil )
         return;
     
-    for (NSString * a in [formalArguments allKeys]) {
-        FormalArgument * fa = [formalArguments objectForKey:a];
+    for (NSString *s in [formalArguments allKeys]) {
+        FormalArgument *fa = [formalArguments objectForKey:s];
         if (fa.defaultValueToken != nil) {
-            NSString * argSTname = [fa.name stringByAppendingString:@"_default_value"];
-            Compiler * c2 = [Compiler newCompiler:group.errMgr delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
-            NSString * defArgTemplate = [Misc strip:[fa.defaultValueToken getText] n:1];
-            fa.compiledDefaultValue = [c2 compile:[nativeGroup fileName] name:argSTname args:nil template:defArgTemplate templateToken:fa.defaultValueToken];
-            fa.compiledDefaultValue.name = argSTname;
+            numberOfArgsWithDefaultValues++;
+            if ( fa.defaultValueToken.type == ANONYMOUS_TEMPLATE ) {
+                NSString *argSTname = [fa.name stringByAppendingString:@"_default_value"];
+                Compiler *c2 = [Compiler newCompiler:group];
+                NSString *defArgTemplate = [Misc strip:[fa.defaultValueToken getText] n:1];
+                fa.compiledDefaultValue = [c2 compile:[nativeGroup getFileName] name:argSTname args:nil template:defArgTemplate templateToken:fa.defaultValueToken];
+                fa.compiledDefaultValue.name = argSTname;
+            }
+            else if ( fa.defaultValueToken.type == T_STRING ) {
+                fa.defaultValue = [Misc strip:[fa.defaultValueToken getText] n:1];
+            }
+            else {
+                fa.defaultValue = (id)((fa.defaultValueToken.type == GroupParser.TTRUE)? @"true" : @"false");
+            }
         }
     }
-    
 }
 
-- (void) defineFormalArgs:(NSMutableArray *)args
+- (void) defineFormalArgs:(AMutableArray *)args
 {
     hasFormalArgs = YES;
-    if (args == nil)
+    if ( args == nil )
         formalArguments = nil;
-    else
-        
-        for (FormalArgument * a in args)
+    else {
+        [args retain];
+        FormalArgument *a;
+        //        for (FormalArgument *a in args)
+        //            [self addArg:a];
+        ArrayIterator *it = (ArrayIterator *)[args objectEnumerator];
+        while ( (a = [it nextObject]) != nil ) {
             [self addArg:a];
-    
+        }
+        [args release];
+    }
 }
 
 
 /**
- * Used by ST.add() to add args one by one w/o turning on full formal args definition signal
+ *Used by ST.add() to add args one by one w/o turning on full formal args definition signal
  */
 - (void) addArg:(FormalArgument *)a
 {
+    [a retain];
     if (formalArguments == nil) {
-        formalArguments = [NSMutableDictionary dictionaryWithCapacity:16];
+        formalArguments = [[NSMutableDictionary dictionaryWithCapacity:16] retain];
     }
     a.index = [formalArguments count];
     [formalArguments setObject:a forKey:a.name];
+    [a release];
 }
 
 - (void) defineImplicitlyDefinedTemplates:(STGroup *)group
 {
     if (implicitlyDefinedTemplates != nil) {
         
-        for (CompiledST * sub in implicitlyDefinedTemplates) {
-            [group rawDefineTemplate:sub.name code:sub defT:nil];
+        for (CompiledST *sub in implicitlyDefinedTemplates) {
+            [group rawDefineTemplate:sub.name code:sub defT:sub.templateDefStartToken];
             [sub defineImplicitlyDefinedTemplates:group];
         }
         
     }
 }
 
-- (NSString *) templateSource
+- (NSString *) getTemplateSource
 {
-    Interval * r = [self templateRange];
+    Interval *r = [self getTemplateRange];
     return [template substringWithRange:NSMakeRange(r.a, r.b + 1)];
 }
 
-- (Interval *) templateRange
+- (Interval *) getTemplateRange
 {
     if (isAnonSubtemplate) {
         Interval *aStart = [sourceMap objectAtIndex:0];
         Interval *aStop = nil;
         
-        for (NSInteger i = [sourceMap count] - 1; i > 0; i--) {
-            Interval * I = [sourceMap objectAtIndex:i];
+        for (NSInteger i = [sourceMap count] - 1; i >= 0; i--) {
+            Interval *I = [sourceMap objectAtIndex:i];
             if (I != nil) {
                 aStop = I;
                 break;
@@ -148,7 +202,7 @@
     return [[Interval alloc] init:0 b:[template length] - 1];
 }
 
-- (MemBuffer *) instrs
+- (NSString *) dis_instrs
 {
     BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:self];
     return [dis instrs];
@@ -165,16 +219,16 @@
 
 - (NSString *) disasm
 {
-    BytecodeDisassembler * dis = [[BytecodeDisassembler alloc] initWithCode:self];
-    StringWriter * sw = [[StringWriter alloc] init];
-    PrintWriter * pw = [PrintWriter newWithStringWriter:sw];
+    BytecodeDisassembler *dis = [[BytecodeDisassembler alloc] initWithCode:self];
+    StringWriter *sw = [StringWriter newWriter];
+    PrintWriter *pw = [PrintWriter newWithStringWriter:sw];
     [pw println:[dis disassemble]];
     [pw println:@"Strings:"];
     [pw println:[dis strings]];
     [pw println:@"Bytecode to template map:"];
     [pw println:[dis sourceMap]];
     [pw close];
-    return [sw description];
+    return [sw toString];
 }
 
 - (void) dealloc
@@ -192,156 +246,11 @@
     [super dealloc];
 }
 
-- (NSString *) getName
+- (STGroup *)getNativeGroup
 {
-    return name;
-}
-
-- (void) setName:(NSString *)aName
-{
-    name = aName;
-}
-
-- (NSString *) getTemplate
-{
-    return template;
-}
-
-- (void) setTemplate:(NSString *)aTemplate
-{
-    template = aTemplate;
-}
-
-- (ANTLRCommonTokenStream *) getTokens
-{
-    return tokens;
-}
-
-- (void) setTokens:(ANTLRCommonTokenStream *)theTokens
-{
-    tokens = theTokens;
-}
-
-- (ANTLRCommonTree *) getAst
-{
-    return ast;
-}
-
-- (void) setAst:(ANTLRCommonTree *)anAST
-{
-    ast = anAST;
-}
-
-- (NSMutableDictionary *) getFormalArguments
-{
-    return formalArguments;
-}
-
-- (void) setFormalArguments:(NSMutableDictionary *)theFormalArguments
-{
-    formalArguments = theFormalArguments;
-}
-
-- (BOOL) getHasFormalArgs
-{
-    return hasFormalArgs;
-}
-
-- (void) setHasFormalArgs:(BOOL)FormalArgs
-{
-    hasFormalArgs = FormalArgs;
-}
-
-- (NSMutableArray *) getImplicitlyDefinedTemplates
-{
-    return implicitlyDefinedTemplates;
-}
-
-- (void) setImplicitlyDefinedTemplates:(NSMutableArray *)Templates
-{
-    implicitlyDefinedTemplates = Templates;
-}
-
-- (STGroup *) getNativeGroup
-{
+    if (nativeGroup == nil)
+        nativeGroup = STGroup.defaultGroup;
     return nativeGroup;
 }
-
-- (void) setNativeGroup:(STGroup *)aNativeGroup
-{
-    nativeGroup = aNativeGroup;
-}
-
-- (BOOL) getIsRegion
-{
-    return isRegion;
-}
-
-- (void) setIsRegion:(BOOL)Region
-{
-    isRegion = Region;
-}
-
-//@property(nonatomic, readonly(NSInteger numberOfArgsWithDefaultValues;
-//@property(nonatomic, retain, readonly(NSString *templateSource;
-//@property(nonatomic, retain, readonly(Interval *templateRange;
-- (RegionTypeEnum) getRegionDefType
-{
-    return regionDefType;
-}
-
-- (void) setRegionDefType:(RegionTypeEnum)aRegionDefType
-{
-    regionDefType = aRegionDefType;
-}
-
-- (BOOL) getIsAnonSubtemplate
-{
-    return isAnonSubtemplate;
-}
-
-- (void) setIsAnonSubtemplate:(BOOL)AnonSubtemplate
-{
-    isAnonSubtemplate = AnonSubtemplate;
-}
-
-- (NSMutableArray *) getStrings
-{
-    return strings;
-}
-
-- (void) setStrings:(NSMutableArray *)theStrings
-{
-    strings = theStrings;
-}
-
-- (MemBuffer *) getInstrs
-{
-    return instrs;
-}
-
-- (void) setInstrs:(MemBuffer *)theInstrs
-{
-    instrs = theInstrs;
-}
-
-- (NSInteger) getCodeSize
-{
-    return codeSize;
-}
-
-- (void) setCodeSize:(NSInteger)theCodeSize
-{
-    codeSize = theCodeSize;
-}
-
-- (NSMutableArray *) getSourceMap
-{
-    return sourceMap;
-}
-
-- (void) setSourceMap:(NSMutableArray *)aSourceMap
-{
-    sourceMap = aSourceMap;
-}
-@end
+   
+   @end

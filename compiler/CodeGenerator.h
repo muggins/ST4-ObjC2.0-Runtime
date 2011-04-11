@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Feb 24, 2011 11:25:29 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g 2011-02-24 11:32:12
+// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g 2011-03-30 10:45:00
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -14,16 +14,40 @@
  * This is what the grammar programmer asked us to put at the top of every file.
  */
 
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#import "STToken.h"
 #import "Compiler.h"
 #import "CompiledST.h"
 #import "CompilationState.h"
 #import "ErrorManager.h"
-//#import "ErrorType.h"
 #import "Bytecode.h"
-//#import "STLexer.h"
-//#import "Misc.h"
-//#import "GroupLexer.h"
-//#import "FormalArgument.h"
+#import "Misc.h"
 
 /* End of Header action.
  * =============================================================================
@@ -40,80 +64,25 @@ typedef enum {
 } ANTLR3TokenType;
 #endif
 
-#pragma mark Tokens
-#ifdef EOF
-#undef EOF
-#endif
-#define EOF -1
-#define IF 4
-#define ELSE 5
-#define ELSEIF 6
-#define ENDIF 7
-#define SUPER 8
-#define SEMI 9
-#define BANG 10
-#define ELLIPSIS 11
-#define EQUALS 12
-#define COLON 13
-#define LPAREN 14
-#define RPAREN 15
-#define LBRACK 16
-#define RBRACK 17
-#define COMMA 18
-#define DOT 19
-#define LCURLY 20
-#define RCURLY 21
-#define TEXT 22
-#define LDELIM 23
-#define RDELIM 24
-#define ID 25
-#define STRING 26
-#define WS 27
-#define PIPE 28
-#define OR 29
-#define AND 30
-#define INDENT 31
-#define NEWLINE 32
-#define AT 33
-#define REGION_END 34
-#define EXPR 35
-#define OPTIONS 36
-#define PROP 37
-#define PROP_IND 38
-#define INCLUDE 39
-#define INCLUDE_IND 40
-#define EXEC_FUNC 41
-#define INCLUDE_SUPER 42
-#define INCLUDE_SUPER_REGION 43
-#define INCLUDE_REGION 44
-#define TO_STR 45
-#define LIST 46
-#define MAP 47
-#define ZIP 48
-#define SUBTEMPLATE 49
-#define ARGS 50
-#define ELEMENTS 51
-#define REGION 52
-#define A_NULL 53
 #pragma mark Dynamic Global Scopes
 #pragma mark Dynamic Rule Scopes
 /* start of ruleAttributeScopeInterface */
 
 @interface template_Scope : ANTLRSymbolsScope {
-    CompilationState * state;
+    CompilationState * cstate;
 
 }
 
 /* start properties */
 
-@property (assign, getter=getstate, setter=setstate:) CompilationState * state;
+@property (assign, getter=getcstate, setter=setcstate:) CompilationState * cstate;
 
 /* end properties */
 
 + (template_Scope *)newtemplate_Scope;
 - (id) init;
-- (CompilationState *)getstate;
-- (void)setstate:(CompilationState *)aVal;
+- (CompilationState *)getcstate;
+- (void)setcstate:(CompilationState *)aVal;
 
 
 @end /* end of ruleAttributeScopeInterface */
@@ -144,12 +113,10 @@ NSString * name;
 @interface CodeGenerator_subtemplate_return :ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 NSString * name;
-
 NSInteger nargs;
 }
 /* start properties */
 @property (assign, getter=getname, setter=setname:) NSString * name;
-
 @property (assign, getter=getnargs, setter=setnargs:) NSInteger nargs;
 
 /* end properties */
@@ -246,7 +213,7 @@ template_Scope *template_scope;
 
 	NSString *outermostTemplateName;	// name of overall template
 	CompiledST *outermostImpl;
-	ANTLRCommonToken *templateToken;			// overall template token
+	STToken *templateToken;			    // overall template token
 	NSString *template;  				// overall template text
 	ErrorManager *errMgr;
 
@@ -256,21 +223,19 @@ template_Scope *template_scope;
 
  }
 
-/* ObjC start of globalAttributeScopeMemVar */
-// 
-
 /* ObjC start of actions.(actionScope).properties */
 
-	@property(retain, getter=getOutermostTemplateName, setter=setOutermostTemplateName:) NSString *outermostTemplateName; // name of overall template
-	@property(retain, getter=getOutermostImpl, setter=setOutermostImpl:) CompiledST *outermostImpl;
-	@property(retain, getter=getTemplateToken, setter=setTemplateToken:) ANTLRCommonToken *templateToken;// overall template token
-	@property(retain, getter=getTemplate, setter=setTemplate:) NSString *template; // overall template text
-	@property(retain, getter=getErrMgr, setter=setErrMgr:) ErrorManager *errMgr;
+	@property(retain) NSString *outermostTemplateName; // name of overall template
+	@property(retain) CompiledST *outermostImpl;
+	@property(retain) STToken *templateToken;// overall template token
+	@property(retain) NSString *template;    // overall template text
+	@property(retain) ErrorManager *errMgr;
 
 /* ObjC end of actions.(actionScope).properties */
 /* ObjC start of properties */
 /* ObjC end of properties */
 
++ (void) initialize;
 + (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
@@ -278,23 +243,23 @@ template_Scope *template_scope;
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
-                  token:(ANTLRCommonToken *)aTemplateToken;
+                  token:(STToken *)aTemplateToken;
 
 - (id) init:(id<ANTLRTreeNodeStream>)input
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
-                  token:(ANTLRCommonToken *)aTemplateToken;
+                  token:(STToken *)aTemplateToken;
 
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit:(short)anOpcode;
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
 - (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
 - (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
 - (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
 - (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
+- (void) emit:(short)anOpcode;
+- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(ANTLRCommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
@@ -309,19 +274,21 @@ template_Scope *template_scope;
 /* ObjC end of methodsDecl */
 
 - (void)templateAndEOF; 
-- (CompiledST *)template:(NSString *)name arg1:(NSMutableArray *)args ; 
+- (CompiledST *)template:(NSString *)name arg1:(AMutableArray *)args; 
 - (void)chunk; 
 - (void)element; 
+- (void)singleElement; 
+- (void)compoundElement:(ANTLRCommonTree *)indent ; 
 - (void)exprElement; 
-- (CodeGenerator_region_return *)region; 
+- (CodeGenerator_region_return *)region:(ANTLRCommonTree *)indent; 
 - (CodeGenerator_subtemplate_return *)subtemplate; 
-- (void)ifstat; 
+- (void)ifstat:(ANTLRCommonTree *)indent; 
 - (CodeGenerator_conditional_return *)conditional; 
 - (void)exprOptions; 
 - (void)option; 
 - (void)expr; 
 - (void)prop; 
-- (void)mapTemplateRef:(NSInteger)num_exprs ; 
+- (void)mapTemplateRef:(NSInteger)num_exprs; 
 - (void)includeExpr; 
 - (CodeGenerator_primary_return *)primary; 
 - (void)arg; 

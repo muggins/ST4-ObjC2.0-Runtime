@@ -1,47 +1,75 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "ErrorType.h"
 #import "STMessage.h"
+#import "ModelAdaptor.h"
+#import "PrintWriter.h"
+#import "StringWriter.h"
+#import "AMutableArray.h"
 
 @implementation STMessage
 
-+ (id) newMessage:(ErrorTypeEnum)anError
-{
-    return [[STMessage alloc] init:anError];
-}
-
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
 {
-    return [[STMessage alloc] init:anError who:aWho];
+    return [[[STMessage alloc] init:anError who:aWho] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 {
-    return [[STMessage alloc] init:anError who:aWho cause:aCause];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
 {
-    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg] retain];
 }
 
-+ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(ANTLRCommonToken *)where  arg:(id)arg;
++ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where  arg:(id)arg;
 {
-    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 {
-    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3
 {
-    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:arg3];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:arg3] retain];
 }
 
 - (id) init:(ErrorTypeEnum)anError
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = nil;
         cause = nil;
@@ -54,7 +82,8 @@
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = nil;
@@ -67,7 +96,8 @@
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = aCause;
@@ -80,7 +110,8 @@
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)anArg
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = aCause;
@@ -91,9 +122,10 @@
     return self;
 }
 
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(ANTLRCommonToken *)where arg:(id)anArg
+- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where arg:(id)anArg
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = aCause;
@@ -106,7 +138,8 @@
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = aCause;
@@ -119,7 +152,8 @@
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         error = anError;
         who = aWho;
         cause = aCause;
@@ -130,19 +164,31 @@
     return self;
 }
 
-- (NSString *) description {
+- (NSString *) description
+{
     StringWriter *sw = [StringWriter stringWithCapacity:16];
     PrintWriter *pw = [[PrintWriter alloc] initWithCapacity:16];
     NSMutableString *msg = [NSMutableString stringWithFormat:@"%@%@%@%@", [ErrorType ErrorNum:error], arg, arg2, arg3];
     [pw print:msg];
     if (cause != nil) {
         [pw print:@"\nCaused by: "];
-        [cause printStackTrace:pw];
+        NSArray *cs = [cause callStackSymbols];
+        NSString *str;
+        for ( int i = 0; i < [cs count]; i++ ) {
+            str = [cs objectAtIndex:i];
+            NSLog( @"CallStack = %@\n", str );
+        }
     }
     return [sw description];
 }
 
-- (void) dealloc {
+- (NSString *) toString
+{
+    return [self description];
+}
+
+- (void) dealloc
+{
     [self release];
     if (arg != nil) [arg release];
     if (arg2 != nil) [arg2 release];
@@ -150,5 +196,12 @@
     if (cause != nil) [cause release];
     [super dealloc];
 }
+
+@synthesize who;
+@synthesize error;
+@synthesize arg;
+@synthesize arg2;
+@synthesize arg3;
+@synthesize cause;
 
 @end

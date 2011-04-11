@@ -1,0 +1,6 @@
+This is the first commit of compileable source for the ObjC2.0 Runtime framework for ST4.
+The source is totally untested. Many of the early decisions in the translation need to be reviewed in light
+of what I learned as the process of translation proceeded. There are many warning messages in compiling,
+some probably represent serious issues.
+
+Don't even expect this code to run at this point.

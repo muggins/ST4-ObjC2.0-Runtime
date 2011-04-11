@@ -1,5 +1,34 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#import "STErrorListener.h"
 #import "CompilationState.h"
 #import "Bytecode.h"
+#import "AMutableArray.h"
 
 @implementation CompilationState
 
@@ -13,13 +42,14 @@
                       name:(NSString *)aName
                     stream:(ANTLRCommonTokenStream *)theTokens
 {
-    return [[CompilationState alloc] init:anErrMgr name:aName stream:theTokens];
+    return [[[CompilationState alloc] init:anErrMgr name:aName stream:theTokens] retain];
 }
 
 - (id) init:(ErrorManager *)anErrMgr name:(NSString *)aName stream:(ANTLRCommonTokenStream *)theTokens
 {
-    if (self = [super init]) {
-        impl = [[CompiledST alloc] init];
+    self=[super init];
+    if ( self != nil ) {
+        impl = [CompiledST newCompiledST];
         stringtable = [[StringTable alloc] init];
         ip = 0;
         errMgr = anErrMgr;
@@ -34,17 +64,17 @@
     return [stringtable addObject:s];
 }
 
-- (void) refAttr:(ANTLRCommonToken *)templateToken tree:(ANTLRCommonTree *)aTree
+- (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
 {
     NSString *name = [aTree getText];
     if (impl.formalArguments != nil && [impl.formalArguments objectForKey:name] != nil) {
         FormalArgument *arg = [impl.formalArguments objectForKey:name];
-        NSInteger index = [arg getIndex];
+        NSInteger index = (([arg isKindOfClass:[FormalArgument class]])? arg.index:0);
         [self emit1:aTree opcode:Bytecode.INSTR_LOAD_LOCAL arg:index];
     }
     else {
-        if ([[Interpreter predefinedAnonSubtemplateAttributes] containsObject:name]) {
-            [errMgr compileTimeError:NO_SUCH_ATTRIBUTE templateToken:templateToken t:aTree.token];
+        if ([[Interpreter predefinedAnonSubtemplateAttributes] objectForKey:name]) {
+            [errMgr compileTimeError:NO_SUCH_ATTRIBUTE templateToken:templateToken t:(STToken *)aTree.token];
             [self emit:aTree opcode:Bytecode.INSTR_NULL];
         }
         else {
@@ -55,20 +85,20 @@
 
 - (void) setOption:(ANTLRCommonTree *)aTree
 {
-    NSInteger O;
-    O = [[Compiler getSupportedOptions] objectForKey:[aTree getText]];
-    [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:O];
+    NSInteger Opt;
+    Opt = (NSInteger)[[[Compiler getSupportedOptions] objectForKey:[aTree getText]] intValue];
+    [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:Opt];
 }
 
-- (void) func:(ANTLRCommonToken *)templateToken tree:(ANTLRCommonTree *)aTree
+- (void) func:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
 {
-    NSNumber * funcBytecode = [[Compiler funcs] objectForKey:[aTree getText]];
+    NSString *funcBytecode = [[[Compiler funcs] getDict] objectForKey:[aTree getText]];
     if (funcBytecode == nil) {
-        [errMgr compileTimeError:NO_SUCH_FUNCTION templateToken:templateToken t:aTree.token];
+        [errMgr compileTimeError:NO_SUCH_FUNCTION templateToken:templateToken t:(STToken *)aTree.token];
         [self emit:aTree opcode:Bytecode.INSTR_POP];
     }
     else {
-        [self emit:aTree opcode:[funcBytecode shortValue]];
+        [self emit:aTree opcode:(short)[funcBytecode intValue]];
     }
 }
 
@@ -86,7 +116,7 @@
         NSInteger p = [((ANTLRCommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
         NSInteger q = [((ANTLRCommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
         if (!(p < 0 || q < 0))
-            [impl.sourceMap insertObject:[Interval newInterval:p b:q] atIndex:ip];
+            [impl.sourceMap addObject:[Interval newInterval:p b:q]];
     }
     [impl.instrs insertChar:opcode atIndex:ip++];
 }
@@ -118,17 +148,20 @@
     [self emit2:opAST opcode:opcode arg:i arg2:arg2];
 }
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s {
+- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s
+{
     NSInteger i = [self defineString:s];
     [self emit1:opAST opcode:opcode arg:i];
 }
 
-- (void) insert:(NSInteger)addr opcode:(short)opcode s:(NSString *)s {
+- (void) insert:(NSInteger)addr opcode:(short)opcode s:(NSString *)s
+{
     [self ensureCapacity:1 + Bytecode.OPND_SIZE_IN_BYTES];
     NSInteger instrSize = 1 + Bytecode.OPND_SIZE_IN_BYTES;
 #ifdef DONTUSENOMO
-    [System arraycopy:impl.instrs param1:addr param2:impl.instrs param3:addr + instrSize param4:ip - addr];
+    [System arraycopy:impl.instrs srcPos:addr dest:impl.instrs destPos:addr + instrSize length:ip - addr];
 #endif
+    [impl.instrs memcpy:addr dest:addr+instrSize length:ip-addr];
     NSInteger save = ip;
     ip = addr;
     [self emit1:nil opcode:opcode s:s];
@@ -137,7 +170,7 @@
     
     while (a < ip) {
         char op = [impl.instrs charAtIndex:a];
-        Instruction * I = Bytecode.instructions[op];
+        Instruction *I = Bytecode.instructions[op];
         if (op == Bytecode.INSTR_BR || op == Bytecode.INSTR_BRF) {
             //NSInteger opnd = [BytecodeDisassembler getShort:impl.instrs index:a + 1];
             NSInteger opnd = [impl.instrs shortAtIndex:a + 1];
@@ -150,7 +183,6 @@
 
 - (void) write:(NSInteger)addr value:(short)value
 {
-    //[self writeShort:impl.instrs index:addr value:value];
     [impl.instrs insertShort:value atIndex:addr];
 }
 
@@ -158,25 +190,15 @@
 {
     if ((ip + n) >= [impl.instrs size]) {
         [impl.instrs ensureCapacity:(ip + n)];
-        MemBuffer *c = [MemBuffer newMemBufferWithLen:30];
-#ifdef DONTUSENOMO
-        [System arraycopy:impl.instrs param1:0 param2:c param3:0 param4:impl.instrs.length];
-#endif
-        impl.instrs = c;
-        NSArray * sm = [NSArray array];
-#ifdef DONTUSENOMO
-        [System arraycopy:impl.sourceMap param1:0 param2:sm param3:0 param4:impl.sourceMap.count];
-#endif
-        impl.sourceMap = sm;
     }
 }
 
-- (void) indent:(NSString *)indent
+- (void) indent:(ANTLRCommonTree *)indent
 {
-    [self emit1:nil opcode:Bytecode.INSTR_INDENT s:indent];
+    [self emit1:indent opcode:Bytecode.INSTR_INDENT s:[indent getText]];
 }
 
-
+#ifdef DONTUSENOMO
 /**
  * Write value at index into a byte array highest to lowest byte,
  * left to right.
@@ -186,6 +208,7 @@
     memory[index + 0] = (char)((value >> (8 * 1)) & 0xFF);
     memory[index + 1] = (char)(value & 0xFF);
 }
+#endif
 
 - (void) dealloc
 {

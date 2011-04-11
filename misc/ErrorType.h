@@ -1,4 +1,30 @@
-
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 /**
  * All the errors that can happen and how to generate a message
  */
@@ -13,6 +39,8 @@ typedef enum {
     MAP_ARGUMENT_COUNT_MISMATCH,
     ARGUMENT_COUNT_MISMATCH,
     EXPECTING_STRING,
+    WRITER_CTOR_ISSUE,
+    CANT_IMPORT,
     SYNTAX_ERROR,
     TEMPLATE_REDEFINITION,
     EMBEDDED_REGION_REDEFINITION,
@@ -35,15 +63,10 @@ typedef enum {
 
 // extern static NSString *ErrorType_Data[NUM_OF_ERRORENUMS];
 
-@interface ErrorType : NSObject
-{
+@interface ErrorType : NSObject {
     NSString *message;
     NSMutableDictionary *msgs;
 }
-
-@property (retain, getter=getMessage, setter=setMessage:) NSString *message;
-
-+ (void) initialize;
 
 + (NSString *) NO_SUCH_TEMPLATE;
 + (NSString *) CANT_SET_ATTRIBUTE;
@@ -54,6 +77,8 @@ typedef enum {
 + (NSString *) MAP_ARGUMENT_COUNT_MISMATCH;
 + (NSString *) ARGUMENT_COUNT_MISMATCH;
 + (NSString *) EXPECTING_STRING;
++ (NSString *) WRITER_CTOR_ISSUE;
++ (NSString *) CANT_IMPORT;
 
 // COMPILE-TIME SYNTAX/SEMANTIC ERRORS
 + (NSString *) SYNTAX_ERROR;
@@ -74,23 +99,26 @@ typedef enum {
 + (NSString *) INTERNAL_ERROR;
 + (NSString *) WRITE_IO_ERROR;
 + (NSString *) CANT_LOAD_GROUP_FILE;
-+ (NSString *) ErrorNum:(ErrorTypeEnum)anErr;
++ (NSString *) ErrorNum:(NSInteger)anErr;
 
 + (id) newErrorType;
-+ (id) newErrorTypeWithErrNum:(ErrorTypeEnum) msgNum;
++ (id) newErrorTypeWithErrNum:(NSInteger) msgNum;
 + (id) newErrorTypeWithMsg:(NSString *) aMsg;
 
 - (id) init;
-- (id) initWithErrNum:(ErrorTypeEnum) aNum;
+- (id) initWithErrNum:(NSInteger) aNum;
 - (id) initWithMsg:(NSString *) m;
 - (void) dealloc;
 
-- (ErrorTypeEnum) ErrorTypeValueOf:(NSString *)text;
+- (NSInteger) ErrorTypeValueOf:(NSString *)text;
 - (NSString *) description;
-- (NSString *) description:(ErrorTypeEnum) value;
+- (NSString *) description:(NSInteger) value;
 
 // getters and setters
 - (NSString *) getMessage;
 - (void) setMessage:(NSString *)msg;
+
+@property (retain) NSString *message;
+@property (retain) NSMutableDictionary *msgs;
 
 @end

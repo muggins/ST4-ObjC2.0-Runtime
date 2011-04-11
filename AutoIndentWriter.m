@@ -1,46 +1,76 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "AutoIndentWriter.h"
-//#import "IOException.h"
 #import "Writer.h"
 #import "ST.h"
 
 @implementation AutoIndentWriter
 
-@synthesize indents;
-@synthesize anchors;
-@synthesize anchors_sp;
-@synthesize newline;
-@synthesize writer;
-@synthesize atStartOfLine;
-@synthesize charPosition;
-@synthesize charIndex;
-@synthesize lineWidth;
++ (id) newWriter
+{
+    return [[[AutoIndentWriter alloc] init] retain];
+}
 
 + (id) newWriter:(Writer *)aWriter
 {
-    return [AutoIndentWriter newWriter:aWriter];
+    return [[[AutoIndentWriter alloc] init:aWriter newline:@"\n"] retain];
 }
 
-- (id) initWithWriter:(Writer *)aWriter {
-    if (self = [super init]) {
-        indents = [NSMutableArray arrayWithCapacity:16];
++ (id) newWriter:(Writer *)aWriter newLine:(NSString *)aStr
+{
+    return [[[AutoIndentWriter alloc] init:aWriter newline:aStr] retain];
+}
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        indents = [AMutableArray arrayWithCapacity:16];
         anchors = [ANTLRIntArray newArrayWithLen:30];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
         charIndex = 0;
         lineWidth = ST.NO_WRAP;
-        writer = aWriter;
-        [indents addObject:nil];
+        [indents addObject:@""];
         newline = @"\n";
     }
     return self;
 }
 
-- (id) init:(Writer *)aWriter newline:(NSString *)aNewline {
-    if (self = [super init]) {
-        indents = [NSMutableArray arrayWithCapacity:16];
+- (id) init:(Writer *)aWriter newline:(NSString *)aNewline
+{
+    self=[super initWithWriter:aWriter];
+    if ( self != nil ) {
+        indents = [AMutableArray arrayWithCapacity:16];
         anchors = [ANTLRIntArray newArrayWithLen:30];
         anchors_sp = -1;
         atStartOfLine = YES;
@@ -48,45 +78,53 @@
         charIndex = 0;
         lineWidth = ST.NO_WRAP;
         writer = aWriter;
-        [indents addObject:nil];
+        [indents addObject:@""];
         newline = aNewline;
     }
     return self;
 }
 
-- (void) setLineWidth:(NSInteger)aLineWidth {
-    lineWidth = aLineWidth;
+- (id) initWithWriter:(Writer *)aWriter
+{
+    self=[super initWithWriter:aWriter];
+    if ( self != nil ) {
+        indents = [AMutableArray arrayWithCapacity:16];
+        anchors = [ANTLRIntArray newArrayWithLen:30];
+        anchors_sp = -1;
+        atStartOfLine = YES;
+        charPosition = 0;
+        charIndex = 0;
+        lineWidth = ST.NO_WRAP;
+        writer = aWriter;
+        [indents addObject:@""];
+        newline = @"\n";
+    }
+    return self;
 }
 
-- (void) pushIndentation:(NSString *)anIndent {
-    [indents addObject:anIndent];
+- (id) initWithCapacity:(NSInteger)sz
+{
+    self=[super initWithCapacity:(NSUInteger)sz];
+    if ( self != nil ) {
+        indents = [AMutableArray arrayWithCapacity:16];
+        anchors = [ANTLRIntArray newArrayWithLen:30];
+        anchors_sp = -1;
+        atStartOfLine = YES;
+        charPosition = 0;
+        charIndex = 0;
+        lineWidth = ST.NO_WRAP;
+        writer = nil;
+        [indents addObject:@""];
+        newline = @"\n";
+    }
+    return self;
 }
-
-- (NSString *) popIndentation {
-    NSString *ret = [indents objectAtIndex:[indents count]-1];
-    [indents removeLastObject];
-    return ret;
-}
-
-- (void) pushAnchorPoint {
-    anchors_sp++;
-    [anchors push:charPosition];
-}
-
-- (NSInteger) popAnchorPoint {
-    anchors_sp--;
-    return [anchors pop];
-}
-
-- (NSInteger) index {
-    return charIndex;
-}
-
 
 /**
  * Write out a string literal or attribute expression or expression element.
  */
-- (NSInteger) write:(NSString *)str {
+- (NSInteger) writeStr:(NSString *)str
+{
     NSInteger n = 0;
     
     for (NSInteger i = 0; i < [str length]; i++) {
@@ -107,77 +145,10 @@
             atStartOfLine = NO;
         }
         n++;
-        [writer writeChar:c];
+        [self write:c];
         charPosition++;
         charIndex++;
     }
-    
-    return n;
-}
-
-- (NSInteger) writeSeparator:(NSString *)str {
-    return [self write:str];
-}
-
-
-/**
- * Write out a string literal or attribute expression or expression element.
- * 
- * If doing line wrap, then check wrap before emitting this str.  If
- * at or beyond desired line width then emit a \n and any indentation
- * before spitting out this str.
- */
-- (NSInteger) write:(NSString *)str wrap:(NSString *)wrap {
-    NSInteger n = [self writeWrap:wrap];
-    return n + [self write:str];
-}
-
-- (NSInteger) writeWrap:(NSString *)wrap {
-    NSInteger n = 0;
-    if (lineWidth != ST.NO_WRAP && wrap != nil && !atStartOfLine && charPosition >= lineWidth) {
-        
-        for (NSInteger i = 0; i < [wrap length]; i++) {
-            unichar c = [wrap characterAtIndex:i];
-            if (c == '\n') {
-                [writer writeStr:newline];
-                n += [newline length];
-                charPosition = 0;
-                charIndex += [newline length];
-                n += [self indent];
-            }
-            else {
-                n++;
-                [writer writeChar:c];
-                charPosition++;
-                charIndex++;
-            }
-        }
-        
-    }
-    return n;
-}
-
-- (NSInteger) indent {
-    NSInteger n = 0;
-    
-    for (NSString * ind in indents) {
-        if (ind != nil) {
-            n += [ind length];
-            [writer writeStr:ind];
-        }
-    }
-    
-    NSInteger indentWidth = n;
-    if (anchors_sp >= 0 && [anchors integerAtIndex:anchors_sp] > indentWidth) {
-        NSInteger remainder = [anchors integerAtIndex:anchors_sp] - indentWidth;
-        
-        for (NSInteger i = 1; i <= remainder; i++)
-            [writer writeChar:' '];
-        
-        n += remainder;
-    }
-    charPosition += n;
-    charIndex += n;
     return n;
 }
 

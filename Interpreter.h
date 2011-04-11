@@ -1,24 +1,65 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
-#import "STWriter.h"
+#import "Writer.h"
 #import "ST.h"
+
+@class ST;
+@class CompiledST;
 @class STGroup;
 @class ErrorManager;
 @class AttributeList;
 
 
-@interface Interpreter_Anon1 : ANTLRHashMap {
+@interface Interpreter_Anon1 : NSObject {
+    NSMutableDictionary *dict;
 }
 
 + (id) newInterpreter_Anon1;
 - (id) init;
+- (BOOL) containsObject:(NSString *)text;
+- (id) objectForKey:(NSString *)key;
+- (void) setObject:(id)obj forKey:(id)key;
+- (NSInteger) count;
+- (NSEnumerator *) keyEnumerator;
+- (NSArray *) objectEnumerator;
+
+@property (retain) NSMutableDictionary *dict;
+
 @end
 
-@interface Interpreter_Anon2 : NSMutableArray {
+@interface Interpreter_Anon2 : AMutableArray {
 }
 
-+ (id) newInterpreter_Anon2WithST:(ST *)anST;
++ (id) newArrayWithST:(ST *)anST;
 - (id) initWithST:(ST *)anST;
+
 @end
 
 typedef enum {
@@ -33,7 +74,7 @@ typedef enum {
     OptionEnum Option;
 }
 
-@property (assign, getter=getOption, setter=setOption:) OptionEnum Option;
+@property (assign) OptionEnum Option;
 
 + (OptionEnum) ANCHOR;
 + (OptionEnum) FORMAT;
@@ -41,6 +82,7 @@ typedef enum {
 + (OptionEnum) SEPARATOR;
 + (OptionEnum) WRAP;
 
++ (id) newInterpreter_Anon3;
 - (id) init;
 - (OptionEnum) ANCHOR;
 - (OptionEnum) FORMAT;
@@ -83,7 +125,7 @@ extern BOOL trace;
     /**
      * Operand stack, grows upwards
      */
-    NSMutableArray *operands;
+    id operands[100];
     NSInteger sp;
     NSInteger current_ip;
     NSInteger nwline;
@@ -103,47 +145,45 @@ extern BOOL trace;
     /**
      * Track everything happening in interp if debug across all templates
      */
-    NSMutableArray *events;
-    NSMutableArray *executeTrace;
+    AMutableArray *events;
+    AMutableArray *executeTrace;
     //Map<ST, List<InterpEvent>> debugInfo;
     NSMutableDictionary *debugInfo;
 }
 
-@property (retain, getter=getOperands, setter=setOperands:) NSMutableArray *operands;
-@property (assign, getter=getSp, setter=setSp:) NSInteger sp;
-@property (assign, getter=getCurrent_ip, setter=setCurrent_ip:) NSInteger current_ip;
-@property (assign, getter=getNwline, setter=setNwline:) NSInteger nwline;
-@property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
-@property (retain, getter=getLocale, setter=setLocale:) NSLocale *locale;
-@property (retain, getter=getErrMgr, setter=setErrMgr:) ErrorManager *errMgr;
-@property (retain, getter=getEvents, setter=setEvents:) NSMutableArray *events;
-@property (retain, getter=getExecuteTrace, setter=setExecuteTrace:) NSMutableArray *executeTrace;
-@property (retain, getter=getDebugInfo, setter=setDebugInfo:) NSMutableDictionary *debugInfo;
-
 + (NSInteger) DEFAULT_OPERAND_STACK_SIZE;
++ (NSDictionary *) predefinedAnonSubtemplateAttributes;
 + (Interpreter_Anon3 *) Option;
-+ (Interpreter_Anon3 *)predefinedAnonSubtemplateAttributes;
 
 - (id) initWithGroup:(STGroup *)group;
 - (id) init:(STGroup *)group locale:(NSLocale *)locale;
 - (id) init:(STGroup *)group errMgr:(ErrorManager *)errMgr;
 - (id) init:(STGroup *)group locale:(NSLocale *)locale errMgr:(ErrorManager *)errMgr;
-- (NSInteger) exec:(id<STWriter>)anSTWriter who:(ST *)aWho;
-- (NSInteger) _exec:(id<STWriter>)anSTWriter who:(ST *)aWho;
+#ifdef USE_FREQ_COUNT
+- (void) dumpOpcodeFreq;
+#endif
+
+- (NSInteger) exec:(Writer *)anSTWriter who:(ST *)aWho;
+- (NSInteger) _exec:(Writer *)anSTWriter who:(ST *)aWho;
+- (void) load_str:(ST *)who ip:(NSInteger)ip;
 - (void) super_new:(ST *)aWho name:(NSString *)name nargs:(NSInteger)nargs;
 - (void) super_new:(ST *)aWho name:(NSString *)name attrs:(NSMutableDictionary *)attrs;
 - (void) storeArgs:(ST *)aWho attrs:(NSMutableDictionary *)attrs st:(ST *)st;
 - (void) storeArgs:(ST *)aWho nargs:(NSInteger)nargs st:(ST *)st;
-- (NSInteger) writeObjectNoOptions:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj;
-- (NSInteger) writeObjectWithOptions:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writeObject:(id<STWriter>)anSTWriter who:(ST *)who obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writeIterator:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writePOJO:(id<STWriter>)anSTWriter obj:(id)obj options:(NSArray *)options;
+- (void) indent:(id<STWriter>)wr1 who:(ST *)aWho index:(NSInteger)strIndex;
+- (NSInteger) writeObjectNoOptions:(Writer *)wr1 who:(ST *)aWho obj:(id)obj;
+- (NSInteger) writeObjectWithOptions:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writeObject:(Writer *)anSTWriter who:(ST *)who obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writeIterator:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writePOJO:(Writer *)anSTWriter obj:(id)obj options:(NSArray *)options;
+- (NSInteger) getExprStartChar:(ST *)aWho;
+- (NSInteger) getExprStopChar:(ST *)aWho;
 - (void) map:(ST *)aWho attr:(id)attr st:(ST *)st;
-- (void) rot_map:(ST *)aWho attr:(id)attr prototypes:(NSMutableArray *)prototypes;
-- (AttributeList *) zip_map:(ST *)aWho exprs:(NSMutableArray *)exprs prototype:(ST *)prototype;
+- (void) rot_map:(ST *)aWho attr:(id)attr prototypes:(AMutableArray *)prototypes;
+- (AMutableArray *) rot_map_iterator:(ST *)aWho iter:(id)attr proto:(AMutableArray *)prototypes;
+- (AttributeList *) zip_map:(ST *)aWho exprs:(AMutableArray *)exprs prototype:(ST *)prototype;
 - (void) setFirstArgument:(ST *)aWho st:(ST *)st attr:(id)attr;
-- (void) addToList:(NSMutableArray *)list obj:(id)obj;
+- (void) addToList:(AMutableArray *)list obj:(id)obj;
 - (id) first:(id)v;
 - (id) last:(id)v;
 - (id) rest:(id)v;
@@ -151,14 +191,27 @@ extern BOOL trace;
 - (id) strip:(id)v;
 - (id) reverse:(id)v;
 - (NSInteger) length:(id)v;
-- (NSString *) description:(ST *)aWho value:(id)value;
+- (NSString *) description:(id<STWriter>)aWriter who:(ST *)aWho value:(id)value;
+- (NSString *) toString:(id<STWriter>)aWriter who:(ST *)aWho value:(id)value;
 + (id) convertAnythingIteratableToIterator:(id)obj;
-+ (NSEnumerator *) convertAnythingToIterator:(id)obj;
++ (ArrayIterator *) convertAnythingToIterator:(id)obj;
 - (BOOL) testAttributeTrue:(id)a;
-- (id) getObjectProperty:(ST *)aWho obj:(id)obj property:(id)property;
-- (void) setDefaultArguments:(ST *)invokedST;
+- (id) getObjectProperty:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj property:(id)property;
+- (void) setDefaultArguments:(id<STWriter>)wr1 who:(ST *)invokedST;
 - (void) trace:(ST *)aWho ip:(NSInteger)ip;
 - (void) printForTrace:(NSMutableString *)tr obj:(id)obj;
-- (NSMutableArray *) getEvents:(ST *)st;
+- (AMutableArray *) getEvents:(ST *)st;
 + (NSInteger) getShort:(char *)memory index:(NSInteger)index;
+
+//@property (retain, getter=getOperands, setter=setOperands:) AMutableArray *operands;
+@property (assign) NSInteger sp;
+@property (assign) NSInteger current_ip;
+@property (assign) NSInteger nwline;
+@property (retain) STGroup *group;
+@property (retain) NSLocale *locale;
+@property (retain) ErrorManager *errMgr;
+@property (retain) AMutableArray *events;
+@property (retain) AMutableArray *executeTrace;
+@property (retain) NSMutableDictionary *debugInfo;
+
 @end

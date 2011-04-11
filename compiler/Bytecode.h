@@ -1,49 +1,32 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-#define MAX_OPNDS 2
-#ifdef DONTUSENOMO
-extern static short const INSTR_LOAD_STR;
-extern static short const INSTR_LOAD_ATTR;
-extern static short const INSTR_LOAD_LOCAL;
-extern static short const INSTR_LOAD_PROP;
-extern static short const INSTR_LOAD_PROP_IND;
-extern static short const INSTR_STORE_OPTION;
-extern static short const INSTR_STORE_ARG;
-extern static short const INSTR_NEW;
-extern static short const INSTR_NEW_IND;
-extern static short const INSTR_NEW_BOX_ARGS;
-extern static short const INSTR_SUPER_NEW;
-extern static short const INSTR_SUPER_NEW_BOX_ARGS;
-extern static short const INSTR_WRITE;
-extern static short const INSTR_WRITE_OPT;
-extern static short const INSTR_MAP;
-extern static short const INSTR_ROT_MAP;
-extern static short const INSTR_ZIP_MAP;
-extern static short const INSTR_BR;
-extern static short const INSTR_BRF;
-extern static short const INSTR_OPTIONS;
-extern static short const INSTR_ARGS;
-extern static short const INSTR_LIST;
-extern static short const INSTR_ADD;
-extern static short const INSTR_TOSTR;
-extern static short const INSTR_FIRST;
-extern static short const INSTR_LAST;
-extern static short const INSTR_REST;
-extern static short const INSTR_TRUNC;
-extern static short const INSTR_STRIP;
-extern static short const INSTR_TRIM;
-extern static short const INSTR_LENGTH;
-extern static short const INSTR_STRLEN;
-extern static short const INSTR_REVERSE;
-extern static short const INSTR_NOT;
-extern static short const INSTR_OR;
-extern static short const INSTR_AND;
-extern static short const INSTR_INDENT;
-extern static short const INSTR_DEDENT;
-extern static short const INSTR_NEWLINE;
-extern static short const INSTR_NOOP;
-extern static short const INSTR_POP;
-extern static short const INSTR_NULL;
-#endif
+#define DEF_MAX_OPNDS 2
 
 typedef enum {
     T_NONE,
@@ -57,13 +40,13 @@ NSString *OperandTypeDescription(NSInteger value);
 
 @interface Instruction : NSObject {
     NSString *name;
-    NSInteger type[MAX_OPNDS];
+    NSInteger type[DEF_MAX_OPNDS];
     NSInteger nopnds;
 }
 
-@property (retain, getter=getName, setter=setName:) NSString *name;
+@property (retain) NSString *name;
 //@property (retain, getter=getType:(NSInteger), setter=setType:(OperandType) idx:(NSInteger)) NSInteger type[MAX_OPNDS];
-@property (assign, getter=getNopnds, setter=setNopnds:) NSInteger nopnds;
+@property (assign, setter=setNopnds:) NSInteger nopnds;
 
 + (id) newInstruction:(NSString *)aName;
 + (id) newInstruction:(NSString *)aName a:(OperandType)a;
@@ -73,11 +56,8 @@ NSString *OperandTypeDescription(NSInteger value);
 - (id) init:(NSString *)aName a:(OperandType)a;
 - (id) init:(NSString *)aName a:(OperandType)a b:(OperandType)b;
 
-- (NSString *)getName;
-- (void)setName:(NSString *)aName;
 - (OperandType)getType:(NSInteger)idx;
 - (void)setType:(OperandType)aType idx:(NSInteger)idx;
-- (NSInteger)getNopnds;
 - (void)setNopnds:(NSInteger)cnt;
 
 @end
@@ -88,8 +68,15 @@ NSString *OperandTypeDescription(NSInteger value);
 @interface Bytecode : NSObject {
 }
 
++ (NSInteger)MAX_OPNDS;
 + (NSInteger)OPND_SIZE_IN_BYTES;
++ (OperandType)T_NONE;
++ (OperandType)T_STRING;
++ (OperandType)T_ADDR;
++ (OperandType)T_INT;
+
 + (Instruction **)instructions;
+
 + (void) initialize;
 + (short) INSTR_LOAD_STR;
 + (short) INSTR_LOAD_ATTR;
@@ -133,8 +120,10 @@ NSString *OperandTypeDescription(NSInteger value);
 + (short) INSTR_NOOP;
 + (short) INSTR_POP;
 + (short) INSTR_NULL;
-
-+ (Instruction **)instructions;
-
++ (short) INSTR_TRUE;
++ (short) INSTR_FALSE;
++ (short) INSTR_WRITE_STR;
++ (short) INSTR_WRITE_LOCAL;
++ (short) MAX_BYTECODE;
 
 @end

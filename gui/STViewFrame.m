@@ -3,7 +3,7 @@
 @implementation STViewFrame
 
 - (id) init {
-  if (self = [super init]) {
+  if ( (self=[super init]) != nil ) {
     [self initComponents];
   }
   return self;
@@ -32,7 +32,7 @@
   trace = [[JTextPane alloc] init];
   errorScrollPane = [[JScrollPane alloc] init];
   errorList = [[JList alloc] init];
-  Container * contentPane = [self contentPane];
+  Container *contentPane = [self contentPane];
   [contentPane setLayout:[[GridLayout alloc] init:1 param1:0 param2:0 param3:10]];
   {
     [overallSplitPane setOrientation:JSplitPane.VERTICAL_SPLIT];

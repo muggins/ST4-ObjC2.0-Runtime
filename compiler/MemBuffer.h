@@ -44,11 +44,11 @@
     NSInteger ptr;
 }
 
-@property (getter=getBuffSize, setter=setBuffSize:) NSInteger BuffSize;
-@property (retain, getter=getBuffer, setter=setBuffer:) NSMutableData *buffer;
-@property (getter=getPtrBuffer, setter=setPtrBuffer:) char *ptrBuffer;
-@property (getter=getCount, setter=setCount:) NSInteger count;
-@property (getter=getPtr, setter=setPtr:) NSInteger ptr;
+@property (assign) NSInteger BuffSize;
+@property (retain) NSMutableData *buffer;
+@property (assign) char *ptrBuffer;
+@property (assign) NSInteger count;
+@property (assign) NSInteger ptr;
 
 // Contruction/Destruction
 +(MemBuffer *)newMemBuffer;
@@ -66,22 +66,13 @@
 - (NSInteger)length;
 - (NSInteger)size;
 
-- (NSMutableData *)getBuffer;
-- (void)setBuffer:(NSMutableData *)np;
-- (NSInteger)getCount;
-- (void)setCount:(NSInteger)aCount;
-- (char *)getPtrBuffer;
-- (void)setPtrBuffer:(char *)np;
-- (NSInteger)getPtr;
-- (void)setPtr:(NSInteger)np;
-
 - (void) push:(char) v;
 - (char) pop;
 - (char) peek;
 
 - (void) addChar:(char) v;
 - (void) addCharsFromArray:(MemBuffer *)anArray;
-- (void) insertChar:(char)aChar atIndex:(NSInteger)idx;
+- (void) insertChar:(short)aChar atIndex:(NSInteger)idx;
 - (char) charAtIndex:(NSInteger)idx;
 - (void) removeAllChars;
 
@@ -89,6 +80,8 @@
 - (void) insertShort:(short)aVal atIndex:(NSInteger)idx;
 
 - (void) ensureCapacity:(NSInteger) index;
+- (NSString *) description;
 - (NSString *) toString;
+- (void) memcpy:(NSInteger)src dest:(NSInteger)dest length:(NSInteger)len;
 
 @end

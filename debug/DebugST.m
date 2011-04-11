@@ -1,20 +1,55 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#import "STErrorListener.h"
 #import "DebugST.h"
-#import "STWriter.h"
+#import "Writer.h"
 #import "InterpEvent.h"
 #import "AddAttributeEvent.h"
 #import "CompiledST.h"
 #import "MultiMap.h"
+#import "AMutableArray.h"
+#import "Interpreter.h"
 
 @implementation State
 
-- (id) init {
-    if (self = [super init]) {
-        interpEvents = [NSMutableArray arrayWithCapacity:16];
+@synthesize interpEvents;
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        interpEvents = [AMutableArray arrayWithCapacity:16];
     }
     return self;
 }
 
-- (void) dealloc {
+- (void) dealloc
+{
     [interpEvents release];
     [super dealloc];
 }
@@ -34,7 +69,8 @@
 
 - (id) init
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         newSTEvent = [[ConstructionEvent alloc] init];
         addAttrEvents = [[MultiMap alloc] init];
     }
@@ -43,71 +79,71 @@
 
 - (id) initWithProto:(ST *)proto
 {
-    if (self = [super initWithProto:proto]) {
+    self=[super initWithProto:proto];
+    if ( self != nil ) {
         newSTEvent = [[ConstructionEvent alloc] init];
         addAttrEvents = [[MultiMap alloc] init];
     }
     return self;
 }
 
-- (void) add:(NSString *)name value:(id)value
+- (ST *) add:(NSString *)name value:(id)value
 {
     if (STGroup.debug) {
         [addAttrEvents map:name value:[[AddAttributeEvent alloc] init:name value:value]];
     }
-    [super add:name value:value];
+    return [super add:name value:value];
 }
 
-- (NSMutableArray *) inspect
+- (AMutableArray *) inspect
 {
     return [self inspectLocale:[NSLocale currentLocale]];
 }
 
-- (NSMutableArray *) inspect:(NSInteger)lineWidth
+- (AMutableArray *) inspect:(NSInteger)lineWidth
 {
     return [self inspect:impl.nativeGroup.errMgr locale:[NSLocale currentLocale] lineWidth:lineWidth];
 }
 
-- (NSMutableArray *) inspectLocale:(NSLocale *)locale
+- (AMutableArray *) inspectLocale:(NSLocale *)locale
 {
     return [self inspect:impl.nativeGroup.errMgr locale:locale lineWidth:[ST NO_WRAP]];
 }
 
-- (NSMutableArray *) inspect:(ErrorManager *)anErrMgr locale:(NSLocale *)locale lineWidth:(NSInteger)lineWidth
+- (AMutableArray *) inspect:(ErrorManager *)anErrMgr locale:(NSLocale *)locale lineWidth:(NSInteger)lineWidth
 {
     ErrorBuffer *errors = [[ErrorBuffer alloc] init];
     [impl.nativeGroup setListener:errors];
-    StringWriter *wr = [[StringWriter alloc] init];
-    id<STWriter> writer = [AutoIndentWriter newWriter:wr];
+    //    StringWriter *wr = [[StringWriter alloc] init];
+    Writer *writer = [AutoIndentWriter newWriter];
     [writer setLineWidth:lineWidth];
     Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale];
     [interp exec:writer who:self];
 //    [[STViz alloc] init:errMgr root:self output:[wr description] interp:interp trace:[interp executionTrace] errors:errors.errors];
-    return [interp events];
+    return [interp getEvents];
 }
 
-- (NSMutableArray *) events
+- (AMutableArray *) getEvents
 {
-    return [self getEvents:[NSLocale currentLocale]];
+    return [self getEventsLocale:[NSLocale currentLocale]];
 }
 
-- (NSMutableArray *) getEvents:(NSInteger)lineWidth
+- (AMutableArray *) getEvents:(NSInteger)lineWidth
 {
-    return [self getEvents:[NSLocale currentLocale] lineWidth:lineWidth];
+    return [self getEventsLocale:[NSLocale currentLocale] lineWidth:lineWidth];
 }
 
-- (NSMutableArray *) getEventsLocale:(NSLocale *)locale {
+- (AMutableArray *) getEventsLocale:(NSLocale *)locale {
     return [self getEventsLocale:locale lineWidth:[ST NO_WRAP]];
 }
 
-- (NSMutableArray *) getEventsLocale:(NSLocale *)locale lineWidth:(NSInteger)lineWidth
+- (AMutableArray *) getEventsLocale:(NSLocale *)locale lineWidth:(NSInteger)lineWidth
 {
-    StringWriter * wr1 = [[StringWriter alloc] init];
-    id<STWriter> aWriter = [AutoIndentWriter newWriter:wr1];
+    Writer *aWriter = [AutoIndentWriter newWriter];
     [aWriter setLineWidth:lineWidth];
-    Interpreter * interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale];
+    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale];
     [interp exec:aWriter who:self];
-    return [interp events];
+    return [interp getEvents];
 }
 
 - (void) dealloc

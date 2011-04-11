@@ -1,31 +1,55 @@
-#define IF 4
-#define ELSE 5
-#define ELSEIF 6
-#define ENDIF 7
-#define SUPER 8
-#define SEMI 9
-#define BANG 10
-#define ELLIPSIS 11
-#define EQUALS 12
-#define COLON 13
-#define LPAREN 14
-#define RPAREN 15
-#define LBRACK 16
-#define RBRACK 17
-#define COMMA 18
-#define DOT 19
-#define LCURLY 20
-#define RCURLY 21
-#define TEXT 22
-#define LDELIM 23
-#define RDELIM 24
-#define ID 25
-#define STRING 26
-#define WS 27
-#define PIPE 28
-#define OR 29
-#define AND 30
-#define INDENT 31
-#define NEWLINE 32
-#define AT 33
-#define REGION_END 34
+ID=4
+WS=5
+STRING=6
+BIGSTRING=7
+IF=8
+ELSE=9
+ELSEIF=10
+ENDIF=11
+SUPER=12
+SEMI=13
+BANG=14
+ELLIPSIS=15
+EQUALS=16
+COLON=17
+LPAREN=18
+RPAREN=19
+LBRACK=20
+RBRACK=21
+COMMA=22
+DOT=23
+LCURLY=24
+RCURLY=25
+TEXT=26
+LDELIM=27
+RDELIM=28
+PIPE=29
+OR=30
+AND=31
+INDENT=32
+NEWLINE=33
+AT=34
+END=35
+'if'=8
+'else'=9
+'elseif'=10
+'endif'=11
+'super'=12
+';'=13
+'!'=114
+'...'=15
+'='=16
+':'=17
+'('=18
+')'=19
+'['=20
+']'=21
+','=22
+'.'=23
+'{'=24
+'}'=25
+'|'=29
+'||'=30
+'&&'=31
+'@'=34
+'@end'=35

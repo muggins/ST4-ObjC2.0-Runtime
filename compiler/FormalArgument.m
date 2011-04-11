@@ -1,15 +1,44 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
 #import "ST.h"
 #import "FormalArgument.h"
 #import "CompiledST.h"
+#import "AMutableArray.h"
 
 @implementation FormalArgument
 
-@synthesize cardinality;
 @synthesize name;
 @synthesize index;
 @synthesize defaultValueToken;
+@synthesize defaultValue;
 @synthesize compiledDefaultValue;
 
 static NSInteger OPTIONAL = 1;     // a?
@@ -27,10 +56,6 @@ static NSString *suffixes[] = {
     nil,
     @"+"
 };
-
-+ (void) initialize
-{
-}
 
 + (NSInteger) OPTIONAL
 {
@@ -59,31 +84,56 @@ static NSString *suffixes[] = {
     return nil;
 }
 
++ (id) newFormalArgument
+{
+    return [[[FormalArgument alloc] init] retain];
+}
+
 + (id) newFormalArgument:(NSString *)aName
 {
-    return [[FormalArgument alloc] initWithName:aName];
+    return [[[FormalArgument alloc] initWithName:aName] retain];
 }
 
-+ (id) newFormalArgument:(NSString *)aName token:(ANTLRCommonToken *)aToken
++ (id) newFormalArgument:(NSString *)aName token:(STToken *)aToken
 {
-    return [[FormalArgument alloc] init:aName token:aToken];
+    return [[[FormalArgument alloc] init:aName token:aToken] retain];
 }
 
-- (id) init:(NSString *)aName
+- (id) init
 {
-    if (self = [super init]) {
-        name = aName;
+    self=[super init];
+    if ( self != nil ) {
         cardinality = REQUIRED;
+        index = 0;
+        name = @"";
+        defaultValueToken = nil;
+        compiledDefaultValue = nil;
     }
     return self;
 }
 
-- (id) init:(NSString *)aName token:(ANTLRCommonToken *)aToken
+- (id) initWithName:(NSString *)aName
 {
-    if (self = [super init]) {
-        name = aName;
+    self=[super init];
+    if ( self != nil ) {
         cardinality = REQUIRED;
+        index = 0;
+        name = aName;
+        defaultValueToken = nil;
+        compiledDefaultValue = nil;
+    }
+    return self;
+}
+
+- (id) init:(NSString *)aName token:(STToken *)aToken
+{
+    self=[super init];
+    if ( self != nil ) {
+        cardinality = REQUIRED;
+        index = 0;
+        name = aName;
         defaultValueToken = aToken;
+        compiledDefaultValue = nil;
     }
     return self;
 }
@@ -94,21 +144,27 @@ static NSString *suffixes[] = {
 
 - (BOOL) isEqualTo:(NSString *)obj
 {
-    if (obj == nil || !([obj isKindOfClass:[FormalArgument class]])) {
+    if ( obj == nil || !([obj isKindOfClass:[FormalArgument class]]) ) {
         return NO;
     }
     FormalArgument *other = (FormalArgument *)obj;
     if (![name isEqualTo:other.name]) {
         return NO;
     }
-    return !((defaultValueToken != nil && other.defaultValueToken == nil) || (defaultValueToken == nil && other.defaultValueToken != nil));
+    return !((defaultValueToken != nil && other.defaultValueToken == nil) ||
+             (defaultValueToken == nil && other.defaultValueToken != nil));
 }
 
 - (NSString *) description
 {
     if (defaultValueToken != nil)
-        return [name stringByAppendingFormat:@"=%@", [defaultValueToken getText]];
+        return [NSString stringWithFormat:@"%@=%@", name, [defaultValueToken getText]];
     return name;
+}
+
+- (NSString *) toString
+{
+    return [self description];
 }
 
 - (void) dealloc {
@@ -116,47 +172,6 @@ static NSString *suffixes[] = {
     [defaultValueToken release];
     [compiledDefaultValue release];
     [super dealloc];
-}
-
-// getters and setters
-- (NSString *)getName
-{
-    return name;
-}
-
-- (void) setName:(NSString *)aName
-{
-    name = aName;
-}
-
-- (NSInteger) getIndex
-{
-    return index;
-}
-
-- (void) setIndex:(NSInteger) idx
-{
-    index = idx;
-}
-
-- (ANTLRCommonToken *)getDefaultValueToken
-{
-    return defaultValueToken;
-}
-
-- (void) setDefaultValueToken:(ANTLRCommonToken *)aToken
-{
-    defaultValueToken = aToken;
-}
-
-- (CompiledST *)getCompiledDefaultValue
-{
-    return compiledDefaultValue;
-}
-
-- (void) setCompiledDefaultValue:(CompiledST *)aVal
-{
-    compiledDefaultValue = aVal;
 }
 
 @end

@@ -5,7 +5,7 @@
 @synthesize root;
 
 - (id) init:(TreeAdaptor *)anAdaptor root:(id)theRoot {
-  if (self = [super init]) {
+  if ( (self=[super init]) != nil ) {
     adaptor = anAdaptor;
     root = theRoot;
   }
@@ -13,7 +13,7 @@
 }
 
 - (id) initWithRoot:(id)theRoot {
-  if (self = [super init]) {
+  if ( (self=[super init]) != nil ) {
     adaptor = [[CommonTreeAdaptor alloc] init];
     root = theRoot;
   }

@@ -1,16 +1,56 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
+#import "STToken.h"
 #import "ModelAdaptor.h"
+#import "AMutableArray.h"
+
 @class ErrorManager;
 @class STErrorListener;
 @class AttributeRenderer;
 @class ST;
 @class CompiledST;
 
-@interface STGroup_Anon1 : NSMutableDictionary {
+@interface STGroup_Anon1 : NSObject {
+    NSMutableDictionary *dict;
 }
+
 + (id) newSTGroup_Anon1;
+
 - (id) init;
+- (id) getDict;
+- (id) objectForKey:(id)aKey;
+- (void) setObject:(id)anObject forKey:(id)aKey;
+- (NSInteger) count;
+
+@property (retain) NSMutableDictionary *dict;
 @end
 
 /**
@@ -25,8 +65,6 @@
 /**
  * When we use key as a value in a dictionary, this is how we signify.
  */
-extern BOOL debug;
-
 @interface STGroup : NSObject {
     
     
@@ -39,7 +77,7 @@ extern BOOL debug;
      * Every group can import templates/dictionaries from other groups.
      * The list must be synchronized (see importTemplates).
      */
-    NSMutableArray *imports;
+    AMutableArray *imports;
     unichar delimiterStartChar;
     unichar delimiterStopChar;
     
@@ -91,6 +129,8 @@ extern BOOL debug;
      */
     NSMutableDictionary *typeToAdaptorCache;
     
+	/** Cache exact attribute type to renderer object */
+	NSMutableDictionary *typeToRendererCache;
     /**
      * The errMgr for entire group; all compilations and executions.
      * This gets copied to parsers, walkers, and interpreters.
@@ -98,22 +138,14 @@ extern BOOL debug;
     ErrorManager *errMgr;
 }
 
-@property (assign, getter=getEncoding, setter=setEncoding:) NSStringEncoding encoding; 
-@property (retain, getter=getImports, setter=setImports:) NSMutableArray *imports;
-@property (assign, getter=getDelimiterStartChar, setter=setDelimiterStartChar:) unichar delimiterStartChar;
-@property (assign, getter=getDelimiterStopChar, setter=setDelimiterStopChar:) unichar delimiterStopChar;
-@property (retain, getter=getTemplates, setter=setTemplates:) NSMutableDictionary *templates;
-@property (retain, getter=getDictionaries, setter=setDictionaries:) NSMutableDictionary *dictionaries;
-@property (retain, getter=getRenderers, setter=setRenderers:) NSMutableDictionary *renderers;
-@property (retain, getter=getAdaptors, setter=setAdaptors:) NSMutableDictionary *adaptors;
-@property (retain, getter=getErrMgr, setter=setErrMgr:) ErrorManager *errMgr;
-
 + (CompiledST *) NOT_FOUND_ST;
 + (NSString *) DEFAULT_KEY;
 + (NSString *) DICT_KEY;
 + (STGroup *) defaultGroup;
 + (ErrorManager *) DEFAULT_ERR_MGR;
 + (BOOL) debug;
++ (void) setDebug;
++ (BOOL) verbose;
 
 + (NSString *) getMangledRegionName:(NSString *)enclosingTemplateName name:(NSString *)name;
 + (NSString *) getUnMangledTemplateName:(NSString *)mangledName;
@@ -124,7 +156,7 @@ extern BOOL debug;
 - (id) init:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (ST *) getInstanceOf:(NSString *)name;
 - (ST *) getEmbeddedInstanceOf:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)name;
-- (ST *) createSingleton:(ANTLRCommonToken *)templateToken;
+- (ST *) createSingleton:(STToken *)templateToken;
 - (BOOL) isDefined:(NSString *)name;
 - (CompiledST *) lookupTemplate:(NSString *)name;
 - (void) unload;
@@ -135,53 +167,51 @@ extern BOOL debug;
 - (NSMutableDictionary *) rawGetDictionary:(NSString *)name;
 - (BOOL) isDictionary:(NSString *)name;
 - (CompiledST *) defineTemplate:(NSString *)templateName template:(NSString *)template;
-- (CompiledST *) defineTemplate:(NSString *)name argsS:(NSString *)argsS template:(NSString *)template;
-- (CompiledST *) defineTemplate:(NSString *)templateName nameT:(ANTLRCommonToken *)nameT args:(NSMutableArray *)args template:(NSString *)template templateToken:(ANTLRCommonToken *)templateToken;
-- (CompiledST *) defineTemplateAlias:(ANTLRCommonToken *)aliasT targetT:(ANTLRCommonToken *)targetT;
-- (CompiledST *) defineRegion:(NSString *)enclosingTemplateName regionT:(ANTLRCommonToken *)regionT template:(NSString *)template;
-- (void) defineTemplateOrRegion:(NSString *)templateName regionSurroundingTemplateName:(NSString *)regionSurroundingTemplateName templateToken:(ANTLRCommonToken *)templateToken template:(NSString *)template nameToken:(ANTLRCommonToken *)nameToken args:(NSMutableArray *)args;
-- (void) rawDefineTemplate:(NSString *)name code:(CompiledST *)code defT:(ANTLRCommonToken *)defT;
+
+- (CompiledST *) defineTemplate:(NSString *)aName argsS:(NSString *)argsS template:(NSString *)template;
+- (CompiledST *) defineTemplate:(NSString *)name argsS:(NSString *)argsS template:(NSString *)template templateToken:(STToken *)templateToken;
+- (CompiledST *) defineTemplate:(NSString *)templateName nameT:(STToken *)nameT args:(AMutableArray *)args template:(NSString *)template templateToken:(STToken *)templateToken;
+- (CompiledST *) defineTemplateAlias:(STToken *)aliasT targetT:(STToken *)targetT;
+- (CompiledST *) defineRegion:(NSString *)enclosingTemplateName regionT:(STToken *)regionT template:(NSString *)template templateToken:(STToken *)templateToken;
+- (void) defineTemplateOrRegion:(NSString *)templateName regionSurroundingTemplateName:(NSString *)regionSurroundingTemplateName templateToken:(STToken *)templateToken template:(NSString *)template nameToken:(STToken *)nameToken args:(AMutableArray *)args;
+- (void) rawDefineTemplate:(NSString *)name code:(CompiledST *)code defT:(STToken *)defT;
 - (void) undefineTemplate:(NSString *)name;
-- (CompiledST *) compile:(NSString *)srcName name:(NSString *)name args:(NSMutableArray *)args template:(NSString *)template templateToken:(ANTLRCommonToken *)templateToken;
+- (CompiledST *) compile:(NSString *)srcName name:(NSString *)name args:(AMutableArray *)args template:(NSString *)template templateToken:(STToken *)templateToken;
 - (void) defineDictionary:(NSString *)name mapping:(NSMutableDictionary *)mapping;
 - (void) importTemplates:(STGroup *)g;
-- (void) importTemplatesWithFileName:(ANTLRCommonToken *)fileNameToken;
+- (void) importTemplatesWithFileName:(STToken *)fileNameToken;
 - (void) loadGroupFile:(NSString *)prefix fileName:(NSString *)fileName;
-- (void) registerModelAdaptor:(Class *)attributeType adaptor:(id<ModelAdaptor>)adaptor;
-- (void) invalidateModelAdaptorCache:(Class *)attributeType;
-- (id<ModelAdaptor>) getModelAdaptor:(Class *)attributeType;
-- (void) registerRenderer:(Class *)attributeType r:(AttributeRenderer *)r;
-- (AttributeRenderer *) getAttributeRenderer:(Class *)attributeType;
+- (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<ANTLRCharStream>)templateStream;
+- (CompiledST *) loadAbsoluteTemplateFile:(NSString *) fileName;
+- (void) registerModelAdaptor:(id)attributeType adaptor:(id<ModelAdaptor>)adaptor;
+- (void) invalidateModelAdaptorCache:(id)attributeType;
+- (id<ModelAdaptor>) getModelAdaptor:(id)attributeType;
+- (void) registerRenderer:(id)attributeType r:(AttributeRenderer *)r;
+- (AttributeRenderer *) getAttributeRenderer:(id)attributeType;
 - (ST *) createStringTemplate;
 - (ST *) createStringTemplate:(ST *)proto;
+- (NSString *)getRootDir;
 - (NSString *) description;
+- (NSString *) toString;
 - (NSString *) show;
 
 // getters and setters
 
-- (NSStringEncoding) getEncoding;
-- (void) setEncoding:(NSStringEncoding)encoding;
-- (NSString *) getName;
-//- (void) setName:(NSString *)name;
 - (NSString *) getFileName;
-//- (STErrorListener *) getListener;
-//- (void) setListener:(STErrorListener *)aListener;
-- (NSMutableArray *) getImports;
-- (void) setImports:(NSMutableArray *)imports;
-- (unichar) getDelimiterStartChar;
-- (void) setDelimiterStartChar:(unichar)delimiterStartChar;
-- (unichar) getDelimiterStopChar;
-- (void) setDelimiterStopChar:(unichar)delimiterStopChar;
-- (NSMutableDictionary *) getTemplates;
-- (void) setTemplates:(NSMutableDictionary *)templates;
-- (NSMutableDictionary *) getDictionaries;
-- (void) setDictionaries:(NSMutableDictionary *)dictionaries;
-- (NSMutableDictionary *) getRenderers;
-- (void) setRenderers:(NSMutableDictionary *)renderers;
-- (NSMutableDictionary *) getAdaptors;
-- (void) setAdaptors:(NSMutableDictionary *)adaptors;
-- (ErrorManager *) getErrMgr;
-- (void) setErrMgr:(ErrorManager *)errMgr;
+- (NSString *) getName;
+- (id<STErrorListener>) getListener;
+- (void) setListener:(id<STErrorListener>)aListener;
 
+@property (assign) NSStringEncoding encoding; 
+@property (retain) AMutableArray *imports;
+@property (assign) unichar delimiterStartChar;
+@property (assign) unichar delimiterStopChar;
+@property (retain) NSMutableDictionary *templates;
+@property (retain) NSMutableDictionary *dictionaries;
+@property (retain) NSMutableDictionary *renderers;
+@property (retain) NSMutableDictionary *adaptors;
+@property (retain) ErrorManager *errMgr;
+@property (retain) NSMutableDictionary *typeToAdaptorCache;
+@property (retain) NSMutableDictionary *typeToRendererCache;
 
 @end

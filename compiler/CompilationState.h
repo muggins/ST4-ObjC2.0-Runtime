@@ -1,8 +1,35 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STToken.h"
 #import "Interpreter.h"
 #import "ErrorManager.h"
-// #import "ErrorType.h"
 #import "Interpreter.h"
 #import "Interval.h"
 #import "Bytecode.h"
@@ -35,12 +62,6 @@
   ErrorManager *errMgr;
 }
 
-@property (retain, getter=getImpl, setter=setImpl:) CompiledST *impl;
-@property (retain, getter=getStringTable, setter=setStringTable:) StringTable *stringtable;
-@property (assign, getter=getIp, setter=setIp:) NSInteger ip;
-@property (retain, getter=getTokens, setter=setTokens:) ANTLRCommonTokenStream *tokens;
-@property (retain, getter=getErrMgr, setter=setErrMgr:) ErrorManager *errMgr;
-
 + (id) newCompilationState:(ErrorManager *)anErrMgr
                       name:(NSString *)name
                     stream:(ANTLRCommonTokenStream *)tokens;
@@ -50,9 +71,9 @@
      stream:(ANTLRCommonTokenStream *)tokens;
      
 - (NSInteger) defineString:(NSString *)s;
-- (void) refAttr:(ANTLRCommonToken *)templateToken tree:(ANTLRCommonTree *)id;
+- (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)id;
 - (void) setOption:(ANTLRCommonTree *)id;
-- (void) func:(ANTLRCommonToken *)templateToken tree:(ANTLRCommonTree *)id;
+- (void) func:(STToken *)templateToken tree:(ANTLRCommonTree *)id;
 - (void) emit:(short)opcode;
 - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)opcode;
 - (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg;
@@ -62,6 +83,13 @@
 - (void) insert:(NSInteger)addr opcode:(short)opcode s:(NSString *)s;
 - (void) write:(NSInteger)addr value:(short)value;
 - (void) ensureCapacity:(NSInteger)n;
-- (void) indent:(NSString *)indent;
-+ (void) writeShort:(char *)memory index:(NSInteger)index value:(short)value;
+- (void) indent:(ANTLRCommonTree *)indent;
+//+ (void) writeShort:(char *)memory index:(NSInteger)index value:(short)value;
+
+@property (retain) CompiledST *impl;
+@property (retain) StringTable *stringtable;
+@property (assign) NSInteger ip;
+@property (retain) ANTLRCommonTokenStream *tokens;
+@property (retain) ErrorManager *errMgr;
+
 @end

@@ -6,18 +6,19 @@
 #import "TreePath.h"
 
 @interface Wrapper : NSObject {
-  DebugST * st;
+  DebugST *st;
 }
 
 - (id) initWithSt:(DebugST *)st;
 - (BOOL) isEqualTo:(id)obj;
 - (NSInteger) hash;
+- (NSString *) toString;
 - (NSString *) description;
 @end
 
 @interface JTreeSTModel : NSObject <TreeModel> {
-  Wrapper * root;
-  Interpreter * interp;
+  Wrapper *root;
+  Interpreter *interp;
 }
 
 @property(retain, getter=getRoot, setter=setRoot:) Wrapper *root;

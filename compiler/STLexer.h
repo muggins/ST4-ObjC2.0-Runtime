@@ -1,59 +1,42 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <ANTLR/ANTLR.h>
 #import "STGroup.h"
 #import "ErrorManager.h"
 #import "Misc.h"
-#import "STParser.h"
-//#import "NSMutableArray.h"
-//#import "NSMutableArray.h"
 
+
+@class STToken;
 /**
  * We build STToken tokens instead of relying on ANTLRCommonToken so we
  * can override toString(). It just converts token types to
  * token names like 23 to LDELIM.
  */
-
-#define IF 4
-#define ELSE 5
-#define ELSEIF 6
-#define ENDIF 7
-#define SUPER 8
-#define SEMI 9
-#define BANG 10
-#define ELLIPSIS 11
-#define EQUALS 12
-#define COLON 13
-#define LPAREN 14
-#define RPAREN 15
-#define LBRACK 16
-#define RBRACK 17
-#define COMMA 18
-#define DOT 19
-#define LCURLY 20
-#define RCURLY 21
-#define TEXT 22
-#define LDELIM 23
-#define RDELIM 24
-#define ID 25
-#define STRING 26
-#define WS 27
-#define PIPE 28
-#define OR 29
-#define AND 30
-#define INDENT 31
-#define NEWLINE 32
-#define AT 33
-#define REGION_END 34
-
-@interface STToken : ANTLRCommonToken {
-}
-
-+ (id) newToken:(id<ANTLRCharStream>)input type:(NSInteger)type start:(NSInteger)aStart stop:(NSInteger)aStop;
-+ (id) newToken:(NSInteger)type text:(NSString *)text;
-
-- (id) initWithInput:(id<ANTLRCharStream>)input type:(NSInteger)type start:(NSInteger)aStart stop:(NSInteger)aStop;
-- (id) init:(NSInteger)type text:(NSString *)text;
-- (NSString *) description;
-@end
 
 /**
  * This class represents the tokenizer for templates. It operates in two modes:
@@ -89,8 +72,8 @@
      * outside mode.
      */
     NSInteger subtemplateDepth;
-    ErrorManager * errMgr;
-    ANTLRCommonToken * templateToken;
+    ErrorManager *errMgr;
+    STToken *templateToken;
     id<ANTLRCharStream> input;
     unichar c;
     
@@ -106,63 +89,49 @@
      * Our lexer routines might have to emit more than a single token. We
      * buffer everything through this list.
      */
-    NSMutableArray *tokens;
+    AMutableArray *tokens;
 }
 
-@property (retain, getter=SKIP, setter=setSKIP:) ANTLRCommonToken *SKIP;
-@property (assign, getter=delimiterStartChar, setter=setDelimiterStartChar:) unichar delimiterStartChar;
-@property (assign, getter=delimiterStopChar, setter=setDelimiterStopChar:) unichar delimiterStopChar;
-@property (assign, getter=scanningInsideExpr, setter=setScanningInsideExpr:) BOOL scanningInsideExpr;
-@property (assign, getter=subtemplateDepth, setter=setSubtemplateDepth:) NSInteger subtemplateDepth;
-@property (retain, getter=errMgr, setter=setErrMgr:) ErrorManager *errMgr;
-@property (retain, getter=templateToken, setter=setTemplateToken:) ANTLRCommonToken *templateToken;
-@property (retain, getter=input, setter=setInput:) id<ANTLRCharStream> input;
-@property (assign, getter=c, setter=setC:) unichar c;
-@property (assign, getter=getCharIndex, setter=setStartCharIndex:) NSInteger startCharIndex;
-@property (assign, getter=startLine, setter=setStartLine:) NSInteger startLine;
-@property (assign, getter=startCharPositionInLine, setter=setStartCharPositionInLine:) NSInteger startCharPositionInLine;
-@property (retain, getter=tokens, setter=setTokens:) NSMutableArray *tokens;
-
-//@property (nonatomic, retain, readonly) NSString *errorHeader;
-//@property (nonatomic, retain, readonly) NSString *sourceName;
-
-+ (ANTLRCommonToken *) SKIP;
++ (NSInteger) RCURLY;
++ (NSInteger) LDELIM;
++ (STToken *) SKIP;
 + (char) Token_EOF;
 + (NSInteger) EOF_TYPE;
++ (NSString *)str:(NSInteger)aChar;
 
 + (void) initialize;
 
 + (id) newSTLexer:(id<ANTLRCharStream>)input;
 + (id) newSTLexer:(ErrorManager *)errMgr
             input:(id<ANTLRCharStream>)input
-    templateToken:(ANTLRCommonToken *)templateToken;
+    templateToken:(STToken *)templateToken;
 + (id) newSTLexer:(ErrorManager *)errMgr
             input:(id<ANTLRCharStream>)input
-    templateToken:(ANTLRCommonToken *)templateToken
+    templateToken:(STToken *)templateToken
 delimiterStartChar:(unichar)delimiterStartChar
 delimiterStopChar:(unichar)delimiterStopChar;
 
 - (id) initWithInput:(id<ANTLRCharStream>)input;
-- (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(ANTLRCommonToken *)templateToken;
+- (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
 - (id) init:(ErrorManager *)errMgr
       input:(id<ANTLRCharStream>)input
-templateToken:(ANTLRCommonToken *)templateToken
+templateToken:(STToken *)templateToken
 delimiterStartChar:(unichar)delimiterStartChar
 delimiterStopChar:(unichar)delimiterStopChar;
 
-- (ANTLRCommonToken *) nextToken;
+- (STToken *) nextToken;
 - (void) match:(unichar)x;
 - (void) consume;
-- (void) emit:(ANTLRCommonToken *)token;
-- (ANTLRCommonToken *) _nextToken;
-- (ANTLRCommonToken *) outside;
-- (ANTLRCommonToken *) inside;
-- (ANTLRCommonToken *) subTemplate;
-- (ANTLRCommonToken *) mESCAPE;
-- (ANTLRCommonToken *) mUNICODE;
-- (ANTLRCommonToken *) mTEXT;
-- (ANTLRCommonToken *) mID;
-- (ANTLRCommonToken *) mSTRING;
+- (void) emit:(STToken *)token;
+- (STToken *) _nextToken;
+- (STToken *) outside;
+- (STToken *) inside;
+- (STToken *) subTemplate;
+- (STToken *) mESCAPE;
+- (STToken *) mUNICODE;
+- (STToken *) mTEXT;
+- (STToken *) mID;
+- (STToken *) mSTRING;
 - (void) mWS;
 - (void) mCOMMENT;
 - (void) mLINEBREAK;
@@ -170,11 +139,27 @@ delimiterStopChar:(unichar)delimiterStopChar;
 + (BOOL) isIDLetter:(unichar)c;
 + (BOOL) isWS:(unichar)c;
 + (BOOL) isUnicodeLetter:(unichar)c;
-- (ANTLRCommonToken *) newToken:(NSInteger)ttype;
-- (ANTLRCommonToken *) newTokenFromPreviousChar:(NSInteger)ttype;
-- (ANTLRCommonToken *) newToken:(NSInteger)ttype text:(NSString *)text pos:(NSInteger)pos;
-- (ANTLRCommonToken *) newToken:(NSInteger)ttype text:(NSString *)text;
+- (STToken *) newToken:(NSInteger)ttype;
+- (STToken *) newTokenFromPreviousChar:(NSInteger)ttype;
+- (STToken *) newToken:(NSInteger)ttype text:(NSString *)text pos:(NSInteger)pos;
+- (STToken *) newToken:(NSInteger)ttype text:(NSString *)text;
 - (id) copyWithZone:(NSZone *)aZone;
 - (NSString *) getSourceName;
+
+@property (assign) unichar delimiterStartChar;
+@property (assign) unichar delimiterStopChar;
+@property (assign) BOOL scanningInsideExpr;
+@property (assign) NSInteger subtemplateDepth;
+@property (retain) ErrorManager *errMgr;
+@property (retain) STToken *templateToken;
+@property (retain) id<ANTLRCharStream> input;
+@property (assign) unichar c;
+@property (assign) NSInteger startCharIndex;
+@property (assign) NSInteger startLine;
+@property (assign) NSInteger startCharPositionInLine;
+@property (retain) AMutableArray *tokens;
+
+//@property (nonatomic, retain, readonly) NSString *errorHeader;
+//@property (nonatomic, retain, readonly) NSString *sourceName;
 
 @end

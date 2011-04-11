@@ -68,19 +68,19 @@
 @end
 
 @interface STViz : NSObject {
-  DebugST * currentST;
-  NSMutableArray * allEvents;
-  JTreeSTModel * tmodel;
-  NSMutableArray * errors;
-  ErrorManager * errMgr;
-  Interpreter * interp;
+  DebugST *currentST;
+  AMutableArray *allEvents;
+  JTreeSTModel *tmodel;
+  AMutableArray *errors;
+  ErrorManager *errMgr;
+  Interpreter *interp;
 }
 
-- (id) init:(ErrorManager *)errMgr root:(DebugST *)root output:(NSString *)output interp:(Interpreter *)interp trace:(NSMutableArray *)trace errors:(NSMutableArray *)errors;
+- (id) init:(ErrorManager *)errMgr root:(DebugST *)root output:(NSString *)output interp:(Interpreter *)interp trace:(AMutableArray *)trace errors:(AMutableArray *)errors;
 - (void) highlight:(JTextComponent *)comp i:(NSInteger)i j:(NSInteger)j;
 - (void) updateAttributes:(DebugST *)st m:(STViewFrame *)m;
 - (void) updateStack:(DebugST *)st m:(STViewFrame *)m;
-- (InterpEvent *) findEventAtOutputLocation:(NSMutableArray *)events charIndex:(NSInteger)charIndex;
+- (InterpEvent *) findEventAtOutputLocation:(AMutableArray *)events charIndex:(NSInteger)charIndex;
 + (void) main:(NSArray *)args;
 + (void) writeFile:(NSString *)dir fileName:(NSString *)fileName content:(NSString *)content;
 @end

@@ -1,30 +1,62 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
 #import "BytecodeDisassembler.h"
 #import "Bytecode.h"
 #import "Interval.h"
 #import "Misc.h"
 #import "CompiledST.h"
-
+#import "AMutableArray.h"
 
 @implementation BytecodeDisassembler
 
-+ (NSInteger) getShort:(char *)memory index:(NSInteger)index
++ (NSInteger) getShort:(id)memBuffer index:(NSInteger)index
 {
+/*
     NSInteger b1 = memory[index] & 0xFF;
     NSInteger b2 = memory[index + 1] & 0xFF;
     NSInteger word = b1 << (8 * 1) | b2;
     return word;
+*/
+    return [memBuffer shortAtIndex:index];
 }
 
 + (id) newBytecodeDisassembler:(CompiledST *)aCode
 {
-    return [[BytecodeDisassembler alloc] initWithCode:aCode];
+    return [[[BytecodeDisassembler alloc] initWithCode:aCode] retain];
 }
 
 - (id) initWithCode:(CompiledST *)aCode
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self ) {
         code = aCode;
     }
     return self;
@@ -42,14 +74,12 @@
         Instruction *I = Bytecode.instructions[opcode];
         [buf appendString:I.name];
         ip++;
-
         for (NSInteger opnd = 0; opnd < I.nopnds; opnd++) {
-            [buf appendString:@" "];
-            [buf appendFormat:@"%d", [code.instrs shortAtIndex:ip]];
+            [buf appendFormat:@" %d", [code.instrs shortAtIndex:ip]];
             ip += Bytecode.OPND_SIZE_IN_BYTES;
         }
     }
-    return [buf description];
+    return buf;
 }
 
 - (NSString *) disassemble
@@ -61,27 +91,27 @@
         i = [self disassembleInstruction:buf ip:i];
         [buf appendString:@"\n"];
     }
-    return [buf description];
+    return buf;
 }
 
 - (NSInteger) disassembleInstruction:(NSMutableString *)buf ip:(NSInteger)ip
 {
     NSInteger opcode = [code.instrs charAtIndex:ip];
     if (ip >= code.codeSize) {
-        @throw [ANTLRRuntimeException newANTLRIllegalArgumentException:[NSString stringWithFormat:@"ip out of range: %d", ip]];
+        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"ip out of range: %d", ip]];
     }
     Instruction *I = Bytecode.instructions[opcode];
     if (I == nil) {
-        @throw [ANTLRRuntimeException newANTLRIllegalArgumentException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
+        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
     }
-    NSString * instrName = I.name;
+    NSString *instrName = I.name;
     [buf appendFormat:@"%04d:\t%-14@", ip, instrName];
     ip++;
     if (I.nopnds == 0) {
         [buf appendString:@"  "];
         return ip;
     }
-    NSMutableArray *operands = [NSMutableArray arrayWithCapacity:16];
+    AMutableArray *operands = [AMutableArray arrayWithCapacity:16];
 
     for (NSInteger i = 0; i < I.nopnds; i++) {
         NSInteger opnd = [code.instrs shortAtIndex:ip];
@@ -102,7 +132,7 @@
     }
 
     for (NSInteger i = 0; i < [operands count]; i++) {
-        NSString * s = [operands objectAtIndex:i];
+        NSString *s = [operands objectAtIndex:i];
         if (i > 0)
             [buf appendString:@", "];
         [buf appendString:s];
@@ -114,21 +144,21 @@
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     [buf appendFormat:@"#%d", poolIndex];
-    NSString * s = @"<bad string index>";
+    NSString *s = @"<bad string index>";
     if (poolIndex < [code.strings count]) {
-        if ( [code.strings objectAtIndex:poolIndex] == nil)
+        if ( [code.strings objectAtIndex:poolIndex] == [NSNull null])
             s = @"null";
         else {
-            s = [[code.strings objectAtIndex:poolIndex] description];
+            //s = [[code.strings objectAtIndex:poolIndex] description];
+            s = [code.strings objectAtIndex:poolIndex];
             if ([[code.strings objectAtIndex:poolIndex] isKindOfClass:[NSString class]]) {
                 s = [Misc replaceEscapes:s];
-                s = [NSString stringWithFormat:@"%@", s];
+                s = [NSString stringWithFormat:@"\"%@\"", s];
             }
         }
     }
-    [buf appendString:@":"];
-    [buf appendString:s];
-    return [buf description];
+    [buf appendFormat:@":%@", s];
+    return buf;
 }
 
 - (NSString *) strings
@@ -136,10 +166,9 @@
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     NSInteger addr = 0;
     if (code.strings != nil) {
-
         for (id obj in code.strings) {
             if ([obj isKindOfClass:[NSString class]]) {
-                NSString * s = (NSString *)obj;
+                NSString *s = (NSString *)obj;
                 s = [Misc replaceEscapes:s];
                 [buf appendString:[NSString stringWithFormat:@"%04d: \"%@\"\n", addr, s]];
             }
@@ -157,9 +186,9 @@
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     NSInteger addr = 0;
 
-    for (Interval * I in code.sourceMap) {
+    for (Interval *I in code.sourceMap) {
         if (I != nil) {
-            NSString * chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];
+            NSString *chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];
             [buf appendString:[NSString stringWithFormat:@"%04d: %@\t\"%@\"\n", addr, I, chunk]];
         }
         addr++;
@@ -173,4 +202,5 @@
     [super dealloc];
 }
 
+@synthesize code;
 @end

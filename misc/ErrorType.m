@@ -1,60 +1,85 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import "ErrorType.h"
 
 @implementation ErrorType
 
 static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
-@"no such template: %s",
-@"can't set attribute %s; template %s has no such attribute",
-@"no such template: super.%s",
-@"attribute %s isn't defined",
+@"no such template: %@",
+@"can't set attribute %@; template %@ has no such attribute",
+@"no such template: super.%@",
+@"attribute %@ isn't defined",
 @"missing argument definitions",
-@"no such property or can't access: %s",
-@"iterating through %s values in zip map but template has %s declared arguments",
-@"passed %s arg(s) to template %s with %s declared arg(s)",
-@"function %s expects a string not %s",
-@"%s",
-@"redefinition of template %s",
-@"region %s is embedded and thus already implicitly defined",
-@"redefinition of region %s",
-@"redefinition of dictionary %s",
-@"cannot alias %s to undefined template: %s",
-@"redefinition of template %s as a map",
-@"%s",
+@"no such property or can't access: %@",
+@"iterating through %@ values in zip map but template has %@ declared arguments",
+@"passed %@ arg(s) to template %@ with %@ declared arg(s)",
+@"function %@ expects a string not %@",
+@"%s(Writer) constructor doesn't exist",
+@"can't find template(s) in import \"%s\"",
+@"%@",
+@"redefinition of template %@",
+@"region %@ is embedded and thus already implicitly defined",
+@"redefinition of region %@",
+@"redefinition of dictionary %@",
+@"cannot alias %@ to undefined template: %@",
+@"redefinition of template %@ as a map",
+@"%@",
 @"missing dictionary default value",
-@"no such function: %s",
-@"template %s doesn't have a region called %s",
-@"no such option: %s",
-@"invalid template name or path: %s",
-@"anonymous template has %s arg(s) but mapped across %s value(s)",
-@"%s",
+@"no such function: %@",
+@"template %@ doesn't have a region called %@",
+@"no such option: %@",
+@"invalid template name or path: %@",
+@"anonymous template has %d arg(s) but mapped across %d value(s)",
+@"%@",
 @"error writing output caused by",
-@"can't load group file %s" };
-
-+ (void) initialize
-{
-}
+@"can't load group file %@" };
 
 + (NSString *) NO_SUCH_TEMPLATE
 {
-//    return @"no such template: %s";
+//    return @"no such template: %@";
     return ErrorType_Data[NO_SUCH_TEMPLATE];
 }
 
 + (NSString *) CANT_SET_ATTRIBUTE
 {
-//    return @"can't set attribute %s; template %s has no such attribute";
+//    return @"can't set attribute %@; template %@ has no such attribute";
     return ErrorType_Data[CANT_SET_ATTRIBUTE];
 }
 + (NSString *) NO_IMPORTED_TEMPLATE
 {
-//    return @"no such template: super.%s";
+//    return @"no such template: super.%@";
     return ErrorType_Data[NO_IMPORTED_TEMPLATE];
 }
 
 + (NSString *) NO_SUCH_ATTRIBUTE
 {
-//    return @"attribute %s isn't defined";
+//    return @"attribute %@ isn't defined";
     return ErrorType_Data[NO_SUCH_ATTRIBUTE];
 }
 
@@ -66,75 +91,87 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 
 + (NSString *) NO_SUCH_PROPERTY
 {
-//    return @"no such property or can't access: %s";
+//    return @"no such property or can't access: %@";
     return ErrorType_Data[NO_SUCH_PROPERTY];
 }
 
 + (NSString *) MAP_ARGUMENT_COUNT_MISMATCH
 {
-//    return @"iterating through %s values in zip map but template has %s declared arguments";
+//    return @"iterating through %@ values in zip map but template has %@ declared arguments";
     return ErrorType_Data[MAP_ARGUMENT_COUNT_MISMATCH];
 }
 
 + (NSString *) ARGUMENT_COUNT_MISMATCH
 {
-//    return @"passed %s arg(s) to template %s with %s declared arg(s)";
+//    return @"passed %@ arg(s) to template %@ with %@ declared arg(s)";
     return ErrorType_Data[ARGUMENT_COUNT_MISMATCH];
 }
 
 + (NSString *) EXPECTING_STRING
 {
-//    return @"function %s expects a string not %s";
+//    return @"function %@ expects a string not %@";
     return ErrorType_Data[EXPECTING_STRING];
+}
+
++ (NSString *) WRITER_CTOR_ISSUE;
+{
+    //    return @"%s(Writer) constructor doesn't exist",
+    return ErrorType_Data[WRITER_CTOR_ISSUE];
+}
+
++ (NSString *) CANT_IMPORT;
+{
+    //    return @"can't find template(s) in import \"%s\"",
+    return ErrorType_Data[CANT_IMPORT];
 }
 
 
 // COMPILE-TIME SYNTAX/SEMANTIC ERRORS
 + (NSString *) SYNTAX_ERROR
 {
-//    return @"%s";
+//    return @"%@";
     return ErrorType_Data[SYNTAX_ERROR];
 }
 
 + (NSString *) TEMPLATE_REDEFINITION
 {
-//    return @"redefinition of template %s";
+//    return @"redefinition of template %@";
     return ErrorType_Data[TEMPLATE_REDEFINITION];
 }
 
 + (NSString *) EMBEDDED_REGION_REDEFINITION
 {
-    //    return @"region %s is embedded and thus already implicitly defined";
+    //    return @"region %@ is embedded and thus already implicitly defined";
     return ErrorType_Data[EMBEDDED_REGION_REDEFINITION];
 }
 
 + (NSString *) REGION_REDEFINITION
 {
-    //    return @"redefinition of region %s";
+    //    return @"redefinition of region %@";
     return ErrorType_Data[REGION_REDEFINITION];
 }
 
 + (NSString *) MAP_REDEFINITION
 {
-    //    return @"redefinition of dictionary %s";
+    //    return @"redefinition of dictionary %@";
     return ErrorType_Data[MAP_REDEFINITION];
 }
 
 + (NSString *) ALIAS_TARGET_UNDEFINED
 {
-    //    return @"cannot alias %s to undefined template: %s";
+    //    return @"cannot alias %@ to undefined template: %@";
     return ErrorType_Data[ALIAS_TARGET_UNDEFINED];
 }
 
 + (NSString *) TEMPLATE_REDEFINITION_AS_MAP
 {
-    //    return @"redefinition of template %s as a map";
+    //    return @"redefinition of template %@ as a map";
     return ErrorType_Data[TEMPLATE_REDEFINITION_AS_MAP];
 }
 
 + (NSString *) LEXER_ERROR
 {
-    //    return @"%s";
+    //    return @"%@";
     return ErrorType_Data[LEXER_ERROR];
 }
 
@@ -146,38 +183,38 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 
 + (NSString *) NO_SUCH_FUNCTION
 {
-    //    return @"no such function: %s";
+    //    return @"no such function: %@";
     return ErrorType_Data[NO_SUCH_FUNCTION];
 }
 
 + (NSString *) NO_SUCH_REGION
 {
-    //    return @"template %s doesn't have a region called %s";
+    //    return @"template %@ doesn't have a region called %@";
     return ErrorType_Data[NO_SUCH_REGION];
 }
 
 + (NSString *) NO_SUCH_OPTION
 {
-    //    return @"no such option: %s";
+    //    return @"no such option: %@";
     return ErrorType_Data[NO_SUCH_OPTION];
 }
 
 + (NSString *) INVALID_TEMPLATE_NAME
 {
-    //    return @"invalid template name or path: %s";
+    //    return @"invalid template name or path: %@";
     return ErrorType_Data[INVALID_TEMPLATE_NAME];
 }
 
 + (NSString *) ANON_ARGUMENT_MISMATCH
 {
-    //    return @"anonymous template has %s arg(s) but mapped across %s value(s)";
+    //    return @"anonymous template has %@ arg(s) but mapped across %@ value(s)";
     return ErrorType_Data[ANON_ARGUMENT_MISMATCH];
 }
 
 // INTERNAL ERRORS
 + (NSString *) INTERNAL_ERROR
 {
-    //    return @"%s";
+    //    return @"%@";
     return ErrorType_Data[INTERNAL_ERROR];
 }
 
@@ -189,33 +226,36 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 
 + (NSString *) CANT_LOAD_GROUP_FILE
 {
-    //    return @"can't load group file %s";
+    //    return @"can't load group file %@";
     return ErrorType_Data[SYNTAX_ERROR];
 }
 
-+ (NSString *) ErrorNum:(ErrorTypeEnum)anErr
++ (NSString *) ErrorNum:(NSInteger)anErr
 {
+    if (anErr < 0 || anErr >= NUM_OF_ERRORENUMS)
+        return @"ILLEGAL ERROR NUMBER";
     return ErrorType_Data[anErr];
 }
 
 + (id) newErrorType
 {
-    return [[ErrorType alloc] init];
+    return [[[ErrorType alloc] init] retain];
 }
 
-+ (id) newErrorTypeWithErrNum:(ErrorTypeEnum) msgNum
++ (id) newErrorTypeWithErrNum:(NSInteger) msgNum
 {
-    return [[ErrorType alloc] init];
+    return [[[ErrorType alloc] init] retain];
 }
 
 + (id) newErrorTypeWithMsg:(NSString *) aMsg
 {
-    return [[ErrorType alloc] initWithMsg:aMsg];
+    return [[[ErrorType alloc] initWithMsg:aMsg] retain];
 }
 
 - (id) init
 {
-    if (self = [super init] ) {
+    self=[super init];
+    if (self != nil ) {
         message = nil;
         NSInteger idx = 0;
         msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
@@ -226,9 +266,10 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     return self;
 }
 
-- (id) initWithErrNum:(ErrorTypeEnum) aNum
+- (id) initWithErrNum:(NSInteger) aNum
 {
-    if (self = [super init] ) {
+    self=[super init];
+    if (self != nil ) {
         message = nil;
         NSInteger idx = 0;
         msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
@@ -242,7 +283,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 
 - (id) initWithMsg:(NSString *) aMsg
 {
-    if (self = [super init]) {
+    self=[super init];
+    if (self != nil ) {
         message = aMsg;
         NSInteger idx = 0;
         msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
@@ -253,7 +295,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     return self;
 }
 
-- (ErrorTypeEnum) ErrorTypeValueOf:(NSString *)text
+- (NSInteger) ErrorTypeValueOf:(NSString *)text
 {
     if (text) {
         if ([text isEqualToString:@"NO_SUCH_TEMPLATE"])
@@ -274,6 +316,10 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return ARGUMENT_COUNT_MISMATCH;
         else if ([text isEqualToString:@"EXPECTING_STRING"])
             return EXPECTING_STRING;
+        else if ([text isEqualToString:@"WRITER_CTOR_ISSUE"])
+            return WRITER_CTOR_ISSUE;
+        else if ([text isEqualToString:@"CANT_IMPORT"])
+            return CANT_IMPORT;
         else if ([text isEqualToString:@"SYNTAX_ERROR"])
             return SYNTAX_ERROR;
         else if ([text isEqualToString:@"TEMPLATE_REDEFINITION"])
@@ -317,8 +363,20 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     return message;
 }
 
-- (NSString *) description:(ErrorTypeEnum) value
+- (NSString *) toString
 {
+    return [self description];
+}
+
+- (NSString *) toString:(NSInteger) value
+{
+    return [self description:value];
+}
+
+- (NSString *) description:(NSInteger) value
+{
+    if (value < NO_SUCH_TEMPLATE || value >= NUM_OF_ERRORENUMS)
+        return @"ILLEGAL ERROR NUMBER!!!";
     switch (value) {
         case NO_SUCH_TEMPLATE:
             return @"NO_SUCH_TEMPLATE";
@@ -338,7 +396,11 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return @"ARGUMENT_COUNT_MISMATCH";
         case EXPECTING_STRING:
             return @"EXPECTING_STRING";
-        case SYNTAX_ERROR:
+        case WRITER_CTOR_ISSUE:
+            return @"WRITER_CTOR_ISSUE";
+        case CANT_IMPORT:
+            return @"CANT_IMPORT";
+       case SYNTAX_ERROR:
             return @"SYNTAX_ERROR";
         case TEMPLATE_REDEFINITION:
             return @"TEMPLATE_REDEFINITION";
@@ -372,6 +434,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return @"WRITE_IO_ERROR";
         case CANT_LOAD_GROUP_FILE:
             return @"CANT_LOAD_GROUP_FILE";
+        case NUM_OF_ERRORENUMS:
+            return @"INVALID_ERROR_NUMBER!!!";
     }
     return nil;
 }
@@ -392,6 +456,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     [message release];
     [super dealloc];
 }
-
+@synthesize message;
+@synthesize msgs;
 @end
 

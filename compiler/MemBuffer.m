@@ -32,7 +32,8 @@
 #define FAILURE (-1)
 
 #import "MemBuffer.h"
-
+#import "AMutableArray.h"
+#import "Bytecode.h"
 /*
  * Start of MemBuffer
  */
@@ -46,23 +47,23 @@
 
 +(MemBuffer *)newMemBuffer
 {
-    return [[MemBuffer alloc] init];
+    return [[[MemBuffer alloc] init] retain];
 }
 
 +(MemBuffer *)newMemBufferWithLen:(NSInteger)cnt
 {
-    return [[MemBuffer alloc] initWithLen:cnt];
+    return [[[MemBuffer alloc] initWithLen:cnt] retain];
 }
 
 -(id)init
 {
     NSInteger idx;
     
-	if ((self = [super init]) != nil) {
+	self=[super init];
+	if ( self != nil) {
         BuffSize  = BUFFSIZE;
         ptr = 0;
-        buffer = [NSMutableData dataWithLength:(NSUInteger)BuffSize * sizeof(id)];
-        [buffer retain];
+        buffer = [[NSMutableData dataWithLength:(NSUInteger)BuffSize * sizeof(id)] retain];
         ptrBuffer = (char *)[buffer mutableBytes];
         for( idx = 0; idx < BuffSize; idx++ ) {
             ptrBuffer[idx] = 0;
@@ -75,11 +76,11 @@
 {
     NSInteger idx;
     
-	if ((self = [super init]) != nil) {
+	self=[super init];
+	if ( self != nil) {
         BuffSize  = cnt;
         ptr = 0;
-        buffer = [NSMutableData dataWithLength:(NSUInteger)BuffSize * sizeof(id)];
-        [buffer retain];
+        buffer = [[NSMutableData dataWithLength:(NSUInteger)BuffSize * sizeof(id)] retain];
         ptrBuffer = (char *)[buffer mutableBytes];
         for( idx = 0; idx < BuffSize; idx++ ) {
             ptrBuffer[idx] = 0;
@@ -101,7 +102,9 @@
     copy = [[[self class] allocWithZone:aZone] init];
     if ( buffer )
         copy.buffer = [buffer copyWithZone:aZone];
-    copy.ptrBuffer = ptrBuffer;
+    copy.BuffSize = BuffSize;
+    copy.ptrBuffer = [copy.buffer mutableBytes];
+    copy.count = count;
     copy.ptr = ptr;
     return copy;
 }
@@ -113,46 +116,6 @@
     for( idx = 0; idx < BuffSize; idx++ ) {
         ptrBuffer[idx] = 0;
     }
-}
-
-- (NSMutableData *)getBuffer
-{
-	return( buffer );
-}
-
-- (void)setBuffer:(NSMutableData *)np
-{
-    buffer = np;
-}
-
-- (NSInteger)getCount
-{
-	return( count );
-}
-
-- (void)setCount:(NSInteger)aCount
-{
-    count = aCount;
-}
-
-- (char *)getPtrBuffer
-{
-	return( ptrBuffer );
-}
-
-- (void)setPtrBuffer:(char *)np
-{
-    ptrBuffer = np;
-}
-
-- (NSInteger)getPtr
-{
-	return( ptr );
-}
-
-- (void)setPtr:(NSInteger)aPtr
-{
-    ptr = aPtr;
 }
 
 - (void) addChar:(char) v
@@ -206,12 +169,12 @@
     return BuffSize;
 }
 
-- (void) insertChar:(char)aChar atIndex:(NSInteger)idx
+- (void) insertChar:(short)aChar atIndex:(NSInteger)idx
 {
     if ( idx >= BuffSize ) {
         [self ensureCapacity:idx];
     }
-    ptrBuffer[idx] = aChar;
+    ptrBuffer[idx] = (char)(aChar & 0xff);
 }
 
 - (char) charAtIndex:(NSInteger)idx
@@ -260,8 +223,8 @@
 - (void) insertShort:(short)value atIndex:(NSInteger)idx
 {
     if (idx >= BuffSize )
-        ensureCapacity:idx+1;
-    ptrBuffer[idx + 0] = (char)((value >> (8 * 1)) & 0xFF);
+        [self ensureCapacity:idx+1];
+    ptrBuffer[idx] = (char)((value >> 8) & 0xFF);
     ptrBuffer[idx + 1] = (char)(value & 0xFF);
 }
 
@@ -279,19 +242,25 @@
 	}
 }
 
+- (NSString *) description
+{
+    NSString *str = @"Compiled Instructions -- use BytecodeDisassembler to view\n";
+    return str;
+}
+
 - (NSString *) toString
 {
-    NSMutableString *str;
-    NSInteger idx, cnt;
-    cnt = [self count];
-    str = [NSMutableString stringWithCapacity:cnt];
-    [str appendString:@"["];
-    for (idx = 0; idx < cnt; idx++ ) {
-        [str appendFormat:@"%d", (NSInteger)*(ptrBuffer+idx)];
-        if ( idx < cnt-1 ) [str appendString:@","];
+    return [self description];
+}
+
+- (void) memcpy:(NSInteger)src dest:(NSInteger)dest length:(NSInteger)len
+{
+    NSInteger i;
+    if (src+len < BuffSize && dest+len < BuffSize) {
+        for (i = 0; i < len; i++ ) {
+            *(ptrBuffer+dest+i) = *(ptrBuffer+src+i);
+        }
     }
-    [str appendString:@"]"];
-    return str;
 }
 
 @end

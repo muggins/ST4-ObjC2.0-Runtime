@@ -1,4 +1,30 @@
-//#import "NSMutableArray.h"
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 /**
  * Essentially a char filter that knows how to auto-indent output
@@ -21,69 +47,20 @@
  */
 @class Writer;
 #import <ANTLR/ANTLR.h>
-@class NSMutableArray;
-#import "STWriter.h"
+@class AMutableArray;
+#import "Writer.h"
 
-@interface AutoIndentWriter : NSObject<STWriter> {
-
-  /**
-   * stack of indents; use List as it's much faster than Stack. Grows
-   * from 0..n-1.
- */
-  NSMutableArray *indents;
-
-  /**
-   * Stack of integer anchors (char positions in line); avoid Integer
-   * creation overhead.
- */
-  ANTLRIntArray *anchors;
-  NSInteger anchors_sp;
-
-  /**
-   * \n or \r\n?
- */
-  NSString *newline;
-  Writer *writer;
-  BOOL atStartOfLine;
-
-  /**
-   * Track char position in the line (later we can think about tabs).
-   * Indexed from 0.  We want to keep charPosition <= lineWidth.
-   * This is the position we are *about* to write not the position
-   * last written to.
- */
-  NSInteger charPosition;
-
-  /**
-   * The absolute char index into the output of the next char to be written.
- */
-  NSInteger charIndex;
-  NSInteger lineWidth;
+@interface AutoIndentWriter : Writer {
+    
 }
 
-@property (retain, getter=getIndents, setter=setIndents:) NSMutableArray *indents;
-@property (retain, getter=getAnchors, setter=setAnchors:) ANTLRIntArray *anchors;
-@property (assign, getter=getAnchors_sp, setter=setAnchors_sp:) NSInteger anchors_sp;
-@property (retain, getter=getNewline, setter=setNewline:) NSString *newline;
-@property (retain, getter=getWriter, setter=setWriter:) Writer *writer;
-@property (assign, getter=getAtStartOfLine, setter=setAtStartOfLine:) BOOL atStartOfLine;
-@property (assign, getter=getCharPosition, setter=setCharPosition:) NSInteger charPosition;
-@property (assign, getter=getCharIndex, setter=setCharIndex:) NSInteger charIndex;
-@property (assign, getter=getLineWidth, setter=setLineWidth:) NSInteger lineWidth;
-
++ (id) newWriter;
 + (id) newWriter:(Writer *)aWriter;
++ (id) newWriter:(Writer *)aWriter newLine:(NSString *)aStr;
 
+- (id) initWithCapacity:(NSInteger)sz;
 - (id) initWithWriter:(Writer *)aWriter;
 - (id) init:(Writer *)aWriter newline:(NSString *)newline;
-- (void) setLineWidth:(NSInteger)lineWidth;
-- (void) pushIndentation:(NSString *)indent;
-- (NSString *) popIndentation;
-- (void) pushAnchorPoint;
-- (NSInteger) popAnchorPoint;
-- (NSInteger) index;
-- (NSInteger) write:(NSString *)str;
-- (NSInteger) writeSeparator:(NSString *)str;
-- (NSInteger) write:(NSString *)str wrap:(NSString *)wrap;
-- (NSInteger) writeWrap:(NSString *)wrap;
-- (NSInteger) indent;
+- (NSInteger) writeStr:(NSString *)str;
+
 @end

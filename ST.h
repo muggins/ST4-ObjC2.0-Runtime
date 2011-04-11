@@ -1,5 +1,33 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <ANTLR/ANTLR.h>
-#import "STWriter.h"
+#import "STToken.h"
+#import "Writer.h"
 #import "STGroup.h"
 #import "STErrorListener.h"
 
@@ -19,19 +47,30 @@ typedef enum {
 @class CompiledST;
 @class STNoSuchPropertyException;
 @class STErrorListener;
-
+@class STGroup;
+@class OBJCMethod;
 /**
  * Just an alias for ArrayList, but this way I can track whether a
  * list is something ST created or it's an incoming list.
  */
 
-@interface AttributeList : NSMutableArray {
+@interface AttributeList : AMutableArray {
 }
 
++ (id) newAttributeList;
 + (id) arrayWithCapacity:(NSInteger)size;
 
 - (id) init;
+
 - (id) initWithCapacity:(NSInteger)size;
+- (void) addObject:(id)anObject;
+- (void) insertObject:(id)anObject atIndex:(NSInteger)anIdx;
+- (NSString *) get:(NSString *)name;
+- (NSString *) description;
+- (NSString *) description:(NSInteger)i;
+- (NSString *) toString;
+- (NSString *) toString:(NSInteger)i;
+
 @end
 
 /**
@@ -46,15 +85,7 @@ typedef enum {
  * attributes using add(). To render its attacks, use render().
  */
 
-/**
- * Cache exception since this could happen a lot if people use "missing"
- * to mean boolean false.
- */
-extern STNoSuchPropertyException *cachedNoSuchPropException;
-
 @interface ST : NSObject {
-    
-    RegionTypeEnum RegionType;
     
     /**
      * The implementation for this template among all instances of same tmpelate .
@@ -67,9 +98,8 @@ extern STNoSuchPropertyException *cachedNoSuchPropException;
      * add attributes while it is being evaluated.  Initialized to EMPTY_ATTR
      * to distinguish null from empty.
      */
-    NSMutableArray *locals;
+    AMutableArray *locals;
     
-    NSMutableDictionary *attributes;
     /**
      * Enclosing instance if I'm embedded within another template.
      * IF-subtemplates are considered embedded as well. We look up
@@ -97,22 +127,11 @@ extern STNoSuchPropertyException *cachedNoSuchPropException;
     STGroup *groupThatCreatedThisInstance;
 }
 
-@property (assign, getter=getRegionType, setter=setRegionType:) RegionTypeEnum RegionType;
-@property(retain, getter=getImpl, setter=setImpl:) CompiledST *impl;
-@property(retain, getter=getLocals, setter=setLocals:) NSMutableArray *locals;
-@property(retain, getter=getAttributes, setter=setAttributes:) NSMutableDictionary *attributes;
-@property(retain, getter=getEnclosingInstance, setter=setEnclosingInstance:) ST *enclosingInstance;
-@property(retain, getter=getGroupThatCreatedThisInstance, setter=setGroupThatCreatedThisInstance:) STGroup *groupThatCreatedThisInstance;
-
 + (void) initialize;
 + (NSInteger) NO_WRAP;
 + (NSString *)UNKNOWN_NAME;
-+ (AttributeList *) EMPTY_ATTR;
++ (NSString *) EMPTY_ATTR;
 //+ (AttributeList *) attributeList;
-+ (AttributeList *) convertToAttributeList:(id)curvalue;
-
-+ (NSString *) format:(NSString *)template attributes:(id)attributes;
-+ (NSString *) format:(NSInteger)lineWidth template:(NSString *)template attributes:(id)attributes;
 
 + (id) newST;
 + (id) newSTWithTemplate:(NSString *)template;
@@ -124,50 +143,40 @@ extern STNoSuchPropertyException *cachedNoSuchPropException;
 - (id) init:(NSString *)template delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) init:(STGroup *)group template:(NSString *)template;
 - (id) initWithProto:(ST *)proto;
-- (void) add:(NSString *)name value:(id)value;
+- (ST *) add:(NSString *)name value:(id)value;
+- (ST *) addInt:(NSString *)name value:(NSInteger)value;
 - (void) remove:(NSString *)name;
 - (void) rawSetAttribute:(NSString *)name value:(id)value;
 - (id) getAttribute:(NSString *)name;
 - (NSMutableDictionary *) getAttributes;
++ (AttributeList *) convertToAttributeList:(id)curvalue;
 - (NSString *) getEnclosingInstanceStackString;
-- (NSMutableArray *) getEnclosingInstanceStack:(BOOL)topdown;
+- (AMutableArray *) getEnclosingInstanceStack:(BOOL)topdown;
 - (NSString *) getName;
-- (NSInteger) write:(id<STWriter>)wr1;
-- (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale;
-- (NSInteger) write:(id<STWriter>)wr1 listener:(STErrorListener *)listener;
-- (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale listener:(STErrorListener *)listener;
+- (NSInteger) write:(Writer *)wr1;
+- (NSInteger) write:(Writer *)wr1 locale:(NSLocale *)locale;
+- (NSInteger) write:(Writer *)wr1 listener:(id<STErrorListener>)listener;
+- (NSInteger) write:(Writer *)wr1 locale:(NSLocale *)locale listener:(id<STErrorListener>)listener;
+- (NSInteger) writeFile:(NSString *)outputFile Listener:(id<STErrorListener>)listener;
+- (NSInteger) writeFile:(NSString *)outputFile Listener:(id<STErrorListener>)listener Encoding:(NSStringEncoding)encoding;
+- (NSInteger) writeFile:(NSString *)outputFile Listener:(id<STErrorListener>)listener Encoding:(NSStringEncoding)encoding LineWidth:(NSInteger)lineWidth;
+- (NSInteger) writeFile:(NSString *)outputFile Listener:(id<STErrorListener>)listener Encoding:(NSStringEncoding)encoding LineWidth:(NSInteger)lineWidth Locale:(NSLocale *)locale;
 - (NSString *) render;
 - (NSString *) renderWithLineWidth:(NSInteger)lineWidth;
 - (NSString *) render:(NSLocale *)locale;
 - (NSString *) render:(NSLocale *)locale lineWidth:(NSInteger)lineWidth;
 - (NSString *) description;
+- (NSString *) toString;
++ (NSString *) format:(NSString *)template attributes:(id)attributes;
++ (NSString *) format:(NSString *)template attributes:(id)attributes lineWidth:(NSInteger)lineWidth ;
+
 - (BOOL) getIsAnonSubtemplate;
-// getters and setters
-//- (NSMutableDictionary *) getAttributes;
-//- (void) setAttributes:(NSMutableDictionary *)aDictionary;
-//- (NSString *)getEnclosingInstanceStackString;
-//- (void)setEnclosingInstanceStackString:(NSString *)aString;
-//- (BOOL) getAnonSubtemplate;
-//- (void) setAnonSubtemplate:(BOOL)aSubtemplate;
 
-#ifdef DONTUSENOMO
 // getters and setters
-- (CompiledST *) getImpl;
-- (void) setImpl:(CompiledST *)anImpl;
-- (NSArray *) getLocals;
-- (void) setLocals:(NSMutableArray *)locals;
-//@property(retain, getter=getAttributes, setter=setAttributes:) NSMutableDictionary *attributes;
-- (ST *) getEnclosingInstance;
-- (void) setEnclosingInstance:(ST *)enclosingInstance;
-- (STGroup *) getGroupThatCreatedThisInstance;
-- (void) setGroupThatCreatedThisInstance:(STGroup *)groupThatCreatedThisInstance;
 
-- (NSInteger) getNO_WRAP;
-- (void) setNO_WRAP:(NSInteger)linewidth;
-- (NSString *) getUNKNOW_NAME;
-- (void) setUNKNOWN_NAME:(NSString *)aName;
-- (NSString *) getEMPTY_ATTR;
-- (void) setEMPTY_ATTR:(NSString *)aName;
-#endif
+@property (retain) CompiledST *impl;
+@property (retain) AMutableArray *locals;
+@property (retain) ST *enclosingInstance;
+@property (retain) STGroup *groupThatCreatedThisInstance;
 
 @end

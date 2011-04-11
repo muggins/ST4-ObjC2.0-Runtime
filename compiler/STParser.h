@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Feb 24, 2011 11:25:29 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/STParser.g 2011-02-24 11:32:23
+// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/STParser.g 2011-03-30 11:45:23
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -14,6 +14,33 @@
  * This is what the grammar programmer asked us to put at the top of every file.
  */
 
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import "Compiler.h"
 #import "ErrorManager.h"
 #import "ErrorType.h"
@@ -33,80 +60,93 @@ typedef enum {
 } ANTLR3TokenType;
 #endif
 
-#pragma mark Cyclic DFA interface start DFA2
-@interface DFA2 : ANTLRDFA {
-}
-+ newDFA2WithRecognizer:(ANTLRBaseRecognizer *)theRecognizer;
-- initWithRecognizer:(ANTLRBaseRecognizer *)recognizer;
-@end /* end of DFA2 interface  */
-
-#pragma mark Cyclic DFA interface end DFA2
-#pragma mark Cyclic DFA interface start DFA28
-@interface DFA28 : ANTLRDFA {
-}
-+ newDFA28WithRecognizer:(ANTLRBaseRecognizer *)theRecognizer;
-- initWithRecognizer:(ANTLRBaseRecognizer *)recognizer;
-@end /* end of DFA28 interface  */
-
-#pragma mark Cyclic DFA interface end DFA28
-
+#ifdef DONTUSENOMO
 #pragma mark Tokens
 #ifdef EOF
 #undef EOF
 #endif
 #define EOF -1
-#define IF 4
-#define ELSE 5
-#define ELSEIF 6
-#define ENDIF 7
-#define SUPER 8
-#define SEMI 9
-#define BANG 10
-#define ELLIPSIS 11
-#define EQUALS 12
-#define COLON 13
-#define LPAREN 14
-#define RPAREN 15
-#define LBRACK 16
-#define RBRACK 17
-#define COMMA 18
-#define DOT 19
-#define LCURLY 20
-#define RCURLY 21
-#define TEXT 22
-#define LDELIM 23
-#define RDELIM 24
-#define ID 25
-#define STRING 26
-#define WS 27
-#define PIPE 28
-#define OR 29
-#define AND 30
-#define INDENT 31
-#define NEWLINE 32
-#define AT 33
-#define REGION_END 34
-#define EXPR 35
-#define OPTIONS 36
-#define PROP 37
-#define PROP_IND 38
-#define INCLUDE 39
-#define INCLUDE_IND 40
-#define EXEC_FUNC 41
-#define INCLUDE_SUPER 42
-#define INCLUDE_SUPER_REGION 43
-#define INCLUDE_REGION 44
-#define TO_STR 45
-#define LIST 46
-#define MAP 47
-#define ZIP 48
-#define SUBTEMPLATE 49
-#define ARGS 50
-#define ELEMENTS 51
-#define REGION 52
-#define A_NULL 53
+#define ID 4
+#define WS 5
+#define STRING 6
+#define ANONYMOUS_TEMPLATE 7
+#define COMMENT 8
+#define LINE_COMMENT 9
+#define BIGSTRING 10
+#define T_FALSE 11
+#define T_TRUE 12
+#define IF 13
+#define ELSE 14
+#define ELSEIF 15
+#define ENDIF 16
+#define SUPER 17
+#define SEMI 18
+#define BANG 19
+#define ELLIPSIS 20
+#define EQUALS 21
+#define COLON 22
+#define LPAREN 23
+#define RPAREN 24
+#define LBRACK 25
+#define RBRACK 26
+#define COMMA 27
+#define DOT 28
+#define LCURLY 29
+//#define RCURLY 30
+#define TEXT 31
+//#define LDELIM 32
+#define RDELIM 33
+#define PIPE 34
+#define OR 35
+#define AND 36
+#define INDENT 37
+#define NEWLINE 38
+#define AT 39
+#define END 40
+#define EXPR 41
+#define OPTIONS 42
+#define PROP 43
+#define PROP_IND 44
+#define INCLUDE 45
+#define INCLUDE_IND 46
+#define EXEC_FUNC 47
+#define INCLUDE_SUPER 48
+#define INCLUDE_SUPER_REGION 49
+#define INCLUDE_REGION 50
+#define TO_STR 51
+#define LIST 52
+#define MAP 53
+#define ZIP 54
+#define SUBTEMPLATE 55
+#define ARGS 56
+#define ELEMENTS 57
+#define REGION 58
+#define TNULL 59
+#define INDENTED_EXPR 60
+#endif
 #pragma mark Dynamic Global Scopes
 #pragma mark Dynamic Rule Scopes
+/* start of ruleAttributeScopeInterface */
+
+@interface conditional_Scope : ANTLRSymbolsScope {
+    BOOL inside;
+
+}
+
+/* start properties */
+
+@property (assign, getter=getinside, setter=setinside:) BOOL inside;
+
+/* end properties */
+
++ (conditional_Scope *)newconditional_Scope;
+- (id) init;
+- (BOOL)getinside;
+- (void)setinside:(BOOL)aVal;
+
+
+@end /* end of ruleAttributeScopeInterface */
+
 #pragma mark Rule Return Scopes start
 /* returnScopeInterface STParser_templateAndEOF_return */
 @interface STParser_templateAndEOF_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
@@ -159,15 +199,32 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
-/* returnScopeInterface STParser_text_return */
-@interface STParser_text_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+/* returnScopeInterface STParser_singleElement_return */
+@interface STParser_singleElement_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
 /* start properties */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
-+ (STParser_text_return *)newSTParser_text_return;
++ (STParser_singleElement_return *)newSTParser_singleElement_return;
+/* this is start of set and get methods */
+/* AST returnScopeInterface.methodsDecl */
+- (ANTLRCommonTree *)getTree;
+
+- (void) setTree:(ANTLRCommonTree *)aTree;
+  /* methodsDecl */
+@end /* end of returnScopeInterface interface */
+
+/* returnScopeInterface STParser_compoundElement_return */
+@interface STParser_compoundElement_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+/* AST returnScopeInterface.memVars */
+ANTLRCommonTree *tree; /* ObjC start of memVars() */
+}
+/* start properties */
+/* AST returnScopeInterface.properties */
+@property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
++ (STParser_compoundElement_return *)newSTParser_compoundElement_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
 - (ANTLRCommonTree *)getTree;
@@ -572,7 +629,9 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
 /* Interface grammar class */
 @interface STParser : ANTLRParser { /* line 572 */
 /* ObjC start of ruleAttributeScopeMemVar */
+/* ruleAttributeScopeMemVar */
 
+conditional_Scope *conditional_scope;
 
 /* ObjC end of ruleAttributeScopeMemVar */
 /* ObjC start of globalAttributeScopeMemVar */
@@ -582,7 +641,7 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
 /* ObjC start of actions.(actionScope).memVars */
 
 ErrorManager *errMgr;
-ANTLRCommonToken *templateToken;
+STToken *templateToken;
 
 /* ObjC end of actions.(actionScope).memVars */
 /* ObjC start of memVars */
@@ -594,17 +653,12 @@ NSArray *ruleNames;
 id<ANTLRTreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 /* ObjC end of memVars */
 
-DFA2 *dfa2;
-DFA28 *dfa28;
  }
-
-/* ObjC start of globalAttributeScopeMemVar */
-// 
 
 /* ObjC start of actions.(actionScope).properties */
 
 @property (retain, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
-@property (retain, getter=getTemplateToken, setter=setTemplateToken:) ANTLRCommonToken *templateToken;
+@property (retain, getter=getTemplateToken, setter=setTemplateToken:) STToken *templateToken;
 
 /* ObjC end of actions.(actionScope).properties */
 /* ObjC start of properties */
@@ -614,11 +668,12 @@ DFA28 *dfa28;
 @property (retain, getter=getTreeAdaptor, setter=setTreeAdaptor:) id<ANTLRTreeAdaptor> treeAdaptor;   /* AST parserproperties */
 /* ObjC end of properties */
 
++ (void) initialize;
 + (id) newSTParser:(id<ANTLRTokenStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
-+ (id) newSTParser:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(ANTLRCommonToken *)aTemplateToken;
-- (id) init:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(ANTLRCommonToken *)aTemplateToken;
++ (id) newSTParser:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
+- (id) init:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
 - (id) recoverFromMismatchedToken:(id<ANTLRIntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow;
 
 /* ObjC end of actions.(actionScope).methodsDecl */
@@ -634,7 +689,8 @@ DFA28 *dfa28;
 - (STParser_templateAndEOF_return *)templateAndEOF; 
 - (STParser_template_return *)template; 
 - (STParser_element_return *)element; 
-- (STParser_text_return *)text; 
+- (STParser_singleElement_return *)singleElement; 
+- (STParser_compoundElement_return *)compoundElement; 
 - (STParser_exprTag_return *)exprTag; 
 - (STParser_region_return *)region; 
 - (STParser_subtemplate_return *)subtemplate; 

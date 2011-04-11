@@ -1878,7 +1878,7 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
       ID69 = (CommonToken *)[self match:input param1:ID param2:FOLLOW_ID_in_option675];
       [stream_ID add:ID69];
       if (!validOption) {
-        [errMgr compileTimeError:ErrorType.NO_SUCH_OPTION param1:templateToken param2:ID69 param3:(ID69 != nil ? [ID69 text] : nil)];
+        [errMgr compileTimeError:ErrorType.NO_SUCH_OPTION param1:templateToken param2:ID69 param3:((ID69 != nil) ? [ID69 text] : nil)];
       }
       int alt18 = 2;
       int LA18_0 = [input LA:1];

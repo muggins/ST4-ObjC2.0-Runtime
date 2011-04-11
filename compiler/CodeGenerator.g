@@ -1,30 +1,30 @@
 /*
- [The "BSD license"]
- Copyright (c) 2009 Terence Parr
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-    derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 tree grammar CodeGenerator;
 
@@ -35,32 +35,56 @@ options {
 }
 
 @header {
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#import "STToken.h"
 #import "Compiler.h"
 #import "CompiledST.h"
 #import "CompilationState.h"
 #import "ErrorManager.h"
-//#import "ErrorType.h"
 #import "Bytecode.h"
-//#import "STLexer.h"
-//#import "Misc.h"
-//#import "GroupLexer.h"
-//#import "FormalArgument.h"
+#import "Misc.h"
 }
 
 @memVars {
 	NSString *outermostTemplateName;	// name of overall template
 	CompiledST *outermostImpl;
-	ANTLRCommonToken *templateToken;			// overall template token
+	STToken *templateToken;			    // overall template token
 	NSString *template;  				// overall template text
 	ErrorManager *errMgr;
 }
 
 @properties {
-	@property(retain, getter=getOutermostTemplateName, setter=setOutermostTemplateName:) NSString *outermostTemplateName; // name of overall template
-	@property(retain, getter=getOutermostImpl, setter=setOutermostImpl:) CompiledST *outermostImpl;
-	@property(retain, getter=getTemplateToken, setter=setTemplateToken:) ANTLRCommonToken *templateToken;// overall template token
-	@property(retain, getter=getTemplate, setter=setTemplate:) NSString *template; // overall template text
-	@property(retain, getter=getErrMgr, setter=setErrMgr:) ErrorManager *errMgr;
+	@property(retain) NSString *outermostTemplateName; // name of overall template
+	@property(retain) CompiledST *outermostImpl;
+	@property(retain) STToken *templateToken;// overall template token
+	@property(retain) NSString *template;    // overall template text
+	@property(retain) ErrorManager *errMgr;
 }
 
 @methodsDecl {
@@ -68,26 +92,26 @@ options {
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
-                  token:(ANTLRCommonToken *)aTemplateToken;
+                  token:(STToken *)aTemplateToken;
 
 - (id) init:(id<ANTLRTreeNodeStream>)input
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
-                  token:(ANTLRCommonToken *)aTemplateToken;
+                  token:(STToken *)aTemplateToken;
 
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit:(short)anOpcode;
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
 - (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
 - (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
 - (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
 - (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
+- (void) emit:(short)anOpcode;
+- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(ANTLRCommonTree *)anID;
-- (void) write:(NSInteger)addr value:(short)value;
+- (void) write:(NSInteger)value addr:(short)addr;
 - (NSInteger) address;
 - (void) func:(ANTLRCommonTree *)aTree;
 - (void) refAttr:(ANTLRCommonTree *)aTree;
@@ -107,22 +131,22 @@ options {
 	                 errMgr:(ErrorManager *)anErrMgr
 	                   name:(NSString *)aName
 	               template:(NSString *)aTemplate
-	                  token:(ANTLRCommonToken *)aTemplateToken
+	                  token:(STToken *)aTemplateToken
 	{
-	    return [[CodeGenerator alloc] init:anInput
+	    return [[[CodeGenerator alloc] init:anInput
 		                            errMgr:anErrMgr
 	                                  name:aName
 	                              template:aTemplate
-	                                 token:aTemplateToken];
+	                                 token:aTemplateToken] retain];
 	}
 	
 	- (id) init:(id<ANTLRTreeNodeStream>)anInput
 		                 errMgr:(ErrorManager *)anErrMgr
 	                   name:(NSString *)aName
 	               template:(NSString *)aTemplate
-	                  token:(ANTLRCommonToken *)aTemplateToken
+	                  token:(STToken *)aTemplateToken
 	{
-		if (self = [super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]]) {
+		if (self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]]) {
             /* ruleAttributeScopeInit */
             template_scope = [template_Scope newtemplate_Scope];
             template_stack = [ANTLRSymbolStack newANTLRSymbolStackWithLen:30];
@@ -136,67 +160,67 @@ options {
 
 	// convience funcs to hide offensive sending of emit messages to
 	// CompilationState temp data object.
-	
-	- (void) emit:(short)anOpcode
-	{
-		[$template::state emit:anOpcode];
-    }
-    
-    - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
-    {
-		[$template::state emit:opAST opcode:anOpcode];
-	}
-	
+
 	- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
 	{
-		[$template::state emit1:opAST opcode:anOpcode arg:arg];
+		[$template::cstate emit1:opAST opcode:anOpcode arg:arg];
 	}
 	
 	- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
 	{
-		[$template::state emit1:opAST opcode:anOpcode s:arg];
+		[$template::cstate emit1:opAST opcode:anOpcode s:arg];
 	}
 	
 	- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
 	{
-		[$template::state emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
+		[$template::cstate emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
 	}
 	
 	- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
 	{
-		[$template::state emit2:opAST opcode:anOpcode s:s arg2:anArg];
+		[$template::cstate emit2:opAST opcode:anOpcode s:s arg2:anArg];
+	}
+	
+	- (void) emit:(short)anOpcode
+	{
+		[$template::cstate emit:anOpcode];
+    }
+    
+    - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
+    {
+		[$template::cstate emit:opAST opcode:anOpcode];
 	}
 	
 	- (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s
 	{
-		[$template::state insert:addr opcode:anOpcode s:s];
+		[$template::cstate insert:addr opcode:anOpcode s:s];
 	}
 	
 	- (void) setOption:(ANTLRCommonTree *)anID
 	{
-		[$template::state setOption:anID];
+		[$template::cstate setOption:anID];
 	}
 	
-	- (void) write:(NSInteger)addr value:(short)value
+	- (void) write:(NSInteger)value addr:(short)addr
 	{
-		[$template::state write:addr value:value];
+		[$template::cstate write:value addr:addr];
 	}
 	
-	- (NSInteger) address { return $template::state.ip; }
-	- (void) func:(ANTLRCommonTree *)aTree { [$template::state func:templateToken tree:aTree]; }
-	- (void) refAttr:(ANTLRCommonTree *)aTree { [$template::state refAttr:templateToken tree:aTree]; }
-	- (NSInteger) defineString:(NSString *)s { return [$template::state defineString:s]; }
+	- (NSInteger) address { return $template::cstate.ip; }
+	- (void) func:(ANTLRCommonTree *)aTree { [$template::cstate func:templateToken tree:aTree]; }
+	- (void) refAttr:(ANTLRCommonTree *)aTree { [$template::cstate refAttr:templateToken tree:aTree]; }
+	- (NSInteger) defineString:(NSString *)s { return [$template::cstate defineString:s]; }
 }
 
 templateAndEOF : template[nil ,nil] EOF; // hush warning; ignore
 
-template[NSString *name, NSMutableArray *args] returns [CompiledST *impl]
+template[NSString *name, AMutableArray *args] returns [CompiledST *impl]
 scope {
-    CompilationState *state; // automatically get a new state pointer per invocation
+    CompilationState *cstate; // automatically get a new cstate pointer per invocation
 }
 @init {
- 	$template::state = [CompilationState newCompilationState:errMgr name:name stream:[input getTokenStream]];
-	$impl = $template::state.impl;
+ 	$template::cstate = [[CompilationState newCompilationState:errMgr name:name stream:[input getTokenStream]] retain];
+	$impl = $template::cstate.impl;
  	if ( [$template count] == 1 ) outermostImpl = $impl;
 	[$impl defineFormalArgs:$args]; // make sure args are defined prior to compilation
 	if ( name != nil && [name hasPrefix:Compiler.SUBTEMPLATE_PREFIX] ) {
@@ -207,32 +231,36 @@ scope {
 }
 	:	chunk
 		{ // finish off the CompiledST result
-        if ( $template::state.stringtable != nil ) $impl.strings = [$template::state.stringtable toArray];
-        $impl.codeSize = $template::state.ip;
+        if ( $template::cstate.stringtable != nil ) $impl.strings = [$template::cstate.stringtable toArray];
+        $impl.codeSize = $template::cstate.ip;
 		}
 	;
 
 chunk
 	:	element*
 	;
-	
+
 element
-	:	^(INDENT {[$template::state indent:$INDENT.text];} element {[$template::state emit:Bytecode.INSTR_DEDENT];})
-	|	ifstat
-	|	exprElement
+	:	^(INDENTED_EXPR INDENT compoundElement[$INDENT]) // ignore indent in front of IF and region blocks
+	|	compoundElement[nil]
+    |	^(INDENTED_EXPR INDENT {[$template::cstate indent:$INDENT.text];} singleElement {[$template::cstate emit:Bytecode.INSTR_DEDENT];})
+	|	singleElement
+    ;
+
+singleElement
+	:	exprElement
 	|	TEXT
 		{
 		if ( [$TEXT.text length]>0 ) {
-			[self emit1:$TEXT opcode:Bytecode.INSTR_LOAD_STR s:$TEXT.text];
-			[self emit:$TEXT opcode:Bytecode.INSTR_WRITE];
+            [self emit1:$TEXT opcode:Bytecode.INSTR_WRITE_STR s:$TEXT.text];
 		}
-		}
-	|	region
-		{
-		[self emit2:$region.start opcode:Bytecode.INSTR_NEW s:$region.name arg2:0];
-		[self emit:$region.start opcode:Bytecode.INSTR_WRITE];
-		}
+        }
 	|	NEWLINE {[self emit:Bytecode.INSTR_NEWLINE];}
+	;
+
+compoundElement[ANTLRCommonTree *indent]
+	:	ifstat[indent]
+	|	region[indent]
 	;
 
 exprElement
@@ -241,7 +269,13 @@ exprElement
 		{[self emit:$EXPR opcode:op];}
 	;
 
-region returns [NSString *name]
+region[ANTLRCommonTree *indent] returns [NSString *name]
+@init {
+    if ( indent != nil ) [$template::cstate indent:indent];
+}
+@after {
+    if ( indent != nil ) [$template::cstate emit:Bytecode.INSTR_DEDENT];
+}
 	:	^(	REGION ID
 			{$name = [STGroup getMangledRegionName:outermostTemplateName name:$ID.text];}
 			template[$name,nil]
@@ -249,8 +283,11 @@ region returns [NSString *name]
 			CompiledST *sub = $template.impl;
 	        sub.isRegion = true;
 	        sub.regionDefType = /* ST.RegionType. */ EMBEDDED;
+	        sub.templateDefStartToken = $ID.token;
 			//sub.dump();
 			[outermostImpl addImplicitlyDefinedTemplate:sub];
+            [self emit2:$start opcode:Bytecode.INSTR_NEW s:$region.name arg2:0];
+            [self emit:$start opcode:Bytecode.INSTR_WRITE];
 			}
 		 )
 	;
@@ -258,7 +295,7 @@ region returns [NSString *name]
 subtemplate returns [NSString *name, NSInteger nargs]
 @init {
     $name = [Compiler getNewSubtemplateName];
-	NSMutableArray *args = [NSMutableArray arrayWithCapacity:16];
+	AMutableArray *args = [AMutableArray arrayWithCapacity:16];
 }
 	:	^(	SUBTEMPLATE
 			(^(ARGS (ID {[args addObject:[FormalArgument newFormalArgument:$ID.text]];})+))*
@@ -267,6 +304,7 @@ subtemplate returns [NSString *name, NSInteger nargs]
 			{
 			CompiledST *sub = $template.impl;
 			sub.isAnonSubtemplate = true;
+	        sub.templateDefStartToken = $SUBTEMPLATE.token;
 			if ( STGroup.debug ) {
 				sub.ast = $SUBTEMPLATE;
 				[sub.ast setUnknownTokenBoundaries];
@@ -278,7 +316,7 @@ subtemplate returns [NSString *name, NSInteger nargs]
 		 )
 	;
 
-ifstat
+ifstat[ANTLRCommonTree *indent]
 @init {
     /** Tracks address of branch operand (in code block).  It's how
      *  we backpatch forward references when generating code for IFs.
@@ -287,7 +325,11 @@ ifstat
     /** Branch instruction operands that are forward refs to end of IF.
      *  We need to update them once we see the endif.
      */
-    ANTLRIntArray *endRefs = [ANTLRIntArray newArrayWithLen:16];
+    ANTLRIntArray *endRefs = [[ANTLRIntArray newArrayWithLen:16] retain];
+    if ( indent!=nil ) [$template::cstate indent:indent];
+}
+@after {
+	if ( indent!=nil ) [$template::cstate emit:Bytecode.INSTR_DEDENT];
 }
 	:	^(	i='if' conditional
 			{
@@ -300,7 +342,7 @@ ifstat
 				[endRefs addInteger:[self address]+1];
 				[self emit1:$eif opcode:Bytecode.INSTR_BR arg:-1]; // br end
 				// update previous branch instruction
-				[self write:prevBranchOperand value:(short)[self address]];
+				[self write:prevBranchOperand addr:(short)[self address]];
 				prevBranchOperand = -1;
 				}
 				ec=conditional
@@ -317,7 +359,7 @@ ifstat
 					[endRefs addInteger:[self address]+1];
 					[self emit1:$el opcode:Bytecode.INSTR_BR arg:-1]; // br end
 					// update previous branch instruction
-					[self write:prevBranchOperand value:(short)[self address]];
+                    [self write:prevBranchOperand addr:(short)[self address]];
 					prevBranchOperand = -1;
 					}
 					chunk
@@ -326,10 +368,10 @@ ifstat
 		 )
 		{
 		if ( prevBranchOperand>=0 ) {
-			[self write:prevBranchOperand value:(short)[self address]];
+            [self write:prevBranchOperand addr:(short)[self address]];
 		}
-        for (int opnd = 0; opnd < [endRefs count]; opnd++) {
-            [self write:opnd value:(short)[self address]];
+        for (int i = 0; i < [endRefs count]; i++) {
+            [self write:[endRefs integerAtIndex:i] addr:(short)[self address]];
         }
 		}
 	;
@@ -363,7 +405,7 @@ expr
 prop:	^(PROP expr ID)						{[self emit1:$PROP opcode:Bytecode.INSTR_LOAD_PROP s:$ID.text];}
 	|	^(PROP_IND expr expr)				{[self emit:$PROP_IND opcode:Bytecode.INSTR_LOAD_PROP_IND];}
 	;
-	
+
 mapTemplateRef[NSInteger num_exprs]
 	:	^(	INCLUDE ID
 			{for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$INCLUDE opcode:Bytecode.INSTR_NULL];}
@@ -412,13 +454,13 @@ includeExpr
 		}
 	|	^(INCLUDE_REGION ID)		{
 									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.text];
+										[Compiler defineBlankRegion:outermostImpl name:$ID.token.text];
 									//impl.dump();
 									[self emit2:$INCLUDE_REGION opcode:Bytecode.INSTR_NEW s:impl.name arg2:0];
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
 									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.text];
+										[Compiler defineBlankRegion:outermostImpl name:$ID.token];
 									//impl.dump();
 									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:impl.name arg2:0];
 									}
@@ -428,10 +470,12 @@ includeExpr
 primary
 	:	ID				{[self refAttr:$ID];}
 	|	STRING			{[self emit1:$STRING opcode:Bytecode.INSTR_LOAD_STR s:[Misc strip:$STRING.text n:1]];}	
+	|	T_TRUE			{[self emit:$T_TRUE opcode:Bytecode.INSTR_TRUE];}
+	|	T_FALSE			{[self emit:$T_FALSE opcode:Bytecode.INSTR_FALSE];}
 	|	subtemplate		// push a subtemplate but ignore args since we can't pass any to it here
 		                {[self emit2:$start opcode:Bytecode.INSTR_NEW s:$subtemplate.name arg2:0];}
 	|	list
-	|	^(	INCLUDE_IND	
+	|	^(	INCLUDE_IND
 			expr 		{[self emit:$INCLUDE_IND opcode:Bytecode.INSTR_TOSTR];}
 			args		{[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:$args.n];}
 		 )
@@ -440,17 +484,17 @@ primary
 
 arg : expr ;
 
-args returns [NSInteger n=0, BOOL namedArgs=false]
+args returns [NSInteger n=0, BOOL namedArgs=NO]
 	:	( arg {$n++;} )+
-	|	{[self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=true;}
+	|	{[self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=YES;}
 		(	^(eq='=' ID expr)
-			{$n++; [self emit1:$eq opcode:Bytecode.INSTR_STORE_ARG s:[self defineString:$ID.text]];}
+			{$n++; [self emit1:$eq opcode:Bytecode.INSTR_STORE_ARG arg:[self defineString:$ID.text]];}
 		)+
 	|
  	;
 
 list:	{[self emit:Bytecode.INSTR_LIST];}
-		^(LIST (listElement {[self emit:$listElement.start opcode:Bytecode.INSTR_ADD];})* ) 
+		^(LIST (listElement {[self emit:$listElement.start opcode:Bytecode.INSTR_ADD];})* )
 	;
 
-listElement : expr | A_NULL {[self emit:$A_NULL opcode:Bytecode.INSTR_NULL];} ;
+listElement : expr | TNULL {[self emit:$TNULL opcode:Bytecode.INSTR_NULL];} ;

@@ -1,5 +1,33 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "ArrayIterator.h"
 #import "Misc.h"
 #import <FOUNDATION/Foundation.h>
 #import <objc/runtime.h>
@@ -7,21 +35,20 @@
 
 @implementation Misc
 
-static NSString * const newline = @"\n";
+static NSString *const newline = @"\n";
 
 + (NSString *) newline
 {
     return newline;
 }
 
-+ (NSString *) join:(NSEnumerator *)iter separator:(NSString *)separator
++ (NSString *) join:(ArrayIterator *)iter separator:(NSString *)separator
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
-    id obj;
-    obj = [iter nextObject];
-    while (obj) {
+    NSString *obj;
+    while ( (obj = [iter nextObject]) != nil ) {
         [buf appendString:obj];
-        if (obj = [iter nextObject]) {
+        if ([iter hasNext]) {
             [buf appendString:separator];
         }
     };
@@ -30,7 +57,7 @@ static NSString * const newline = @"\n";
 
 + (NSString *) strip:(NSString *)s n:(NSInteger)n
 {
-    return [s substringFromIndex:n];
+    return [s substringWithRange:NSMakeRange(n, [s length]-(2*n))];
 }
 
 + (NSString *) trimOneStartingNewline:(NSString *)s
@@ -51,10 +78,40 @@ static NSString * const newline = @"\n";
     return s;
 }
 
+/**
+ * Given, say, file:/tmp/test.jar!/org/foo/templates/main.stg
+ * convert to file:/tmp/test.jar!/org/foo/templates
+ */
++ (NSString *) stripLastPathElement:(NSString *)f
+{
+    NSRange r;
+    r = [f rangeOfString:@"/" options:NSBackwardsSearch];
+    if (r.location == NSNotFound) 
+        return f;
+    return [f substringWithRange:NSMakeRange(0, r.location)];
+}
+
 + (NSString *) getFileNameNoSuffix:(NSString *)f
 {
-    return [f pathExtension];
+    if (f == nil)
+        return nil;
+    f = [self getFileName:f];
+    NSRange r;
+    r = [f rangeOfString:@"." options:NSBackwardsSearch];
+    if (r.location == NSNotFound) 
+        return f;
+    return [f substringWithRange:NSMakeRange(0, r.location)];
 }
+
+#ifdef DONTUSEYET
++ (NSString *) getFileName:(NSString *)fullFileName
+{
+    if (fullFileName == nil)
+        return nil;
+    NSString *f = [fullFileName lastPathComponent];
+    return f;
+}
+#endif
 
 + (NSString *) getFileName:(NSString *)fullFileName
 {
@@ -64,7 +121,8 @@ static NSString * const newline = @"\n";
     return [f filename];
 }
 
-+ (NSString *) getPrefix:(NSString *)name {
++ (NSString *) getPrefix:(NSString *)name
+{
     if (name == nil)
         return nil;
     name = [name stringByDeletingLastPathComponent];
@@ -82,9 +140,18 @@ static NSString * const newline = @"\n";
 }
 
 
-/**
- * Given index into string, compute the line and char position in line
- */
++ (BOOL) urlExists:(NSURL *)url
+{
+    @try {
+		NSInputStream *is = [NSInputStream inputStreamWithURL:url];
+		return [is hasBytesAvailable];
+	}
+	@catch (IOException *ioe) {
+		return NO;
+	}
+}
+
+/** Given index into string, compute the line and char position in line */
 + (Coordinate *) getLineCharPosition:(NSString *)s index:(NSInteger)index
 {
     NSInteger line = 1;
@@ -105,7 +172,6 @@ static NSString * const newline = @"\n";
 }
 
 #pragma mark error fix accessField
-//#ifdef DONTUSEYET
 + (id) accessField:(Ivar)f obj:(id)obj value:(id)value
 {
     
@@ -115,34 +181,29 @@ static NSString * const newline = @"\n";
     }
     @catch (ANTLRRuntimeException *se) {
     }
-    //  value = [f get:obj];
-    //    f = object_getInstanceVariable(id obj, const char *name, &value);
-    value = object_getIvar(obj, f);
-    return value;
+    return object_getIvar(obj, f);
 }
-//#endif
 
-+ (id) invokeMethod:(Method *)m obj:(id)obj value:(id)value
++ (id) invokeMethod:(SEL)m obj:(id)obj value:(id)value
 {
     
     @try {
-//        [m setAccessible:YES];
+        value = [obj performSelector:m];
+        //        [m setAccessible:YES];
         ;
     }
     @catch (ANTLRRuntimeException *se) {
     }
 #pragma mark error
-    // value = [m invoke:obj obj:(NSArray *)nil]; // this is a call to Java -- deal with it
     return value;
 }
 
-+ (Method *) getMethod:(id)c methodName:(NSString *)methodName
++ (SEL) getMethod:(NSString *)methodName
 {
-    Method * m;
+    SEL m;
     
     @try {
-        m = [c getMethod:methodName methodName:(NSString *)nil];
-//        object_getInstanceVariable(c, [methodName cStringUsingEncoding:NSASCIIStringEncoding], void **outValue)
+        m = NSSelectorFromString(methodName);
     }
     @catch (STNoSuchMethodException *nsme) {
         m = nil;

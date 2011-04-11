@@ -1,10 +1,36 @@
-//#import "Token.h"
-#import "ST.h"
-#import "ModelAdaptor.h"
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#import <ANTLR/ANTLR.h>
+#import <Cocoa/Cocoa.h>
 #import "ErrorType.h"
-#import "PrintWriter.h"
-#import "StringWriter.h"
-#import "ErrorType.h"
+#import "STToken.h"
+
+@class ST;
 
 /**
  * Upon error, ST creates an STMessage or subclass instance and notifies
@@ -28,18 +54,10 @@
   NSException *cause;
 }
 
-@property (retain, getter=getWho, setter=setWho:) ST *who;
-@property (assign, getter=getError, setter=setError:) ErrorTypeEnum error;
-@property (retain, getter=getArg, setter=setArg:) id arg;
-@property (retain, getter=getArg2, setter=setArg2:) id arg2;
-@property (retain, getter=getArg3, setter=setArg3:) id arg3;
-@property (retain, getter=getCause, setter=setCause:) NSException *cause;
-
-+ (id) newMessage:(ErrorTypeEnum)anError;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
-+ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(ANTLRCommonToken *)where  arg:(id)arg;
++ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where  arg:(id)arg;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
 
@@ -47,8 +65,17 @@
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(ANTLRCommonToken *)where arg:(id)arg;
+- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where arg:(id)arg;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
 - (NSString *) description;
+- (NSString *) toString;
+
+@property (retain) ST *who;
+@property (assign) ErrorTypeEnum error;
+@property (retain) id arg;
+@property (retain) id arg2;
+@property (retain) id arg3;
+@property (retain) NSException *cause;
+
 @end

@@ -1,5 +1,33 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
 #import "Compiler.h"
 #import "CodeGenerator.h"
 #import "ST.h"
@@ -8,80 +36,185 @@
 #import "Interpreter.h"
 #import "STException.h"
 #import "ErrorManager.h"
+#import "STLexer.h"
 #import "STParser.h"
+#import "AMutableArray.h"
 
 @implementation Compiler_Anon1
 
-- (id) init {
-    if (self = [super init]) {
-        [self setObject:@"anchor" forKey:[NSNumber numberWithInteger:ANCHOR]];
-        [self setObject:@"format" forKey:[NSNumber numberWithInteger:FORMAT]];
-        [self setObject:@"null" forKey:[NSNumber numberWithInteger:_NULL]];
-        [self setObject:@"separator" forKey:[NSNumber numberWithInteger:SEPARATOR]];
-        [self setObject:@"wrap" forKey:[NSNumber numberWithInteger:WRAP]];
++ (id) newCompiler_Anon1
+{
+    return [[[Compiler_Anon1 alloc] init] retain];
+}
+
+- (id) init
+{
+    if ( (self=[super init]) != nil ) {
+        dict = [[NSMutableDictionary dictionaryWithCapacity:16] retain];
+        [dict setObject:[NSString stringWithFormat:@"%d", ANCHOR] forKey:@"anchor"];
+        [dict setObject:[NSString stringWithFormat:@"%d", FORMAT] forKey:@"format"];
+        [dict setObject:[NSString stringWithFormat:@"%d", _NULL] forKey:@"null"];
+        [dict setObject:[NSString stringWithFormat:@"%d", SEPARATOR] forKey:@"separator"];
+        [dict setObject:[NSString stringWithFormat:@"%d", WRAP] forKey:@"wrap"];
     }
     return self;
 }
 
+- (id) getDict
+{
+    return dict;
+}
+
+- (id) objectForKey:(id)aKey
+{
+    return [dict objectForKey:aKey];
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey
+{
+    [dict setObject:anObject forKey:aKey];
+}
+
+- (NSInteger) count
+{
+    return [dict count];
+}
+
+@synthesize dict;
 @end
 
 @implementation Compiler_Anon2
 
-- (id) init {
-    if (self = [super init]) {
-        [self setObject:@"anchor" forKey:@"true"];
-        [self setObject:@"wrap" forKey:@"\n"];
++ (id) newCompiler_Anon2
+{
+    return [[[Compiler_Anon2 alloc] init] retain];
+}
+
+- (id) init
+{
+    if ( (self=[super init]) != nil ) {
+        dict = [[NSMutableDictionary dictionaryWithCapacity:16] retain];
+        [dict setObject:@"\"true\"" forKey:@"anchor"];
+        [dict setObject:@"\"\n\"" forKey:@"wrap"];
     }
     return self;
 }
 
+- (id) copyWithZone:(NSZone *)aZone
+{
+    Compiler_Anon2 *copy;
+    
+    copy = [[[self class] allocWithZone:aZone] init];
+    if ( dict ) {
+        [copy.dict release];
+        copy.dict = [dict copyWithZone:aZone];
+    }
+    return copy;
+}
+
+- (id) getDict
+{
+    return dict;
+}
+
+- (id) objectForKey:(id)aKey
+{
+    return [dict objectForKey:aKey];
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey
+{
+    [dict setObject:anObject forKey:aKey];
+}
+
+- (NSInteger) count
+{
+    return [dict count];
+}
+
+@synthesize dict;
 @end
 
 @implementation Compiler_Anon3
 
-- (id) init {
-    if (self = [super init]) {
-        [self setObject:@"first" forKey:[NSNumber numberWithShort:Bytecode.INSTR_FIRST]];
-        [self setObject:@"last" forKey:[NSNumber numberWithShort:Bytecode.INSTR_LAST]];
-        [self setObject:@"rest" forKey:[NSNumber numberWithShort:Bytecode.INSTR_REST]];
-        [self setObject:@"trunc" forKey:[NSNumber numberWithShort:Bytecode.INSTR_TRUNC]];
-        [self setObject:@"strip" forKey:[NSNumber numberWithShort:Bytecode.INSTR_STRIP]];
-        [self setObject:@"trim" forKey:[NSNumber numberWithShort:Bytecode.INSTR_TRIM]];
-        [self setObject:@"length" forKey:[NSNumber numberWithShort:Bytecode.INSTR_LENGTH]];
-        [self setObject:@"strlen" forKey:[NSNumber numberWithShort:Bytecode.INSTR_STRLEN]];
-        [self setObject:@"reverse" forKey:[NSNumber numberWithShort:Bytecode.INSTR_REVERSE]];
++ (id) newCompiler_Anon3
+{
+    return [[[Compiler_Anon3 alloc] init] retain];
+}
+
+- (id) init
+{
+    if ( (self=[super init]) != nil ) {
+        dict = [[NSMutableDictionary dictionaryWithCapacity:16] retain];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_FIRST]   forKey:@"first"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_LAST]    forKey:@"last"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_REST]    forKey:@"rest"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_TRUNC]   forKey:@"trunc"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_STRIP]   forKey:@"strip"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_TRIM]    forKey:@"trim"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_LENGTH]  forKey:@"length"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_STRLEN]  forKey:@"strlen"];
+        [dict setObject:[NSString stringWithFormat:@"%d", Bytecode.INSTR_REVERSE] forKey:@"reverse"];
     }
     return self;
 }
 
+- (id) copyWithZone:(NSZone *)aZone
+{
+    Compiler_Anon3 *copy;
+    
+    copy = [[[self class] allocWithZone:aZone] init];
+    if ( dict ) {
+        [copy.dict release];
+        copy.dict = [dict copyWithZone:aZone];
+    }
+    return copy;
+}
+
+- (id) getDict
+{
+    return dict;
+}
+
+- (short) instrForKey:(NSString *)aKey
+{
+    return (short)[(NSString *)[dict objectForKey:aKey] intValue];
+}
+
+- (void) setInstr:(short)anInstr forKey:(id)aKey
+{
+    [dict setObject:[NSString stringWithFormat:@"%d", anInstr] forKey:aKey];
+}
+
+- (NSInteger) count
+{
+    return [dict count];
+}
+
+@synthesize dict;
 @end
 
 @implementation Compiler
 
-static NSMutableDictionary *supportedOptions;
+static Compiler_Anon1 *supportedOptions;
 static NSInteger NUM_OPTIONS;
-static NSMutableDictionary *defaultOptionValues;
-static NSMutableDictionary *funcs;
+static Compiler_Anon2 *defaultOptionValues;
+static Compiler_Anon3 *funcs;
 /**
  * Name subtemplates _sub1, _sub2, ...
  */
-static NSInteger subtemplateCount;
-static NSString *SUBTEMPLATE_PREFIX;
-static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
+static NSInteger subtemplateCount = 0;
+static NSString *SUBTEMPLATE_PREFIX = @"_sub";
+//static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
 
-
-@synthesize delimiterStartChar;
-@synthesize delimiterStopChar;
-@synthesize errMgr;
+@synthesize group;
 
 + (void) initialize
 {
-    supportedOptions = [[Compiler_Anon1 alloc] init];
+    supportedOptions = [Compiler_Anon1 newCompiler_Anon1];
     NUM_OPTIONS = [supportedOptions count];
-    defaultOptionValues = [[Compiler_Anon2 alloc] init];
-    funcs = [[Compiler_Anon3 alloc] init];
-    subtemplateCount = 0;
-    SUBTEMPLATE_PREFIX = @"_sub";
+    defaultOptionValues = [Compiler_Anon2 newCompiler_Anon2];
+    funcs = [Compiler_Anon3 newCompiler_Anon3];
 }
 
 + (NSString *) SUBTEMPLATE_PREFIX
@@ -91,8 +224,7 @@ static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
 
 + (NSString *) getNewSubtemplateName
 {
-    subtemplateCount++;
-    return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, subtemplateCount];
+    return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, ++subtemplateCount];
 }
 
 + (NSInteger) supportedOptions
@@ -100,7 +232,7 @@ static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
     return [supportedOptions count];
 }
 
-+ (NSMutableDictionary *) getSupportedOptions
++ (Compiler_Anon1 *) getSupportedOptions
 {
     return supportedOptions;
 }
@@ -110,12 +242,12 @@ static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
     return NUM_OPTIONS;
 }
 
-+ (NSMutableDictionary *) defaultOptionValues
++ (Compiler_Anon2 *) defaultOptionValues
 {
     return defaultOptionValues;
 }
 
-+ (NSMutableDictionary *) funcs
++ (Compiler_Anon3 *) funcs
 {
     return funcs;
 }
@@ -125,78 +257,32 @@ static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
     return subtemplateCount;
 }
 
-+ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl name:(NSString *)name {
-    NSString * outermostTemplateName = outermostImpl.name;
-    NSString * mangled = [STGroup getMangledRegionName:outermostTemplateName name:name];
-    CompiledST * blank = [[CompiledST alloc] init];
-    blank.isRegion = YES;
-    blank.regionDefType = IMPLICIT;
-    blank.name = mangled;
-    [outermostImpl addImplicitlyDefinedTemplate:blank];
-    return blank;
-}
-
-+ (NSString *) newSubtemplateName {
-    subtemplateCount++;
-    return [SUBTEMPLATE_PREFIX stringByAppendingFormat:@"%d", subtemplateCount];
-}
-
 + (Compiler *) newCompiler
 {
-    return [[Compiler alloc] init];
+    return [[[Compiler alloc] init] retain];
 }
 
-+ (Compiler *) newCompilerWithErrorManager:(ErrorManager *)anErrMgr
++ (Compiler *) newCompiler:(STGroup *)aSTGroup
 {
-    return [[Compiler alloc] initWithErrorManager:anErrMgr];
-}
-
-+ (Compiler *) newCompiler:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
-{
-    return [[Compiler alloc] init:aStartChar delimiterStopChar:aStopChar];
-}
-
-+ (Compiler *) newCompilerWithErrorManager:(ErrorManager *)anErrMgr delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
-{
-    return [[Compiler alloc] initWithErrorManager:anErrMgr delimiterStartChar:aStartChar delimiterStopChar:aStopChar];
+    return [[[Compiler alloc] initWithSTGroup:aSTGroup] retain];
 }
 
 - (id) init
 {
-    if (self = [super init]) {
-        errMgr = STGroup.DEFAULT_ERR_MGR;
-        delimiterStartChar = '<';
-        delimiterStopChar = '>';
+    self=[super init];
+    if ( self != nil ) {
+        group = STGroup.defaultGroup;
+        subtemplateCount = 0;
     }
     return self;
 }
 
-- (id) initWithErrorManager:(ErrorManager *)anErrMgr
+- (id) initWithSTGroup:(STGroup *)aSTGroup
 {
-    if (self = [super init]) {
-        errMgr = anErrMgr;
-        delimiterStartChar = '<';
-        delimiterStopChar = '>';
-    }
-    return self;
-}
-
-- (id) init:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
-{
-    if (self = [super init]) {
-        errMgr = STGroup.DEFAULT_ERR_MGR;
-        delimiterStartChar = aStartChar;
-        delimiterStopChar = aStopChar;
-    }
-    return self;
-}
-
-- (id) initWithErrorManager:(ErrorManager *)anErrMgr delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
-{
-    if (self = [super init]) {
-        errMgr = anErrMgr;
-        delimiterStartChar = aStartChar;
-        delimiterStopChar = aStopChar;
+    self=[super init];
+    if ( self != nil ) {
+        group = aSTGroup;
+        subtemplateCount = 0;
     }
     return self;
 }
@@ -212,89 +298,111 @@ static NSInteger TEMPLATE_INITIAL_CODE_SIZE = 15;
     return code;
 }
 
-
 /**
  * Compile full template with unknown formal args.
  */
 - (CompiledST *) compile:(NSString *)name template:(NSString *)template
 {
-    CompiledST * code = [self compile:nil name:name args:nil template:template templateToken:nil];
+    CompiledST *code = [self compile:nil name:name args:nil template:template templateToken:nil];
     code.hasFormalArgs = NO;
     return code;
 }
 
-
-/**
- * Compile full template with respect to a list of formal args.
- */
-- (CompiledST *) compile:(NSString *)srcName name:(NSString *)name args:(NSMutableArray *)args template:(NSString *)template templateToken:(ANTLRCommonToken *)aTemplateToken
+/** Compile full template with respect to a list of formal args. */
+- (CompiledST *) compile:(NSString *)srcName
+                    name:(NSString *)name
+                args:(AMutableArray *)args
+                template:(NSString *)template
+           templateToken:(STToken *)aTemplateToken
 {
-    ANTLRStringStream *is = [[ANTLRStringStream alloc] initWithString:template];
+    FormalArgument *a;
+    if ( [args count] > 0 ) {
+        a = [args objectAtIndex:0];
+        [a retain];
+    }
+    ANTLRStringStream *is = [ANTLRStringStream newANTLRStringStream:template];
     is.name = (srcName != nil) ? srcName : name;
-    STLexer *lexer = [STLexer newSTLexer:errMgr input:is templateToken:aTemplateToken delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
+    STLexer *lexer = [STLexer newSTLexer:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
     ANTLRCommonTokenStream *tokens = [ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer];
-    STParser *p = [[STParser alloc] init:tokens error:errMgr token:aTemplateToken];
+    STParser *p = [STParser newSTParser:tokens error:group.errMgr token:aTemplateToken];
     STParser_templateAndEOF_return *r = nil;
     
     @try {
         r = [p templateAndEOF];
     }
-    @catch (ANTLRRecognitionException * re) {
+    @catch (ANTLRRecognitionException *re) {
         [self reportMessageAndThrowSTException:tokens templateToken:aTemplateToken aParser:p re:re];
         return nil;
     }
-    if ([p getNumberOfSyntaxErrors] > 0 || [r getTree] == nil) {
-        CompiledST * impl = [[CompiledST alloc] init];
+    if ([p getNumberOfSyntaxErrors] > 0 || r == nil || r.tree == nil) {
+        CompiledST *impl = [CompiledST newCompiledST];
         [impl defineFormalArgs:args];
         return impl;
     }
-    ANTLRCommonTreeNodeStream * nodes = [ANTLRCommonTreeNodeStream newANTLRCommonTreeNodeStream:[r getTree]];
+    ANTLRCommonTreeNodeStream *nodes = [ANTLRCommonTreeNodeStream newANTLRCommonTreeNodeStream:r.tree];
     [nodes setTokenStream:tokens];
-    CodeGenerator *gen = [CodeGenerator newCodeGenerator:nodes errMgr:errMgr name:name template:template token:aTemplateToken];
-    CompiledST * impl = nil;
+    CodeGenerator *gen = [CodeGenerator newCodeGenerator:nodes errMgr:group.errMgr name:name template:template token:aTemplateToken];
+    CompiledST *impl = nil;
     
     @try {
         impl = [gen template:name arg1:args];
+		impl.nativeGroup = group;
+		impl.template = template;
         if (STGroup.debug) {
-            impl.ast = (ANTLRCommonTree *)[r getTree];
+            impl.ast = (ANTLRCommonTree *)r.tree;
             [impl.ast setUnknownTokenBoundaries];
             impl.tokens = tokens;
         }
     }
     @catch (ANTLRRecognitionException *re) {
-        [errMgr internalError:nil msg:@"bad tree structure" e:re];
+        [group.errMgr internalError:nil msg:@"bad tree structure" e:re];
     }
+    [a release];
     return impl;
 }
 
-- (void) reportMessageAndThrowSTException:(ANTLRCommonTokenStream *)tokens templateToken:(ANTLRCommonToken *)templateToken aParser:(ANTLRParser *)aParser re:(ANTLRRecognitionException *)re
++ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl name:(NSString *)name
+{
+    NSString *outermostTemplateName = outermostImpl.name;
+    NSString *mangled = [STGroup getMangledRegionName:outermostTemplateName name:name];
+    CompiledST *blank = [CompiledST newCompiledST];
+    blank.isRegion = YES;
+    blank.regionDefType = IMPLICIT;
+    blank.name = mangled;
+    [outermostImpl addImplicitlyDefinedTemplate:blank];
+    return blank;
+}
+
+- (void) reportMessageAndThrowSTException:(ANTLRCommonTokenStream *)tokens
+                            templateToken:(STToken *)templateToken
+                                  aParser:(ANTLRParser *)aParser
+                                       re:(ANTLRRecognitionException *)re
 {
     NSString *msg;
     if ([re.token getType] == STLexer.EOF_TYPE) {
         msg = @"premature EOF";
-        [errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
+        [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
     else if ([re isKindOfClass:[ANTLRNoViableAltException class]]) {
-        msg = [[@"'" stringByAppendingString:[re.token getText]] stringByAppendingString:@"' came as a complete surprise to me"];
-        [errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
+        msg = [NSString stringWithFormat:@"'%@' came as a complete surprise to me", re.token.text];
+        [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
     else if ([tokens getIndex] == 0) {
-        msg = [[@"this doesn't look like a template: \"" stringByAppendingString:[tokens toString]] stringByAppendingString:@"\""];
-        [errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
+        msg = [NSString stringWithFormat:@"this doesn't look like a template: \"%@\"", [tokens toString]];
+        [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
-    else if ([tokens LA:1] == LDELIM) {
+    else if ([tokens LA:1] == STLexer.LDELIM) {
         msg = @"doesn't look like an expression";
-        [errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
+        [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
     else {
         msg = [aParser getErrorMessage:re TokenNames:[aParser getTokenNames]];
-        [errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
+        [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
     @throw [STException newException:msg];
 }
 
 - (void) dealloc {
-    [errMgr release];
     [super dealloc];
 }
 

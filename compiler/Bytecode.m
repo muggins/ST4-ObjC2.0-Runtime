@@ -1,3 +1,30 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import "Bytecode.h"
 
@@ -39,22 +66,23 @@ NSString *OperandTypeDescription(NSInteger value)
 
 + (id) newInstruction:(NSString *)aName
 {
-    return [[Instruction alloc] init:aName];
+    return [[[Instruction alloc] init:aName] retain];
 }
 
 + (id) newInstruction:(NSString *)aName a:(OperandType)a
 {
-    return [[Instruction alloc] init:aName a:a];
+    return [[[Instruction alloc] init:aName a:a] retain];
 }
 
 + (id) newInstruction:(NSString *)aName a:(OperandType)a b:(OperandType)b
 {
-    return [[Instruction alloc] init:aName a:a b:b];
+    return [[[Instruction alloc] init:aName a:a b:b] retain];
 }
 
 - (id) init:(NSString *)aName
 {
-    if (self = [self init:aName a:T_NONE b:T_NONE]) {
+    self = [self init:aName a:T_NONE b:T_NONE];
+    if ( self != nil ) {
         nopnds = 0;
     }
     return self;
@@ -62,7 +90,8 @@ NSString *OperandTypeDescription(NSInteger value)
 
 - (id) init:(NSString *)aName a:(OperandType)a
 {
-    if (self = [self init:aName a:a b:T_NONE]) {
+    self = [self init:aName a:a b:T_NONE];
+    if ( self != nil ) {
         nopnds = 1;
     }
     return self;
@@ -70,11 +99,12 @@ NSString *OperandTypeDescription(NSInteger value)
 
 - (id) init:(NSString *)aName a:(OperandType)a b:(OperandType)b
 {
-    if (self = [super init]) {
+    self=[super init];
+    if ( self != nil ) {
         name = aName;
         type[0]=a;
         type[1]=b;
-        nopnds = MAX_OPNDS;
+        nopnds = DEF_MAX_OPNDS;
     }
     return self;
 }
@@ -87,40 +117,25 @@ NSString *OperandTypeDescription(NSInteger value)
 
 // getters and setters
 
-- (NSString *)getName
-{
-    return name;
-}
-
-- (void)setName:(NSString *)aName
-{
-    name = aName;
-}
-
 - (OperandType)getType:(NSInteger)idx
 {
-    if (idx >= 0 && idx < MAX_OPNDS)
+    if (idx >= 0 && idx < DEF_MAX_OPNDS)
         return type[idx];
     return -1;
 }
 
 - (void)setType:(OperandType)aType idx:(NSInteger)idx
 {
-    if (idx >= 0 && idx < MAX_OPNDS)
+    if (idx >= 0 && idx < DEF_MAX_OPNDS)
         type[idx] = aType;
     else
         // @throw error here
         return;
 }
 
-- (NSInteger)getNopnds
-{
-    return nopnds;
-}
-
 - (void)setNopnds:(NSInteger)cnt
 {
-    if (cnt >= 0 && cnt < MAX_OPNDS)
+    if (cnt >= 0 && cnt < DEF_MAX_OPNDS)
         nopnds = cnt;
     else
         // @throw error here
@@ -130,50 +145,61 @@ NSString *OperandTypeDescription(NSInteger value)
 @end
 
 @implementation Bytecode
-static NSInteger OPND_SIZE_IN_BYTES = 2;
-static short const INSTR_LOAD_STR = 1;
-static short const INSTR_LOAD_ATTR = 2;
-static short const INSTR_LOAD_LOCAL = 3;
-static short const INSTR_LOAD_PROP = 4;
-static short const INSTR_LOAD_PROP_IND = 5;
-static short const INSTR_STORE_OPTION = 6;
-static short const INSTR_STORE_ARG = 7;
-static short const INSTR_NEW = 8;
-static short const INSTR_NEW_IND = 9;
-static short const INSTR_NEW_BOX_ARGS = 10;
-static short const INSTR_SUPER_NEW = 11;
-static short const INSTR_SUPER_NEW_BOX_ARGS = 12;
-static short const INSTR_WRITE = 13;
-static short const INSTR_WRITE_OPT = 14;
-static short const INSTR_MAP = 15;
-static short const INSTR_ROT_MAP = 16;
-static short const INSTR_ZIP_MAP = 17;
-static short const INSTR_BR = 18;
-static short const INSTR_BRF = 19;
-static short const INSTR_OPTIONS = 20;
-static short const INSTR_ARGS = 21;
-static short const INSTR_LIST = 22;
-static short const INSTR_ADD = 23;
-static short const INSTR_TOSTR = 24;
-static short const INSTR_FIRST = 25;
-static short const INSTR_LAST = 26;
-static short const INSTR_REST = 27;
-static short const INSTR_TRUNC = 28;
-static short const INSTR_STRIP = 29;
-static short const INSTR_TRIM = 30;
-static short const INSTR_LENGTH = 31;
-static short const INSTR_STRLEN = 32;
-static short const INSTR_REVERSE = 33;
-static short const INSTR_NOT = 34;
-static short const INSTR_OR = 35;
-static short const INSTR_AND = 36;
-static short const INSTR_INDENT = 37;
-static short const INSTR_DEDENT = 38;
-static short const INSTR_NEWLINE = 39;
-static short const INSTR_NOOP = 40;
-static short const INSTR_POP = 41;
-static short const INSTR_NULL = 42;
-#define INSTR_ARRAY_SIZE 44
+static NSInteger MAX_OPNDS                  = DEF_MAX_OPNDS;
+static NSInteger OPND_SIZE_IN_BYTES         = 2;
+static short const INSTR_LOAD_STR           = 1;
+static short const INSTR_LOAD_ATTR          = 2;
+static short const INSTR_LOAD_LOCAL         = 3; // load stuff like it, i, i0
+static short const INSTR_LOAD_PROP          = 4;
+static short const INSTR_LOAD_PROP_IND      = 5;
+static short const INSTR_STORE_OPTION       = 6;
+static short const INSTR_STORE_ARG          = 7;
+static short const INSTR_NEW                = 8;  // create new template instance
+static short const INSTR_NEW_IND            = 9;  // create new instance using value on stack
+static short const INSTR_NEW_BOX_ARGS       = 10; // create new instance using args in Map on stack
+static short const INSTR_SUPER_NEW          = 11; // create new instance using value on stack
+static short const INSTR_SUPER_NEW_BOX_ARGS = 12; // create new instance using args in Map on stack
+static short const INSTR_WRITE              = 13;
+static short const INSTR_WRITE_OPT          = 14;
+static short const INSTR_MAP                = 15; // <a:b()>, <a:b():c()>, <a:{...}>
+static short const INSTR_ROT_MAP            = 16; // <a:b(),c()>
+static short const INSTR_ZIP_MAP            = 17; // <names,phones:{n,p | ...}>
+static short const INSTR_BR                 = 18;
+static short const INSTR_BRF                = 19; // push options map
+static short const INSTR_OPTIONS            = 20; // push args map
+static short const INSTR_ARGS               = 21;
+static short const INSTR_LIST               = 22;
+static short const INSTR_ADD                = 23;
+static short const INSTR_TOSTR              = 24;
+// Predefined functions
+static short const INSTR_FIRST              = 25;
+static short const INSTR_LAST               = 26;
+static short const INSTR_REST               = 27;
+static short const INSTR_TRUNC              = 28;
+static short const INSTR_STRIP              = 29;
+static short const INSTR_TRIM               = 30;
+static short const INSTR_LENGTH             = 31;
+static short const INSTR_STRLEN             = 32;
+static short const INSTR_REVERSE            = 33;
+static short const INSTR_NOT                = 34;
+static short const INSTR_OR                 = 35;
+static short const INSTR_AND                = 36;
+static short const INSTR_INDENT             = 37;
+static short const INSTR_DEDENT             = 38;
+static short const INSTR_NEWLINE            = 39;
+static short const INSTR_NOOP               = 40; // do nothing
+static short const INSTR_POP                = 41;
+static short const INSTR_NULL               = 42; // push null value
+static short const INSTR_TRUE               = 43; // push true value
+static short const INSTR_FALSE              = 44;
+
+// combined instructions
+
+static const short INSTR_WRITE_STR          = 45; // load_str n, write
+static const short INSTR_WRITE_LOCAL        = 46; // load_local n, write
+
+static const short MAX_BYTECODE             = 46;
+#define INSTR_ARRAY_SIZE 48
 
 /**
  * Used for assembly/disassembly; describes instruction set
@@ -225,8 +251,22 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
     instructions[INSTR_NOOP]                = [Instruction newInstruction:@"noop"];
     instructions[INSTR_POP]                 = [Instruction newInstruction:@"pop"];
     instructions[INSTR_NULL]                = [Instruction newInstruction:@"null"];
-    instructions[INSTR_ARRAY_SIZE-1]        = nil;
+    instructions[INSTR_POP]                 = [Instruction newInstruction:@"true"];
+    instructions[INSTR_FALSE]               = [Instruction newInstruction:@"false"];
+    instructions[INSTR_WRITE_STR]           = [Instruction newInstruction:@"write_str" a:T_STRING];
+    instructions[INSTR_WRITE_LOCAL]         = [Instruction newInstruction:@"write_local" a:T_INT];
+    instructions[MAX_BYTECODE+1]            = nil;
     
+}
+
++ (OperandType)T_NONE { return T_NONE; }
++ (OperandType)T_STRING { return T_STRING; }
++ (OperandType)T_ADDR { return T_ADDR; }
++ (OperandType)T_INT { return T_INT; }
+
++ (NSInteger)MAX_OPNDS
+{
+    return MAX_OPNDS;
 }
 
 + (short) INSTR_LOAD_STR
@@ -437,6 +477,31 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
 + (short) INSTR_NULL
 {
     return INSTR_NULL;
+}
+
++ (short) INSTR_TRUE;
+{
+    return INSTR_TRUE;
+}
+
++ (short) INSTR_FALSE;
+{
+    return INSTR_FALSE;
+}
+
++ (short) INSTR_WRITE_STR;
+{
+    return INSTR_WRITE_STR;
+}
+
++ (short) INSTR_WRITE_LOCAL;
+{
+    return INSTR_WRITE_LOCAL;
+}
+
++ (short) MAX_BYTECODE;
+{
+    return MAX_BYTECODE;
 }
 
 + (NSInteger)OPND_SIZE_IN_BYTES

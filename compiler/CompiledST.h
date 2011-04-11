@@ -1,3 +1,30 @@
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
 #import "ST.h"
@@ -15,131 +42,99 @@
  */
 
 @interface CompiledST : NSObject {
-  NSString *name;
-
-  /**
-   * The original, immutable pattern (not really used again after
-   * initial "compilation"). Useful for debugging.  Even for
-   * subtemplates, this is entire overall template.
- */
-  NSString *template;
-
-  /**
-   * Overall token stream for template (debug only)
- */
-  ANTLRCommonTokenStream *tokens;
-
-  /**
-   * How do we interpret syntax of template? (debug only)
- */
-  ANTLRCommonTree *ast;
-
-  /**
-   * Must be non null map if !noFormalArgs
- */
-  NSMutableDictionary *formalArguments;
-  BOOL hasFormalArgs;
-
-  /**
-   * A list of all regions and subtemplates
- */
-  NSMutableArray *implicitlyDefinedTemplates;
-
-  /**
-   * The group that physically defines this ST definition.  We use it to initiate
-   * interpretation via ST.toString().  From there, it becomes field 'group'
-   * in interpreter and is fixed until rendering completes.
- */
-  STGroup *nativeGroup;
-
-  /**
-   * Does this template come from a <@region>...<@end> embedded in
-   * another template?
- */
-  BOOL isRegion;
-
-  /**
-   * If someone refs <@r()> in template t, an implicit
-   * 
-   * @t.r() ::= ""
-   * 
-   * is defined, but you can overwrite this def by defining your
-   * own.  We need to prevent more than one manual def though.  Between
-   * this var and isEmbeddedRegion we can determine these cases.
- */
-  RegionTypeEnum regionDefType;
-  BOOL isAnonSubtemplate;
-  NSMutableArray *strings;
-  MemBuffer *instrs;
-  NSInteger codeSize;
-  NSMutableArray *sourceMap;
+    NSString *name;
+    
+    /**
+     * The original, immutable pattern (not really used again after
+     * initial "compilation"). Useful for debugging.  Even for
+     * subtemplates, this is entire overall template.
+     */
+    NSString *template;
+    
+    /** The token that begins template definition; could be <@r> of region. */
+    STToken *templateDefStartToken;
+    /**
+     * Overall token stream for template (debug only)
+     */
+    ANTLRCommonTokenStream *tokens;
+    
+    /**
+     * How do we interpret syntax of template? (debug only)
+     */
+    ANTLRCommonTree *ast;
+    
+    /**
+     * Must be non null map if !noFormalArgs
+     */
+    NSMutableDictionary *formalArguments;
+    BOOL hasFormalArgs;
+    NSInteger numberOfArgsWithDefaultValues;
+    /**
+     * A list of all regions and subtemplates
+     */
+    AMutableArray *implicitlyDefinedTemplates;
+    
+    /**
+     * The group that physically defines this ST definition.  We use it to initiate
+     * interpretation via ST.toString().  From there, it becomes field 'group'
+     * in interpreter and is fixed until rendering completes.
+     */
+    STGroup *nativeGroup;
+    
+    /**
+     * Does this template come from a <@region>...<@end> embedded in
+     * another template?
+     */
+    BOOL isRegion;
+    
+    /**
+     * If someone refs <@r()> in template t, an implicit
+     * 
+     * @t.r() ::= ""
+     * 
+     * is defined, but you can overwrite this def by defining your
+     * own.  We need to prevent more than one manual def though.  Between
+     * this var and isEmbeddedRegion we can determine these cases.
+     */
+    RegionTypeEnum regionDefType;
+    BOOL isAnonSubtemplate;
+    AMutableArray *strings;
+    MemBuffer *instrs;
+    NSInteger codeSize;
+    AMutableArray *sourceMap;
 }
 
-@property (retain, getter=getName, setter=setName:) NSString *name;
-@property (retain, getter=getTemplate, setter=setTemplate:) NSString *template;
-@property (retain, getter=getTokens, setter=setTokens:) ANTLRCommonTokenStream *tokens;
-@property (retain, getter=getAst, setter=setAst:) ANTLRCommonTree *ast;
-@property (retain, getter=getFormalArguments, setter=setFormalArguments:) NSMutableDictionary *formalArguments;
-@property (assign, getter=getHasFormalArgs, setter=setHasFormalArgs:) BOOL hasFormalArgs;
-@property (retain, getter=getImplicitlyDefinedTemplates, setter=setImplicitlyDefinedTemplates:) NSMutableArray *implicitlyDefinedTemplates;
-@property (retain, getter=getNativeGroup, setter=setNativeGroup:) STGroup *nativeGroup;
-@property (assign, getter=getIsRegion, setter=setIsRegion:) BOOL isRegion;
-//@property(nonatomic, readonly) NSInteger numberOfArgsWithDefaultValues;
-//@property(nonatomic, retain, readonly) NSString *templateSource;
-//@property(nonatomic, retain, readonly) Interval *templateRange;
-@property (assign, getter=getRegionDefType, setter=setRegionDefType:) RegionTypeEnum regionDefType;
-@property (assign, getter=getIsAnonSubtemplate, setter=setIsAnonSubtemplate:) BOOL isAnonSubtemplate;
-@property (retain, getter=getStrings, setter=setStrings:) NSMutableArray *strings;
-@property (retain, getter=getInstrs, setter=setInstrs:) MemBuffer *instrs;
-@property (assign, getter=getCodeSize, setter=setCodeSize:) NSInteger codeSize;
-@property (retain, getter=getSourceMap, setter=setSourceMap:) NSMutableArray *sourceMap;
+@property (retain) NSString *name;
+@property (retain) NSString *template;
+@property (retain) STToken *templateDefStartToken;
+@property (retain) ANTLRCommonTokenStream *tokens;
+@property (retain) ANTLRCommonTree *ast;
+@property (retain) NSMutableDictionary *formalArguments;
+@property (assign) BOOL hasFormalArgs;
+@property (assign) NSInteger numberOfArgsWithDefaultValues;
+@property (retain) AMutableArray *implicitlyDefinedTemplates;
+@property (retain, getter=getNativeGroup) STGroup *nativeGroup;
+@property (assign) BOOL isRegion;
+@property (assign) RegionTypeEnum regionDefType;
+@property (assign) BOOL isAnonSubtemplate;
+@property (retain) AMutableArray *strings;
+@property (retain) MemBuffer *instrs;
+@property (assign) NSInteger codeSize;
+@property (retain) AMutableArray *sourceMap;
 
 + (id) newCompiledST;
 - (id) init;
+- (id) copyWithZone:(NSZone *)aZone;
 - (void) addImplicitlyDefinedTemplate:(CompiledST *)sub;
 - (void) defineArgDefaultValueTemplates:(STGroup *)group;
-- (void) defineFormalArgs:(NSMutableArray *)args;
+- (void) defineFormalArgs:(AMutableArray *)args;
 - (void) addArg:(FormalArgument *)a;
 - (void) defineImplicitlyDefinedTemplates:(STGroup *)group;
-- (NSString *) templateSource;
-- (Interval *) templateRange;
-- (MemBuffer *) instrs;
+- (NSString *) getTemplateSource;
+- (Interval *) getTemplateRange;
+- (NSString *) dis_instrs;
 - (void) dump;
 - (NSString *) disasm;
 
 // getters and setters
-- (NSString *) getName;
-- (void) setName:(NSString *)name;
-- (NSString *) getTemplate;
-- (void) setTemplate:(NSString *)template;
-- (ANTLRCommonTokenStream *) getTokens;
-- (void) setTokens:(ANTLRCommonTokenStream *)tokens;
-- (ANTLRCommonTree *) getAst;
-- (void) setAst:(ANTLRCommonTree *)ast;
-- (NSMutableDictionary *) getFormalArguments;
-- (void) setFormalArguments:(NSMutableDictionary *)formalArguments;
-- (BOOL) getHasFormalArgs;
-- (void) setHasFormalArgs:(BOOL)hasFormalArgs;
-- (NSMutableArray *) getImplicitlyDefinedTemplates;
-- (void) setImplicitlyDefinedTemplates:(NSMutableArray *)implicitlyDefinedTemplates;
-- (STGroup *) getNativeGroup;
-- (void) setNativeGroup:(STGroup *)nativeGroup;
-- (BOOL) getIsRegion;
-- (void) setIsRegion:(BOOL)isRegion;
-- (NSInteger) getNumberOfArgsWithDefaultValues;
-//@property(nonatomic, readonly(NSInteger numberOfArgsWithDefaultValues;
-//@property(nonatomic, retain, readonly(NSString *templateSource;
-//@property(nonatomic, retain, readonly(Interval *templateRange;
-- (RegionTypeEnum) getRegionDefType;
-- (void) setRegionDefType:(RegionTypeEnum)regionDefType;
-- (BOOL) getIsAnonSubtemplate;
-- (void) setIsAnonSubtemplate:(BOOL)isAnonSubtemplate;
-- (NSMutableArray *) getStrings;
-- (void) setStrings:(NSMutableArray *)strings;
-- (MemBuffer *) getInstrs;
-- (void) setInstrs:(MemBuffer *)instrs;
-- (NSInteger) getCodeSize;
-- (void) setCodeSize:(NSInteger)codeSize;
-- (NSMutableArray *) getSourceMap;
-- (void) setSourceMap:(NSMutableArray *)sourceMap;
 @end
