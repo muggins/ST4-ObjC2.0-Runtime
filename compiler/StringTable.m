@@ -53,7 +53,7 @@
 
 - (AMutableArray *) toArray
 {
-    AMutableArray *a = [AMutableArray arrayWithCapacity:10];
+    AMutableArray *a = [AMutableArray arrayWithCapacity:5];
     NSInteger count = [table count];
     for (int idx = 0; idx < count; idx++) {
         [a addObject:@""];

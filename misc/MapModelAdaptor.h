@@ -28,10 +28,10 @@
 #import "ModelAdaptor.h"
 #import "ST.h"
 #import "STGroup.h"
-//#import "NSMutableDictionary.h"
+#import "Interpreter.h"
 
 @interface MapModelAdaptor : NSObject <ModelAdaptor> {
 }
 
-- (id) getProperty:(ST *)who obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
+- (id) getProperty:(Interpreter *)interp who:(ST *)who obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

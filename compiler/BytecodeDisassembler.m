@@ -84,9 +84,8 @@
 
 - (NSString *) disassemble
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:200];
     NSInteger i = 0;
-
     while (i < code.codeSize) {
         i = [self disassembleInstruction:buf ip:i];
         [buf appendString:@"\n"];
@@ -105,18 +104,16 @@
         @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
     }
     NSString *instrName = I.name;
-    [buf appendFormat:@"%04d:\t%-14@", ip, instrName];
+    [buf appendFormat:@"%04d:\t%-14$@", ip, instrName];
     ip++;
-    if (I.nopnds == 0) {
+    if ( I.nopnds == 0 ) {
         [buf appendString:@"  "];
         return ip;
     }
-    AMutableArray *operands = [AMutableArray arrayWithCapacity:16];
-
+    AMutableArray *operands = [[AMutableArray arrayWithCapacity:100] autorelease];
     for (NSInteger i = 0; i < I.nopnds; i++) {
         NSInteger opnd = [code.instrs shortAtIndex:ip];
         ip += Bytecode.OPND_SIZE_IN_BYTES;
-
         switch ([I getType:i]) {
         case T_STRING:
             [operands addObject:[self showConstPoolOperand:opnd]];
@@ -130,10 +127,9 @@
             break;
         }
     }
-
     for (NSInteger i = 0; i < [operands count]; i++) {
         NSString *s = [operands objectAtIndex:i];
-        if (i > 0)
+        if ( i > 0 )
             [buf appendString:@", "];
         [buf appendString:s];
     }
@@ -142,16 +138,16 @@
 
 - (NSString *) showConstPoolOperand:(NSInteger)poolIndex
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:100];
     [buf appendFormat:@"#%d", poolIndex];
     NSString *s = @"<bad string index>";
     if (poolIndex < [code.strings count]) {
-        if ( [code.strings objectAtIndex:poolIndex] == [NSNull null])
+        s = [code.strings objectAtIndex:poolIndex];
+        if ( s == nil || [s isKindOfClass:[NSNull class]])
             s = @"null";
         else {
-            //s = [[code.strings objectAtIndex:poolIndex] description];
-            s = [code.strings objectAtIndex:poolIndex];
-            if ([[code.strings objectAtIndex:poolIndex] isKindOfClass:[NSString class]]) {
+            s = [s description];
+            if ([s isKindOfClass:[NSString class]]) {
                 s = [Misc replaceEscapes:s];
                 s = [NSString stringWithFormat:@"\"%@\"", s];
             }
@@ -163,7 +159,7 @@
 
 - (NSString *) strings
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:200];
     NSInteger addr = 0;
     if (code.strings != nil) {
         for (id obj in code.strings) {
@@ -183,9 +179,8 @@
 
 - (NSString *) sourceMap
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:200];
     NSInteger addr = 0;
-
     for (Interval *I in code.sourceMap) {
         if (I != nil) {
             NSString *chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];

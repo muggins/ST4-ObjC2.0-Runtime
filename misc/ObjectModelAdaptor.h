@@ -97,7 +97,7 @@ typedef enum {
 + (id) newAdaptor;
 
 - (id) init;
-- (id) getProperty:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
+- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
 - (id) lookupMethod:(id)anObj propertyName:(NSString *)aPropertyName value:(id)value aClass:(Class)c;
 - (NSString *)convertToString:(id)anObj propertyName:(NSString *)aPropertyName;
 - (id) throwNoSuchProperty:(NSString *)aPropertyName;

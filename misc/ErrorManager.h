@@ -74,11 +74,11 @@
 - (void) lexerError:(NSString *)srcName msg:(NSString *)msg templateToken:(STToken *)aTemplateToken e:(ANTLRRecognitionException *)e;
 - (void) groupSyntaxError:(ErrorTypeEnum)error srcName:(NSString *)srcName e:(ANTLRRecognitionException *)e msg:(NSString *)msg;
 - (void) groupLexerError:(ErrorTypeEnum)error srcName:(NSString *)srcName e:(ANTLRRecognitionException *)e msg:(NSString *)msg;
-- (void) runTimeError:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error;
-- (void) runTimeError:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg;
-- (void) runTimeError:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
-- (void) runTimeError:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2;
-- (void) runTimeError:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
+- (void) runTimeError:(Interpreter *)interp who:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error;
+- (void) runTimeError:(Interpreter *)interp who:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg;
+- (void) runTimeError:(Interpreter *)interp who:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
+- (void) runTimeError:(Interpreter *)interp who:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2;
+- (void) runTimeError:(Interpreter *)interp who:(ST *)who ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
 - (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e;
 - (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
 - (void) internalError:(ST *)who msg:(NSString *)msg e:(NSException *)e;

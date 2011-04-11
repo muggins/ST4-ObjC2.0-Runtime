@@ -169,7 +169,7 @@
         f = [NSURL fileURLWithPath:[[root URLByAppendingPathComponent:aFileName] absoluteString]];
     }
     @catch (MalformedURLException *me) {
-        [errMgr runTimeError:nil ip:0 error:INVALID_TEMPLATE_NAME e:me arg:[f absoluteString]];
+        [errMgr runTimeError:nil who:nil ip:0 error:INVALID_TEMPLATE_NAME e:me arg:[f absoluteString]];
         return nil;
     }
     

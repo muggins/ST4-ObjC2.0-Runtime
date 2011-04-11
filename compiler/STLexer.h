@@ -105,19 +105,17 @@
 + (id) newSTLexer:(ErrorManager *)errMgr
             input:(id<ANTLRCharStream>)input
     templateToken:(STToken *)templateToken;
-+ (id) newSTLexer:(ErrorManager *)errMgr
-            input:(id<ANTLRCharStream>)input
-    templateToken:(STToken *)templateToken
-delimiterStartChar:(unichar)delimiterStartChar
-delimiterStopChar:(unichar)delimiterStopChar;
++ (id) newSTLexer:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input
+                                 templateToken:(STToken *)templateToken
+                            delimiterStartChar:(unichar)delimiterStartChar
+                             delimiterStopChar:(unichar)delimiterStopChar;
 
 - (id) initWithInput:(id<ANTLRCharStream>)input;
 - (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
-- (id) init:(ErrorManager *)errMgr
-      input:(id<ANTLRCharStream>)input
-templateToken:(STToken *)templateToken
-delimiterStartChar:(unichar)delimiterStartChar
-delimiterStopChar:(unichar)delimiterStopChar;
+- (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input
+                           templateToken:(STToken *)templateToken
+                      delimiterStartChar:(unichar)delimiterStartChar
+                       delimiterStopChar:(unichar)delimiterStopChar;
 
 - (STToken *) nextToken;
 - (void) match:(unichar)x;
@@ -133,7 +131,7 @@ delimiterStopChar:(unichar)delimiterStopChar;
 - (STToken *) mID;
 - (STToken *) mSTRING;
 - (void) mWS;
-- (void) mCOMMENT;
+- (STToken *) mCOMMENT;
 - (void) mLINEBREAK;
 + (BOOL) isIDStartLetter:(unichar)c;
 + (BOOL) isIDLetter:(unichar)c;
@@ -161,5 +159,24 @@ delimiterStopChar:(unichar)delimiterStopChar;
 
 //@property (nonatomic, retain, readonly) NSString *errorHeader;
 //@property (nonatomic, retain, readonly) NSString *sourceName;
+
+@end
+
+@interface STLexer_NO_NL : STLexer {
+}
+
+- (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)errMgr
+                               input:(id<ANTLRCharStream>)anInput
+                       templateToken:(STToken *)aTemplateToken
+                  delimiterStartChar:(unichar)aStartChar
+                   delimiterStopChar:(unichar)aStopChar;
+
+- (id) init:(ErrorManager *)anErrMgr
+             input:(id<ANTLRCharStream>)anInput                             
+     templateToken:(STToken *)aTemplateToken
+delimiterStartChar:(unichar)aStartChar
+ delimiterStopChar:(unichar)aStopChar;
+
+- (STToken *)nextToken;
 
 @end

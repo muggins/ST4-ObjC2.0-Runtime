@@ -33,7 +33,7 @@
 - (void) map:(id)key value:(id)value {
   AMutableArray *elementsForKey = [self valueForKey:key];
   if (elementsForKey == nil) {
-    elementsForKey = [AMutableArray arrayWithCapacity:16];
+    elementsForKey = [AMutableArray arrayWithCapacity:5];
     [super setObject:elementsForKey forKey:key];
   }
   [elementsForKey addObject:value];

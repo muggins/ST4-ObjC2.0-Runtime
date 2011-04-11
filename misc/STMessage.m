@@ -36,29 +36,34 @@
 
 @implementation STMessage
 
++ (id) newMessage:(ErrorTypeEnum)anError;
+{
+    return [[[STMessage alloc] init:anError who:nil cause:nil arg:@"" arg2:@"" arg3:@""] retain];
+}
+
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
 {
-    return [[[STMessage alloc] init:anError who:aWho] retain];
+    return [[[STMessage alloc] init:anError who:aWho cause:nil arg:@"" arg2:@"" arg3:@""] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause] retain];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:@"" arg2:@"" arg3:@""] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg] retain];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:@"" arg3:@""] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where  arg:(id)arg;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg] retain];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:where arg2:arg arg3:@""] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2] retain];
+    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:@""] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3
@@ -66,6 +71,7 @@
     return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:arg3] retain];
 }
 
+#ifdef DONTUSENOMO
 - (id) init:(ErrorTypeEnum)anError
 {
     self=[super init];
@@ -149,6 +155,7 @@
     }
     return self;
 }
+#endif
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3
 {

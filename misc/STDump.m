@@ -92,7 +92,7 @@ static STDump *d;
     n++;
     NSMutableDictionary *attributes = [who getAttributes];
     if (attributes != nil) {
-        AMutableArray *attrNames = [AMutableArray arrayWithCapacity:16];
+        AMutableArray *attrNames = [AMutableArray arrayWithCapacity:5];
         [attrNames addObjectsFromArray:[attributes allKeys]];
         [attrNames sortUsingFunction:compare context:nil];
         NSString *longestName = [attrNames objectAtIndex:0];
@@ -129,7 +129,8 @@ static STDump *d;
         ArrayIterator *it = (ArrayIterator *)value;
         id obj;
         
-        while (obj = [it nextObject]) {
+        while ([it hasNext]) {
+            obj = [it nextObject];
             NSString *v = [self getValueDebugString:obj n:n];
             [buf appendString:v];
             if ([it hasNext])
@@ -147,9 +148,10 @@ static STDump *d;
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     [buf appendFormat:@"<%@(", [who getName]];
     if (((CompiledST *)who.impl).formalArguments != nil) {
-        ArrayIterator *it = [ArrayIterator newIteratorForDictKey:who.impl.formalArguments];
+        ArrayIterator *it = [ArrayIterator newIteratorForDictKey:(NSDictionary *)who.impl.formalArguments];
         id obj;
-        while (obj = [it nextObject]) {
+        while ([it hasNext]) {
+            obj = [it nextObject];
             [buf appendString:obj];
             if ([it hasNext])
                 [buf appendString:@", "];

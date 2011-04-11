@@ -27,7 +27,6 @@
  */
 #import "ArrayIterator.h"
 #import "STException.h"
-#import <Foundation/Foundation.h>
 
 @class AMutableArray;
 

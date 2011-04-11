@@ -197,10 +197,22 @@
     return fileName;
 }
 
-- (NSString *) getRootDir
+- (NSURL *) getRootDirURL
 {
     NSString *parent = [Misc stripLastPathElement:fileName];
-    return parent;
+    @try {
+        // return [NSURL newURL:parent];
+		return [NSURL URLWithString:parent];
+	}
+    @catch (MalformedURLException *me) {
+		[errMgr runTimeError:nil
+                         who:nil
+                          ip:0
+                       error:INVALID_TEMPLATE_NAME
+                           e:me
+                         arg:fileName];
+	}
+    return nil;
     //		try {
     //			return new File(parent).toURI().toURL();
     //		}
@@ -218,10 +230,10 @@
     //			return f.getParentFile().toURI().toURL();
     //		}
     //		catch (MalformedURLException me) {
-    //			errMgr.runTimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME,
+    //			[errMgr.runTimeError(nil, nil, ErrorType.INVALID_TEMPLATE_NAME,
     //								me, f.getParentFile());
     //		}
-    //		return null;
+    //      return nil;
 }
 
 - (void) dealloc

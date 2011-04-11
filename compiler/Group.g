@@ -33,7 +33,7 @@ options {
     TokenLabelType=STToken;
 }
 
-tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING;
+tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL
             T_TRUE='true'; T_FALSE='false'; }
 
 @header {
@@ -118,6 +118,7 @@ STGroup *group;
 
 @methodsDecl {
 + (NSInteger) TBIGSTRING;
++ (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TTRUE;
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e;
 - (NSString *) getSourceName;
@@ -131,6 +132,7 @@ STGroup *group;
 
 @methods {
 + (NSInteger) TBIGSTRING { return BIGSTRING; }
++ (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
 + (NSInteger) TTRUE { return T_TRUE; }
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e
 {
@@ -206,7 +208,7 @@ GroupLexer *lexer = (GroupLexer *)[input getTokenSource];
 self.group = lexer.group = $aGroup;
 }
 	:	oldStyleHeader?
-    (	'import' STRING {[aGroup importTemplates:$STRING];}
+    (	'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
 	|	'import' // common error: name not in string
 			{
 			ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:STRING Stream:input];
@@ -251,6 +253,7 @@ templateDef[NSString *prefix]
 	    {STToken *templateToken = [input LT:1];}
 	    (	STRING     {template=$STRING.text; n=1;}
 	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
+	    |	BIGSTRING_NO_NL  {template=$BIGSTRING_NO_NL.text; n=2;}
 	    |	{
 	    	template = @"";
 	    	NSString *msg = [NSString stringWithFormat:@"missing template at '\%@'", [[input LT:1] getText]];
@@ -275,7 +278,7 @@ templateDef[NSString *prefix]
 	;
 
 formalArgs returns[AMutableArray *args]
-@init {$args = [AMutableArray arrayWithCapacity:16];}
+@init {$args = [AMutableArray arrayWithCapacity:5];}
     :	formalArg[$args]
     	( ',' formalArg[$args] )*
     	( ',' formalArgWithDefaultValue[$args] )*
@@ -346,10 +349,11 @@ keyValuePair[NSMutableDictionary *mapping]
 
 keyValue returns [id value]
 	:	BIGSTRING			{$value = [group createSingleton:$BIGSTRING];}
+	|	BIGSTRING_NO_NL		{$value = [group createSingleton:$BIGSTRING_NO_NL];}
 	|	ANONYMOUS_TEMPLATE	{$value = [group createSingleton:$ANONYMOUS_TEMPLATE];}
 	|	STRING				{$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
-	|	T_TRUE				{$value = true;}
-	|	T_FALSE				{$value = false;}
+	|	T_TRUE				{$value = YES;}
+	|	T_FALSE				{$value = NO;}
 	|	{[[[input LT:1] getText] isEqualToString:@"key"]}?=> ID
 							{$value = STGroup.DICT_KEY;}
 	;
@@ -379,6 +383,10 @@ STRING
 		}
 	;
 
+BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
+	:	'<%' (options {greedy=false;} : .)* '%>'
+	;
+	
 BIGSTRING
 	:	'<<'
 		(	options {greedy=false;}

@@ -37,8 +37,18 @@
  * 
  * See unit tests.
  */
-@class ST;
+#import <Cocoa/Cocoa.h>
 
-@protocol ModelAdaptor <NSObject>
-- (id) getProperty:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
+@class Interpreter;
+@class ST;
+@class NSString;
+
+@protocol ModelAdaptor<NSObject>
+
+- (id) getProperty:(Interpreter *)interp
+               who:(ST *)aWho
+               obj:(id)anObj
+          property:(id)aProperty
+      propertyName:(NSString *)aPropertyName;
+
 @end

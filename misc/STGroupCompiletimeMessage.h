@@ -41,8 +41,10 @@
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg;
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2;
 
+#ifdef DONTUSENOMO
 - (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause;
 - (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)arg;
+#endif
 - (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 - (NSString *) description;
 - (NSString *) toString;

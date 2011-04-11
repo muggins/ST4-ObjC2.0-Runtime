@@ -38,7 +38,6 @@
 #import "FormalArgument.h"
 #import "STException.h"
 #import "StringTable.h"
-#import "TestNewStuff.h"
 #import "Compiler.h"
 #import "DebugST.h"
 #import "ArrayIterator.h"
@@ -128,7 +127,7 @@ static NSString *const DEFAULT_KEY = @"default";
 static NSString *const DICT_KEY = @"key";
 static BOOL debug = NO;
 static BOOL verbose = YES;
-
+static BOOL trackCreationEvents = NO;
 
 @synthesize encoding; 
 @synthesize imports;
@@ -141,6 +140,11 @@ static BOOL verbose = YES;
 @synthesize errMgr;
 @synthesize typeToAdaptorCache;
 @synthesize typeToRendererCache;
+
++ (void) initialize
+{
+    defaultGroup = [STGroup newSTGroup];
+}
 
 + (CompiledST *) NOT_FOUND_ST
 {
@@ -171,6 +175,11 @@ static BOOL verbose = YES;
     if (DEFAULT_ERR_MGR == nil)
         DEFAULT_ERR_MGR = [ErrorManager newErrorManager];
     return DEFAULT_ERR_MGR;
+}
+
++ (BOOL)trackCreationEvents
+{
+    return trackCreationEvents;
 }
 
 + (BOOL) debug
@@ -261,16 +270,26 @@ static BOOL verbose = YES;
     return nil;
 }
 
-- (ST *) getEmbeddedInstanceOf:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)aName
+- (ST *) getEmbeddedInstanceOf:(Interpreter *)interp
+                           who:(ST *)enclosingInstance
+                            ip:(NSInteger)ip
+                          name:(NSString *)aName
 {
+	if ( verbose ) NSLog( @"getEmbeddedInstanceOf(%@)", aName);
     ST *st = [self getInstanceOf:aName];
     if ( st == nil ) {
-        [errMgr runTimeError:enclosingInstance ip:ip error:NO_SUCH_TEMPLATE arg:aName];
+        [errMgr runTimeError:interp who:enclosingInstance
+                          ip:ip
+                       error:NO_SUCH_TEMPLATE
+                         arg:aName];
         st = [self createStringTemplate];
         st.impl = [CompiledST newCompiledST];
         return st;
     }
-    st.enclosingInstance = enclosingInstance;
+	// this is only called internally. whack any debug ST create events
+	if ( trackCreationEvents ) {
+		st.debugState.newSTEvent = nil; // toss it out
+	}
     return st;
 }
 
@@ -287,7 +306,7 @@ static BOOL verbose = YES;
     else {
         template = [Misc strip:[templateToken getText] n:1];
     }
-    ST *st = [self createStringTemplate];
+    ST *st = [self createStringTemplateInternally];
     st.groupThatCreatedThisInstance = self;
     st.impl = [self compile:[self getFileName] name:nil args:nil template:template templateToken:templateToken];
     st.impl.hasFormalArgs = NO;
@@ -417,7 +436,7 @@ static BOOL verbose = YES;
 - (CompiledST *) defineTemplate:(NSString *)aName argsS:(NSString *)argsS template:(NSString *)template templateToken:templateToken
 {
     NSArray *args = [argsS componentsSeparatedByString:@","];
-    AMutableArray *a = [AMutableArray arrayWithCapacity:16];
+    AMutableArray *a = [AMutableArray arrayWithCapacity:5];
     for (NSString *arg in args) {
         [a addObject:[FormalArgument newFormalArgument:arg]];
     }
@@ -619,7 +638,7 @@ static BOOL verbose = YES;
     if (g == nil)
         return;
     if (imports == nil)
-        imports = [AMutableArray arrayWithArray:[AMutableArray arrayWithCapacity:16]];
+        imports = [AMutableArray arrayWithArray:[AMutableArray arrayWithCapacity:5]];
     [imports addObject:g];
 }
 
@@ -669,7 +688,8 @@ static BOOL verbose = YES;
         return;
     }
     // it's a relative name; search path is working dir, g.stg's dir, CLASSPATH
-    NSString *thisRoot = [self getRootDir];
+    //NSURL *thisRoot = [self getRootDirURL];
+    NSString *thisRoot = @"~/";
     NSString *fileUnderRoot = nil;
     //System.out.println("thisRoot="+thisRoot);
     fileUnderRoot = [thisRoot stringByAppendingPathComponent:aFileName];
@@ -865,7 +885,7 @@ static BOOL verbose = YES;
      [typeToAdaptorCache removeAllObjects]; // be safe, not clever; whack all values
      */
     if (renderers == nil) {
-        renderers = [AMutableArray arrayWithCapacity:30];
+        renderers = [AMutableArray arrayWithCapacity:5];
     }
     [renderers setObject:r forKey:[attributeType attributeValueClassName]];
 }
@@ -905,18 +925,25 @@ static BOOL verbose = YES;
  */
 - (ST *) createStringTemplate
 {
-    if (debug) {
-        return [[DebugST alloc] init];
-    }
-    return [[ST alloc] init];
+    return [ST newST];
 }
 
-- (ST *) createStringTemplate:(ST *)proto
+- (ST *) createStringTemplateInternally
 {
-    if (debug) {
-        return [DebugST newDebugSTWithProto:proto];
+    ST *st = [self createStringTemplate];
+	if ( trackCreationEvents && st.debugState!=nil ) {
+		st.debugState.newSTEvent = nil; // toss it out
     }
-    return [ST newSTWithProto:proto];
+    return st;
+}
+
+- (ST *) createStringTemplateInternally:(ST *)proto
+{
+    ST *st = [ST newSTWithProto:proto];
+	if ( trackCreationEvents && st.debugState!=nil ) {
+		st.debugState.newSTEvent = nil; // toss it out
+    }
+    return st;
 }
 
 
@@ -937,9 +964,24 @@ static BOOL verbose = YES;
  *  be org/foo/templates.  org/foo/templates/main.stg ->
  *  org/foo/templates.
  */
-- (NSString *)getRootDir
+- (NSURL *)getRootDirURL
 {
     return nil;
+}
+
+- (NSURL *)getURL:(NSString *)fileName
+{
+	NSURL *url = nil;
+    //[NSURL 
+/*
+    Class cl = Thread.currentThread().getContextClassLoader();
+	url = cl.getResource(fileName);
+	if ( url==nil ) {
+		cl = [[self class] getClassLoader];
+		url = [cl getResource:fileName];
+	}
+ */
+	return url;
 }
 
 - (NSString *) description

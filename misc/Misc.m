@@ -188,11 +188,17 @@ static NSString *const newline = @"\n";
 {
     
     @try {
-        value = [obj performSelector:m];
+        if ([obj respondsToSelector:m]) {
+            value = [obj performSelector:m];
         //        [m setAccessible:YES];
-        ;
+        }
+        else {
+            @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
+        }
     }
     @catch (ANTLRRuntimeException *se) {
+        if ( [se isKindOfClass:[STNoSuchPropertyException class]] )
+            @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
     }
 #pragma mark error
     return value;

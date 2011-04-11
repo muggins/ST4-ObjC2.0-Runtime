@@ -91,7 +91,7 @@
 + (Compiler_Anon2 *) defaultOptionValues;
 + (Compiler_Anon3 *) funcs;
 + (NSInteger) subtemplateCount;
-+ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl name:(NSString *)name;
++ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl token:(STToken *)token;
 
 + (Compiler *) newCompiler;
 + (Compiler *) newCompiler:(STGroup *)aSTGroup;

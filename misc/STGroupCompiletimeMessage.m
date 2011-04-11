@@ -31,12 +31,12 @@
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause
 {
-    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause] retain];
+    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:nil arg2:nil] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
-    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg] retain];
+    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:nil] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
@@ -44,9 +44,10 @@
     return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:anArg2] retain];
 }
 
+#ifdef DONTUSENOMO
 - (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause
 {
-    self=[super init:anError who:nil cause:aCause arg:nil];
+    self=[super init:anError who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
         token = t;
         srcName = srcName;
@@ -56,17 +57,18 @@
 
 - (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
-    self=[super init:anError who:nil cause:aCause arg:nil arg2:nil];
+    self=[super init:anError who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
         token = t;
         srcName = srcName;
     }
     return self;
 }
+#endif
 
 - (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
-    self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2];
+    self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         token = t;
         srcName = srcName;

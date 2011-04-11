@@ -35,6 +35,7 @@
 @class STGroup;
 @class ErrorManager;
 @class AttributeList;
+@class InstanceScope;
 
 
 @interface Interpreter_Anon1 : NSObject {
@@ -115,11 +116,6 @@ NSString *OptionDescription(OptionEnum value);
  * DebugST.getEvents() invocation.
  */
 
-/**
- * Dump bytecode instructions as we execute them?
- */
-extern BOOL trace;
-
 @interface Interpreter : NSObject {
     
     /**
@@ -130,6 +126,10 @@ extern BOOL trace;
     NSInteger current_ip;
     NSInteger nwline;
     
+	/** Stack of enclosing instances (scopes).  Used for dynamic scoping
+	 *  of attributes.
+	 */
+	InstanceScope *currentScope;
     /**
      * Exec st with respect to this group. Once set in ST.toString(),
      * it should be fixed. ST has group also.
@@ -142,23 +142,32 @@ extern BOOL trace;
     NSLocale *locale;
     ErrorManager *errMgr;
     
-    /**
-     * Track everything happening in interp if debug across all templates
-     */
-    AMutableArray *events;
+	/** If trace mode, track trace here */
+	// TODO: track the pieces not a string and track what it contributes to output
     AMutableArray *executeTrace;
+    
+	/*
+	 *  Track everything happening in interp if debug across all templates.
+	 *  The last event in this field is the EvalTemplateEvent for the root
+	 *  template.
+	 */
+    AMutableArray *events;
     //Map<ST, List<InterpEvent>> debugInfo;
     NSMutableDictionary *debugInfo;
+    BOOL debug;
 }
 
 + (NSInteger) DEFAULT_OPERAND_STACK_SIZE;
 + (NSDictionary *) predefinedAnonSubtemplateAttributes;
 + (Interpreter_Anon3 *) Option;
 
-- (id) initWithGroup:(STGroup *)group;
-- (id) init:(STGroup *)group locale:(NSLocale *)locale;
-- (id) init:(STGroup *)group errMgr:(ErrorManager *)errMgr;
-- (id) init:(STGroup *)group locale:(NSLocale *)locale errMgr:(ErrorManager *)errMgr;
++ (id) newInterpreter:(STGroup *)aGroup locale:(NSLocale *)aLocale debug:(BOOL)aDebug;
+
+- (id) initWithGroup:(STGroup *)group debug:(BOOL)aDebug;
+- (id) init:(STGroup *)group locale:(NSLocale *)locale debug:(BOOL)aDebug;
+- (id) init:(STGroup *)group errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
+- (id) init:(STGroup *)aGroup locale:(NSLocale *)aLocale errMgr:(ErrorManager *)anErrMgr debug:(BOOL)aDebug;
+- (id) init:(STGroup *)group locale:(NSLocale *)locale errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
 #ifdef USE_FREQ_COUNT
 - (void) dumpOpcodeFreq;
 #endif
@@ -168,6 +177,7 @@ extern BOOL trace;
 - (void) load_str:(ST *)who ip:(NSInteger)ip;
 - (void) super_new:(ST *)aWho name:(NSString *)name nargs:(NSInteger)nargs;
 - (void) super_new:(ST *)aWho name:(NSString *)name attrs:(NSMutableDictionary *)attrs;
+- (void) passthru:(ST *)aWho templateName:(NSString *)templateName attrs:(AMutableArray *)attrs;
 - (void) storeArgs:(ST *)aWho attrs:(NSMutableDictionary *)attrs st:(ST *)st;
 - (void) storeArgs:(ST *)aWho nargs:(NSInteger)nargs st:(ST *)st;
 - (void) indent:(id<STWriter>)wr1 who:(ST *)aWho index:(NSInteger)strIndex;
@@ -198,10 +208,19 @@ extern BOOL trace;
 - (BOOL) testAttributeTrue:(id)a;
 - (id) getObjectProperty:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj property:(id)property;
 - (void) setDefaultArguments:(id<STWriter>)wr1 who:(ST *)invokedST;
+- (void) popScope;
+- (void) pushScope:(ST *)aWho;
+- (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope;
+- (AMutableArray *)getEnclosingInstanceStack:(InstanceScope *)scope topdown:(BOOL)topdown;
+- (AMutableArray *) getScopeStack:(InstanceScope *)scope direction:(BOOL)topdown;
+- (AMutableArray *) getEvalTemplateEventStack:(InstanceScope *)scope direction:(BOOL)topdown;
 - (void) trace:(ST *)aWho ip:(NSInteger)ip;
 - (void) printForTrace:(NSMutableString *)tr obj:(id)obj;
+- (AMutableArray *) getEvents;
 - (AMutableArray *) getEvents:(ST *)st;
+- (AMutableArray *) getExecutionTrace;
 + (NSInteger) getShort:(char *)memory index:(NSInteger)index;
+
 
 //@property (retain, getter=getOperands, setter=setOperands:) AMutableArray *operands;
 @property (assign) NSInteger sp;
@@ -213,5 +232,6 @@ extern BOOL trace;
 @property (retain) AMutableArray *events;
 @property (retain) AMutableArray *executeTrace;
 @property (retain) NSMutableDictionary *debugInfo;
+@property (assign) BOOL debug;
 
 @end

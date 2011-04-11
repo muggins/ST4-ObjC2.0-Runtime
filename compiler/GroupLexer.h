@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-03-30 13:18:02
+// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-04-06 18:27:39
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -52,14 +52,14 @@
  * =============================================================================
  */
 /* Start cyclicDFAInterface */
-#pragma mark Cyclic DFA interface start DFA7
-@interface DFA7 : ANTLRDFA {
+#pragma mark Cyclic DFA interface start DFA8
+@interface DFA8 : ANTLRDFA {
 }
-+ newDFA7WithRecognizer:(ANTLRBaseRecognizer *)theRecognizer;
++ newDFA8WithRecognizer:(ANTLRBaseRecognizer *)theRecognizer;
 - initWithRecognizer:(ANTLRBaseRecognizer *)recognizer;
-@end /* end of DFA7 interface  */
+@end /* end of DFA8 interface  */
 
-#pragma mark Cyclic DFA interface end DFA7
+#pragma mark Cyclic DFA interface end DFA8
 
 
 #pragma mark Rule return scopes start
@@ -69,7 +69,6 @@
 #undef EOF
 #endif
 #define EOF -1
-#define T__13 13
 #define T__14 14
 #define T__15 15
 #define T__16 16
@@ -84,6 +83,7 @@
 #define T__25 25
 #define T__26 26
 #define T__27 27
+#define T__28 28
 #define ID 4
 #define WS 5
 #define STRING 6
@@ -91,11 +91,14 @@
 #define COMMENT 8
 #define LINE_COMMENT 9
 #define BIGSTRING 10
-#define T_TRUE 11
-#define T_FALSE 12
+#define T_BIGSTRING_NO_NL 11
+#ifndef T_TRUE
+#define T_TRUE 12
+#define T_FALSE 13
+#endif
 /* interface lexer class */
 @interface GroupLexer : ANTLRLexer { // line 283
-DFA7 *dfa7;
+DFA8 *dfa8;
 /* ObjC start of actions.lexer.memVars */
 
 STGroup *group;
@@ -106,86 +109,37 @@ STGroup *group;
 + (GroupLexer *)newGroupLexerWithCharStream:(id<ANTLRCharStream>)anInput;
 /* ObjC start actions.lexer.methodsDecl */
 
+@property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
+
 - (void) reportError:(ANTLRRecognitionException *)e;
 - (NSString *) getSourceName;
 
 /* ObjC end actions.lexer.methodsDecl */
-- (void)
-mT_TRUE
-; 
-- (void)
-mT_FALSE
-; 
-- (void)
-mT__13
-; 
-- (void)
-mT__14
-; 
-- (void)
-mT__15
-; 
-- (void)
-mT__16
-; 
-- (void)
-mT__17
-; 
-- (void)
-mT__18
-; 
-- (void)
-mT__19
-; 
-- (void)
-mT__20
-; 
-- (void)
-mT__21
-; 
-- (void)
-mT__22
-; 
-- (void)
-mT__23
-; 
-- (void)
-mT__24
-; 
-- (void)
-mT__25
-; 
-- (void)
-mT__26
-; 
-- (void)
-mT__27
-; 
-- (void)
-mID
-; 
-- (void)
-mSTRING
-; 
-- (void)
-mBIGSTRING
-; 
-- (void)
-mANONYMOUS_TEMPLATE
-; 
-- (void)
-mCOMMENT
-; 
-- (void)
-mLINE_COMMENT
-; 
-- (void)
-mWS
-; 
-- (void)
-mTokens
-; 
-
-@property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
+- (void) mT_TRUE; 
+- (void) mT_FALSE; 
+- (void) mT__14; 
+- (void) mT__15; 
+- (void) mT__16; 
+- (void) mT__17; 
+- (void) mT__18; 
+- (void) mT__19; 
+- (void) mT__20; 
+- (void) mT__21; 
+- (void) mT__22; 
+- (void) mT__23; 
+- (void) mT__24; 
+- (void) mT__25; 
+- (void) mT__26; 
+- (void) mT__27; 
+- (void) mT__28; 
+- (void) mID; 
+- (void) mSTRING; 
+- (void) mBIGSTRING_NO_NL; 
+- (void) mBIGSTRING; 
+- (void) mANONYMOUS_TEMPLATE; 
+- (void) mCOMMENT; 
+- (void) mLINE_COMMENT; 
+- (void) mWS; 
+- (void) mTokens; 
 
 @end /* end of GroupLexer interface */

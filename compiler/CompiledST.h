@@ -44,64 +44,53 @@
 @interface CompiledST : NSObject {
     NSString *name;
     
-    /**
-     * The original, immutable pattern (not really used again after
-     * initial "compilation"). Useful for debugging.  Even for
-     * subtemplates, this is entire overall template.
-     */
+/** The original, immutable pattern (not really used again after
+ * initial "compilation"). Useful for debugging.  Even for
+ * subtemplates, this is entire overall template.
+ */
     NSString *template;
     
     /** The token that begins template definition; could be <@r> of region. */
     STToken *templateDefStartToken;
-    /**
-     * Overall token stream for template (debug only)
-     */
+    /** Overall token stream for template (debug only) */
     ANTLRCommonTokenStream *tokens;
     
-    /**
-     * How do we interpret syntax of template? (debug only)
-     */
+	/** How do we interpret syntax of template? (debug only) */
     ANTLRCommonTree *ast;
     
-    /**
-     * Must be non null map if !noFormalArgs
-     */
+    /** Must be non null map if !noFormalArgs */
     NSMutableDictionary *formalArguments;
     BOOL hasFormalArgs;
     NSInteger numberOfArgsWithDefaultValues;
-    /**
-     * A list of all regions and subtemplates
-     */
+
+    /** A list of all regions and subtemplates */
     AMutableArray *implicitlyDefinedTemplates;
     
-    /**
-     * The group that physically defines this ST definition.  We use it to initiate
-     * interpretation via ST.toString().  From there, it becomes field 'group'
-     * in interpreter and is fixed until rendering completes.
+    /** The group that physically defines this ST definition.  We use it to initiate
+     *  interpretation via ST.toString().  From there, it becomes field 'group'
+     *  in interpreter and is fixed until rendering completes.
      */
     STGroup *nativeGroup;
     
-    /**
-     * Does this template come from a <@region>...<@end> embedded in
-     * another template?
+    /** Does this template come from a <@region>...<@end> embedded in
+     *  another template?
      */
     BOOL isRegion;
     
-    /**
-     * If someone refs <@r()> in template t, an implicit
-     * 
-     * @t.r() ::= ""
-     * 
-     * is defined, but you can overwrite this def by defining your
-     * own.  We need to prevent more than one manual def though.  Between
-     * this var and isEmbeddedRegion we can determine these cases.
+    /** If someone refs <@r()> in template t, an implicit
+     *
+     *   @t.r() ::= ""
+     *
+     *  is defined, but you can overwrite this def by defining your
+     *  own.  We need to prevent more than one manual def though.  Between
+     *  this var and isEmbeddedRegion we can determine these cases.
      */
     RegionTypeEnum regionDefType;
     BOOL isAnonSubtemplate;
-    AMutableArray *strings;
-    MemBuffer *instrs;
+    AMutableArray *strings;     // string operands of instructions
+    MemBuffer *instrs;          // byte-addressable code memory.
     NSInteger codeSize;
-    AMutableArray *sourceMap;
+    AMutableArray *sourceMap;   // maps IP to range in template pattern
 }
 
 @property (retain) NSString *name;

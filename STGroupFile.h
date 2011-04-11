@@ -61,7 +61,7 @@
 - (NSString *) show;
 - (NSString *) getName;
 - (NSString *) getFileName;
-- (NSString *) getRootDir;
+- (NSURL *) getRootDirURL;
 
 @property (assign) BOOL alreadyLoaded;
 @property (retain) NSString *fileName;

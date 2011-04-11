@@ -39,6 +39,7 @@
 #import "STLexer.h"
 #import "STParser.h"
 #import "AMutableArray.h"
+#import "GroupParser.h"
 
 @implementation Compiler_Anon1
 
@@ -222,11 +223,6 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     return SUBTEMPLATE_PREFIX;
 }
 
-+ (NSString *) getNewSubtemplateName
-{
-    return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, ++subtemplateCount];
-}
-
 + (NSInteger) supportedOptions
 {
     return [supportedOptions count];
@@ -322,7 +318,16 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     }
     ANTLRStringStream *is = [ANTLRStringStream newANTLRStringStream:template];
     is.name = (srcName != nil) ? srcName : name;
-    STLexer *lexer = [STLexer newSTLexer:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
+    STLexer *lexer = nil;
+	if ( aTemplateToken != nil &&
+		 [aTemplateToken getType] == GroupParser.TBIGSTRING_NO_NL )
+		{
+            lexer = [STLexer newSTLexer_NO_NL:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
+		}
+	else {
+        lexer = [STLexer newSTLexer:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
+	}
+
     ANTLRCommonTokenStream *tokens = [ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer];
     STParser *p = [STParser newSTParser:tokens error:group.errMgr token:aTemplateToken];
     STParser_templateAndEOF_return *r = nil;
@@ -348,11 +353,9 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         impl = [gen template:name arg1:args];
 		impl.nativeGroup = group;
 		impl.template = template;
-        if (STGroup.debug) {
-            impl.ast = (ANTLRCommonTree *)r.tree;
-            [impl.ast setUnknownTokenBoundaries];
-            impl.tokens = tokens;
-        }
+        impl.ast = (ANTLRCommonTree *)r.tree;
+        [impl.ast setUnknownTokenBoundaries];
+        impl.tokens = tokens;
     }
     @catch (ANTLRRecognitionException *re) {
         [group.errMgr internalError:nil msg:@"bad tree structure" e:re];
@@ -361,16 +364,22 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     return impl;
 }
 
-+ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl name:(NSString *)name
++ (CompiledST *) defineBlankRegion:(CompiledST *)outermostImpl token:(STToken *)nameToken
 {
     NSString *outermostTemplateName = outermostImpl.name;
-    NSString *mangled = [STGroup getMangledRegionName:outermostTemplateName name:name];
+    NSString *mangled = [STGroup getMangledRegionName:outermostTemplateName name:[nameToken getText]];
     CompiledST *blank = [CompiledST newCompiledST];
     blank.isRegion = YES;
+    blank.templateDefStartToken = nameToken;
     blank.regionDefType = IMPLICIT;
     blank.name = mangled;
     [outermostImpl addImplicitlyDefinedTemplate:blank];
     return blank;
+}
+
++ (NSString *) getNewSubtemplateName
+{
+    return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, ++subtemplateCount];
 }
 
 - (void) reportMessageAndThrowSTException:(ANTLRCommonTokenStream *)tokens

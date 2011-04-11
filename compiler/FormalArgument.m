@@ -138,7 +138,8 @@ static NSString *suffixes[] = {
     return self;
 }
 
-- (NSInteger) hash {
+- (NSInteger) hash
+{
     return [name hash] + [defaultValueToken hash];
 }
 
@@ -158,7 +159,7 @@ static NSString *suffixes[] = {
 - (NSString *) description
 {
     if (defaultValueToken != nil)
-        return [NSString stringWithFormat:@"%@=%@", name, [defaultValueToken getText]];
+        return [NSString stringWithFormat:@"%@=%@", ((name != nil)?name:@"nil"), [defaultValueToken getText]];
     return name;
 }
 

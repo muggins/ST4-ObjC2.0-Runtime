@@ -142,10 +142,12 @@
 + (NSString *) DEFAULT_KEY;
 + (NSString *) DICT_KEY;
 + (STGroup *) defaultGroup;
+
 + (ErrorManager *) DEFAULT_ERR_MGR;
 + (BOOL) debug;
 + (void) setDebug;
 + (BOOL) verbose;
++ (BOOL)trackCreationEvents;
 
 + (NSString *) getMangledRegionName:(NSString *)enclosingTemplateName name:(NSString *)name;
 + (NSString *) getUnMangledTemplateName:(NSString *)mangledName;
@@ -155,7 +157,7 @@
 - (id) init;
 - (id) init:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (ST *) getInstanceOf:(NSString *)name;
-- (ST *) getEmbeddedInstanceOf:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)name;
+- (ST *) getEmbeddedInstanceOf:(Interpreter *)interp who:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)name;
 - (ST *) createSingleton:(STToken *)templateToken;
 - (BOOL) isDefined:(NSString *)name;
 - (CompiledST *) lookupTemplate:(NSString *)name;
@@ -189,8 +191,10 @@
 - (void) registerRenderer:(id)attributeType r:(AttributeRenderer *)r;
 - (AttributeRenderer *) getAttributeRenderer:(id)attributeType;
 - (ST *) createStringTemplate;
-- (ST *) createStringTemplate:(ST *)proto;
-- (NSString *)getRootDir;
+- (ST *) createStringTemplateInternally;
+- (ST *) createStringTemplateInternally:(ST *)proto;
+- (NSURL *)getURL:(NSString *)fileName;
+- (NSURL *)getRootDirURL;
 - (NSString *) description;
 - (NSString *) toString;
 - (NSString *) show;

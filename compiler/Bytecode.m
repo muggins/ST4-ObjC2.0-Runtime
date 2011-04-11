@@ -61,7 +61,7 @@ NSString *OperandTypeDescription(NSInteger value)
 @implementation Instruction
 
 @synthesize name;
-//@synthesize type;
+//@synthesize ttype;
 @synthesize nopnds;
 
 + (id) newInstruction:(NSString *)aName
@@ -102,8 +102,8 @@ NSString *OperandTypeDescription(NSInteger value)
     self=[super init];
     if ( self != nil ) {
         name = aName;
-        type[0]=a;
-        type[1]=b;
+        ttype[0]=a;
+        ttype[1]=b;
         nopnds = DEF_MAX_OPNDS;
     }
     return self;
@@ -120,22 +120,22 @@ NSString *OperandTypeDescription(NSInteger value)
 - (OperandType)getType:(NSInteger)idx
 {
     if (idx >= 0 && idx < DEF_MAX_OPNDS)
-        return type[idx];
+        return ttype[idx];
     return -1;
 }
 
 - (void)setType:(OperandType)aType idx:(NSInteger)idx
 {
     if (idx >= 0 && idx < DEF_MAX_OPNDS)
-        type[idx] = aType;
+        ttype[idx] = aType;
     else
         // @throw error here
         return;
 }
 
-- (void)setNopnds:(NSInteger)cnt
+- (void)setNopnds:(short)cnt
 {
-    if (cnt >= 0 && cnt < DEF_MAX_OPNDS)
+    if (cnt >= 0 && cnt <= DEF_MAX_OPNDS)
         nopnds = cnt;
     else
         // @throw error here
@@ -168,38 +168,41 @@ static short const INSTR_BR                 = 18;
 static short const INSTR_BRF                = 19; // push options map
 static short const INSTR_OPTIONS            = 20; // push args map
 static short const INSTR_ARGS               = 21;
-static short const INSTR_LIST               = 22;
-static short const INSTR_ADD                = 23;
-static short const INSTR_TOSTR              = 24;
-// Predefined functions
-static short const INSTR_FIRST              = 25;
-static short const INSTR_LAST               = 26;
-static short const INSTR_REST               = 27;
-static short const INSTR_TRUNC              = 28;
-static short const INSTR_STRIP              = 29;
-static short const INSTR_TRIM               = 30;
-static short const INSTR_LENGTH             = 31;
-static short const INSTR_STRLEN             = 32;
-static short const INSTR_REVERSE            = 33;
-static short const INSTR_NOT                = 34;
-static short const INSTR_OR                 = 35;
-static short const INSTR_AND                = 36;
-static short const INSTR_INDENT             = 37;
-static short const INSTR_DEDENT             = 38;
-static short const INSTR_NEWLINE            = 39;
-static short const INSTR_NOOP               = 40; // do nothing
-static short const INSTR_POP                = 41;
-static short const INSTR_NULL               = 42; // push null value
-static short const INSTR_TRUE               = 43; // push true value
-static short const INSTR_FALSE              = 44;
+static short const INSTR_PASSTHRU           = 22;
+static short const INSTR_PASSTHRU_IND       = 23;
+static short const INSTR_LIST               = 24;
+static short const INSTR_ADD                = 25;
+static short const INSTR_TOSTR              = 26;
+
+// Predefined function
+static short const INSTR_FIRST              = 27;
+static short const INSTR_LAST               = 28;
+static short const INSTR_REST               = 29;
+static short const INSTR_TRUNC              = 30;
+static short const INSTR_STRIP              = 31;
+static short const INSTR_TRIM               = 32;
+static short const INSTR_LENGTH             = 33;
+static short const INSTR_STRLEN             = 34;
+static short const INSTR_REVERSE            = 35;
+static short const INSTR_NOT                = 36;
+static short const INSTR_OR                 = 37;
+static short const INSTR_AND                = 38;
+static short const INSTR_INDENT             = 39;
+static short const INSTR_DEDENT             = 40;
+static short const INSTR_NEWLINE            = 41;
+static short const INSTR_NOOP               = 42; // do nothing
+static short const INSTR_POP                = 43;
+static short const INSTR_NULL               = 44; // push null value
+static short const INSTR_TRUE               = 45; // push true value
+static short const INSTR_FALSE              = 46;
 
 // combined instructions
 
-static const short INSTR_WRITE_STR          = 45; // load_str n, write
-static const short INSTR_WRITE_LOCAL        = 46; // load_local n, write
+static const short INSTR_WRITE_STR          = 47; // load_str n, write
+static const short INSTR_WRITE_LOCAL        = 48; // load_local n, write
 
-static const short MAX_BYTECODE             = 46;
-#define INSTR_ARRAY_SIZE 48
+static const short MAX_BYTECODE             = 48;
+#define INSTR_ARRAY_SIZE 50
 
 /**
  * Used for assembly/disassembly; describes instruction set
@@ -230,9 +233,15 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
     instructions[INSTR_BRF]                 = [Instruction newInstruction:@"brf" a:T_ADDR];
     instructions[INSTR_OPTIONS]             = [Instruction newInstruction:@"options"];
     instructions[INSTR_ARGS]                = [Instruction newInstruction:@"args"];
+    instructions[INSTR_PASSTHRU]            = [Instruction newInstruction:@"passthru"];
+    instructions[INSTR_PASSTHRU_IND]        = [Instruction newInstruction:@"passthru_ind"];
     instructions[INSTR_LIST]                = [Instruction newInstruction:@"list"];
     instructions[INSTR_ADD]                 = [Instruction newInstruction:@"add"];
     instructions[INSTR_TOSTR]               = [Instruction newInstruction:@"tostr"];
+    instructions[INSTR_PASSTHRU]            = [Instruction newInstruction:@"passthru" a:T_STRING];
+    instructions[INSTR_PASSTHRU_IND]        = nil;//[Instruction newInstruction:@"passthru_ind" a:T_INT];
+    
+    // Predefined functions
     instructions[INSTR_FIRST]               = [Instruction newInstruction:@"first"];
     instructions[INSTR_LAST]                = [Instruction newInstruction:@"last"];
     instructions[INSTR_REST]                = [Instruction newInstruction:@"rest"];
@@ -253,6 +262,8 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
     instructions[INSTR_NULL]                = [Instruction newInstruction:@"null"];
     instructions[INSTR_POP]                 = [Instruction newInstruction:@"true"];
     instructions[INSTR_FALSE]               = [Instruction newInstruction:@"false"];
+
+	// combined instructions
     instructions[INSTR_WRITE_STR]           = [Instruction newInstruction:@"write_str" a:T_STRING];
     instructions[INSTR_WRITE_LOCAL]         = [Instruction newInstruction:@"write_local" a:T_INT];
     instructions[MAX_BYTECODE+1]            = nil;
@@ -372,6 +383,11 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
 + (short) INSTR_ARGS
 {
     return INSTR_ARGS;
+}
+
++ (short) INSTR_PASSTHRU
+{
+    return INSTR_PASSTHRU;
 }
 
 + (short) INSTR_LIST

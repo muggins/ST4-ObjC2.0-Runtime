@@ -53,8 +53,8 @@
 {
     self=[super init];
     if ( self != nil ) {
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -70,8 +70,8 @@
 {
     self=[super initWithWriter:aWriter];
     if ( self != nil ) {
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -88,8 +88,8 @@
 {
     self=[super initWithWriter:aWriter];
     if ( self != nil ) {
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -106,8 +106,8 @@
 {
     self=[super initWithCapacity:(NSUInteger)sz];
     if ( self != nil ) {
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -134,7 +134,10 @@
         if (c == '\n') {
             atStartOfLine = YES;
             charPosition = -1;
-            [writer writeStr:newline];
+            if ( writer != nil )
+                [writer writeStr:newline];
+            else
+                [super writeStr:newline];
             n += [newline length];
             charIndex += [newline length];
             charPosition += n;

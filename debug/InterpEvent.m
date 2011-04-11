@@ -26,8 +26,14 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import "InterpEvent.h"
+#import "InstanceScope.h"
 
 @implementation InterpEvent
+
++ (id) newInterpEventWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop
+{
+    return [[InterpEvent alloc] initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop];
+}
 
 - (id) initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop
 {
@@ -40,9 +46,17 @@
     return self;
 }
 
+- (void) InterpEvent:(InstanceScope *)aScope start:(NSInteger)aStartChar stop:(NSInteger)aStopChar
+{
+    scope = aScope;
+    outputStartChar = aStartChar;
+    outputStopChar = aStopChar;
+}
+
+
 - (NSString *) description
 {
-    return [NSString stringWithFormat:@"{self=%@, start=%d, stop=%d}",
+    return [NSString stringWithFormat:@"{who=%@, start=%d, stop=%d}",
             NSStringFromClass([self class]), outputStartChar, outputStopChar];
 }
 

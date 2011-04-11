@@ -43,7 +43,7 @@
 - (id) init {
     self=[super init];
     if ( self != nil ) {
-        errors = [AMutableArray arrayWithCapacity:16];
+        errors = [AMutableArray arrayWithCapacity:5];
     }
     return self;
 }

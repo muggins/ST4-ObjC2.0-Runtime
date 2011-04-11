@@ -37,17 +37,17 @@
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t] retain];
+    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:nil arg:nil arg2:nil] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause] retain];
+    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:nil arg2:nil] retain];
 }
             
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg] retain];
+    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:nil] retain];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
@@ -55,6 +55,7 @@
     return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:anArg2] retain];
 }
 
+#ifdef DONTUSENOMO
 - (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t
 {
     if ( (self=[super init:anError who:nil cause:nil]) != nil ) {
@@ -86,10 +87,11 @@
     }
     return self;
 }
+#endif
 
 - (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
-    self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2];
+    self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         templateToken = aTemplateToken;
         token = t;

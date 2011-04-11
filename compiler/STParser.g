@@ -31,7 +31,7 @@ parser grammar STParser;
 
 options {
     tokenVocab=STLexer;
-    TokenLabelType=ANTLRCommonToken;
+    TokenLabelType=STToken;
     output=AST;
     ASTLabelType=ANTLRCommonTree;
     language=ObjC;
@@ -105,7 +105,8 @@ STToken *templateToken;
 
 - (id) init:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken
 {
-    if (self=[super initWithTokenStream:(id<ANTLRTokenStream>)anInput]) {
+    self = [super initWithTokenStream:(id<ANTLRTokenStream>)anInput];
+    if ( self != nil ) {
         [self setTreeAdaptor:[[ANTLRCommonTreeAdaptor newTreeAdaptor] retain]];
         errMgr = anErrMgr;
         templateToken = aTemplateToken;
@@ -229,7 +230,7 @@ option
             }
             }
                                                 -> {validOption&&defVal!=nil}?
-                                                   ^(EQUALS[@"="] ID
+                                                   ^(EQUALS['=', @"EQUALS"] ID
                                                    STRING[$ID, defVal])
                                                 ->
         )
@@ -302,7 +303,8 @@ primary
     ;
 
 args:   argExprList
-    |   namedArg ( ',' namedArg )* -> namedArg+
+    |   namedArg ( ',' namedArg )* (',' '...')? -> namedArg+ '...'?
+    |   '...'
     |
     ;
 

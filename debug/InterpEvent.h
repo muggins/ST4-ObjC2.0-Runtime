@@ -25,12 +25,16 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+#import "InstanceScope.h"
+
 @class ST;
 
 @interface InterpEvent : NSObject {
-  ST *who;
-  NSInteger outputStartChar;
-  NSInteger outputStopChar;
+    InstanceScope *scope;
+    ST *who;
+    NSInteger outputStartChar;
+    NSInteger outputStopChar;
 }
 
 - (id) initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop;

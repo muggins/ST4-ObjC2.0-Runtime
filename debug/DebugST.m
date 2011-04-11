@@ -43,7 +43,7 @@
 {
     self=[super init];
     if ( self != nil ) {
-        interpEvents = [AMutableArray arrayWithCapacity:16];
+        interpEvents = [AMutableArray arrayWithCapacity:5];
     }
     return self;
 }
@@ -117,7 +117,7 @@
     //    StringWriter *wr = [[StringWriter alloc] init];
     Writer *writer = [AutoIndentWriter newWriter];
     [writer setLineWidth:lineWidth];
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
     [interp exec:writer who:self];
 //    [[STViz alloc] init:errMgr root:self output:[wr description] interp:interp trace:[interp executionTrace] errors:errors.errors];
     return [interp getEvents];
@@ -141,7 +141,7 @@
 {
     Writer *aWriter = [AutoIndentWriter newWriter];
     [aWriter setLineWidth:lineWidth];
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
     [interp exec:aWriter who:self];
     return [interp getEvents];
 }

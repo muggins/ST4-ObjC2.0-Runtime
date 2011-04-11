@@ -25,11 +25,13 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <Cocoa/Cocoa.h>
 #import "ModelAdaptor.h"
 #import "ST.h"
+#import "Interpreter.h"
 
 @interface STModelAdaptor : NSObject <ModelAdaptor> {
 }
 
-- (id) getProperty:(ST *)self obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
+- (id) getProperty:(Interpreter *)interp who:(ST *)self obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

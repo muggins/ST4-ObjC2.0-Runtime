@@ -54,7 +54,7 @@
 - (void) runTimeError:(STMessage *)aMsg
 {
     if (aMsg.error != NO_SUCH_PROPERTY) {
-        NSLog( [ErrorType ErrorNum:aMsg.error], aMsg.arg);
+        NSLog( [ErrorType ErrorNum:aMsg.error], aMsg.arg, aMsg.arg2, aMsg.arg3);
     }
 }
 
@@ -180,29 +180,29 @@ static ErrorManager *DEFAULT_ERR_MGR;
     [listener compileTimeError:[STGroupCompiletimeMessage newMessage:anError srcName:srcName t:e.token cause:e arg:aMsg]];
 }
 
-- (void) runTimeError:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError
+- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError
 {
-    [listener runTimeError:[STRuntimeMessage newMessage:anError ip:ip who:aWho]];
+    [listener runTimeError:[STRuntimeMessage newMessage:interp error:anError ip:ip who:aWho]];
 }
 
-- (void) runTimeError:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg
+- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg
 {
-    [listener runTimeError:[STRuntimeMessage newMessage:anError ip:ip who:aWho arg:arg]];
+    [listener runTimeError:[STRuntimeMessage newMessage:interp error:anError ip:ip who:aWho arg:arg]];
 }
 
-- (void) runTimeError:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError e:(NSException *)e arg:(id)arg
+- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError e:(NSException *)e arg:(id)arg
 {
-    [listener runTimeError:[STRuntimeMessage newMessage:anError ip:ip who:aWho cause:e arg:arg]];
+    [listener runTimeError:[STRuntimeMessage newMessage:interp error:anError ip:ip who:aWho cause:e arg:arg]];
 }
 
-- (void) runTimeError:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg arg2:(id)arg2
+- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg arg2:(id)arg2
 {
-    [listener runTimeError:[STRuntimeMessage newMessage:anError ip:ip who:aWho cause:nil arg:arg arg2:arg2]];
+    [listener runTimeError:[STRuntimeMessage newMessage:interp error:anError ip:ip who:aWho cause:nil arg:arg arg2:arg2]];
 }
 
-- (void) runTimeError:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg arg2:(id)arg2 arg3:(id)arg3
+- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)anError arg:(id)arg arg2:(id)arg2 arg3:(id)arg3
 {
-    [listener runTimeError:[STRuntimeMessage newMessage:anError ip:ip who:aWho cause:nil arg:arg arg2:arg2 arg3:arg3]];
+    [listener runTimeError:[STRuntimeMessage newMessage:interp error:anError ip:ip who:aWho cause:nil arg:arg arg2:arg2 arg3:arg3]];
 }
 
 - (void) IOError:(ST *)aWho error:(ErrorTypeEnum)anError e:(NSException *)e

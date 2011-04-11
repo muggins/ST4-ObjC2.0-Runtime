@@ -73,7 +73,7 @@
         [self emit1:aTree opcode:Bytecode.INSTR_LOAD_LOCAL arg:index];
     }
     else {
-        if ([[Interpreter predefinedAnonSubtemplateAttributes] objectForKey:name]) {
+        if ( [[Interpreter predefinedAnonSubtemplateAttributes] objectForKey:name] != nil ) {
             [errMgr compileTimeError:NO_SUCH_ATTRIBUTE templateToken:templateToken t:(STToken *)aTree.token];
             [self emit:aTree opcode:Bytecode.INSTR_NULL];
         }
@@ -125,7 +125,6 @@
 {
     [self emit:opAST opcode:opcode];
     [self ensureCapacity:Bytecode.OPND_SIZE_IN_BYTES];
-//    [self writeShort:impl.instrs index:ip value:(short)arg];
     [impl.instrs insertShort:(short)arg atIndex:ip];
     ip += Bytecode.OPND_SIZE_IN_BYTES;
 }
@@ -134,10 +133,8 @@
 {
     [self emit:opAST opcode:opcode];
     [self ensureCapacity:Bytecode.OPND_SIZE_IN_BYTES * 2];
-//    [self writeShort:impl.instrs index:ip value:(short)arg];
     [impl.instrs insertShort:(short)arg atIndex:ip];
     ip += Bytecode.OPND_SIZE_IN_BYTES;
-//    [self writeShort:impl.instrs index:ip value:(short)arg2];
     [impl.instrs insertShort:(short)arg2 atIndex:ip];
     ip += Bytecode.OPND_SIZE_IN_BYTES;
 }
@@ -158,9 +155,6 @@
 {
     [self ensureCapacity:1 + Bytecode.OPND_SIZE_IN_BYTES];
     NSInteger instrSize = 1 + Bytecode.OPND_SIZE_IN_BYTES;
-#ifdef DONTUSENOMO
-    [System arraycopy:impl.instrs srcPos:addr dest:impl.instrs destPos:addr + instrSize length:ip - addr];
-#endif
     [impl.instrs memcpy:addr dest:addr+instrSize length:ip-addr];
     NSInteger save = ip;
     ip = addr;
@@ -172,9 +166,7 @@
         char op = [impl.instrs charAtIndex:a];
         Instruction *I = Bytecode.instructions[op];
         if (op == Bytecode.INSTR_BR || op == Bytecode.INSTR_BRF) {
-            //NSInteger opnd = [BytecodeDisassembler getShort:impl.instrs index:a + 1];
             NSInteger opnd = [impl.instrs shortAtIndex:a + 1];
-            //[self writeShort:impl.instrs index:a + 1 value:(short)(opnd + instrSize)];
             [impl.instrs insertShort:(short)(opnd + instrSize) atIndex:a + 1];
         }
         a += I.nopnds * Bytecode.OPND_SIZE_IN_BYTES + 1;

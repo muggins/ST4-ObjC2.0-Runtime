@@ -42,6 +42,7 @@
 #import "ST.h"
 #import "CompiledST.h"
 #import "AMutableArray.h"
+#import "MultiMap.h"
 
 RegionTypeEnum RegionTypeValueOf(NSString *text)
 {
@@ -143,6 +144,55 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 
 @end
 
+#ifdef DONTUSEYET
+	/** Events during template hierarchy construction (not evaluation) */
+	public static class DebugState {
+		/** Record who made us? ConstructionEvent creates Exception to grab stack */
+		public ConstructionEvent newSTEvent;
+
+		/** Track construction-time add attribute "events"; used for ST user-level debugging */
+		public MultiMap<String, AddAttributeEvent> addAttrEvents = new MultiMap<String, AddAttributeEvent>();
+	}
+
+
+	/** If Interpreter.trackCreationEvents, track creation, add-attr events
+	 *  for each object. Create this object on first use.
+	 */
+	public DebugState debugState;
+
+#endif
+
+@implementation DebugState
+
+@synthesize newSTEvent;
+@synthesize addAttrEvents;
+
++ (id) newDebugState
+{
+    return [[DebugState alloc] init];
+}
+
+/** Record who made us? ConstructionEvent creates Exception to grab stack */
++ (ConstructionEvent *)newSTEvent
+{
+    return [ConstructionEvent newEvent];
+}
+
+- (id) init
+{
+    self = [super init];
+    return self;
+}
+
+/** Track construction-time add attribute "events"; used for ST user-level debugging */
+- (MultiMap *)addAttrEvents
+{
+    addAttrEvents = [MultiMap newMultiMap];
+    return addAttrEvents;
+}
+
+@end
+
 @implementation ST
 
 /**
@@ -160,11 +210,24 @@ static NSString *EMPTY_ATTR = @"";
 @synthesize locals;
 @synthesize enclosingInstance;
 @synthesize groupThatCreatedThisInstance;
+@synthesize debugState;
 
 + (void) initialize
 {
     cachedNoSuchPropException = [STNoSuchPropertyException newException:nil];
     EMPTY_ATTR = @"";
+}
+
++ (id) cachedNoSuchPropException;
+{
+    if ( cachedNoSuchPropException == nil )
+        cachedNoSuchPropException = [STNoSuchPropertyException newException:@"NSP"];
+    return cachedNoSuchPropException;
+}
+
++ (void) setCachedNoSuchPropException:(id)e
+{
+    cachedNoSuchPropException = e;
 }
 
 + (RegionTypeEnum) IMPLICIT
@@ -197,6 +260,11 @@ static NSString *EMPTY_ATTR = @"";
     return EMPTY_ATTR;
 }
 
+- (DebugState *)debugState
+{
+    return debugState;
+}
+
 /*
  + (AttributeList *) attributeList
 {
@@ -204,6 +272,7 @@ static NSString *EMPTY_ATTR = @"";
 }
 */
 
+/** Used by group creation routine, not by users */
 + (id) newST
 {
     return [[[ST alloc] init] retain];
@@ -238,6 +307,10 @@ static NSString *EMPTY_ATTR = @"";
     if ( self != nil ) {
         if (EMPTY_ATTR == nil)
             EMPTY_ATTR = @"";
+		if ( STGroup.trackCreationEvents ) {
+			if ( debugState==nil ) debugState = [DebugState newDebugState];
+			debugState.newSTEvent = [ConstructionEvent newConstructionEvent];
+		}
         groupThatCreatedThisInstance = STGroup.defaultGroup;
         impl = [groupThatCreatedThisInstance compile:[groupThatCreatedThisInstance getFileName] name:nil args:nil template:nil templateToken:nil];
         impl.hasFormalArgs = NO;
@@ -301,8 +374,9 @@ static NSString *EMPTY_ATTR = @"";
     return self;
 }
 
-/**
- * Clone a prototype template for application in MAP operations; copy all fields
+/*
+ * Clone a prototype template for application in MAP operations;
+ *  copy all fields minus debugState; don't call this(), which creates ctor event
  */
 - (id) initWithProto:(ST *)proto
 {
@@ -335,12 +409,17 @@ static NSString *EMPTY_ATTR = @"";
     NSRange aRange;
     if ( aName == nil )
         return self;
-    if ( value == nil )
-        value = [NSNull null];
     aRange = [aName rangeOfString:@"."];
     if (aRange.location != NSNotFound) {
         @throw [ANTLRIllegalArgumentException newException:@"cannot have '.' in attribute names"];
     }
+#pragma mark fix this
+#ifdef DONTUSEYET
+	if ( STGroup.trackCreationEvents ) {
+		if ( debugState==nil ) debugState = [DebugState newDebugState];
+		[[debugState addAttrEvents] map:aName, new AddAttributeEvent:value forKey:aName]];
+	}
+#endif
     FormalArgument *arg = nil;
     if (impl.hasFormalArgs) {
         if (impl.formalArguments != nil)
@@ -357,7 +436,7 @@ static NSString *EMPTY_ATTR = @"";
             arg = [FormalArgument newFormalArgument:aName];
             [impl addArg:arg];
             if (locals == nil)
-                locals = [AMutableArray arrayWithCapacity:16];
+                locals = [AMutableArray arrayWithCapacity:5];
             [locals insertObject:EMPTY_ATTR atIndex:arg.index];
         }
     }
@@ -387,6 +466,43 @@ static NSString *EMPTY_ATTR = @"";
 {
     return [self add:aName value:[NSString stringWithFormat:@"%d", value]];
 }
+
+#pragma mark fix this
+#ifdef DONTUSEYET
+	/** Split "aggrName.{propName1,propName2}" into list [propName1, propName2]
+	 *  and the aggrName. Spaces are allowed around ','.
+	 */
+- (ST *) addAggr:(NSString *)aggrSpec values:(id)values
+{
+		NSRange dot = [aggrSpec rangeOfString:@".{"];
+		if ( values == nil || values.length == 0 ) {
+			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"missing values for aggregate attribute format: %@", aggrSpec]];
+		}
+		int finalCurly = [aggrSpec indexOfCharacter:'}'];
+		if ( dot.length < 0 || finalCurly < 0 ) {
+			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+		}
+		NSString *aggrName = [aggrSpec subStringWithRange:(NSMakeRange(0, dot.location)];
+		NSString *propString = [aggrSpec subStringWithRange:NSMakeRange(dot.location+2, ([aggrSpec length]-(dot.location+3)))];
+//		propString = propString.trim();
+		NSString[] *propNames = propString.split("\\ *,\\ *");
+		if ( propNames==nil || [propNames length]==0 ) {
+			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+		}
+		if ( values.length != propNames.length ) {
+			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"number of properties and values mismatch for aggregate attribute format: %@", aggrSpec]];
+		}
+		int i=0;
+		Aggregate *aggr = [Aggregate newAggregate];
+		for (NSString *p in propNames) {
+			id v = values[i++];
+			[aggr.properties setObject:v forKey:p];
+		}
+
+		[ST add:aggrName value:aggr]; // now add as usual
+		return self;
+}
+#endif
 
 /**
  * Remove an attribute value entirely (can't remove attribute definitions).
@@ -431,39 +547,20 @@ static NSString *EMPTY_ATTR = @"";
     }
 }
 
-/**
- * Find an attr via dynamic scoping up enclosing ST chain.
- * If not found, look for a map.    So attributes sent in to a template
- * override dictionary names.
- */
+/** Find an attr in this template only. */
 - (id) getAttribute:(NSString *)name
 {
     ST *p = self;
-    
-    while ( p != nil ) {
-        FormalArgument *localArg = nil;
-        if ( p.impl.formalArguments != nil )
-            localArg = [p.impl.formalArguments objectForKey:name];
-        if ( localArg != nil ) {
-            id obj = [p.locals objectAtIndex:localArg.index];
-            if (obj == EMPTY_ATTR)
-                obj = nil;
-            return obj;
-        }
-        p = p.enclosingInstance;
+    FormalArgument *localArg = nil;
+    if ( p.impl.formalArguments != nil )
+        localArg = [p.impl.formalArguments objectForKey:name];
+    if ( localArg != nil ) {
+        id obj = [p.locals objectAtIndex:localArg.index];
+        if ( obj == EMPTY_ATTR )
+            obj = nil;
+        return obj;
     }
-	// got to root template and no definition, try dictionaries in group
-    if ( [impl.nativeGroup isDictionary:name] ) {
-        return [impl.nativeGroup rawGetDictionary:name];
-    }
-	// not found, report unknown attr unless formal args unknown
-    if ( cachedNoSuchPropException == nil ) {
-        cachedNoSuchPropException = [STNoSuchPropertyException newException:name];
-    }
-    else {
-        cachedNoSuchPropException.propertyName = name;
-    }
-    @throw cachedNoSuchPropException;
+    return nil;
 }
 
 - (NSMutableDictionary *) getAttributes
@@ -486,7 +583,7 @@ static NSString *EMPTY_ATTR = @"";
 {
     AttributeList *multi;
     if ( curvalue == nil ) {
-        multi = [AttributeList arrayWithCapacity:16]; // make list to hold multiple values
+        multi = [AttributeList arrayWithCapacity:5]; // make list to hold multiple values
         [multi addObject:[NSNull null]];                // add previous single-valued attribute
     }
     else if ( [curvalue isKindOfClass:[AttributeList class]]) { // already a list made by ST
@@ -507,44 +604,10 @@ static NSString *EMPTY_ATTR = @"";
     else {
         // curvalue nonlist and we want to add an attribute
         // must convert curvalue existing to list
-        multi = [AttributeList arrayWithCapacity:16]; // make list to hold multiple values
+        multi = [AttributeList arrayWithCapacity:5]; // make list to hold multiple values
         [multi addObject:curvalue];                 // add previous single-valued attribute
     }
     return multi;
-}
-
-/**
- * If an instance of x is enclosed in a y which is in a z, return
- * a String of these instance names in order from topmost to lowest;
- * here that would be "[z y x]".
- */
-- (NSString *) getEnclosingInstanceStackString
-{
-    AMutableArray *templates = [self getEnclosingInstanceStack:YES];
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
-    NSInteger i = 0;
-    for (ST *st in templates) {
-        if (i > 0)
-            [buf appendString:@" "];
-        [buf appendString:[st getName]];
-        i++;
-    }
-    return buf;
-}
-
-- (AMutableArray *) getEnclosingInstanceStack:(BOOL)topdown
-{
-    AMutableArray *stack = [AMutableArray arrayWithCapacity:30];
-    ST *p = self;
-    
-    while (p != nil) {
-        if (topdown)
-            [stack insertObject:p atIndex:0];
-        else
-            [stack addObject:p];
-        p = p.enclosingInstance;
-    }
-    return stack;
 }
 
 - (NSString *) getName
@@ -559,29 +622,25 @@ static NSString *EMPTY_ATTR = @"";
 
 - (NSInteger) write:(id<STWriter>)wr1
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr];
-    [interp setDefaultArguments:wr1 who:self];
+    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:impl.nativeGroup.errMgr];
-    [interp setDefaultArguments:wr1 who:self];
+    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 listener:(id<STErrorListener>)listener
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr];
-    [interp setDefaultArguments:wr1 who:self];
+    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale listener:(id<STErrorListener>)listener
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:[ErrorManager newErrorManagerWithListener:listener]];
-    [interp setDefaultArguments:wr1 who:self];
+    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:[ErrorManager newErrorManagerWithListener:listener] debug:NO];
     return [interp exec:wr1 who:self];
 }
 
@@ -660,6 +719,80 @@ static NSString *EMPTY_ATTR = @"";
     [self write:wr locale:locale];
 //    return [wr1 description];
     return [wr description];
+}
+
+#pragma mark fix this sometime
+#ifdef DONTUSEYET
+	// LAUNCH A WINDOW TO INSPECT TEMPLATE HIERARCHY
+
+- (STViz *)inspect
+{
+    return [self inspect:(NSLocale *)[NSLocale currentLocale]];
+}
+
+- (STViz *)inspect:(NSInteger)lineWidth
+{
+		return [self inspect:impl.nativeGroup.errMgr locale:(NSLocale *)[NSLocale currentLocale] lineWidth:(NSInteger)lineWidth];
+}
+
+- (STViz *)inspect:(NSLocale *)locale
+{
+	return [self inspect:impl.nativeGroup.errMgr locale:locale lineWidth:STWriter.NO_WRAP];
+}
+
+- (STViz *)inspect:(ErrorManager *)errMgr
+            locale:(NSLocale *)locale
+         lineWidth:(NSInteger)lineWidth
+{
+		ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
+		[impl.nativeGroup setListener:errors];
+		StringWriter *wr1 = [StringWriter newStringWriter];
+		id<STWriter>wr = [AutoIndentWriter newAutoIndentWriter:wr1];
+		[wr setLineWidth:lineWidth];
+		Interpreter *interp =
+			[Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
+		[interp exec:wr  who:self]; // render and track events
+		AMutableArray *events = [interp getEvents];
+		EvalTemplateEvent *overallTemplateEval =
+			[(EvalTemplateEvent *)events get([events size]-1];
+		STViz *viz = [STViz newSTViz:errMgr
+		                        root:overallTemplateEval
+		                      output:[wr1 toString]
+		                 interpreter:interp
+							   trace:[interp getExecutionTrace]
+							  errors:errors.errors];
+		viz.open();
+		return viz;
+}
+
+#endif
+
+// TESTING SUPPORT
+
+- (AMutableArray *)getEvents
+{
+    return [self getEvents:[NSLocale currentLocale]];
+}
+
+- (AMutableArray *)getEventsWithLineWidth:(NSInteger)lineWidth
+{
+    return [self getEvents:[NSLocale currentLocale] lineWidth:lineWidth];
+}
+
+- (AMutableArray *)getEvents:(NSLocale *)locale
+{
+    return [self getEvents:locale lineWidth:Writer.NO_WRAP];
+}
+
+- (AMutableArray *)getEvents:(NSLocale *)locale lineWidth:(NSInteger)lineWidth
+{
+    StringWriter *wr1 = [StringWriter newWriter];
+    id<STWriter>wr = [AutoIndentWriter newWriter:wr1];
+    [wr setLineWidth:lineWidth];
+    Interpreter *interp =
+			[Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
+    [interp exec:wr who:self]; // render and track events
+    return [interp getEvents];
 }
 
 - (NSString *) description

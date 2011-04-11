@@ -73,6 +73,11 @@
 
 @implementation ConstructionEvent
 
++ (id) newEvent
+{
+    return [[ConstructionEvent alloc] init];
+}
+
 - (id) init
 {
     self=[super init];

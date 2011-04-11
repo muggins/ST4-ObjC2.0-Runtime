@@ -30,6 +30,8 @@
 #import "Writer.h"
 #import "STGroup.h"
 #import "STErrorListener.h"
+#import "ConstructionEvent.h"
+#import "MultiMap.h"
 
 /**
  * <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder
@@ -73,6 +75,23 @@ typedef enum {
 
 @end
 
+/** Events during template hierarchy construction (not evaluation) */
+@interface DebugState : NSObject {
+
+    /** Record who made us? ConstructionEvent creates Exception to grab stack */
+    ConstructionEvent *newSTEvent;
+    /** Track construction-time add attribute "events"; used for ST user-level debugging */
+    MultiMap *addAttrEvents;
+}
+
+@property (retain) ConstructionEvent *newSTEvent;
+@property (retain) MultiMap *addAttrEvents;
+
++ (id) newDebugState;
+- (id) init;
+
+@end
+
 /**
  * An instance of the StringTemplate. It consists primarily of
  * a reference to its implementation (shared among all instances)
@@ -107,6 +126,11 @@ typedef enum {
      */
     ST *enclosingInstance;
     
+	/** If Interpreter.trackCreationEvents, track creation, add-attr events
+	 *  for each object. Create this object on first use.
+	 */
+	DebugState *debugState;
+
     /**
      * Created as instance of which group? We need this to init interpreter
      * via render.  So, we create st and then it needs to know which
@@ -128,9 +152,14 @@ typedef enum {
 }
 
 + (void) initialize;
+
++ (id) cachedNoSuchPropException;
++ (void) setCachedNoSuchPropException:(id)e;
+
 + (NSInteger) NO_WRAP;
 + (NSString *)UNKNOWN_NAME;
 + (NSString *) EMPTY_ATTR;
+- (DebugState *)debugState;
 //+ (AttributeList *) attributeList;
 
 + (id) newST;
@@ -150,8 +179,6 @@ typedef enum {
 - (id) getAttribute:(NSString *)name;
 - (NSMutableDictionary *) getAttributes;
 + (AttributeList *) convertToAttributeList:(id)curvalue;
-- (NSString *) getEnclosingInstanceStackString;
-- (AMutableArray *) getEnclosingInstanceStack:(BOOL)topdown;
 - (NSString *) getName;
 - (NSInteger) write:(Writer *)wr1;
 - (NSInteger) write:(Writer *)wr1 locale:(NSLocale *)locale;
@@ -165,6 +192,10 @@ typedef enum {
 - (NSString *) renderWithLineWidth:(NSInteger)lineWidth;
 - (NSString *) render:(NSLocale *)locale;
 - (NSString *) render:(NSLocale *)locale lineWidth:(NSInteger)lineWidth;
+- (AMutableArray *)getEvents;
+- (AMutableArray *)getEventsWithLineWidth:(NSInteger)lineWidth;
+- (AMutableArray *)getEvents:(NSLocale *)locale;
+- (AMutableArray *)getEvents:(NSLocale *)locale lineWidth:(NSInteger)lineWidth;
 - (NSString *) description;
 - (NSString *) toString;
 + (NSString *) format:(NSString *)template attributes:(id)attributes;
@@ -178,5 +209,6 @@ typedef enum {
 @property (retain) AMutableArray *locals;
 @property (retain) ST *enclosingInstance;
 @property (retain) STGroup *groupThatCreatedThisInstance;
+@property (retain) DebugState *debugState;
 
 @end

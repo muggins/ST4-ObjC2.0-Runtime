@@ -54,6 +54,7 @@
     NSArray *trace;
 }
 
++ (id) newEvent;
 - (id) init;
 - (NSString *) fileName;
 - (NSInteger) line;

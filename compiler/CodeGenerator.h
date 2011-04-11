@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g 2011-03-30 10:45:00
+// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g 2011-04-06 17:32:07
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -64,6 +64,69 @@ typedef enum {
 } ANTLR3TokenType;
 #endif
 
+#pragma mark Tokens
+#ifdef EOF
+#undef EOF
+#endif
+#define EOF -1
+#define ID 4
+#define WS 5
+#define STRING 6
+#define ANONYMOUS_TEMPLATE 7
+#define COMMENT 8
+#define LINE_COMMENT 9
+#define BIGSTRING 10
+#define BIGSTRING_NO_NL 11
+#define T_FALSE 12
+#define T_TRUE 13
+#define IF 14
+#define ELSE 15
+#define ELSEIF 16
+#define ENDIF 17
+#define SUPER 18
+#define SEMI 19
+#define BANG 20
+#define ELLIPSIS 21
+#define EQUALS 22
+#define COLON 23
+#define LPAREN 24
+#define RPAREN 25
+#define LBRACK 26
+#define RBRACK 27
+#define COMMA 28
+#define DOT 29
+#define LCURLY 30
+//#define RCURLY 31
+#define TEXT 32
+//#define LDELIM 33
+#define RDELIM 34
+#define PIPE 35
+#define OR 36
+#define AND 37
+#define INDENT 38
+#define NEWLINE 39
+#define AT 40
+#define END 41
+#define EXPR 42
+#define OPTIONS 43
+#define PROP 44
+#define PROP_IND 45
+#define INCLUDE 46
+#define INCLUDE_IND 47
+#define EXEC_FUNC 48
+#define INCLUDE_SUPER 49
+#define INCLUDE_SUPER_REGION 50
+#define INCLUDE_REGION 51
+#define TO_STR 52
+#define LIST 53
+#define MAP 54
+#define ZIP 55
+#define SUBTEMPLATE 56
+#define ARGS 57
+#define ELEMENTS 58
+#define REGION 59
+#define TNULL 60
+#define INDENTED_EXPR 61
 #pragma mark Dynamic Global Scopes
 #pragma mark Dynamic Rule Scopes
 /* start of ruleAttributeScopeInterface */

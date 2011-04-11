@@ -58,64 +58,65 @@ typedef enum {
 #define COMMENT 8
 #define LINE_COMMENT 9
 #define BIGSTRING 10
-#define T_FALSE 11
-#define T_TRUE 12
-#define IF 13
-#define ELSE 14
-#define ELSEIF 15
-#define ENDIF 16
-#define SUPER 17
-#define SEMI 18
-#define BANG 19
-#define ELLIPSIS 20
-#define EQUALS 21
-#define COLON 22
-#define LPAREN 23
-#define RPAREN 24
-#define LBRACK 25
-#define RBRACK 26
-#define COMMA 27
-#define DOT 28
-#define LCURLY 29
-//#define RCURLY 30
-#define TEXT 31
-//#define LDELIM 32
-#define RDELIM 33
-#define PIPE 34
-#define OR 35
-#define AND 36
-#define INDENT 37
-#define NEWLINE 38
-#define AT 39
-#define REGION_END 40
-#define EXPR 41
-#define OPTIONS 42
-#define PROP 43
-#define PROP_IND 44
-#define INCLUDE 45
-#define INCLUDE_IND 46
-#define EXEC_FUNC 47
-#define INCLUDE_SUPER 48
-#define INCLUDE_SUPER_REGION 49
-#define INCLUDE_REGION 50
-#define TO_STR 51
-#define LIST 52
-#define MAP 53
-#define ZIP 54
-#define SUBTEMPLATE 55
-#define ARGS 56
-#define ELEMENTS 57
-#define REGION 58
-#define T_NULL 59
-#define INDENTED_EXPR 60
+#define BIGSTRING_NO_NL 11
+#define T_FALSE 12
+#define T_TRUE 13
+#define IF 14
+#define ELSE 15
+#define ELSEIF 16
+#define ENDIF 17
+#define SUPER 18
+#define SEMI 19
+#define BANG 20
+#define ELLIPSIS 21
+#define EQUALS 22
+#define COLON 23
+#define LPAREN 24
+#define RPAREN 25
+#define LBRACK 26
+#define RBRACK 27
+#define COMMA 28
+#define DOT 29
+#define LCURLY 30
+//#define RCURLY 31
+#define TEXT 32
+//#define LDELIM 33
+#define RDELIM 34
+#define PIPE 35
+#define OR 36
+#define AND 37
+#define INDENT 38
+#define NEWLINE 39
+#define AT 40
+#define REGION_END 41
+#define EXPR 42
+#define OPTIONS 43
+#define PROP 44
+#define PROP_IND 45
+#define INCLUDE 46
+#define INCLUDE_IND 47
+#define EXEC_FUNC 48
+#define INCLUDE_SUPER 49
+#define INCLUDE_SUPER_REGION 50
+#define INCLUDE_REGION 51
+#define TO_STR 52
+#define LIST 53
+#define MAP 54
+#define ZIP 55
+#define SUBTEMPLATE 56
+#define ARGS 57
+#define ELEMENTS 58
+#define REGION 59
+#define T_NULL 60
+#define INDENTED_EXPR 61
 
 @implementation STLexer
 
 static STToken *SKIP;
 static char Token_EOF = (char)-1;            // EOF char
 static NSInteger EOF_TYPE = ANTLRTokenTypeEOF;  // EOF token type
-static NSInteger RCURLY = 30;
-static NSInteger LDELIM = 32;
+static NSInteger RCURLY = 31;
+static NSInteger LDELIM = 33;
 
 + (NSInteger) LDELIM
 {
@@ -140,13 +141,6 @@ static NSInteger LDELIM = 32;
 + (NSInteger) EOF_TYPE
 {
     return EOF_TYPE;
-}
-
-+ (NSString *) str:(NSInteger)aChar {
-    if (aChar == (unichar) ANTLRTokenTypeEOF)
-        return @"<EOF>";
-    return [NSString stringWithFormat:@"\\u%4x", (unichar)aChar];
-//    return [NSString stringWithFormat:@"%c", aChar];
 }
 
 + (void) initialize
@@ -227,34 +221,6 @@ delimiterStopChar:(unichar)aStopChar
 }
 
 
-/**
- * Ensure x is next character on the input stream
- */
-- (void) match:(unichar)x
-{
-    if (c == x) {
-        [self consume];
-    }
-    else {
-        @throw [NSException exceptionWithName:@"No Viable Alt Exception" reason:[NSString stringWithFormat:@"%@: expecting '%c' found '%@'", [input getSourceName], x, [STLexer str:c]] userInfo:nil];
-    /*
-    NoViableAltException * e = [[[NoViableAltException alloc] init:@"" param1:0 state:0 stream:input] autorelease];
-    [errMgr lexerError:[input sourceName] param1:[[[@"expecting '" stringByAppendingString:x] stringByAppendingString:@"', found '"] + [self str:c] stringByAppendingString:@"'"] param2:templateToken param3:e];
-     */
-    }
-}
-
-- (void) consume
-{
-    [input consume];
-    c = (unichar)[input LA:1];
-}
-
-- (void) emit:(STToken *)token
-{
-    [tokens addObject:token];
-}
-
 - (STToken *) nextToken
 {
     STToken *t = nil;
@@ -267,6 +233,28 @@ delimiterStopChar:(unichar)aStopChar
         t = [self _nextToken];
     }
     return t;
+}
+
+/**
+ * Ensure x is next character on the input stream
+ */
+- (void) match:(unichar)x
+{
+    if (c != x) {
+        @throw [NSException exceptionWithName:@"No Viable Alt Exception" reason:[NSString stringWithFormat:@"%@: expecting '%c' found '%@'", [input getSourceName], x, [STLexer str:c]] userInfo:nil];
+    }
+    [self consume];
+}
+
+- (void) consume
+{
+    [input consume];
+    c = (unichar)[input LA:1];
+}
+
+- (void) emit:(STToken *)token
+{
+    [tokens addObject:token];
 }
 
 - (STToken *) _nextToken
@@ -286,28 +274,21 @@ delimiterStopChar:(unichar)aStopChar
         if (t != SKIP)
             return t;
     }
-    
 }
 
 - (STToken *) outside
 {
     if ([input getCharPositionInLine] == 0 && (c == ' ' || c == '\t')) {
-        
-        while (c == ' ' || c == '\t')
+        while (c == ' ' || c == '\t') // scarf indent
             [self consume];
-        
         if (c != (unichar) EOF_TYPE)
             return [self newToken:INDENT];
         return [self newToken:TEXT];
     }
     if (c == delimiterStartChar) {
         [self consume];
-        if (c == '!') {
-            [self mCOMMENT];
-            return SKIP;
-        }
-        if (c == '\\')
-            return [self mESCAPE];
+        if (c == '!')  return [self mCOMMENT];
+        if (c == '\\') return [self mESCAPE];
         scanningInsideExpr = YES;
         return [self newToken:LDELIM];
     }
@@ -398,9 +379,6 @@ delimiterStopChar:(unichar)aStopChar
                 ANTLRNoViableAltException *re = [ANTLRNoViableAltException newException:0 state:0 stream:input];
                 re.line = startLine;
                 re.charPositionInLine = startCharPositionInLine;
-                if (c == (unichar)Token_EOF) {
-                    @throw [STException newException:[NSString stringWithFormat:@"EOF inside ST expression at %@:%d %@", re.line, re.charPositionInLine, re]];
-                }
                 [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid character '%c'", c] templateToken:templateToken e:re];
                 if (c == (unichar)Token_EOF) {
                     return [self newToken:EOF_TYPE];
@@ -408,7 +386,6 @@ delimiterStopChar:(unichar)aStopChar
                 [self consume];
         }
     }
-    
 }
 
 - (STToken *) subTemplate
@@ -424,7 +401,6 @@ delimiterStopChar:(unichar)aStopChar
     [self mWS];
     [argTokens addObject:[self mID]];
     [self mWS];
-    
     while (c == ',') {
         [self consume];
         [argTokens addObject:[self newTokenFromPreviousChar:COMMA]];
@@ -432,17 +408,14 @@ delimiterStopChar:(unichar)aStopChar
         [argTokens addObject:[self mID]];
         [self mWS];
     }
-    
     [self mWS];
     if (c == '|') {
         [self consume];
         [argTokens addObject:[self newTokenFromPreviousChar:PIPE]];
         if ([STLexer isWS:c])
             [self consume];
-        
         for (STToken *t in argTokens)
             [self emit:t];
-        
         [input release:m];
         scanningInsideExpr = NO;
         startCharIndex = curlyStartChar;
@@ -590,7 +563,6 @@ delimiterStopChar:(unichar)aStopChar
         if (c == '\\') {
             sawEscape = YES;
             [self consume];
-            
             switch (c) {
                 case 'n': [buf appendFormat:@"%c", '\n']; break;
                 case 'r': [buf appendFormat:@"%c", '\r']; break;
@@ -624,7 +596,7 @@ delimiterStopChar:(unichar)aStopChar
         [self consume];
 }
 
-- (void) mCOMMENT
+- (id) mCOMMENT
 {
     [self match:'!'];
     while (!(c == '!' && [input LA:2] == delimiterStopChar)) {
@@ -637,19 +609,20 @@ delimiterStopChar:(unichar)aStopChar
         }
         [self consume];
     }
+    [self consume]; // grab !>
     [self consume];
-    [self consume];
+	return [self newToken:COMMENT];
 }
 
 - (void) mLINEBREAK
 {
     [self match:'\\'];
-    [self match:delimiterStopChar];
+    [self match:delimiterStopChar]; // only kill 2nd \ as outside() kills first on
     while (c == ' ' || c == '\t')
         [self consume];
-    if (c == '\r') [self consume];
+    if (c == '\r') [self consume]; // scarf WS after <\\>
     if (c == '\n') [self match:'\n'];
-    while (c == ' ' || c == '\t') [self consume];
+    while (c == ' ' || c == '\t') [self consume]; // scarf any indent
 }
 
 + (BOOL) isIDStartLetter:(unichar)c
@@ -690,7 +663,9 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) newToken:(NSInteger)ttype text:(NSString *)text pos:(NSInteger)pos
 {
-    STToken *t = [[STToken newToken:ttype text:text] retain];
+    STToken *t = [STToken newToken:ttype text:text];
+    [t setStart:startCharIndex];
+    [t setStop:[input index]-1];
     [t setLine:[input getLine]];
     [t setCharPositionInLine:pos];
     return t;
@@ -730,6 +705,12 @@ delimiterStopChar:(unichar)aStopChar
     return self;
 }
 
++ (NSString *) str:(NSInteger)aChar {
+    if (aChar == (unichar) ANTLRTokenTypeEOF)
+        return @"<EOF>";
+    return [NSString stringWithFormat:@"\\u%4x", (unichar)aChar];
+}
+
 @synthesize delimiterStartChar;
 @synthesize delimiterStopChar;
 @synthesize scanningInsideExpr;
@@ -744,5 +725,54 @@ delimiterStopChar:(unichar)aStopChar
 @synthesize tokens;
 //@synthesize errorHeader;
 //@synthesize sourceName;
+
+@end
+
+@implementation STLexer_NO_NL
+
+- (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)anErrMgr
+                               input:(id<ANTLRCharStream>)anInput
+                       templateToken:(STToken *)aTemplateToken
+                  delimiterStartChar:(unichar)aStartChar
+                   delimiterStopChar:(unichar)aStopChar
+{
+    return [[STLexer_NO_NL alloc] init:anErrMgr
+                                input:anInput
+                        templateToken:aTemplateToken
+                   delimiterStartChar:aStartChar
+                    delimiterStopChar:aStopChar];
+}
+
+- (id) init:(ErrorManager *)anErrMgr
+      input:(id<ANTLRCharStream>)anInput
+      templateToken:(STToken *)aTemplateToken
+      delimiterStartChar:(unichar)aStartChar
+      delimiterStopChar:(unichar)aStopChar
+{
+    self=[super init];
+    if ( self != nil ) {
+        delimiterStartChar = aStartChar;
+        delimiterStopChar = aStopChar;
+        scanningInsideExpr = NO;
+        subtemplateDepth = 0;
+        tokens = [AMutableArray arrayWithCapacity:16];
+        errMgr = anErrMgr;
+        input = anInput;
+        c = (unichar)[input LA:1];
+        templateToken = aTemplateToken;
+    }
+    return self;
+}
+
+/** Throw out \n tokens inside BIGSTRING_NO_NL */
+- (STToken *)nextToken
+{
+    STToken *t = [super nextToken];
+	while ( [t getType] == NEWLINE ||
+	        [t getType] == INDENT ) {
+		t = [super nextToken];
+	}
+	return t;
+}
 
 @end

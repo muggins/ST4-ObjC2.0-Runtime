@@ -54,6 +54,7 @@
   NSException *cause;
 }
 
++ (id) newMessage:(ErrorTypeEnum)anError;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
@@ -61,12 +62,14 @@
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
 
+#ifdef DONTUSENOMO
 - (id) init:(ErrorTypeEnum)anError;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where arg:(id)arg;
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
+#endif
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
 - (NSString *) description;
 - (NSString *) toString;

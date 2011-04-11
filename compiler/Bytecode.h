@@ -40,13 +40,13 @@ NSString *OperandTypeDescription(NSInteger value);
 
 @interface Instruction : NSObject {
     NSString *name;
-    NSInteger type[DEF_MAX_OPNDS];
-    NSInteger nopnds;
+    OperandType ttype[DEF_MAX_OPNDS];
+    short nopnds;
 }
 
 @property (retain) NSString *name;
-//@property (retain, getter=getType:(NSInteger), setter=setType:(OperandType) idx:(NSInteger)) NSInteger type[MAX_OPNDS];
-@property (assign, setter=setNopnds:) NSInteger nopnds;
+//@property (assign) short ttype[DEF_MAX_OPNDS];
+@property (assign) short nopnds;
 
 + (id) newInstruction:(NSString *)aName;
 + (id) newInstruction:(NSString *)aName a:(OperandType)a;
@@ -58,7 +58,7 @@ NSString *OperandTypeDescription(NSInteger value);
 
 - (OperandType)getType:(NSInteger)idx;
 - (void)setType:(OperandType)aType idx:(NSInteger)idx;
-- (void)setNopnds:(NSInteger)cnt;
+- (void)setNopnds:(short)cnt;
 
 @end
 
@@ -99,6 +99,7 @@ NSString *OperandTypeDescription(NSInteger value);
 + (short) INSTR_BRF;
 + (short) INSTR_OPTIONS;
 + (short) INSTR_ARGS;
++ (short) INSTR_PASSTHRU;
 + (short) INSTR_LIST;
 + (short) INSTR_ADD;
 + (short) INSTR_TOSTR;

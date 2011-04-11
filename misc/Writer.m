@@ -35,7 +35,7 @@
 
 + (NSInteger) NO_WRAP
 {
-    return 10000;
+    return 1000;
 }
 
 + (id) newWriter
@@ -68,8 +68,8 @@
             ptr[i] = '\0';
         }
         ip = 0;
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -92,8 +92,8 @@
             ptr[i] = '\0';
         }
         ip = 0;
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -125,8 +125,8 @@
             self.ptr = writer.ptr;
             self.ip = writer.ip;
         }
-        indents = [AMutableArray arrayWithCapacity:16];
-        anchors = [ANTLRIntArray newArrayWithLen:30];
+        indents = [AMutableArray arrayWithCapacity:5];
+        anchors = [ANTLRIntArray newArrayWithLen:5];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -209,7 +209,7 @@
     NSInteger len;
     len = [str length];
     [self appendString:str];
-    ip += len;
+    //ip += len;
     if ( ptr[ip] != '\0') ptr[ip] = '\0';
     return len;
 }
@@ -222,6 +222,9 @@
 
 - (NSString *) description
 {
+    if ( ptr == nil /* || ptr == [NSNull null] */ ) {
+        return @"";
+    }
     NSLog( @"%@", [NSString stringWithCString:(const char *)ptr encoding:NSASCIIStringEncoding] );
     return [NSString stringWithCString:ptr encoding:NSASCIIStringEncoding];
 }

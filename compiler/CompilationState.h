@@ -43,20 +43,15 @@
 
 @interface CompilationState : NSObject {
 
-  /**
-   * The compiled code implementation to fill in.
- */
+	/** The compiled code implementation to fill in. */
   CompiledST *impl;
 
-  /**
-   * Track unique strings; copy into CompiledST's String[] after compilation
- */
+	/** Track unique strings; copy into CompiledST's String[] after compilation */
   StringTable *stringtable;
 
-  /**
-   * Track instruction location within code.instrs array; this is
-   * next address to write to.  Byte-addressable memory.
- */
+	/** Track instruction location within code.instrs array; this is
+	 *  next address to write to.  Byte-addressable memory.
+	 */
   NSInteger ip;
   ANTLRCommonTokenStream *tokens;
   ErrorManager *errMgr;
@@ -66,9 +61,9 @@
                       name:(NSString *)name
                     stream:(ANTLRCommonTokenStream *)tokens;
 
-- (id) init:(ErrorManager *)errMgr
-       name:(NSString *)name
-     stream:(ANTLRCommonTokenStream *)tokens;
+- (id) init:(ErrorManager *)anErrMgr
+       name:(NSString *)aName
+     stream:(ANTLRCommonTokenStream *)theTokens;
      
 - (NSInteger) defineString:(NSString *)s;
 - (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)id;

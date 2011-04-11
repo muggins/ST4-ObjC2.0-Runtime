@@ -38,7 +38,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 @"missing argument definitions",
 @"no such property or can't access: %@",
 @"iterating through %@ values in zip map but template has %@ declared arguments",
-@"passed %@ arg(s) to template %@ with %@ declared arg(s)",
+@"passed %d arg(s) to template %@ with %d declared arg(s)",
 @"function %@ expects a string not %@",
 @"%s(Writer) constructor doesn't exist",
 @"can't find template(s) in import \"%s\"",

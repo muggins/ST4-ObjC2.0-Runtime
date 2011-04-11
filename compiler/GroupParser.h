@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-03-30 13:18:01
+// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-04-06 18:27:38
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -68,7 +68,6 @@ typedef enum {
 #undef EOF
 #endif
 #define EOF -1
-#define T__13 13
 #define T__14 14
 #define T__15 15
 #define T__16 16
@@ -83,16 +82,19 @@ typedef enum {
 #define T__25 25
 #define T__26 26
 #define T__27 27
+#define T__28 28
 #define ID 4
 #define WS 5
 #define STRING 6
 #define ANONYMOUS_TEMPLATE 7
 #define COMMENT 8
 #define LINE_COMMENT 9
-#define T_BIGSTRING 10
-#define T_BIGSTRING_NO_NL 11
+#define BIGSTRING 10
+#define BIGSTRING_NO_NL 11
+#ifndef T_TRUE
 #define T_TRUE 12
 #define T_FALSE 13
+#endif
 #pragma mark Dynamic Global Scopes
 #pragma mark Dynamic Rule Scopes
 #pragma mark Rule Return Scopes start

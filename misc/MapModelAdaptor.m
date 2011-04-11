@@ -28,10 +28,11 @@
 #import "STErrorListener.h"
 #import "MapModelAdaptor.h"
 #import "AMutableArray.h"
+#import "Interpreter.h"
 
 @implementation MapModelAdaptor
 
-- (id) getProperty:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
+- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value;
     NSMutableDictionary *map = (NSMutableDictionary *)obj;
@@ -58,7 +59,7 @@
     }
     if ( [value isKindOfClass:[ST class]] ) {
         ST *st = (ST *)value;
-        st = [st.groupThatCreatedThisInstance createStringTemplate:st];
+        st = [st.groupThatCreatedThisInstance createStringTemplateInternally:st];
         st.enclosingInstance = aWho;
         value = st;
     }

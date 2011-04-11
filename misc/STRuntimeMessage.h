@@ -28,33 +28,33 @@
 #import "ST.h"
 #import "ErrorType.h"
 #import "STMessage.h"
+
+@class Interpreter;
+@class InstanceScope;
 /**
  * Used to track errors that occur in the ST interpreter.
  */
 
 @interface STRuntimeMessage : STMessage {
 
-  /**
-   * Where error occurred in bytecode memory
- */
-  NSInteger ip;
+	Interpreter *interp;
+    /** Where error occurred in bytecode memory */
+    NSInteger ip;
+	InstanceScope *scope;
 }
 
-@property(assign, getter=getIp, setter=setIp:) NSInteger ip;
+@property (retain) Interpreter *interp;
+@property (assign, getter=getIp, setter=setIp:) NSInteger ip;
+@property (retain) InstanceScope *scope;
 
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp;
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho;
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho arg:(id)anArg;
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg;
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
-+ (id) newMessage:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho arg:(id)anArg;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
++ (id) newMessage:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
 
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp;
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho;
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho arg:(id)anArg;
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg;
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
-- (id) init:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
+- (id) init:(Interpreter *)interp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
 
 - (NSString *) getSourceLocation;
 - (NSString *) description;

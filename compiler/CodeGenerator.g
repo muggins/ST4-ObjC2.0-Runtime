@@ -111,7 +111,7 @@ options {
 - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(ANTLRCommonTree *)anID;
-- (void) write:(NSInteger)value addr:(short)addr;
+- (void) write:(NSInteger)addr value:(short)value;
 - (NSInteger) address;
 - (void) func:(ANTLRCommonTree *)aTree;
 - (void) refAttr:(ANTLRCommonTree *)aTree;
@@ -146,7 +146,8 @@ options {
 	               template:(NSString *)aTemplate
 	                  token:(STToken *)aTemplateToken
 	{
-		if (self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]]) {
+		self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
+		if ( self != nil ) {
             /* ruleAttributeScopeInit */
             template_scope = [template_Scope newtemplate_Scope];
             template_stack = [ANTLRSymbolStack newANTLRSymbolStackWithLen:30];
@@ -201,9 +202,9 @@ options {
 		[$template::cstate setOption:anID];
 	}
 	
-	- (void) write:(NSInteger)value addr:(short)addr
+	- (void) write:(NSInteger)addr value:(short)value
 	{
-		[$template::cstate write:value addr:addr];
+		[$template::cstate write:addr value:value];
 	}
 	
 	- (NSInteger) address { return $template::cstate.ip; }
@@ -243,7 +244,7 @@ chunk
 element
 	:	^(INDENTED_EXPR INDENT compoundElement[$INDENT]) // ignore indent in front of IF and region blocks
 	|	compoundElement[nil]
-    |	^(INDENTED_EXPR INDENT {[$template::cstate indent:$INDENT.text];} singleElement {[$template::cstate emit:Bytecode.INSTR_DEDENT];})
+    |	^(INDENTED_EXPR INDENT {[$template::cstate indent:$INDENT];} singleElement {[$template::cstate emit:Bytecode.INSTR_DEDENT];})
 	|	singleElement
     ;
 
@@ -295,7 +296,7 @@ region[ANTLRCommonTree *indent] returns [NSString *name]
 subtemplate returns [NSString *name, NSInteger nargs]
 @init {
     $name = [Compiler getNewSubtemplateName];
-	AMutableArray *args = [AMutableArray arrayWithCapacity:16];
+	AMutableArray *args = [AMutableArray arrayWithCapacity:5];
 }
 	:	^(	SUBTEMPLATE
 			(^(ARGS (ID {[args addObject:[FormalArgument newFormalArgument:$ID.text]];})+))*
@@ -305,11 +306,9 @@ subtemplate returns [NSString *name, NSInteger nargs]
 			CompiledST *sub = $template.impl;
 			sub.isAnonSubtemplate = true;
 	        sub.templateDefStartToken = $SUBTEMPLATE.token;
-			if ( STGroup.debug ) {
-				sub.ast = $SUBTEMPLATE;
-				[sub.ast setUnknownTokenBoundaries];
-				sub.tokens = [input getTokenStream];
-			}
+			sub.ast = $SUBTEMPLATE;
+			[sub.ast setUnknownTokenBoundaries];
+			sub.tokens = [input getTokenStream];
 			//sub.dump();
 			[outermostImpl addImplicitlyDefinedTemplate:sub];
 			}
@@ -342,7 +341,7 @@ ifstat[ANTLRCommonTree *indent]
 				[endRefs addInteger:[self address]+1];
 				[self emit1:$eif opcode:Bytecode.INSTR_BR arg:-1]; // br end
 				// update previous branch instruction
-				[self write:prevBranchOperand addr:(short)[self address]];
+				[self write:prevBranchOperand value:(short)[self address]];
 				prevBranchOperand = -1;
 				}
 				ec=conditional
@@ -359,7 +358,7 @@ ifstat[ANTLRCommonTree *indent]
 					[endRefs addInteger:[self address]+1];
 					[self emit1:$el opcode:Bytecode.INSTR_BR arg:-1]; // br end
 					// update previous branch instruction
-                    [self write:prevBranchOperand addr:(short)[self address]];
+                    [self write:prevBranchOperand value:(short)[self address]];
 					prevBranchOperand = -1;
 					}
 					chunk
@@ -368,10 +367,10 @@ ifstat[ANTLRCommonTree *indent]
 		 )
 		{
 		if ( prevBranchOperand>=0 ) {
-            [self write:prevBranchOperand addr:(short)[self address]];
+            [self write:prevBranchOperand value:(short)[self address]];
 		}
         for (int i = 0; i < [endRefs count]; i++) {
-            [self write:[endRefs integerAtIndex:i] addr:(short)[self address]];
+            [self write:[endRefs integerAtIndex:i] value:(short)[self address]];
         }
 		}
 	;
@@ -454,13 +453,13 @@ includeExpr
 		}
 	|	^(INCLUDE_REGION ID)		{
 									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.token.text];
+										[Compiler defineBlankRegion:outermostImpl token:$ID.token];
 									//impl.dump();
 									[self emit2:$INCLUDE_REGION opcode:Bytecode.INSTR_NEW s:impl.name arg2:0];
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
 									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.token];
+										[Compiler defineBlankRegion:outermostImpl token:$ID.token];
 									//impl.dump();
 									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:impl.name arg2:0];
 									}

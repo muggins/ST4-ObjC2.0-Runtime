@@ -44,7 +44,7 @@
 
 - (id) init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause
 {
-    self=[super init:LEXER_ERROR who:nil cause:aCause arg:nil];
+    self=[super init:LEXER_ERROR who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
         msg = aMsg;
         if (msg == nil) msg = @"nil";
