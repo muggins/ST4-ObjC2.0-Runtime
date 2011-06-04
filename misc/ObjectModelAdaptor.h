@@ -76,6 +76,8 @@ typedef enum {
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj sel:(SEL)aSel;
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj selString:(NSString *)aSelString;
 - (id) init:(NSString *)methodName obj:(id)anObj selString:(NSString *)aSelString;
+
+- (void) dealloc;
 - (id) invoke:(id)obj;
 - (id) getObj;
 //- (objc_property_t) getProperty:(Class)c propertyName:(NSString *)propertyName;
@@ -94,9 +96,11 @@ typedef enum {
     DoubleKeyMap *classAndPropertyToMemberCache;
 }
 
-+ (id) newAdaptor;
++ (id) newObjectModelAdaptor;
 
 - (id) init;
+
+- (void) dealloc;
 - (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
 - (id) lookupMethod:(id)anObj propertyName:(NSString *)aPropertyName value:(id)value aClass:(Class)c;
 - (NSString *)convertToString:(id)anObj propertyName:(NSString *)aPropertyName;

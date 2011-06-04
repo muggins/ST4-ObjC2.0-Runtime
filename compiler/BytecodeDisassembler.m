@@ -33,7 +33,6 @@
 #import "Interval.h"
 #import "Misc.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
 
 @implementation BytecodeDisassembler
 
@@ -50,7 +49,7 @@
 
 + (id) newBytecodeDisassembler:(CompiledST *)aCode
 {
-    return [[[BytecodeDisassembler alloc] initWithCode:aCode] retain];
+    return [[BytecodeDisassembler alloc] initWithCode:aCode];
 }
 
 - (id) initWithCode:(CompiledST *)aCode
@@ -58,8 +57,18 @@
     self=[super init];
     if ( self ) {
         code = aCode;
+        if ( code ) [code retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in Instruction" );
+#endif
+    if ( code ) [code release];
+    [super dealloc];
 }
 
 - (NSString *) instrs
@@ -79,7 +88,7 @@
             ip += Bytecode.OPND_SIZE_IN_BYTES;
         }
     }
-    return buf;
+    return [buf description];
 }
 
 - (NSString *) disassemble
@@ -90,7 +99,7 @@
         i = [self disassembleInstruction:buf ip:i];
         [buf appendString:@"\n"];
     }
-    return buf;
+    return [buf description];
 }
 
 - (NSInteger) disassembleInstruction:(NSMutableString *)buf ip:(NSInteger)ip
@@ -104,13 +113,13 @@
         @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
     }
     NSString *instrName = I.name;
-    [buf appendFormat:@"%04d:\t%-14$@", ip, instrName];
+    [buf appendFormat:@"%04d:\t%-14s", ip, [instrName cStringUsingEncoding:NSASCIIStringEncoding]];
     ip++;
     if ( I.nopnds == 0 ) {
         [buf appendString:@"  "];
         return ip;
     }
-    AMutableArray *operands = [[AMutableArray arrayWithCapacity:100] autorelease];
+    AMutableArray *operands = [AMutableArray arrayWithCapacity:100];
     for (NSInteger i = 0; i < I.nopnds; i++) {
         NSInteger opnd = [code.instrs shortAtIndex:ip];
         ip += Bytecode.OPND_SIZE_IN_BYTES;
@@ -143,8 +152,8 @@
     NSString *s = @"<bad string index>";
     if (poolIndex < [code.strings count]) {
         s = [code.strings objectAtIndex:poolIndex];
-        if ( s == nil || [s isKindOfClass:[NSNull class]])
-            s = @"null";
+        if ( s == nil || ![s isKindOfClass:[NSString class]])
+            s = @"";
         else {
             s = [s description];
             if ([s isKindOfClass:[NSString class]]) {
@@ -154,7 +163,7 @@
         }
     }
     [buf appendFormat:@":%@", s];
-    return buf;
+    return [buf description];
 }
 
 - (NSString *) strings
@@ -163,6 +172,12 @@
     NSInteger addr = 0;
     if (code.strings != nil) {
         for (id obj in code.strings) {
+/*
+        id obj;
+        ArrayIterator *it = [ArrayIterator newIterator:code.strings];
+        while ( [it hasNext] ) {
+            obj = [it nextObject];
+ */
             if ([obj isKindOfClass:[NSString class]]) {
                 NSString *s = (NSString *)obj;
                 s = [Misc replaceEscapes:s];
@@ -181,7 +196,11 @@
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:200];
     NSInteger addr = 0;
-    for (Interval *I in code.sourceMap) {
+//    for (Interval *I in code.sourceMap) {
+    Interval *I;
+    ArrayIterator *it = [code.sourceMap objectEnumerator];
+    while ( [it hasNext] ) {
+        I = (Interval *)[it nextObject];
         if (I != nil) {
             NSString *chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];
             [buf appendString:[NSString stringWithFormat:@"%04d: %@\t\"%@\"\n", addr, I, chunk]];
@@ -189,12 +208,6 @@
         addr++;
     }
     return [buf description];
-}
-
-- (void) dealloc
-{
-    [code release];
-    [super dealloc];
 }
 
 @synthesize code;

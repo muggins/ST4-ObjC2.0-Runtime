@@ -35,7 +35,7 @@
 }
 
 + (id) newWriter;
-+ (id) newWithStringWriter:(Writer *)sw;
++ (id) newWriterWithWriter:(Writer *)sw;
 + (id) stringWithCapacity:(NSUInteger)len;
 
 - (id) initWithCapacity:(NSUInteger)aLen;

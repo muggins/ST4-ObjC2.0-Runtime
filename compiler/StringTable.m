@@ -25,8 +25,8 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "StringTable.h"
-#import "AMutableArray.h"
 
 @implementation StringTable
 
@@ -34,10 +34,19 @@
 {
     self=[super init];
     if ( self != nil ) {
-        table = [NSMutableDictionary dictionaryWithCapacity:10];
+        table = [[AMutableDictionary dictionaryWithCapacity:10] retain];
         i = -1;
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in StringTable" );
+#endif
+    if ( table ) [table release];
+    [super dealloc];
 }
 
 - (NSInteger) addObject:(NSString *)s
@@ -58,7 +67,13 @@
     for (int idx = 0; idx < count; idx++) {
         [a addObject:@""];
     }
-    for (NSString *s in [table allKeys]) {
+
+//    for (NSString *s in [table allKeys]) {
+    NSString *s;
+//    ArrayIterator *it = [table keyEnumerator];
+    ArrayIterator *it = (ArrayIterator *)[table keyEnumerator];
+    while ( [it hasNext] ) {
+        s = (NSString *)[it nextObject];
         i = [(NSString *)[table objectForKey:s] integerValue];
         [a replaceObjectAtIndex:i withObject:s];
     }
@@ -68,12 +83,6 @@
 - (void) setObject:(id)obj forKey:(id)aKey
 {
     [table setObject:obj forKey:aKey];
-}
-
-- (void) dealloc
-{
-    [table release];
-    [super dealloc];
 }
 
 @synthesize table;

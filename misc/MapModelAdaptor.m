@@ -35,7 +35,7 @@
 - (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value;
-    NSMutableDictionary *map = (NSMutableDictionary *)obj;
+    AMutableDictionary *map = (AMutableDictionary *)obj;
     if ( aProperty == nil ) {
         value = [map objectForKey:STGroup.DEFAULT_KEY];
     }
@@ -59,7 +59,7 @@
     }
     if ( [value isKindOfClass:[ST class]] ) {
         ST *st = (ST *)value;
-        st = [st.groupThatCreatedThisInstance createStringTemplateInternally:st];
+        st = [st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
         st.enclosingInstance = aWho;
         value = st;
     }

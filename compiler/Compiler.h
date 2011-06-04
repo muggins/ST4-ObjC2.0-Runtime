@@ -32,51 +32,57 @@
 #import "ErrorType.h"
 
 @interface Compiler_Anon1 : NSObject {
-    NSMutableDictionary *dict;
+    __strong AMutableDictionary *dict;
 }
 
 + (id) newCompiler_Anon1;
 - (id) init;
+
+- (void) dealloc;
 - (id) getDict;
 - (id) objectForKey:(id)aKey;
 - (void) setObject:(id)anObject forKey:(id)aKey;
 - (NSInteger) count;
 
-@property (retain) NSMutableDictionary *dict;
+@property (retain) AMutableDictionary *dict;
 @end
 
 @interface Compiler_Anon2 : NSObject {
-    NSMutableDictionary *dict;
+    __strong AMutableDictionary *dict;
 }
 
 + (id) newCompiler_Anon2;
 - (id) init;
+
+- (void) dealloc;
 - (id) copyWithZone:(NSZone *)aZone;
 - (id) getDict;
 - (id) objectForKey:(id)aKey;
 - (void) setObject:(id)anObject forKey:(id)aKey;
 - (NSInteger) count;
 
-@property (retain) NSMutableDictionary *dict;
+@property (retain) AMutableDictionary *dict;
 @end
 
 @interface Compiler_Anon3 : NSObject {
-    NSMutableDictionary *dict;
+    __strong AMutableDictionary *dict;
 }
 
 + (id) newCompiler_Anon3;
 - (id) init;
+
+- (void) dealloc;
 - (id) copyWithZone:(NSZone *)aZone;
 - (id) getDict;
 - (short) instrForKey:(NSString *)aKey;
 - (void) setInstr:(short)anInstr forKey:(NSString *)aKey;
 - (NSInteger) count;
 
-@property (retain) NSMutableDictionary *dict;
+@property (retain) AMutableDictionary *dict;
 @end
 
 @interface Compiler : NSObject {
-    STGroup *group;
+    __strong STGroup *group;
 }
 
 @property (retain) STGroup *group;
@@ -99,6 +105,7 @@
 - (id) init;
 - (id) initWithSTGroup:(STGroup *)aSTGroup;
 
+- (void) dealloc;
 - (CompiledST *) compile:(NSString *)template;
 - (CompiledST *) compile:(NSString *)name template:(NSString *)template;
 - (CompiledST *) compile:(NSString *)srcName

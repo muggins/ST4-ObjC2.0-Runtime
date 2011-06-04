@@ -60,10 +60,10 @@
 - (NSInteger) line;
 - (id) sTEntryPoint;
 
-@property (retain) NSString *fileName;
-@property (assign) NSInteger line;
+@property (retain, readonly, getter=fileName) NSString *fileName;
+@property (assign, readonly, getter=line) NSInteger line;
 @property (retain) NSException *stack;
-@property (retain) StackTraceElement *sTEntryPoint;
+@property (retain, readonly, getter = sTEntryPoint) StackTraceElement *sTEntryPoint;
 @property (retain) NSArray *addrs;
 @property (retain) NSArray *trace;
 

@@ -31,12 +31,12 @@
 
 + (id) newNoIdentWriter
 {
-    return [[[NoIndentWriter alloc] init] retain];
+    return [[NoIndentWriter alloc] init];
 }
 
 + (id) newNoIdentWriter:(Writer *)aWriter
 {
-    return [[[NoIndentWriter alloc] initWithWriter:(Writer *)aWriter] retain];
+    return [[NoIndentWriter alloc] initWithWriter:(Writer *)aWriter];
 }
 
 - (id) init

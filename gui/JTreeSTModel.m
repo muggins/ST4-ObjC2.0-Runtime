@@ -73,8 +73,11 @@
     DebugST *parentST = ((Wrapper *)parent).st;
     DebugST *childST = ((Wrapper *)child).st;
     NSInteger i = 0;
-    
-    for (InterpEvent *e in [interp getEvents:parentST]) {
+    ArrayIterator *it = [[interp getEvents:parentST] objectEnumerator];
+    InterpEvent *e;
+//    for (InterpEvent *e in [interp getEvents:parentST]) {
+    while ( [it hasNext] ) {
+        e = (InterpEvent *)[it nextObject];
         if (e.self == childST)
             return i;
         i++;

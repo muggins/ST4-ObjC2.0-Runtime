@@ -25,25 +25,25 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "StringWriter.h"
-#import "AMutableArray.h"
 
 
 @implementation StringWriter
 
 + (id) newWriter:(Writer *)aWriter
 {
-    return [[[StringWriter alloc] initWithWriter:(Writer *)aWriter] retain];
+    return [[StringWriter alloc] initWithWriter:(Writer *)aWriter];
 }
 
 + (id) newWriter
 {
-    return [[[StringWriter alloc] initWithCapacity:16] retain];
+    return [[StringWriter alloc] initWithCapacity:16];
 }
 
 + (id) stringWithCapacity:(NSUInteger)aLen
 {
-    return [[[StringWriter alloc] initWithCapacity:aLen] retain];
+    return [[StringWriter alloc] initWithCapacity:aLen];
 }
 
 - (id) initWithCapacity:(NSUInteger)aLen

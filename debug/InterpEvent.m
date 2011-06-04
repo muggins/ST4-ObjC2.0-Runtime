@@ -30,16 +30,16 @@
 
 @implementation InterpEvent
 
-+ (id) newInterpEventWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop
 {
-    return [[InterpEvent alloc] initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop];
+    return [[InterpEvent alloc] init:aScope start:(NSInteger)theStart stop:(NSInteger)theStop];
 }
 
-- (id) initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop
+- (id) init:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop
 {
     self=[super init];
     if ( self != nil ) {
-        who = aWho;
+        scope = aScope;
         outputStartChar = theStart;
         outputStopChar = theStop;
     }
@@ -57,7 +57,7 @@
 - (NSString *) description
 {
     return [NSString stringWithFormat:@"{who=%@, start=%d, stop=%d}",
-            NSStringFromClass([self class]), outputStartChar, outputStopChar];
+            [self className], outputStartChar, outputStopChar];
 }
 
 - (NSString *) toString
@@ -67,11 +67,10 @@
 
 - (void) dealloc
 {
-  [self release];
   [super dealloc];
 }
 
-@synthesize who;
+@synthesize scope;
 @synthesize outputStartChar;
 @synthesize outputStopChar;
 @end

@@ -34,19 +34,19 @@
 
 + (id) newDictionary
 {
-    return [[[DateRenderer_Anon1 alloc] init] retain];
+    return [[DateRenderer_Anon1 alloc] init];
 }
 
 + (id) DictionaryWithCapacity:(NSInteger)len
 {
-    return [[[DateRenderer_Anon1 alloc] initWithCapacity:len] retain];
+    return [[DateRenderer_Anon1 alloc] initWithCapacity:len];
 }
 
 - (id) init
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [[NSMutableDictionary dictionaryWithCapacity:16] retain];
+        aDict = [[AMutableDictionary dictionaryWithCapacity:16] retain];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterShortStyle] forKey:@"short"];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterShortStyle] forKey:@"medium"];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterMediumStyle] forKey:@"medium"];
@@ -68,7 +68,7 @@
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [NSMutableDictionary dictionaryWithCapacity:len];
+        aDict = [[AMutableDictionary dictionaryWithCapacity:len] retain];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterShortStyle] forKey:@"short"];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterShortStyle] forKey:@"medium"];
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterMediumStyle] forKey:@"medium"];
@@ -84,6 +84,15 @@
         [aDict setObject:[NSString stringWithFormat:@"%ld", (long)NSDateFormatterFullStyle] forKey:@"time:full"];
     }
     return self;
+}
+
+- (void)dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in DateRenderer_Anon1" );
+#endif
+    if ( aDict ) [aDict release];
+    [super dealloc];
 }
 
 - (void) setObject:(id)anObject forKey:(id)aKey
@@ -109,7 +118,7 @@ static DateRenderer_Anon1 *formatToInt;
 
 + (id) newDateRenderer
 {
-    return [[[DateRenderer alloc] init] retain];
+    return [[DateRenderer alloc] init];
 }
 
 - (id) init

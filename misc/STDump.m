@@ -27,38 +27,31 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "ST.h"
 #import "CompiledST.h"
 #import "Misc.h"
-#import "AMutableArray.h"
 
 NSInteger compare(NSString *s1, NSString *s2, void *context);
-
-static STDump *d;
 
 @implementation STDump
 
 @synthesize who;
 
-+ (void) initialize
-{
-    d = [STDump newSTDumpWithWho:nil];
-}
-
 + (id) newSTDumpWithWho:(ST *) aWho
 {
-    return [[[STDump alloc] initWithWho:(ST *)aWho] retain];
+    return [[STDump alloc] initWithWho:(ST *)aWho];
+}
+
++ (NSString *) description:(ST *)aWho
+{
+    STDump *d = [STDump newSTDumpWithWho:aWho];
+    return [d description];
 }
 
 + (NSString *) toString:(ST *)aWho
 {
-    d.who = aWho;
-    return [d description];
-}
-
-+ (NSString *) description:(ST *)aWho {
-    d.who = aWho;
-    return [d description];
+    return [STDump description:aWho];
 }
 
 - (id) initWithWho:(ST *)aWho
@@ -66,8 +59,18 @@ static STDump *d;
     self=[super init];
     if ( self != nil ) {
         who = aWho;
+        if ( who ) [who retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STDump" );
+#endif
+    if ( who ) [who release];
+    [super dealloc];
 }
 
 - (NSString *) description
@@ -87,10 +90,10 @@ static STDump *d;
 
 - (NSString *) description:(NSInteger)n
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:100];
     [buf appendFormat:@"%@:", [self getTemplateDeclaratorString]];
     n++;
-    NSMutableDictionary *attributes = [who getAttributes];
+    AMutableDictionary *attributes = [who getAttributes];
     if (attributes != nil) {
         AMutableArray *attrNames = [AMutableArray arrayWithCapacity:5];
         [attrNames addObjectsFromArray:[attributes allKeys]];
@@ -99,12 +102,16 @@ static STDump *d;
         NSInteger w = [longestName length];
         
         NSString *fmtStr;
-        fmtStr = [NSString stringWithFormat:@"\%-%d$@= \%@", w];
-        for (id attrName in attrNames) {
+        fmtStr = [NSString stringWithFormat:@"%%-%d$@= %%@", w];
+        id attrName;
+        ArrayIterator *it = [ArrayIterator newIterator:attrNames];
+//        for (id attrName in attrNames) {
+        while ( [it hasNext] ) {
+            attrName = [it nextObject];
             NSString *name = (NSString *)attrName;
             [buf appendString:@"\n"];
             [self indent:buf n:n];
-            [buf appendFormat:fmtStr, name];
+            [buf appendFormat:fmtStr, [name cStringUsingEncoding:NSASCIIStringEncoding]];
             id value = [attributes objectForKey:name];
             [buf appendString:[self getValueDebugString:value n:n]];
         }
@@ -114,7 +121,7 @@ static STDump *d;
     n--;
     [self indent:buf n:n];
     [buf appendString:@"]"];
-    return buf;
+    return [buf description];
 }
             
 - (NSString *) getValueDebugString:(id)value n:(NSInteger)n
@@ -122,56 +129,59 @@ static STDump *d;
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     value = [Interpreter convertAnythingIteratableToIterator:value];
     if ([value isKindOfClass:[ST class]]) {
-        STDump *d = [[STDump alloc] initWithWho:(ST *)value];
+        STDump *d = [STDump newSTDumpWithWho:(ST *)value];
         [buf appendString:[d toString:n]];
     }
     else if ([value isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)value;
         id obj;
-        
+        NSInteger na = 0;
         while ([it hasNext]) {
             obj = [it nextObject];
             NSString *v = [self getValueDebugString:obj n:n];
-            [buf appendString:v];
-            if ([it hasNext])
+            if ( na > 0 )
                 [buf appendString:@", "];
+            [buf appendString:v];
+            na++;
         }
     }
     else {
         [buf appendString:value];
     }
-    return buf;
+    return [buf description];
 }
 
 - (NSString *) getTemplateDeclaratorString
 {
-    NSMutableString *buf = [NSMutableString stringWithCapacity:16];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:150];
     [buf appendFormat:@"<%@(", [who getName]];
     if (((CompiledST *)who.impl).formalArguments != nil) {
         ArrayIterator *it = [ArrayIterator newIteratorForDictKey:(NSDictionary *)who.impl.formalArguments];
         id obj;
+        NSInteger na = 0;
         while ([it hasNext]) {
             obj = [it nextObject];
-            [buf appendString:obj];
-            if ([it hasNext])
+            if ( na > 0 )
                 [buf appendString:@", "];
+            [buf appendString:obj];
+            na++;
         }
     }
     [buf appendString:@")@"];
     [buf appendFormat:@"%d", [self hash]];
     [buf appendString:@">"];
-    return buf;
+    return [buf description];
 }
 
-- (void) indent:(NSMutableString *)buf n:(NSInteger)n {
+- (void) indent:(NSMutableString *)buf n:(NSInteger)n
+{
     
     for (NSInteger i = 1; i <= n; i++)
         [buf appendString:@"   "];
-    
 }
 
-- (void) dealloc {
-    [self release];
+- (void) dealloc
+{
     [super dealloc];
 }
 

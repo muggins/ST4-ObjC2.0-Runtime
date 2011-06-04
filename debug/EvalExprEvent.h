@@ -33,8 +33,8 @@
   NSString *expr;
 }
 
-+ (id) newEvalExprEventWithWho:(ST *)who start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
-- (id) initWithWho:(ST *)who start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
+- (id) init:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
 - (NSString *) description;
 - (NSString *) toString;
 

@@ -34,7 +34,9 @@
     self=[super init];
     if ( self != nil ) {
         name = aName;
+        if ( name ) [name retain];
         value = aValue;
+        if ( value ) [value retain];
     }
     return self;
 }
@@ -49,9 +51,13 @@
     return [self description];
 }
 
-- (void) dealloc {
-  [name release];
-  [value release];
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in AddAttributeEvent" );
+#endif
+  if ( name )  [name release];
+  if ( value ) [value release];
   [super dealloc];
 }
 

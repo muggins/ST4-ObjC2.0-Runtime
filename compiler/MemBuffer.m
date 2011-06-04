@@ -31,8 +31,8 @@
 #define SUCCESS (0)
 #define FAILURE (-1)
 
+#import <ANTLR/ANTLR.h>
 #import "MemBuffer.h"
-#import "AMutableArray.h"
 #import "Bytecode.h"
 /*
  * Start of MemBuffer
@@ -47,12 +47,12 @@
 
 +(MemBuffer *)newMemBuffer
 {
-    return [[[MemBuffer alloc] init] retain];
+    return [[MemBuffer alloc] init];
 }
 
 +(MemBuffer *)newMemBufferWithLen:(NSInteger)cnt
 {
-    return [[[MemBuffer alloc] initWithLen:cnt] retain];
+    return [[MemBuffer alloc] initWithLen:cnt];
 }
 
 -(id)init
@@ -91,7 +91,10 @@
 
 -(void)dealloc
 {
-    [buffer release];
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in MemBuffer" );
+#endif
+    if ( buffer ) [buffer release];
 	[super dealloc];
 }
 
@@ -113,6 +116,7 @@
 {
     NSInteger idx;
 
+    ptrBuffer = [buffer mutableBytes];
     for( idx = 0; idx < BuffSize; idx++ ) {
         ptrBuffer[idx] = 0;
     }
@@ -174,7 +178,7 @@
     if ( idx >= BuffSize ) {
         [self ensureCapacity:idx];
     }
-    ptrBuffer[idx] = (char)(aChar & 0xff);
+     ptrBuffer[idx] = (char)(aChar & 0xff);
 }
 
 - (char) charAtIndex:(NSInteger)idx
@@ -199,6 +203,7 @@
 - (void)removeAllChars
 {
     int i;
+    ptrBuffer = [buffer mutableBytes];
     for ( i = 0; i < BuffSize; i++ ) {
         ptrBuffer[i] = 0;
     }
@@ -222,7 +227,7 @@
  */
 - (void) insertShort:(short)value atIndex:(NSInteger)idx
 {
-    if (idx >= BuffSize )
+    if ( idx >= BuffSize )
         [self ensureCapacity:idx+1];
     ptrBuffer[idx] = (char)((value >> 8) & 0xFF);
     ptrBuffer[idx + 1] = (char)(value & 0xFF);
@@ -230,7 +235,7 @@
 
 - (void) ensureCapacity:(NSInteger) index
 {
-	if ((index * sizeof(char)) >= [buffer length])
+	if ( (index * sizeof(char)) >= [buffer length] )
 	{
 		NSInteger newSize = [buffer length] * 2;
 		if (index > newSize) {
@@ -256,7 +261,8 @@
 - (void) memcpy:(NSInteger)src dest:(NSInteger)dest length:(NSInteger)len
 {
     NSInteger i;
-    if (src+len < BuffSize && dest+len < BuffSize) {
+    ptrBuffer = [buffer mutableBytes];
+    if ( src+len < BuffSize && dest+len < BuffSize ) {
         for (i = 0; i < len; i++ ) {
             *(ptrBuffer+dest+i) = *(ptrBuffer+src+i);
         }

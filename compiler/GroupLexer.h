@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-04-06 18:27:39
+// $ANTLR ${project.version} ${buildNumber} /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-05-08 16:46:26
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -8,7 +8,6 @@
 /* End of standard antlr3 runtime definitions
  * =============================================================================
  */
-
 
 /* =============================================================================
  * This is what the grammar programmer asked us to put at the top of every file.
@@ -41,34 +40,38 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STGroup.h"
 #import "ErrorType.h"
 #import "STLexer.h"
-#import "AMutableArray.h"
 
 @class STGroup;
 
 /* End of Header action.
  * =============================================================================
  */
+
 /* Start cyclicDFAInterface */
-#pragma mark Cyclic DFA interface start DFA8
-@interface DFA8 : ANTLRDFA {
-}
-+ newDFA8WithRecognizer:(ANTLRBaseRecognizer *)theRecognizer;
-- initWithRecognizer:(ANTLRBaseRecognizer *)recognizer;
-@end /* end of DFA8 interface  */
 
-#pragma mark Cyclic DFA interface end DFA8
-
-
-#pragma mark Rule return scopes start
-#pragma mark Rule return scopes end
+#pragma mark Rule return scopes Interface start
+#pragma mark Rule return scopes Interface end
 #pragma mark Tokens
 #ifdef EOF
 #undef EOF
 #endif
 #define EOF -1
+#define ID 4
+#define WS 5
+#define STRING 6
+#define ANONYMOUS_TEMPLATE 7
+#define COMMENT 8
+#define LINE_COMMENT 9
+#define BIGSTRING 10
+#define BIGSTRING_NO_NL 11
+#ifndef T_TRUE
+#define T_TRUE 12
+#define T_FALSE 13
+#endif
 #define T__14 14
 #define T__15 15
 #define T__16 16
@@ -84,21 +87,8 @@
 #define T__26 26
 #define T__27 27
 #define T__28 28
-#define ID 4
-#define WS 5
-#define STRING 6
-#define ANONYMOUS_TEMPLATE 7
-#define COMMENT 8
-#define LINE_COMMENT 9
-#define BIGSTRING 10
-#define T_BIGSTRING_NO_NL 11
-#ifndef T_TRUE
-#define T_TRUE 12
-#define T_FALSE 13
-#endif
 /* interface lexer class */
 @interface GroupLexer : ANTLRLexer { // line 283
-DFA8 *dfa8;
 /* ObjC start of actions.lexer.memVars */
 
 STGroup *group;
@@ -115,31 +105,30 @@ STGroup *group;
 - (NSString *) getSourceName;
 
 /* ObjC end actions.lexer.methodsDecl */
-- (void) mT_TRUE; 
-- (void) mT_FALSE; 
-- (void) mT__14; 
-- (void) mT__15; 
-- (void) mT__16; 
-- (void) mT__17; 
-- (void) mT__18; 
-- (void) mT__19; 
-- (void) mT__20; 
-- (void) mT__21; 
-- (void) mT__22; 
-- (void) mT__23; 
-- (void) mT__24; 
-- (void) mT__25; 
-- (void) mT__26; 
-- (void) mT__27; 
-- (void) mT__28; 
-- (void) mID; 
-- (void) mSTRING; 
-- (void) mBIGSTRING_NO_NL; 
-- (void) mBIGSTRING; 
-- (void) mANONYMOUS_TEMPLATE; 
-- (void) mCOMMENT; 
-- (void) mLINE_COMMENT; 
-- (void) mWS; 
-- (void) mTokens; 
+- (void) mT__14 ; 
+- (void) mT__15 ; 
+- (void) mT__16 ; 
+- (void) mT__17 ; 
+- (void) mT__18 ; 
+- (void) mT__19 ; 
+- (void) mT__20 ; 
+- (void) mT__21 ; 
+- (void) mT__22 ; 
+- (void) mT__23 ; 
+- (void) mT__24 ; 
+- (void) mT__25 ; 
+- (void) mT__26 ; 
+- (void) mT__27 ; 
+- (void) mT__28 ; 
+- (void) mID ; 
+- (void) mSTRING ; 
+- (void) mBIGSTRING_NO_NL ; 
+- (void) mBIGSTRING ; 
+- (void) mANONYMOUS_TEMPLATE ; 
+- (void) mCOMMENT ; 
+- (void) mLINE_COMMENT ; 
+- (void) mWS ; 
+- (void) mTokens ; 
 
 @end /* end of GroupLexer interface */
+

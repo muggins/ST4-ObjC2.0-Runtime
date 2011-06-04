@@ -27,7 +27,6 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
-#import "ArrayIterator.h"
 #import "Misc.h"
 #import <FOUNDATION/Foundation.h>
 #import <objc/runtime.h>
@@ -115,9 +114,9 @@ static NSString *const newline = @"\n";
 
 + (NSString *) getFileName:(NSString *)fullFileName
 {
-    NSError **anError;
+    NSError *anError;
     NSURL *aURL = [NSURL fileURLWithPath:[fullFileName stringByStandardizingPath]];
-    NSFileWrapper *f = [[NSFileWrapper alloc] initWithURL:aURL options:NSFileWrapperReadingWithoutMapping error:anError];
+    NSFileWrapper *f = [[NSFileWrapper alloc] initWithURL:aURL options:NSFileWrapperReadingWithoutMapping error:&anError];
     return [f filename];
 }
 

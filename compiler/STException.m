@@ -54,6 +54,39 @@
 
 @end
 
+@implementation STNoSuchAttributeException
+
++ (id) newException:(NSString *)aReason
+{
+    return [[STNoSuchAttributeException alloc] initWithName:@"ST No Such Attribute Exception" reason:aReason];
+}
+
+- (id) initWithName:(NSString *)aName reason:(NSString *)aReason
+{
+    self=[super initWithName:aName reason:aReason userInfo:nil];
+    if (  self != nil ) {
+    }
+    return self;
+}
+
+- (id) initWithName:(NSString *)aName reason:(NSString *)aReason userInfo:(NSDictionary *)userInfo
+{
+    self=[super initWithName:aName reason:aReason userInfo:userInfo];
+    if (  self != nil ) {
+    }
+    return self;
+}
+
+- (NSString *) getMessage
+{
+    return [NSString stringWithFormat:@"from template %@ no attribute %@ is visible", [scope.st getName], attrName];
+}
+
+@synthesize scope;
+@synthesize attrName;
+
+@end
+
 @implementation STNoSuchMethodException
 
 + (id) newException:(NSString *)aReason

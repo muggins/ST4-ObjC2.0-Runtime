@@ -46,14 +46,14 @@
 @class CompiledST;
 
 @interface FormalArgument : NSObject {
-    NSString *name;
+    __strong NSString *name;
     NSInteger index; // which argument is it? from 0..n-1
 	/** If they specified default value x=y, store the token here */
-    STToken *defaultValueToken;
+    __strong STToken *defaultValueToken;
     id defaultValue; // x="str", x=true, x=false
     NSInteger cardinality;
     /*** If they specified name="value", store the template here */
-    CompiledST *compiledDefaultValue;
+    __strong CompiledST *compiledDefaultValue;
 }
 
 + (NSInteger) OPTIONAL;
@@ -69,6 +69,8 @@
 - (id) init;
 - (id) initWithName:(NSString *)name;
 - (id) init:(NSString *)name token:(STToken *)aDefaultValueToken;
+
+- (void) dealloc;
 - (NSInteger) hash;
 - (BOOL) isEqualTo:(NSString *)obj;
 - (NSString *) toString;

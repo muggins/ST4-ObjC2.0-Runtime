@@ -25,30 +25,36 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "EvalExprEvent.h"
 #import "ST.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
 
 @implementation EvalExprEvent
 
-+ (id) newEvalExprEventWithWho:(ST *)aWho start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop
 {
-    return [[EvalExprEvent alloc] initWithWho:aWho start:aStart stop:aStop exprStart:anExprStart exprStop:anExprStop];
+    return [[EvalExprEvent alloc] init:aScope start:aStart stop:aStop exprStart:anExprStart exprStop:anExprStop];
 }
 
-- (id) initWithWho:(ST *)aWho start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop
+- (id) init:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop
 {
-    self=[super initWithWho:aWho start:aStart stop:aStop];
+    self=[super init:aScope start:aStart stop:aStop];
     if ( self != nil ) {
         exprStartChar = anExprStart;
         exprStopChar = anExprStop;
         if (exprStartChar >= 0 && exprStopChar >= 0) {
-            expr = [((CompiledST *)((ST *)aWho).impl).template substringWithRange:NSMakeRange(exprStartChar, (exprStopChar-exprStartChar) + 1)];
+            expr = [((CompiledST *)(scope.st.impl)).template substringWithRange:NSMakeRange(exprStartChar, (exprStopChar-exprStartChar) + 1)];
         }
     }
     return self;
+}
+
+- (void) dealloc
+{
+    if ( expr ) [expr release];
+    [super dealloc];
 }
 
 - (NSString *) description
@@ -59,12 +65,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc
-{
-    [expr release];
-    [super dealloc];
 }
 
 @synthesize exprStartChar;

@@ -37,7 +37,7 @@
 
 + (id) newErrorManager_Anon1
 {
-    return [[[ErrorManager_Anon1 alloc] init] retain];
+    return [[ErrorManager_Anon1 alloc] init];
 }
 
 - (id) init
@@ -116,12 +116,12 @@ static ErrorManager *DEFAULT_ERR_MGR;
 
 + (id) newErrorManager
 {
-    return [[[ErrorManager alloc] init] retain];
+    return [[ErrorManager alloc] init];
 }
 
 + (id) newErrorManagerWithListener:(id<STErrorListener>)aListener
 {
-    return [[[ErrorManager alloc] initWithListener:aListener] retain];
+    return [[ErrorManager alloc] initWithListener:aListener];
 }
 
 - (id) init
@@ -129,6 +129,7 @@ static ErrorManager *DEFAULT_ERR_MGR;
     self=[super init];
     if ( self != nil ) {
         listener = DEFAULT_ERROR_LISTENER;
+        if ( listener ) [listener retain];
     }
     return self;
 }
@@ -138,28 +139,38 @@ static ErrorManager *DEFAULT_ERR_MGR;
     self=[super init];
     if ( self != nil ) {
         listener = aListener;
+        if ( listener ) [listener retain];
     }
     return self;
 }
 
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ErrorManager" );
+#endif
+    if ( listener ) [listener release];
+    [super dealloc];
+}
+
 - (void) compileTimeError:(ErrorTypeEnum)anError templateToken:(STToken *)aTemplateToken t:(STToken *)t
 {
-    NSString *srcName = [[t getInput] getSourceName];
+    NSString *srcName = [t.input getSourceName];
     if (srcName != nil)
         srcName = [Misc getFileName:srcName];
-    [listener compileTimeError:[STCompiletimeMessage newMessage:anError srcName:srcName templateToken:aTemplateToken t:t cause:nil arg:[t getText]]];
+    [listener compileTimeError:[STCompiletimeMessage newMessage:anError srcName:srcName templateToken:aTemplateToken t:t cause:nil arg:t.text]];
 }
 
 - (void) compileTimeError:(ErrorTypeEnum)anError templateToken:(STToken *)aTemplateToken t:(STToken *)t arg:(id)arg
 {
-    NSString *srcName = [[t getInput] getSourceName];
+    NSString *srcName = [t.input getSourceName];
     srcName = [Misc getFileName:srcName];
     [listener compileTimeError:[STCompiletimeMessage newMessage:anError srcName:srcName templateToken:aTemplateToken t:t cause:nil arg:arg]];
 }
 
 - (void) compileTimeError:(ErrorTypeEnum)anError templateToken:(STToken *)aTemplateToken t:(STToken *)t arg:(id)arg arg2:(id)arg2
 {
-    NSString *srcName = [[t getInput] getSourceName];
+    NSString *srcName = [t.input getSourceName];
     if (srcName != nil)
         srcName = [Misc getFileName:srcName];
     [listener compileTimeError:[STCompiletimeMessage newMessage:anError srcName:srcName templateToken:aTemplateToken t:t cause:nil arg:arg arg2:arg2]];
@@ -218,12 +229,6 @@ static ErrorManager *DEFAULT_ERR_MGR;
 - (void) internalError:(ST *)aWho msg:(NSString *)aMsg e:(NSException *)e
 {
     [listener internalError:[STMessage newMessage:INTERNAL_ERROR who:aWho cause:e arg:aMsg]];
-}
-
-- (void) dealloc
-{
-    [listener release];
-    [super dealloc];
 }
 
 @synthesize listener;

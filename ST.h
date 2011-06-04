@@ -31,8 +31,10 @@
 #import "STGroup.h"
 #import "STErrorListener.h"
 #import "ConstructionEvent.h"
-#import "MultiMap.h"
 
+#ifndef DEBUG_DEALLOC
+#define DEBUG_DEALLOC
+#endif
 /**
  * <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder
  */
@@ -47,6 +49,7 @@ typedef enum {
 // (NSString *) RegionTypeDescription(RegionTypeEnum value);
 
 @class CompiledST;
+@class STNoSuchAttributeException;
 @class STNoSuchPropertyException;
 @class STErrorListener;
 @class STGroup;
@@ -79,17 +82,18 @@ typedef enum {
 @interface DebugState : NSObject {
 
     /** Record who made us? ConstructionEvent creates Exception to grab stack */
-    ConstructionEvent *newSTEvent;
+    __strong ConstructionEvent *newSTEvent;
     /** Track construction-time add attribute "events"; used for ST user-level debugging */
-    MultiMap *addAttrEvents;
+    __strong AMutableDictionary *addAttrEvents;
 }
 
 @property (retain) ConstructionEvent *newSTEvent;
-@property (retain) MultiMap *addAttrEvents;
+@property (retain, getter = addAttrEvents) AMutableDictionary *addAttrEvents;
 
 + (id) newDebugState;
 - (id) init;
 
+- (AMutableDictionary *)addAttrEvents;
 @end
 
 /**
@@ -109,7 +113,7 @@ typedef enum {
     /**
      * The implementation for this template among all instances of same tmpelate .
      */
-    CompiledST *impl;
+    __strong CompiledST *impl;
     
     /**
      * Safe to simultaneously write via add, which is synchronized.  Reading
@@ -117,19 +121,19 @@ typedef enum {
      * add attributes while it is being evaluated.  Initialized to EMPTY_ATTR
      * to distinguish null from empty.
      */
-    AMutableArray *locals;
+    __strong AMutableArray *locals;
     
     /**
      * Enclosing instance if I'm embedded within another template.
      * IF-subtemplates are considered embedded as well. We look up
      * dynamically scoped attributes with this ptr.
      */
-    ST *enclosingInstance;
+    __strong ST *enclosingInstance;
     
 	/** If Interpreter.trackCreationEvents, track creation, add-attr events
 	 *  for each object. Create this object on first use.
 	 */
-	DebugState *debugState;
+	__strong DebugState *debugState;
 
     /**
      * Created as instance of which group? We need this to init interpreter
@@ -148,18 +152,18 @@ typedef enum {
      * v
      * g2 = {t()}
      */
-    STGroup *groupThatCreatedThisInstance;
+    __strong STGroup *groupThatCreatedThisInstance;
 }
 
 + (void) initialize;
 
-+ (id) cachedNoSuchPropException;
-+ (void) setCachedNoSuchPropException:(id)e;
++ (STNoSuchAttributeException *) cachedNoSuchAttrException;
++ (void) setCachedNoSuchAttrException:(id)e;
 
 + (NSInteger) NO_WRAP;
 + (NSString *)UNKNOWN_NAME;
 + (NSString *) EMPTY_ATTR;
-- (DebugState *)debugState;
++ (DebugState *)debugState;
 //+ (AttributeList *) attributeList;
 
 + (id) newST;
@@ -172,12 +176,13 @@ typedef enum {
 - (id) init:(NSString *)template delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) init:(STGroup *)group template:(NSString *)template;
 - (id) initWithProto:(ST *)proto;
+- (void)dealloc;
 - (ST *) add:(NSString *)name value:(id)value;
 - (ST *) addInt:(NSString *)name value:(NSInteger)value;
 - (void) remove:(NSString *)name;
 - (void) rawSetAttribute:(NSString *)name value:(id)value;
 - (id) getAttribute:(NSString *)name;
-- (NSMutableDictionary *) getAttributes;
+- (AMutableDictionary *) getAttributes;
 + (AttributeList *) convertToAttributeList:(id)curvalue;
 - (NSString *) getName;
 - (NSInteger) write:(Writer *)wr1;
@@ -199,7 +204,9 @@ typedef enum {
 - (NSString *) description;
 - (NSString *) toString;
 + (NSString *) format:(NSString *)template attributes:(id)attributes;
-+ (NSString *) format:(NSString *)template attributes:(id)attributes lineWidth:(NSInteger)lineWidth ;
++ (NSString *) format:(NSString *)template attributes:(id)attributes lineWidth:(NSInteger)lineWidth;
+
+- (DebugState *)debugState;
 
 - (BOOL) getIsAnonSubtemplate;
 
@@ -209,6 +216,6 @@ typedef enum {
 @property (retain) AMutableArray *locals;
 @property (retain) ST *enclosingInstance;
 @property (retain) STGroup *groupThatCreatedThisInstance;
-@property (retain) DebugState *debugState;
+@property (retain, getter=debugState, setter = setDebugState:) DebugState *debugState;
 
 @end

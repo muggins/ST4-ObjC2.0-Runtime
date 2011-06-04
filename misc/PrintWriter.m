@@ -26,37 +26,37 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <ANTLR/ANTLR.h>
 #import "PrintWriter.h"
-#import "AMutableArray.h"
 
 
 @implementation PrintWriter
 
 + (id) newWriter
 {
-    return [[[PrintWriter alloc] initWithCapacity:16] retain];
+    return [[PrintWriter alloc] initWithCapacity:16];
 }
 
-+ (id) newWithStringWriter:(StringWriter *)sw
++ (id) newWriterWithWriter:(StringWriter *)sw
 {
-    return [[[PrintWriter alloc] initWithWriter:sw] retain];
+    return [[PrintWriter alloc] initWithWriter:sw];
 }
 
 + (id) stringWithCapacity:(NSUInteger)aLen
 {
-    return [[[PrintWriter alloc] initWithCapacity:aLen] retain];
+    return [[PrintWriter alloc] initWithCapacity:aLen];
 }
 
 - (id) initWithCapacity:(NSUInteger)aLen
 {
-    self=[super init];
+    self = [super init];
     return self;
 }
 
 - (id) initWithWriter:(Writer *)aWriter
 {
-    self=[super initWithWriter:aWriter];
-    return [self description];
+    self = [super initWithWriter:aWriter];
+    return self;
 }
 
 - (void) print:(id)msg

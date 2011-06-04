@@ -25,12 +25,25 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "STModelAdaptor.h"
-#import "AMutableArray.h"
 #import "Interpreter.h"
 
 @implementation STModelAdaptor
+
++ (id) newSTModelAdaptor
+{
+    return [[STModelAdaptor alloc] init];
+}
+
+- (id) init
+{
+    self = [super init];
+    if ( self ) {
+    }
+    return self;
+}
 
 - (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)property propertyName:(NSString *)propertyName
 {

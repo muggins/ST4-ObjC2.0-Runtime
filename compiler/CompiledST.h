@@ -42,35 +42,35 @@
  */
 
 @interface CompiledST : NSObject {
-    NSString *name;
+    __strong NSString *name;
     
 /** The original, immutable pattern (not really used again after
  * initial "compilation"). Useful for debugging.  Even for
  * subtemplates, this is entire overall template.
  */
-    NSString *template;
+    __strong NSString *template;
     
     /** The token that begins template definition; could be <@r> of region. */
-    STToken *templateDefStartToken;
+    __strong STToken *templateDefStartToken;
     /** Overall token stream for template (debug only) */
-    ANTLRCommonTokenStream *tokens;
+    __strong ANTLRCommonTokenStream *tokens;
     
 	/** How do we interpret syntax of template? (debug only) */
-    ANTLRCommonTree *ast;
+    __strong ANTLRCommonTree *ast;
     
     /** Must be non null map if !noFormalArgs */
-    NSMutableDictionary *formalArguments;
+    __strong AMutableDictionary *formalArguments;
     BOOL hasFormalArgs;
     NSInteger numberOfArgsWithDefaultValues;
 
     /** A list of all regions and subtemplates */
-    AMutableArray *implicitlyDefinedTemplates;
+    __strong AMutableArray *implicitlyDefinedTemplates;
     
     /** The group that physically defines this ST definition.  We use it to initiate
      *  interpretation via ST.toString().  From there, it becomes field 'group'
      *  in interpreter and is fixed until rendering completes.
      */
-    STGroup *nativeGroup;
+    __strong STGroup *nativeGroup;
     
     /** Does this template come from a <@region>...<@end> embedded in
      *  another template?
@@ -87,10 +87,10 @@
      */
     RegionTypeEnum regionDefType;
     BOOL isAnonSubtemplate;
-    AMutableArray *strings;     // string operands of instructions
-    MemBuffer *instrs;          // byte-addressable code memory.
+    __strong AMutableArray *strings;     // string operands of instructions
+    __strong MemBuffer *instrs;          // byte-addressable code memory.
     NSInteger codeSize;
-    AMutableArray *sourceMap;   // maps IP to range in template pattern
+    __strong AMutableArray *sourceMap;   // maps IP to range in template pattern
 }
 
 @property (retain) NSString *name;
@@ -98,11 +98,11 @@
 @property (retain) STToken *templateDefStartToken;
 @property (retain) ANTLRCommonTokenStream *tokens;
 @property (retain) ANTLRCommonTree *ast;
-@property (retain) NSMutableDictionary *formalArguments;
+@property (retain) AMutableDictionary *formalArguments;
 @property (assign) BOOL hasFormalArgs;
 @property (assign) NSInteger numberOfArgsWithDefaultValues;
 @property (retain) AMutableArray *implicitlyDefinedTemplates;
-@property (retain, getter=getNativeGroup) STGroup *nativeGroup;
+@property (retain, getter=nativeGroup, setter = setNativeGroup:) STGroup *nativeGroup;
 @property (assign) BOOL isRegion;
 @property (assign) RegionTypeEnum regionDefType;
 @property (assign) BOOL isAnonSubtemplate;

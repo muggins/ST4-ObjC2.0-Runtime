@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/STParser.g 2011-04-06 18:27:17
+// $ANTLR ${project.version} ${buildNumber} /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/STParser.g 2011-05-09 15:08:49
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -48,6 +48,7 @@
 /* End of Header action.
  * =============================================================================
  */
+
 #ifndef ANTLR3TokenTypeAlreadyDefined
 #define ANTLR3TokenTypeAlreadyDefined
 typedef enum {
@@ -104,29 +105,29 @@ typedef enum {
 #define NEWLINE 39
 #define AT 40
 #define END 41
-#define EXPR 42
-#define OPTIONS 43
-#define PROP 44
-#define PROP_IND 45
+#define ARGS 42
+#define ELEMENTS 43
+#define EXEC_FUNC 44
+#define EXPR 45
 #define INCLUDE 46
 #define INCLUDE_IND 47
-#define EXEC_FUNC 48
+#define INCLUDE_REGION 48
 #define INCLUDE_SUPER 49
 #define INCLUDE_SUPER_REGION 50
-#define INCLUDE_REGION 51
-#define TO_STR 52
-#define LIST 53
-#define MAP 54
-#define ZIP 55
-#define SUBTEMPLATE 56
-#define ARGS 57
-#define ELEMENTS 58
-#define REGION 59
-#define TNULL 60
-#define INDENTED_EXPR 61
+#define INDENTED_EXPR 51
+#define LIST 52
+#define MAP 53
+#define OPTIONS 54
+#define PROP 55
+#define PROP_IND 56
+#define REGION 57
+#define SUBTEMPLATE 58
+#define TNULL 59
+#define TO_STR 60
+#define ZIP 61
 #endif
-#pragma mark Dynamic Global Scopes
-#pragma mark Dynamic Rule Scopes
+#pragma mark Dynamic Global Scopes globalAttributeScopeInterface
+#pragma mark Dynamic Rule Scopes ruleAttributeScopeInterface
 /* start of ruleAttributeScopeInterface */
 
 @interface conditional_Scope : ANTLRSymbolsScope {
@@ -134,29 +135,31 @@ typedef enum {
 
 }
 
-/* start properties */
+/* start property declarations */
 
 @property (assign, getter=getinside, setter=setinside:) BOOL inside;
 
-/* end properties */
+/* start method declarations */
 
 + (conditional_Scope *)newconditional_Scope;
 - (id) init;
 - (BOOL)getinside;
 - (void)setinside:(BOOL)aVal;
 
-
 @end /* end of ruleAttributeScopeInterface */
 
-#pragma mark Rule Return Scopes start
+
+#pragma mark Rule Return Scopes returnScopeInterface
 /* returnScopeInterface STParser_templateAndEOF_return */
-@interface STParser_templateAndEOF_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_templateAndEOF_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_templateAndEOF_return *)newSTParser_templateAndEOF_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -166,14 +169,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_template_return */
-@interface STParser_template_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_template_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_template_return *)newSTParser_template_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -183,14 +189,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_element_return */
-@interface STParser_element_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_element_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_element_return *)newSTParser_element_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -200,14 +209,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_singleElement_return */
-@interface STParser_singleElement_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_singleElement_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_singleElement_return *)newSTParser_singleElement_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -217,14 +229,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_compoundElement_return */
-@interface STParser_compoundElement_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_compoundElement_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_compoundElement_return *)newSTParser_compoundElement_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -234,14 +249,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_exprTag_return */
-@interface STParser_exprTag_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_exprTag_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_exprTag_return *)newSTParser_exprTag_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -251,14 +269,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_region_return */
-@interface STParser_region_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_region_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_region_return *)newSTParser_region_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -268,14 +289,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_subtemplate_return */
-@interface STParser_subtemplate_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_subtemplate_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_subtemplate_return *)newSTParser_subtemplate_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -285,14 +309,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_ifstat_return */
-@interface STParser_ifstat_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_ifstat_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_ifstat_return *)newSTParser_ifstat_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -302,14 +329,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_conditional_return */
-@interface STParser_conditional_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_conditional_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_conditional_return *)newSTParser_conditional_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -319,14 +349,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_andConditional_return */
-@interface STParser_andConditional_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_andConditional_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_andConditional_return *)newSTParser_andConditional_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -336,14 +369,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_notConditional_return */
-@interface STParser_notConditional_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_notConditional_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_notConditional_return *)newSTParser_notConditional_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -353,14 +389,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_notConditionalExpr_return */
-@interface STParser_notConditionalExpr_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_notConditionalExpr_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_notConditionalExpr_return *)newSTParser_notConditionalExpr_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -370,14 +409,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_exprOptions_return */
-@interface STParser_exprOptions_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_exprOptions_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_exprOptions_return *)newSTParser_exprOptions_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -387,14 +429,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_option_return */
-@interface STParser_option_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_option_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_option_return *)newSTParser_option_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -404,14 +449,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_exprNoComma_return */
-@interface STParser_exprNoComma_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_exprNoComma_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_exprNoComma_return *)newSTParser_exprNoComma_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -421,14 +469,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_expr_return */
-@interface STParser_expr_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_expr_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_expr_return *)newSTParser_expr_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -438,14 +489,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_mapExpr_return */
-@interface STParser_mapExpr_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_mapExpr_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_mapExpr_return *)newSTParser_mapExpr_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -455,14 +509,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_mapTemplateRef_return */
-@interface STParser_mapTemplateRef_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_mapTemplateRef_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_mapTemplateRef_return *)newSTParser_mapTemplateRef_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -472,14 +529,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_memberExpr_return */
-@interface STParser_memberExpr_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_memberExpr_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_memberExpr_return *)newSTParser_memberExpr_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -489,14 +549,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_includeExpr_return */
-@interface STParser_includeExpr_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_includeExpr_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_includeExpr_return *)newSTParser_includeExpr_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -506,14 +569,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_primary_return */
-@interface STParser_primary_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_primary_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_primary_return *)newSTParser_primary_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -523,14 +589,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_args_return */
-@interface STParser_args_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_args_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_args_return *)newSTParser_args_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -540,14 +609,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_argExprList_return */
-@interface STParser_argExprList_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_argExprList_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_argExprList_return *)newSTParser_argExprList_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -557,14 +629,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_arg_return */
-@interface STParser_arg_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_arg_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_arg_return *)newSTParser_arg_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -574,14 +649,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_namedArg_return */
-@interface STParser_namedArg_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_namedArg_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_namedArg_return *)newSTParser_namedArg_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -591,14 +669,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_list_return */
-@interface STParser_list_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_list_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_list_return *)newSTParser_list_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -608,14 +689,17 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
   /* methodsDecl */
 @end /* end of returnScopeInterface interface */
 
+
 /* returnScopeInterface STParser_listElement_return */
-@interface STParser_listElement_return :ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface STParser_listElement_return : ANTLRParserRuleReturnScope { /* returnScopeInterface line 1838 */
 /* AST returnScopeInterface.memVars */
 ANTLRCommonTree *tree; /* ObjC start of memVars() */
 }
-/* start properties */
+/* start property declarations */
 /* AST returnScopeInterface.properties */
 @property (retain, getter=getTree, setter=setTree:) ANTLRCommonTree *tree;
+/* start of method declarations */
+
 + (STParser_listElement_return *)newSTParser_listElement_return;
 /* this is start of set and get methods */
 /* AST returnScopeInterface.methodsDecl */
@@ -628,19 +712,14 @@ ANTLRCommonTree *tree; /* ObjC start of memVars() */
 
 
 /* Interface grammar class */
-@interface STParser : ANTLRParser { /* line 572 */
-/* ObjC start of ruleAttributeScopeMemVar */
-/* ruleAttributeScopeMemVar */
-
-conditional_Scope *conditional_scope;
-
-/* ObjC end of ruleAttributeScopeMemVar */
-/* ObjC start of globalAttributeScopeMemVar */
+@interface STParser  : ANTLRParser { /* line 572 */
+#pragma mark Dynamic Rule Scopes ruleAttributeScopeDecl
+#pragma mark Dynamic Global Rule Scopes globalAttributeScopeMemVar
 
 
-/* ObjC end of globalAttributeScopeMemVar */
 /* ObjC start of actions.(actionScope).memVars */
 
+conditional_Scope *conditional_scope;
 ErrorManager *errMgr;
 STToken *templateToken;
 
@@ -658,6 +737,7 @@ id<ANTLRTreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 /* ObjC start of actions.(actionScope).properties */
 
+@property (retain) conditional_Scope *conditional_scope;
 @property (retain, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
 @property (retain, getter=getTemplateToken, setter=setTemplateToken:) STToken *templateToken;
 
@@ -718,4 +798,5 @@ id<ANTLRTreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 
 @end /* end of STParser interface */
+
 /** Build an AST from a single StringTemplate template */

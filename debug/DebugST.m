@@ -31,7 +31,6 @@
 #import "InterpEvent.h"
 #import "AddAttributeEvent.h"
 #import "CompiledST.h"
-#import "MultiMap.h"
 #import "AMutableArray.h"
 #import "Interpreter.h"
 
@@ -72,7 +71,7 @@
     self=[super init];
     if ( self != nil ) {
         newSTEvent = [[ConstructionEvent alloc] init];
-        addAttrEvents = [[MultiMap alloc] init];
+        addAttrEvents = [NSMutableDictionary dictionaryWithCapacity:25];
     }
     return self;
 }
@@ -82,7 +81,7 @@
     self=[super initWithProto:proto];
     if ( self != nil ) {
         newSTEvent = [[ConstructionEvent alloc] init];
-        addAttrEvents = [[MultiMap alloc] init];
+        addAttrEvents = [NSMutableDictionary dictionaryWithCapacity:25];
     }
     return self;
 }

@@ -34,7 +34,7 @@
 
 + (id) newCoordinate:(NSInteger)a b:(NSInteger)b
 {
-    return [[[Coordinate alloc] init:(NSInteger)a b:(NSInteger)b] retain];
+    return [[Coordinate alloc] init:(NSInteger)a b:(NSInteger)b];
 }
 
 - (id) init:(NSInteger)a b:(NSInteger)b {

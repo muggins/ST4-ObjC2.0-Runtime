@@ -71,6 +71,8 @@
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 #endif
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
+
+- (void) dealloc;
 - (NSString *) description;
 - (NSString *) toString;
 

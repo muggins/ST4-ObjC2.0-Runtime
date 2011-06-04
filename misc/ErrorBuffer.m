@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import "AMutableArray.h"
+#import <ANTLR/ANTLR.h>
 #import "ErrorBuffer.h"
 
 @class STToken;
@@ -37,15 +37,24 @@
 
 + (id) newErrorBuffer
 {
-    return [[[ErrorBuffer alloc] init] retain];
+    return [[ErrorBuffer alloc] init];
 }
 
 - (id) init {
     self=[super init];
     if ( self != nil ) {
-        errors = [AMutableArray arrayWithCapacity:5];
+        errors = [[AMutableArray arrayWithCapacity:5] retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ErrorBuffer" );
+#endif
+    if ( errors ) [errors release];
+    [super dealloc];
 }
 
 - (void) compileTimeError:(STMessage *)msg {
@@ -72,10 +81,14 @@
 - (NSString *) description
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
-    
-    for (id m in errors) {
+
+//    for (id m in errors) {
+    id m;
+    ArrayIterator *it = [ArrayIterator newIterator:errors];
+    while ( [it hasNext] ) {
+        m = [it nextObject];
         //[buf appendFormat:@"%@%@", [m toString], Misc.newline];
-        return [m toString];
+        return [m description];
     }
     return buf;
 }
@@ -83,11 +96,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc {
-    [errors release];
-    [super dealloc];
 }
 
 @end

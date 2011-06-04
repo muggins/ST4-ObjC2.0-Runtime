@@ -25,9 +25,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "Misc.h"
-#import "AMutableArray.h"
 /**
  * Used during tests to track all errors
  */
@@ -40,6 +40,8 @@
 
 + (id) newErrorBuffer;
 - (id) init;
+
+- (void) dealloc;
 - (void) compileTimeError:(STMessage *)msg;
 - (void) runTimeError:(STMessage *)msg;
 - (void) IOError:(STMessage *)msg;

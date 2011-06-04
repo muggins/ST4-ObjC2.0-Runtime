@@ -28,12 +28,12 @@
 grammar Group;
 
 options {
-	language=ObjC;
-    // tokenVocab=Group;
+    language=ObjC;
+    tokenVocab=Group1;
     TokenLabelType=STToken;
 }
 
-tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL
+tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL;
             T_TRUE='true'; T_FALSE='false'; }
 
 @header {
@@ -100,10 +100,10 @@ tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; B
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STGroup.h"
 #import "ErrorType.h"
 #import "STLexer.h"
-#import "AMutableArray.h"
 
 @class STGroup;
 }
@@ -117,8 +117,10 @@ STGroup *group;
 }
 
 @methodsDecl {
++ (NSInteger) TANONYMOUS_TEMPLATE;
 + (NSInteger) TBIGSTRING;
 + (NSInteger) TBIGSTRING_NO_NL;
++ (NSInteger) TID;
 + (NSInteger) TTRUE;
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e;
 - (NSString *) getSourceName;
@@ -131,8 +133,10 @@ STGroup *group;
 }
 
 @methods {
++ (NSInteger) TANONYMOUS_TEMPLATE { return ANONYMOUS_TEMPLATE; }
 + (NSInteger) TBIGSTRING { return BIGSTRING; }
 + (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
++ (NSInteger) TID { return ID; }
 + (NSInteger) TTRUE { return T_TRUE; }
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e
 {
@@ -207,61 +211,61 @@ group[STGroup *aGroup, NSString *prefix]
 GroupLexer *lexer = (GroupLexer *)[input getTokenSource];
 self.group = lexer.group = $aGroup;
 }
-	:	oldStyleHeader?
-    (	'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
-	|	'import' // common error: name not in string
-			{
-			ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:STRING Stream:input];
-			[self reportError:e];
-			}
-			ID ('.' ID)* // might be a.b.c.d
-		)*
+    :   oldStyleHeader?
+    (   'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
+    |   'import' // common error: name not in string
+            {
+            ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:STRING Stream:input];
+            [self reportError:e];
+            }
+            ID ('.' ID)* // might be a.b.c.d
+        )*
         def[prefix]+
     ;
 
 oldStyleHeader // ignore but lets us use this parser in AW for both v3 and v4
     :   'group' ID ( ':' ID )?
-	    ( 'implements' ID (',' ID)* )?
-	    ';'
-	;
+        ( 'implements' ID (',' ID)* )?
+        ';'
+    ;
 
 groupName returns [NSString *name]
 @init {NSMutableString *buf = [NSMutableString stringWithCapacity:16];}
-	:	a=ID {[buf appendString:$a.text];} ('.' a=ID {[buf appendString:$a.text];})*
-	;
+    :   a=ID {[buf appendString:$a.text];} ('.' a=ID {[buf appendString:$a.text];})*
+    ;
 
 /** Match template and dictionary defs outside of (...)+ loop in group.
  *  The key is catching while still in the loop; must keep prediction of
  *  elements separate from "stay in loop" prediction.
  */
 def[NSString *prefix] : templateDef[prefix] | dictDef ;
-	catch[ANTLRRecognitionException *re] {
-		// pretend we already saw an error here
-		state.lastErrorIndex = [input getIndex];
-		[self error:[NSString stringWithFormat:@"garbled template definition starting at '\%@'", [[input LT:1] getText]]];
-	}
+    catch[ANTLRRecognitionException *re] {
+        // pretend we already saw an error here
+        state.lastErrorIndex = input.index;
+        [self error:[NSString stringWithFormat:@"garbled template definition starting at '\%@'", [[input LT:1] text]]];
+    }
 
 templateDef[NSString *prefix]
 @init {
     NSString *template=nil;
     NSInteger n=0; // num char to strip from left, right of template def
 }
-	:	(	'@' enclosing=ID '.' name=ID '(' ')'
-		|	name=ID '(' formalArgs ')'
-		)
-	    '::='
-	    {STToken *templateToken = [input LT:1];}
-	    (	STRING     {template=$STRING.text; n=1;}
-	    |	BIGSTRING  {template=$BIGSTRING.text; n=2;}
-	    |	BIGSTRING_NO_NL  {template=$BIGSTRING_NO_NL.text; n=2;}
-	    |	{
-	    	template = @"";
-	    	NSString *msg = [NSString stringWithFormat:@"missing template at '\%@'", [[input LT:1] getText]];
+    :   (   '@' enclosing=ID '.' name=ID '(' ')'
+        |   name=ID '(' formalArgs ')'
+        )
+        '::='
+        {STToken *templateToken = [input LT:1];}
+        (   STRING     {template=$STRING.text; n=1;}
+        |   BIGSTRING  {template=$BIGSTRING.text; n=2;}
+        |   BIGSTRING_NO_NL  {template=$BIGSTRING_NO_NL.text; n=2;}
+        |   {
+            template = @"";
+            NSString *msg = [NSString stringWithFormat:@"missing template at '\%@'", [[input LT:1] text]];
             ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
-    	    [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
-    	    }
-	    )
-	    {
+            [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
+            }
+        )
+        {
         if ( $name.index >= 0 ) { // if ID missing
             template = [Misc strip:template n:n];
             NSString *templateName = $name.text;
@@ -273,32 +277,29 @@ templateDef[NSString *prefix]
                                 nameToken:$name
                                      args:$formalArgs.args];
         }
-	    }
-	|   alias=ID '::=' target=ID  {[group defineTemplateAlias:$alias targetT:$target];}
-	;
-
-formalArgs returns[AMutableArray *args]
-@init {$args = [AMutableArray arrayWithCapacity:5];}
-    :	formalArg[$args]
-    	( ',' formalArg[$args] )*
-    	( ',' formalArgWithDefaultValue[$args] )*
-    |	formalArgWithDefaultValue[$args] ( ',' formalArgWithDefaultValue[$args] )*
-    |
-	;
-
-formalArg[AMutableArray *args]
-	:	ID
-		{[$args addObject:[FormalArgument newFormalArgument:$ID.text]];}
+        }
+    |   alias=ID '::=' target=ID  {[group defineTemplateAlias:$alias targetT:$target];}
     ;
 
-formalArgWithDefaultValue[AMutableArray *args]
-	:	ID
-		(	'=' a=STRING
-		|	'=' a=ANONYMOUS_TEMPLATE
-		|	'=' a='true'
-		|	'=' a='false'
-		)
-		{[$args addObject:[FormalArgument newFormalArgument:$ID.text token:$a]];}
+formalArgs returns[AMutableArray *args = [AMutableArray arrayWithCapacity:5\]]
+scope {
+    BOOL hasOptionalParameter;
+}
+@init { $formalArgs::hasOptionalParameter = false;}
+    :   formalArg[$args] (',' formalArg[$args])*
+    |
+    ;
+
+formalArg[AMutableArray *args]
+    :   ID
+        (   '=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {$formalArgs::hasOptionalParameter = true;}
+        |   {
+            if ( $formalArgs::hasOptionalParameter ) {
+                [group.errMgr compileTimeError:REQUIRED_PARAMETER_AFTER_OPTIONAL templateToken:nil t:$ID];
+            }
+            }
+        )
+        {[$args addObject:[FormalArgument newFormalArgument:$ID.text]];}
     ;
 
 /*
@@ -306,128 +307,128 @@ suffix returns [int cardinality=FormalArgument.REQUIRED]
     :   OPTIONAL
     |   STAR
     |   PLUS
-	|
+    |
     ;
-        */
+*/
 
 dictDef
-	:	ID '::=' dict
+    :   ID '::=' dict
         {
         if ( [group rawGetDictionary:$ID.text] != nil ) {
-			[group.errMgr compileTimeError:MAP_REDEFINITION templateToken:nil t:$ID];
+            [group.errMgr compileTimeError:MAP_REDEFINITION templateToken:nil t:$ID];
         }
         else if ( [group rawGetTemplate:$ID.text] != nil ) {
-			[group.errMgr compileTimeError:TEMPLATE_REDEFINITION_AS_MAP templateToken:nil t:$ID];
+            [group.errMgr compileTimeError:TEMPLATE_REDEFINITION_AS_MAP templateToken:nil t:$ID];
         }
         else {
             [group defineDictionary:$ID.text mapping:$dict.mapping];
         }
         }
-	;
-
-dict returns [NSMutableDictionary *mapping]
-@init {mapping=[NSMutableDictionary dictionaryWithCapacity:16];}
-	:   '[' dictPairs[mapping] ']'
-	;
-
-dictPairs[NSMutableDictionary *mapping]
-    :	keyValuePair[mapping]
-    	(',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
-    |	defaultValuePair[mapping]
     ;
- 	catch[ANTLRRecognitionException *re] {
-		[self error:[NSString stringWithFormat:@"missing dictionary entry at '\%@'", [input LT:1].text]];
-	}
 
-defaultValuePair[NSMutableDictionary *mapping]
-	:	'default' ':' keyValue {[mapping setObject:$keyValue.value forKey:STGroup.DEFAULT_KEY];}
-	;
+dict returns [AMutableDictionary *mapping]
+@init {mapping=[AMutableDictionary dictionaryWithCapacity:16];}
+    :   '[' dictPairs[mapping] ']'
+    ;
 
-keyValuePair[NSMutableDictionary *mapping]
-	:	STRING ':' keyValue {[mapping setObject:$keyValue.value forKey:[Misc replaceEscapes:[Misc strip:$STRING.text n:1]]];}
-	;
+dictPairs[AMutableDictionary *mapping]
+    :   keyValuePair[mapping]
+        (',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
+    |   defaultValuePair[mapping]
+    ;
+    catch[ANTLRRecognitionException *re] {
+        [self error:[NSString stringWithFormat:@"missing dictionary entry at '\%@'", [input LT:1].text]];
+    }
+
+defaultValuePair[AMutableDictionary *mapping]
+    :   'default' ':' keyValue {[mapping setObject:$keyValue.value forKey:STGroup.DEFAULT_KEY];}
+    ;
+
+keyValuePair[AMutableDictionary *mapping]
+    :   STRING ':' keyValue {[mapping setObject:$keyValue.value forKey:[Misc replaceEscapes:[Misc strip:$STRING.text n:1]]];}
+    ;
 
 keyValue returns [id value]
-	:	BIGSTRING			{$value = [group createSingleton:$BIGSTRING];}
-	|	BIGSTRING_NO_NL		{$value = [group createSingleton:$BIGSTRING_NO_NL];}
-	|	ANONYMOUS_TEMPLATE	{$value = [group createSingleton:$ANONYMOUS_TEMPLATE];}
-	|	STRING				{$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
-	|	T_TRUE				{$value = YES;}
-	|	T_FALSE				{$value = NO;}
-	|	{[[[input LT:1] getText] isEqualToString:@"key"]}?=> ID
-							{$value = STGroup.DICT_KEY;}
-	;
- 	catch[ANTLRRecognitionException *re] {
-		[self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] getText]]];
-	}
+    :   BIGSTRING           {$value = [group createSingleton:$BIGSTRING];}
+    |   BIGSTRING_NO_NL     {$value = [group createSingleton:$BIGSTRING_NO_NL];}
+    |   ANONYMOUS_TEMPLATE  {$value = [group createSingleton:$ANONYMOUS_TEMPLATE];}
+    |   STRING              {$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
+    |   T_TRUE              {$value = YES;}
+    |   T_FALSE             {$value = NO;}
+    |   {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID
+                            {$value = STGroup.DICT_KEY;}
+    ;
+    catch[ANTLRRecognitionException *re] {
+        [self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] text]]];
+    }
 
-ID	:	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
-	;
+ID  :   ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
+    ;
 
 STRING
-	:	'"'
-		(	'\\' '"'
-		|	'\\' ~'"'
-		|	{
-			NSString *msg = @"\\n in string";
-    		ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
-			[group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
-			}
-			'\n'
-		|	~('\\'|'"'|'\n')
-		)*
-		'"'
+    :   '"'
+        (   '\\' '"'
+        |   '\\' ~'"'
+        |   {
+            NSString *msg = @"\\n in string";
+            ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+            [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
+            }
+            '\n'
+        |   ~('\\'|'"'|'\n')
+        )*
+        '"'
         {
-        NSString *txt = [[self getText]  stringByReplacingOccurrencesOfString:@"\\\\\"" withString:@"\""];
-		[self setText:txt];
-		}
-	;
+        NSString *txt = [self.text  stringByReplacingOccurrencesOfString:@"\\\\\"" withString:@"\""];
+        [self setText:txt];
+        }
+    ;
 
 BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
-	:	'<%' (options {greedy=false;} : .)* '%>'
-	;
-	
+    :   '<%' (options {greedy=false;} : .)* '%>'
+    ;
+
 BIGSTRING
-	:	'<<'
-		(	options {greedy=false;}
-		:	'\\' '>'  // \> escape
-		|	'\\' ~'>'
-		|	~'\\'
-		)*
+    :   '<<'
+        (   options {greedy=false;}
+        :   '\\' '>'  // \> escape
+        |   '\\' ~'>'
+        |   ~'\\'
+        )*
         '>>'
         {
-        NSString *txt = [[self getText] stringByReplacingOccurrencesOfString:@"\\\\>" withString:@">"];
-		[self setText:txt];
-		}
-	;
+        NSString *txt = [self.text stringByReplacingOccurrencesOfString:@"\\\\>" withString:@">"];
+        [self setText:txt];
+        }
+    ;
 
 ANONYMOUS_TEMPLATE
-    :	'{'
-    	{
-		STToken *templateToken = [STToken newToken:input
-		                                      Type:ANONYMOUS_TEMPLATE
+    :   '{'
+        {
+        STToken *templateToken = [STToken newToken:input
+                                              Type:ANONYMOUS_TEMPLATE
                                            Channel:0
-		                                     Start:[input getIndex]
-		                                      Stop:[input getIndex]];
-		STLexer *lexer = [STLexer newSTLexer:group.errMgr
-			                           input:input
+                                             Start:input.index
+                                              Stop:input.index];
+        STLexer *lexer = [STLexer newSTLexer:group.errMgr
+                                       input:input
                                templateToken:templateToken
-			              delimiterStartChar:group.delimiterStartChar
-			               delimiterStopChar:group.delimiterStopChar];
-		[lexer setSubtemplateDepth:1];
-		STToken *t = [lexer nextToken];
-		while ( [lexer subtemplateDepth] >= 1 || t.type != STLexer.RCURLY ) {
-			if ( [t getType] == STLexer.EOF_TYPE ) {
-            	ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:'}' Stream:input];
-				NSString *msg = @"missing final '}' in {...} anonymous template";
-    			[group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
-				break;
-			}
-			t = [lexer nextToken];
-		}
-		}
-    	// don't match '}' here; our little {...} scanner loop matches it
-    	// to terminate.
+                          delimiterStartChar:group.delimiterStartChar
+                           delimiterStopChar:group.delimiterStopChar];
+        [lexer setSubtemplateDepth:1];
+        STToken *t = [lexer nextToken];
+        while ( [lexer subtemplateDepth] >= 1 || t.type != STLexer.RCURLY ) {
+            if ( t.type == STLexer.EOF_TYPE ) {
+                ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:'}' Stream:input];
+                NSString *msg = @"missing final '}' in {...} anonymous template";
+                [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
+                break;
+            }
+            t = [lexer nextToken];
+        }
+        }
+        // don't match '}' here; our little {...} scanner loop matches it
+        // to terminate.
     ;
 
 COMMENT
@@ -435,8 +436,8 @@ COMMENT
     ;
 
 LINE_COMMENT
-    :	'//' ~('\n'|'\r')* '\r'? '\n' { [self skip]; }
+    :   '//' ~('\n'|'\r')* '\r'? '\n' { [self skip]; }
     ;
 
-WS  :	(' '|'\r'|'\t'|'\n') { [self skip]; }
-	;
+WS  :   (' '|'\r'|'\t'|'\n') { [self skip]; }
+    ;

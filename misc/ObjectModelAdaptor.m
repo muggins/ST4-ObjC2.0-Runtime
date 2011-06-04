@@ -31,7 +31,6 @@
 #import "ObjectModelAdaptor.h"
 #import "Misc.h"
 #import "STException.h"
-#import "AMutableArray.h"
 
 
 @implementation Field
@@ -43,7 +42,7 @@
 
 + (id) newField:(NSString *)aName obj:(id)instObj
 {
-    return [[[Field alloc] init:aName obj:instObj] retain];
+    return [[Field alloc] init:aName obj:instObj];
 }
 
 - (id) init:(NSString *)aName obj:instObj
@@ -117,9 +116,11 @@
 
 - (objc_property_t) getProperty:(Class)c propertyName:(NSString *)propertyName
 {
-    //NSStringFromClass(c);
-    char *aName = class_getName(c);
-    return class_getProperty(c, aName);
+    const char *property = [propertyName cStringUsingEncoding:NSASCIIStringEncoding];
+    //    const char *aName = class_getName(c);    //NSStringFromClass(c);
+    //    name = [NSString stringWithFormat:@"%s", aName];
+    name = NSStringFromClass(c);
+    return class_getProperty(c, property);
 }
 
 @synthesize attr;
@@ -135,12 +136,12 @@
 
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj selString:(NSString *)aSelString
 {
-    return [[[OBJCMethod alloc] init:methodName obj:(id)anObj selString:aSelString] retain];
+    return [[OBJCMethod alloc] init:methodName obj:(id)anObj selString:aSelString];
 }
 
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj sel:(SEL)aSel
 {
-    return [[[OBJCMethod alloc] init:methodName obj:(id)anObj selString:NSStringFromSelector(aSel)] retain];
+    return [[OBJCMethod alloc] init:methodName obj:(id)anObj selString:NSStringFromSelector(aSel)];
 }
 
 - (id) init:(NSString *)methodName obj:(id)anObj selString:(NSString *)aSelString
@@ -152,6 +153,17 @@
         obj = anObj;
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ObjectModelAdaptor" );
+#endif
+    if ( name ) [name release];
+    if ( selString ) [selString release];
+    if ( obj ) [obj release];
+    [super dealloc];
 }
 
 - (Class) getClass
@@ -183,7 +195,7 @@
  */
 static STNoSuchPropertyException *cachedException;
 
-+ (id) newAdaptor
++ (id) newObjectModelAdaptor
 {
     return [[ObjectModelAdaptor alloc] init];
 }
@@ -197,6 +209,15 @@ static STNoSuchPropertyException *cachedException;
     return self;
 }
 
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ObjectModelAdaptor" );
+#endif
+    if ( classAndPropertyToMemberCache ) [classAndPropertyToMemberCache release];
+    [super dealloc];
+}
+
 - (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value = nil;
@@ -205,7 +226,7 @@ static STNoSuchPropertyException *cachedException;
         return [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
     }
 	// Look in cache for Member first
-    id member = [classAndPropertyToMemberCache objectForKey1:c forKey2:aPropertyName];
+    id member = [classAndPropertyToMemberCache objectForKey1:NSStringFromClass(c) forKey2:aPropertyName];
     if (member != nil) {
         @try {
             if ([member getClass] == [OBJCMethod class]) return [((OBJCMethod *)member) invoke:anObj];
@@ -235,9 +256,9 @@ static STNoSuchPropertyException *cachedException;
         }
     }
     @try {
-        id var;
+        void *var;
         if ( m != nil ) {
-            [classAndPropertyToMemberCache setObject:NSStringFromSelector(m) forKey1:c forKey2:aPropertyName];
+            [classAndPropertyToMemberCache setObject:NSStringFromSelector(m) forKey1:NSStringFromClass(c) forKey2:aPropertyName];
 
             //[classAndPropertyToMemberCache setObject:c forKey1:aPropertyName forKey2:[m className]];
             value = [self convertToString:anObj propertyName:aPropertyName];
@@ -246,7 +267,7 @@ static STNoSuchPropertyException *cachedException;
             // try for a visible field
             Ivar f;
             f = object_getInstanceVariable(anObj, [aPropertyName cStringUsingEncoding:NSASCIIStringEncoding], &var);
-            [classAndPropertyToMemberCache setObject:f forKey1:c forKey2:aPropertyName];
+            [classAndPropertyToMemberCache setObject:(id)f forKey1:NSStringFromClass(c) forKey2:aPropertyName];
             @try {
                 //value = [Misc accessField:(Ivar)f obj:anObj value:value];
                 value = object_getIvar(anObj, f);
@@ -325,7 +346,8 @@ static STNoSuchPropertyException *cachedException;
                     break;
                 case 'v':
                     //typeName = @"void";
-                    retVal = (NSString *)[NSNull null];
+                    //retVal = (NSString *)[NSNull null];
+                    retVal = nil;
                     break;
                 case '{':
                     //typeName = @"struct/union";
@@ -356,10 +378,4 @@ static STNoSuchPropertyException *cachedException;
     @throw cachedException;
 }
 
-- (void) dealloc
-{
-    [classAndPropertyToMemberCache release];
-    [super dealloc];
-}
-         
 @end

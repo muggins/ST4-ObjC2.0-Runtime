@@ -25,10 +25,10 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "STCompiletimeMessage.h"
 #import "GroupLexer.h"
-#import "AMutableArray.h"
 
 @class STToken;
 
@@ -37,22 +37,22 @@
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:nil arg:nil arg2:nil] retain];
+    return [[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:nil arg:nil arg2:nil];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:nil arg2:nil] retain];
+    return [[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:nil arg2:nil];
 }
             
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:nil] retain];
+    return [[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:nil];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
-    return [[[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:anArg2] retain];
+    return [[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:aCause arg:anArg arg2:anArg2];
 }
 
 #ifdef DONTUSENOMO
@@ -94,26 +94,40 @@
     self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         templateToken = aTemplateToken;
+        if ( templateToken ) [templateToken retain];
         token = t;
+        if ( token ) [token retain];
         srcName = aSrcName;
+        if ( srcName ) [srcName retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in PrintWriter" );
+#endif
+    if ( templateToken ) [templateToken release];
+    if ( token ) [token release];
+    if ( srcName ) [srcName release];
+    [super dealloc];
 }
 
 - (NSString *) description
 {
     NSInteger line = 0;
     NSInteger charPos = -1;
-    if (token != nil) {
-        line = [token getLine];
-        charPos = [token getCharPositionInLine];
-        if (templateToken != nil) {
+    if ( token != nil ) {
+        line = token.line;
+        charPos = token.charPositionInLine;
+        if ( templateToken != nil ) {
             NSInteger templateDelimiterSize = 1;
-            if ([templateToken getType] == BIGSTRING) {
+            if ( templateToken.type == BIGSTRING ) {
                 templateDelimiterSize = 2;
             }
-            line += [templateToken getLine] - 1;
-            charPos += [templateToken getCharPositionInLine] + templateDelimiterSize;
+            line += templateToken.line - 1;
+            charPos += templateToken.charPositionInLine + templateDelimiterSize;
         }
     }
     NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
@@ -128,13 +142,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc {
-    [templateToken release];
-    [token release];
-    [srcName release];
-    [super dealloc];
 }
 
 @synthesize templateToken;

@@ -26,6 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import <ANTLR/Antlr.h>
+#import "InstanceScope.h"
 
 @interface STException : ANTLRRuntimeException {
 }
@@ -34,6 +35,23 @@
 - (id) init;
 - (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause;
 - (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
+@end
+
+@interface STNoSuchAttributeException : ANTLRRuntimeException {
+    InstanceScope *scope;
+	NSString *attrName;
+}
+
++ (id) newException:(NSString *)aReason;
+
+- (id) initWithName:(NSString *)aName reason:(NSString *)aReason;
+- (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
+
+- (NSString *) getMessage;
+
+@property (retain) InstanceScope *scope;
+@property (retain) NSString *attrName;
+
 @end
 
 @interface STNoSuchMethodException : ANTLRRuntimeException

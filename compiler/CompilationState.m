@@ -25,10 +25,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "CompilationState.h"
 #import "Bytecode.h"
-#import "AMutableArray.h"
+#import "STException.h"
 
 @implementation CompilationState
 
@@ -42,21 +43,36 @@
                       name:(NSString *)aName
                     stream:(ANTLRCommonTokenStream *)theTokens
 {
-    return [[[CompilationState alloc] init:anErrMgr name:aName stream:theTokens] retain];
+    return [[CompilationState alloc] init:anErrMgr name:aName stream:theTokens];
 }
 
 - (id) init:(ErrorManager *)anErrMgr name:(NSString *)aName stream:(ANTLRCommonTokenStream *)theTokens
 {
     self=[super init];
     if ( self != nil ) {
-        impl = [CompiledST newCompiledST];
-        stringtable = [[StringTable alloc] init];
+        impl = [[CompiledST newCompiledST] retain];
+        stringtable = [[[StringTable alloc] init] retain];
         ip = 0;
         errMgr = anErrMgr;
+        if ( errMgr ) [errMgr retain];
         tokens = theTokens;
+        if ( tokens ) [tokens retain];
         impl.name = aName;
+        if ( impl.name ) [impl.name retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in CompilationState" );
+#endif
+    if ( impl ) [impl release];
+    if ( stringtable ) [stringtable release];
+    if ( tokens ) [tokens release];
+    if ( errMgr ) [errMgr release];
+    [super dealloc];
 }
 
 - (NSInteger) defineString:(NSString *)s
@@ -66,15 +82,17 @@
 
 - (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
 {
-    NSString *name = [aTree getText];
-    if (impl.formalArguments != nil && [impl.formalArguments objectForKey:name] != nil) {
+    if ( aTree == nil )
+        @throw [STNoSuchAttributeException newException:@"nil tree in refAttr()"];
+    NSString *name = aTree.text;
+    if ( (impl.formalArguments != nil) && ([impl.formalArguments objectForKey:name] != nil) ) {
         FormalArgument *arg = [impl.formalArguments objectForKey:name];
         NSInteger index = (([arg isKindOfClass:[FormalArgument class]])? arg.index:0);
         [self emit1:aTree opcode:Bytecode.INSTR_LOAD_LOCAL arg:index];
     }
     else {
         if ( [[Interpreter predefinedAnonSubtemplateAttributes] objectForKey:name] != nil ) {
-            [errMgr compileTimeError:NO_SUCH_ATTRIBUTE templateToken:templateToken t:(STToken *)aTree.token];
+            [errMgr compileTimeError:REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE templateToken:templateToken t:(STToken *)aTree.token];
             [self emit:aTree opcode:Bytecode.INSTR_NULL];
         }
         else {
@@ -86,13 +104,13 @@
 - (void) setOption:(ANTLRCommonTree *)aTree
 {
     NSInteger Opt;
-    Opt = (NSInteger)[[[Compiler getSupportedOptions] objectForKey:[aTree getText]] intValue];
+    Opt = (NSInteger)[[[Compiler getSupportedOptions] objectForKey:aTree.text] intValue];
     [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:Opt];
 }
 
 - (void) func:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
 {
-    NSString *funcBytecode = [[[Compiler funcs] getDict] objectForKey:[aTree getText]];
+    NSString *funcBytecode = [[[Compiler funcs] getDict] objectForKey:aTree.text];
     if (funcBytecode == nil) {
         [errMgr compileTimeError:NO_SUCH_FUNCTION templateToken:templateToken t:(STToken *)aTree.token];
         [self emit:aTree opcode:Bytecode.INSTR_POP];
@@ -187,7 +205,7 @@
 
 - (void) indent:(ANTLRCommonTree *)indent
 {
-    [self emit1:indent opcode:Bytecode.INSTR_INDENT s:[indent getText]];
+    [self emit1:indent opcode:Bytecode.INSTR_INDENT s:indent.text];
 }
 
 #ifdef DONTUSENOMO
@@ -201,14 +219,5 @@
     memory[index + 1] = (char)(value & 0xFF);
 }
 #endif
-
-- (void) dealloc
-{
-    [impl release];
-    [stringtable release];
-    [tokens release];
-    [errMgr release];
-    [super dealloc];
-}
 
 @end

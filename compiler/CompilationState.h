@@ -44,17 +44,17 @@
 @interface CompilationState : NSObject {
 
 	/** The compiled code implementation to fill in. */
-  CompiledST *impl;
+  __strong CompiledST *impl;
 
 	/** Track unique strings; copy into CompiledST's String[] after compilation */
-  StringTable *stringtable;
+  __strong StringTable *stringtable;
 
 	/** Track instruction location within code.instrs array; this is
 	 *  next address to write to.  Byte-addressable memory.
 	 */
   NSInteger ip;
-  ANTLRCommonTokenStream *tokens;
-  ErrorManager *errMgr;
+  __strong ANTLRCommonTokenStream *tokens;
+  __strong ErrorManager *errMgr;
 }
 
 + (id) newCompilationState:(ErrorManager *)anErrMgr

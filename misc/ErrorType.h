@@ -25,6 +25,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+#import <ANTLR/ANTLR.h>
+
 /**
  * All the errors that can happen and how to generate a message
  */
@@ -34,6 +37,7 @@ typedef enum {
     CANT_SET_ATTRIBUTE,
     NO_IMPORTED_TEMPLATE,
     NO_SUCH_ATTRIBUTE,
+    REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE,
     MISSING_FORMAL_ARGUMENTS,
     NO_SUCH_PROPERTY,
     MAP_ARGUMENT_COUNT_MISMATCH,
@@ -55,6 +59,7 @@ typedef enum {
     NO_SUCH_OPTION,
     INVALID_TEMPLATE_NAME,
     ANON_ARGUMENT_MISMATCH,
+    REQUIRED_PARAMETER_AFTER_OPTIONAL,
     INTERNAL_ERROR,
     WRITE_IO_ERROR,
     CANT_LOAD_GROUP_FILE,
@@ -65,13 +70,14 @@ typedef enum {
 
 @interface ErrorType : NSObject {
     NSString *message;
-    NSMutableDictionary *msgs;
+    AMutableDictionary *msgs;
 }
 
 + (NSString *) NO_SUCH_TEMPLATE;
 + (NSString *) CANT_SET_ATTRIBUTE;
 + (NSString *) NO_IMPORTED_TEMPLATE;
 + (NSString *) NO_SUCH_ATTRIBUTE;
++ (NSString *) REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE;
 + (NSString *) MISSING_FORMAL_ARGUMENTS;
 + (NSString *) NO_SUCH_PROPERTY;
 + (NSString *) MAP_ARGUMENT_COUNT_MISMATCH;
@@ -95,6 +101,7 @@ typedef enum {
 + (NSString *) NO_SUCH_OPTION;
 + (NSString *) INVALID_TEMPLATE_NAME;
 + (NSString *) ANON_ARGUMENT_MISMATCH;
++ (NSString *) REQUIRED_PARAMETER_AFTER_OPTIONAL;
 // INTERNAL ERRORS
 + (NSString *) INTERNAL_ERROR;
 + (NSString *) WRITE_IO_ERROR;
@@ -115,10 +122,8 @@ typedef enum {
 - (NSString *) description:(NSInteger) value;
 
 // getters and setters
-- (NSString *) getMessage;
-- (void) setMessage:(NSString *)msg;
 
 @property (retain) NSString *message;
-@property (retain) NSMutableDictionary *msgs;
+@property (retain) AMutableDictionary *msgs;
 
 @end

@@ -31,7 +31,6 @@
 #import "ST.h"
 #import "FormalArgument.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
 
 @implementation FormalArgument
 
@@ -86,17 +85,17 @@ static NSString *suffixes[] = {
 
 + (id) newFormalArgument
 {
-    return [[[FormalArgument alloc] init] retain];
+    return [[FormalArgument alloc] init];
 }
 
 + (id) newFormalArgument:(NSString *)aName
 {
-    return [[[FormalArgument alloc] initWithName:aName] retain];
+    return [[FormalArgument alloc] initWithName:aName];
 }
 
 + (id) newFormalArgument:(NSString *)aName token:(STToken *)aToken
 {
-    return [[[FormalArgument alloc] init:aName token:aToken] retain];
+    return [[FormalArgument alloc] init:aName token:aToken];
 }
 
 - (id) init
@@ -106,6 +105,7 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = @"";
+        if ( name ) [name retain];
         defaultValueToken = nil;
         compiledDefaultValue = nil;
     }
@@ -119,7 +119,9 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = aName;
+        if ( name ) [name retain];
         defaultValueToken = nil;
+        if ( defaultValueToken ) [defaultValueToken retain];
         compiledDefaultValue = nil;
     }
     return self;
@@ -132,10 +134,23 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = aName;
+        if ( name ) [name retain];
         defaultValueToken = aToken;
+        if ( defaultValueToken ) [defaultValueToken retain];
         compiledDefaultValue = nil;
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in FormalArgument" );
+#endif
+    if ( name ) [name release];
+    if ( defaultValueToken ) [defaultValueToken release];
+    if ( compiledDefaultValue ) [compiledDefaultValue release];
+    [super dealloc];
 }
 
 - (NSInteger) hash
@@ -159,20 +174,13 @@ static NSString *suffixes[] = {
 - (NSString *) description
 {
     if (defaultValueToken != nil)
-        return [NSString stringWithFormat:@"%@=%@", ((name != nil)?name:@"nil"), [defaultValueToken getText]];
+        return [NSString stringWithFormat:@"%@=%@", ((name != nil)?name:@"nil"), defaultValueToken.text];
     return name;
 }
 
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc {
-    [name release];
-    [defaultValueToken release];
-    [compiledDefaultValue release];
-    [super dealloc];
 }
 
 @end

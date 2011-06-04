@@ -26,10 +26,10 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "Writer.h"
 #import "ST.h"
-#import "AMutableArray.h"
 
 @implementation Writer
 
@@ -40,21 +40,21 @@
 
 + (id) newWriter
 {
-    return [[[Writer alloc] initWithCapacity:16] retain];
+    return [[Writer alloc] initWithCapacity:16];
 }
 
 + (id) newWriterWithWriter:(id)aWriter{
-    return [[[Writer alloc] initWithWriter:aWriter] retain];
+    return [[Writer alloc] initWithWriter:aWriter];
 }
 
 + (id) newWriterWithCapacity:(NSUInteger)len
 {
-    return [[[Writer alloc] initWithCapacity:len] retain];
+    return [[Writer alloc] initWithCapacity:len];
 }
 
 + (id) stringWithCapacity:(NSUInteger)len
 {
-    return [[[Writer alloc] initWithCapacity:len] retain];
+    return [[Writer alloc] initWithCapacity:len];
 }
 
 - (id) init
@@ -68,8 +68,8 @@
             ptr[i] = '\0';
         }
         ip = 0;
-        indents = [AMutableArray arrayWithCapacity:5];
-        anchors = [ANTLRIntArray newArrayWithLen:5];
+        indents = [[AMutableArray arrayWithCapacity:5] retain];
+        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -77,6 +77,7 @@
         lineWidth = ST.NO_WRAP;
         [indents addObject:@""];
         newline = @"\n";
+        [newline retain];
     }
     return self;
 }
@@ -92,8 +93,8 @@
             ptr[i] = '\0';
         }
         ip = 0;
-        indents = [AMutableArray arrayWithCapacity:5];
-        anchors = [ANTLRIntArray newArrayWithLen:5];
+        indents = [[AMutableArray arrayWithCapacity:5] retain];
+        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -101,6 +102,7 @@
         lineWidth = ST.NO_WRAP;
         [indents addObject:@""];
         newline = @"\n";
+        [newline retain];
     }
     return self;
 }
@@ -125,8 +127,8 @@
             self.ptr = writer.ptr;
             self.ip = writer.ip;
         }
-        indents = [AMutableArray arrayWithCapacity:5];
-        anchors = [ANTLRIntArray newArrayWithLen:5];
+        indents = [[AMutableArray arrayWithCapacity:5] retain];
+        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -134,19 +136,32 @@
         lineWidth = ST.NO_WRAP;
         [indents addObject:@""];
         newline = @"\n";
+        [newline retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in Writer" );
+#endif
+    if ( anchors ) [anchors release];
+    if ( data )    [data release];
+    if ( indents ) [indents release];
+    if ( newline ) [newline release];
+    if ( writer ) [writer release];
+    [super dealloc];
 }
 
 - (id) copyWithZone:(NSZone *)aZone
 {
     Writer *copy;
     
-    copy = [[[[self class] allocWithZone:aZone] init] retain];
+    copy = [[[self class] allocWithZone:aZone] init];
     copy.capacity = capacity;
     if ( data ) {
         copy.data = [data copyWithZone:aZone];
-        [copy.data retain];
     }
     copy.ptr = [copy.data mutableBytes];
     copy.ip = ip;
@@ -222,10 +237,10 @@
 
 - (NSString *) description
 {
-    if ( ptr == nil /* || ptr == [NSNull null] */ ) {
+    if ( ptr == nil ) {
         return @"";
     }
-    NSLog( @"%@", [NSString stringWithCString:(const char *)ptr encoding:NSASCIIStringEncoding] );
+    //NSLog( @"%@", [NSString stringWithCString:(const char *)ptr encoding:NSASCIIStringEncoding] );
     return [NSString stringWithCString:ptr encoding:NSASCIIStringEncoding];
 }
 
@@ -347,8 +362,12 @@
 - (NSInteger) indent
 {
     NSInteger n = 0;
-    
-    for (NSString *ind in indents) {
+
+//    for (NSString *ind in indents) {
+    NSString *ind;
+    ArrayIterator *it = [ArrayIterator newIterator:indents];
+    while ( [it hasNext] ) {
+        ind = (NSString *)[it nextObject];
         if (ind != nil) {
             n += [ind length];
             [writer writeStr:ind];
@@ -401,17 +420,17 @@
 
 + (id) newWriter
 {
-    return [[[BufferedWriter alloc] initWithCapacity:30] retain];
+    return [[BufferedWriter alloc] initWithCapacity:30];
 }
 
 + (id) newWriter:(NSInteger)len
 {
-    return [[[BufferedWriter alloc] initWithCapacity:len] retain];
+    return [[BufferedWriter alloc] initWithCapacity:len];
 }
 
 + (id) newWriterWithWriter:(Writer *)op
 {
-    return [[[BufferedWriter alloc] initWithWriter:op] retain];
+    return [[BufferedWriter alloc] initWithWriter:op];
 }
 
 - (id) initWithWriter:(Writer *)op
@@ -440,22 +459,22 @@
 
 + (id) newWriter:(id)writer
 {
-    return [[[OutputStreamWriter alloc] init:writer charSet:nil encoding:NSASCIIStringEncoding] retain];
+    return [[OutputStreamWriter alloc] init:writer charSet:nil encoding:NSASCIIStringEncoding];
 }
 
 + (id) newWriter:(id)writer charSet:(NSCharacterSet *)charSet
 {
-    return [[[OutputStreamWriter alloc] init:(id)writer charSet:charSet encoding:NSASCIIStringEncoding] retain];
+    return [[OutputStreamWriter alloc] init:(id)writer charSet:charSet encoding:NSASCIIStringEncoding];
 }
 
 + (id) newWriter:(id)writer encoding:(NSStringEncoding)encoding
 {
-    return [[[OutputStreamWriter alloc] init:(id)writer charSet:nil encoding:(NSStringEncoding)encoding] retain];
+    return [[OutputStreamWriter alloc] init:(id)writer charSet:nil encoding:(NSStringEncoding)encoding];
 }
 
 + (id) newWriter:(id)writer charSetName:(NSString *)charSetName
 {
-    return [[[OutputStreamWriter alloc] init] retain];
+    return [[OutputStreamWriter alloc] init];
 }
 
 - (id) init
@@ -485,7 +504,7 @@
 {
 }
 
-- (void) writeStr:(NSString *)str offset:(NSInteger)off len:(NSInteger)len
+- (NSInteger) writeStr:(NSString *)str offset:(NSInteger)off len:(NSInteger)len
 {
 }
 #endif
@@ -501,27 +520,27 @@
 
 + (id) newWriterWithFD:(NSInteger)anFD
 {
-    return [[[FileWriter alloc] initWithFD:(NSInteger)anFD] retain];
+    return [[FileWriter alloc] initWithFD:(NSInteger)anFD];
 }
 
 + (id) newWriterWithFH:(NSFileHandle *)aFH
 {
-    return [[[FileWriter alloc] initWithFH:aFH append:NO] retain];
+    return [[FileWriter alloc] initWithFH:aFH append:NO];
 }
 
 + (id) newWriterWithFH:(NSFileHandle *)file append:(BOOL)append
 {
-    return [[[FileWriter alloc] initWithFH:file append:append] retain];
+    return [[FileWriter alloc] initWithFH:file append:append];
 }
 
 + (id) newWriterWithFN:(NSString *)filename
 {
-    return [[[FileWriter alloc] initWithFN:filename append:NO] retain];
+    return [[FileWriter alloc] initWithFN:filename append:NO];
 }
 
 + (id) newWriterWithFN:(NSString *)filename append:(BOOL)append
 {
-    return [[[FileWriter alloc] initWithFN:filename append:append] retain];
+    return [[FileWriter alloc] initWithFN:filename append:append];
 }
 
 - (id) initWithFD:(NSInteger)anFD
@@ -555,7 +574,17 @@
     return self;
 }
 
-- (void) writeStr:(NSString *)str
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in FileWriter" );
+#endif
+    if ( fn ) [fn release];
+    if ( fh ) [fh release];
+    [super dealloc];
+}
+
+- (NSInteger) writeStr:(NSString *)str
 {
     NSMutableData *d;
     //- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc error:(NSError **)error;
@@ -563,7 +592,7 @@
     d = [NSMutableData dataWithBytes:ptr length:[self length]];
     [fh truncateFileAtOffset:0];
     [fh writeData:d];
-    [d release];
+    return [d length];
 }
 
 - (void) close

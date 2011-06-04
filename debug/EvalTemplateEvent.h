@@ -31,6 +31,6 @@
 @interface EvalTemplateEvent : InterpEvent {
 }
 
-+ (id) newEvalTemplateEventWithWho:(ST *)aWho start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar;
-- (id) initWithWho:(ST *)self start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar;
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar;
+- (id) init:(InstanceScope *)aScope start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar;
 @end

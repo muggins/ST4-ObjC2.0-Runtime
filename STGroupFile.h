@@ -36,8 +36,8 @@
  */
 
 @interface STGroupFile : STGroup {
-  NSString *fileName;
-  NSURL *URL;
+  __strong NSString *fileName;
+  __strong NSURL *URL;
   BOOL alreadyLoaded;
 }
 
@@ -54,6 +54,7 @@
 - (id) initWithFileName:(NSString *)fileName encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) initWithFQFN:(NSString *)fullyQualifiedFileName encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) initWithURL:(NSURL *)aURL encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
+- (BOOL) isDictionary:(NSString *)name;
 - (BOOL) isDefined:(NSString *)name;
 - (void) unload;
 - (CompiledST *) load:(NSString *)name;

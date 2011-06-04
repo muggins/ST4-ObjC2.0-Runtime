@@ -32,43 +32,42 @@
 #import "ModelAdaptor.h"
 #import "PrintWriter.h"
 #import "StringWriter.h"
-#import "AMutableArray.h"
 
 @implementation STMessage
 
 + (id) newMessage:(ErrorTypeEnum)anError;
 {
-    return [[[STMessage alloc] init:anError who:nil cause:nil arg:@"" arg2:@"" arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:nil cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:nil arg:@"" arg2:@"" arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:@"" arg2:@"" arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:@"" arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:@"" arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(STToken *)where  arg:(id)arg;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:where arg2:arg arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:where arg2:arg arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:@""] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:@""];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3
 {
-    return [[[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:arg3] retain];
+    return [[STMessage alloc] init:anError who:aWho cause:aCause arg:arg arg2:arg2 arg3:arg3];
 }
 
 #ifdef DONTUSENOMO
@@ -163,18 +162,42 @@
     if ( self != nil ) {
         error = anError;
         who = aWho;
+        if ( who ) [who retain];
         cause = aCause;
+        if ( cause ) [cause retain];
         arg = anArg;
+        if ( arg && [arg isKindOfClass:[NSObject class]] )
+            [arg retain];
         arg2 = anArg2;
+        if ( arg2 && [arg2 isKindOfClass:[NSObject class]] )
+            [arg2 retain];
         arg3 = anArg3;
+        if ( arg3 && [arg3 isKindOfClass:[NSObject class]] )
+            [arg3 retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STMessage" );
+#endif
+    if ( who ) [who release];
+    if ( cause ) [cause release];
+    if ( arg && [arg isKindOfClass:[NSObject class]] )
+        [arg release];
+    if ( arg2 && [arg2 isKindOfClass:[NSObject class]] )
+        [arg2 release];
+    if ( arg3 && [arg3 isKindOfClass:[NSObject class]] )
+        [arg3 release];
+    [super dealloc];
 }
 
 - (NSString *) description
 {
     StringWriter *sw = [StringWriter stringWithCapacity:16];
-    PrintWriter *pw = [[PrintWriter alloc] initWithCapacity:16];
+    PrintWriter  *pw = [PrintWriter newWriterWithWriter:sw];
     NSMutableString *msg = [NSMutableString stringWithFormat:@"%@%@%@%@", [ErrorType ErrorNum:error], arg, arg2, arg3];
     [pw print:msg];
     if (cause != nil) {
@@ -192,16 +215,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc
-{
-    [self release];
-    if (arg != nil) [arg release];
-    if (arg2 != nil) [arg2 release];
-    if (arg3 != nil) [arg3 release];
-    if (cause != nil) [cause release];
-    [super dealloc];
 }
 
 @synthesize who;

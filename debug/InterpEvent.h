@@ -32,16 +32,17 @@
 
 @interface InterpEvent : NSObject {
     InstanceScope *scope;
-    ST *who;
     NSInteger outputStartChar;
     NSInteger outputStopChar;
 }
 
-- (id) initWithWho:(ST *)aWho start:(NSInteger)theStart stop:(NSInteger)theStop;
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
+
+- (id) init:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
 - (NSString *) description;
 - (NSString *) toString;
 
-@property (retain) ST *who;
+@property (retain) InstanceScope *scope;
 @property NSInteger outputStartChar;
 @property NSInteger outputStopChar;
 @end

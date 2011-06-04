@@ -25,6 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "STRuntimeMessage.h"
 #import "Interval.h"
@@ -32,7 +33,6 @@
 #import "Misc.h"
 #import "ST.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
 
 @implementation STRuntimeMessage
 
@@ -42,32 +42,32 @@
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:nil cause:nil arg:@"" arg2:@"" arg3:@""] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:nil cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:@"" arg2:@"" arg3:@""] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho arg:(id)anArg;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:anArg arg2:@"" arg3:@""] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:anArg arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:@"" arg3:@""] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:@"" arg3:@""];
 }
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:@""] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:@""];
 }
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
 {
-    return [[[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3] retain];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3];
 }
 
 - (id) init:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2
@@ -75,6 +75,7 @@
     self=[super init:anError who:aWho cause:e arg:anArg arg2:anArg2 arg3:@""];
     if ( self !=nil ) {
         interp = anInterp;
+        if ( interp ) [interp retain];
         ip = anIp;
         scope = nil;
     }
@@ -86,10 +87,17 @@
     self=[super init:anError who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3];
     if ( self !=nil ) {
         interp = anInterp;
+        if ( interp ) [interp retain];
         ip = anIp;
         scope = nil;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    if ( interp ) [interp release];
+    [super dealloc];
 }
 
 
@@ -114,13 +122,13 @@
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     NSString *loc = [self getSourceLocation];
     if (who != nil) {
-        [buf appendFormat:@"context [%@]", ((interp != nil)?[interp getEnclosingInstanceStackString:scope]:@"")];
+        [buf appendFormat:@"context [%@]", ((interp != nil)?[Interpreter getEnclosingInstanceStackString:scope]:@"")];
     }
     if (loc != nil) {
         [buf appendFormat:@" %@", loc];
     }
     [buf appendFormat:@" %@", [super description]];
-    return buf;
+    return [buf description];
 }
 
 - (NSString *) toString

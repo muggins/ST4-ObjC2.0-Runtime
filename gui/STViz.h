@@ -1,23 +1,19 @@
-//#import "CommonToken.h"
-//#import "CommonTree.h"
-//#import "CommonTreeAdaptor.h"
+#import <ANTLR/ANTLR.h>
 #import "Interpreter.h"
 #import "ST.h"
 #import "STGroup.h"
 #import "STGroupFile.h"
 #import "AddAttributeEvent.h"
-#import "DebugST.h"
+//#import "DebugST.h"
 #import "EvalTemplateEvent.h"
 #import "InterpEvent.h"
-#import "ArrayIterator.h"
 #import "Coordinate.h"
 #import "ErrorBuffer.h"
 #import "ErrorManager.h"
 #import "ErrorType.h"
 #import "Interval.h"
-#import "MapModelAdaptor.h"
+#import "DictModelAdaptor.h"
 #import "Misc.h"
-#import "MultiMap.h"
 #import "ObjectModelAdaptor.h"
 #import "STCompiletimeMessage.h"
 #import "STDump.h"
@@ -25,7 +21,6 @@
 #import "STLexerMessage.h"
 #import "STMessage.h"
 #import "STModelAdaptor.h"
-//#import "STNoSuchPropertyException.h"
 #import "STRuntimeMessage.h"
 //#import "BadLocationException.h"
 //#import "DefaultHighlighter.h"
@@ -76,6 +71,7 @@
   Interpreter *interp;
 }
 
++ (id) newSTViz:errMgr root:(DebugST *)root output:(NSString *)output interp:(Interpreter *)interp trace:(AMutableArray *)trace errors:(AMutableArray *)errors
 - (id) init:(ErrorManager *)errMgr root:(DebugST *)root output:(NSString *)output interp:(Interpreter *)interp trace:(AMutableArray *)trace errors:(AMutableArray *)errors;
 - (void) highlight:(JTextComponent *)comp i:(NSInteger)i j:(NSInteger)j;
 - (void) updateAttributes:(DebugST *)st m:(STViewFrame *)m;

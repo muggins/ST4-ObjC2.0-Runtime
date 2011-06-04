@@ -7,7 +7,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -18,7 +18,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -29,7 +29,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -40,7 +40,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -51,7 +51,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -62,7 +62,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -73,7 +73,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -84,7 +84,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -95,7 +95,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -106,7 +106,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -117,7 +117,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -128,7 +128,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -139,7 +139,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -150,7 +150,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -161,7 +161,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -172,7 +172,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -183,7 +183,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -194,7 +194,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -205,7 +205,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -216,7 +216,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -227,7 +227,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -238,7 +238,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -249,7 +249,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -260,7 +260,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -271,7 +271,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -282,7 +282,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -293,7 +293,7 @@
 @synthesize tree;
 
 - (void) dealloc {
-  [tree release];
+  if ( tree ) [tree release];
   [super dealloc];
 }
 
@@ -623,7 +623,8 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
 @synthesize grammarFileName;
 
 - (id) initWithInput:(TokenStream *)input {
-  if (self = [self init:input state:[[[RecognizerSharedState alloc] init] autorelease]]) {
+    self = [self init:input state:[[RecognizerSharedState alloc] init] retain];
+  if ( self != nil ) {
   }
   return self;
 }
@@ -1396,12 +1397,11 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
           alt12 = 1;
         }
       }
-
       switch (alt12) {
       case 1:
         {
-          if (!(([((CommonToken *)retval.start) line] != [[input LT:1] line]))) {
-            @throw [[[FailedPredicateException alloc] init:input param1:@"ifstat" param2:@"$ifstat.start.getLine()!=input.LT(1).getLine()"] autorelease];
+          if ( !(retval.start.line] != [input LT:1].line) ) {
+            @throw [[[FailedPredicateException alloc] init:input param1:@"ifstat" param2:@"$ifstat.start..line != [input LT:1].line"] autorelease];
           }
           NEWLINE48 = (CommonToken *)[self match:input param1:NEWLINE param2:FOLLOW_NEWLINE_in_ifstat446];
           [stream_NEWLINE add:NEWLINE48];
@@ -1878,7 +1878,7 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
       ID69 = (CommonToken *)[self match:input param1:ID param2:FOLLOW_ID_in_option675];
       [stream_ID add:ID69];
       if (!validOption) {
-        [errMgr compileTimeError:ErrorType.NO_SUCH_OPTION param1:templateToken param2:ID69 param3:((ID69 != nil) ? [ID69 text] : nil)];
+        [errMgr compileTimeError:ErrorType.NO_SUCH_OPTION param1:templateToken param2:ID69 param3:(ID69 != nil ? [ID69 text] : nil)];
       }
       int alt18 = 2;
       int LA18_0 = [input LA:1];
@@ -2613,8 +2613,8 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
     switch (alt28) {
     case 1:
       {
-        if (!(([Compiler.funcs containsKey:[[input LT:1] text]]))) {
-          @throw [[[FailedPredicateException alloc] init:input param1:@"includeExpr" param2:@"Compiler.funcs.containsKey(input.LT(1).getText())"] autorelease];
+        if (!(([Compiler.funcs objectForKey:[input LT:1].text]))) {
+          @throw [[[FailedPredicateException alloc] init:input param1:@"includeExpr" param2:@"Compiler.funcs.objectForKey:input.LT(1).text())"] autorelease];
         }
         ID94 = (CommonToken *)[self match:input param1:ID param2:FOLLOW_ID_in_includeExpr1161];
         [stream_ID add:ID94];
@@ -3466,12 +3466,13 @@ BitSet * const FOLLOW_exprNoComma_in_listElement1537 = [[[BitSet alloc] init:[NS
 
 }
 
-- (void) dealloc {
-  [adaptor release];
-  [errMgr release];
-  [templateToken release];
-  [dfa2 release];
-  [dfa28 release];
+- (void) dealloc
+{
+  if ( adaptor ) [adaptor release];
+  if ( errMgr ) [errMgr release];
+  if ( templateToken ) [templateToken release];
+  if ( dfa2 ) [dfa2 release];
+  if ( dfa28 ) [dfa28 release];
   [super dealloc];
 }
 

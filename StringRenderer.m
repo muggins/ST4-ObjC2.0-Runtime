@@ -37,7 +37,7 @@
 
 - (NSString *) description:(id)obj formatString:(NSString *)formatString locale:(NSLocale *)locale {
     NSString *s = (NSString *)obj;
-    if ( formatString == (NSString *)[NSNull null] )
+    if ( formatString == nil )
         return s;
     if ( [formatString isEqualToString:@"upper"] )
         return [s uppercaseString];

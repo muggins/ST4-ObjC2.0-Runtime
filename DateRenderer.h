@@ -25,10 +25,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "AttributeRenderer.h"
 
 @interface DateRenderer_Anon1 : NSObject {
-    NSMutableDictionary *aDict;
+    AMutableDictionary *aDict;
 }
 + (id) newDictionary;
 + (id) DictionaryWithCapacity:(NSInteger)len;
@@ -38,7 +39,7 @@
 - (void) setObject:(id)anObject forKey:(id)aKey;
 - (id) objectForKey:(id)aKey;
 
-@property (retain) NSMutableDictionary *aDict;
+@property (retain) AMutableDictionary *aDict;
 @end
 
 /**

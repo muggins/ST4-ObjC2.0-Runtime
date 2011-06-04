@@ -34,7 +34,7 @@
 
 + (id) newInterval:(NSInteger)x b:(NSInteger)y
 {
-    return [[[Interval alloc] init:x b:y] retain];
+    return [[Interval alloc] init:x b:y];
 }
 
 - (id) init:(NSInteger)x b:(NSInteger)y {

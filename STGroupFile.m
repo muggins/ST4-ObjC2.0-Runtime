@@ -26,10 +26,10 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import <Cocoa/Cocoa.h>
+#import <ANTLR/ANTLR.h>
 #import "STGroupFile.h"
 #import "STException.h"
 #import "ErrorManager.h"
-#import "AMutableArray.h"
 
 @implementation STGroupFile
 
@@ -98,6 +98,7 @@
         }
         @try {
             fileName = aFileName;
+            if ( fileName ) [fileName retain];
             if ((aFileName != nil) && ([aFileName characterAtIndex:0] == '~'))
                 fileName = [aFileName stringByExpandingTildeInPath];
             alreadyLoaded = NO;
@@ -107,6 +108,7 @@
             fExists = [fm fileExistsAtPath:fileName isDirectory:&isDir];
             if (fExists && isDir) {
                 URL = [NSURL fileURLWithPath:fileName];
+                if ( URL ) [URL retain];
             }
             else {
 #ifdef DONTUSEYET
@@ -136,6 +138,7 @@
     if ( self != nil ) {
         alreadyLoaded = NO;
         URL = [NSURL fileURLWithPath:fullyQualifiedFileName];
+        if ( URL ) [URL retain];
         encoding = theEncoding;
     }
     return self;
@@ -147,9 +150,25 @@
     if ( self != nil ) {
         alreadyLoaded = NO;
         URL = aURL;
+        if ( URL ) [URL retain];
         encoding = theEncoding;
     }
     return self;
+}
+
+- (void) dealloc {
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STGroupDir" );
+#endif
+    if ( fileName ) [fileName release];
+    if ( URL ) [URL release];
+    [super dealloc];
+}
+
+- (BOOL) isDictionary:(NSString *)name
+{
+	if ( !alreadyLoaded ) [self load];
+	return [super isDictionary:name];
 }
 
 - (BOOL) isDefined:(NSString *)name
@@ -234,13 +253,6 @@
     //								me, f.getParentFile());
     //		}
     //      return nil;
-}
-
-- (void) dealloc
-{
-    [fileName release];
-    [URL release];
-    [super dealloc];
 }
 
 @end

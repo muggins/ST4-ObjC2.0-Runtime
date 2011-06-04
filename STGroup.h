@@ -30,16 +30,15 @@
 #import "STErrorListener.h"
 #import "STToken.h"
 #import "ModelAdaptor.h"
-#import "AMutableArray.h"
+#import "AttributeRenderer.h"
 
 @class ErrorManager;
 @class STErrorListener;
-@class AttributeRenderer;
 @class ST;
 @class CompiledST;
 
 @interface STGroup_Anon1 : NSObject {
-    NSMutableDictionary *dict;
+    AMutableDictionary *dict;
 }
 
 + (id) newSTGroup_Anon1;
@@ -50,7 +49,7 @@
 - (void) setObject:(id)anObject forKey:(id)aKey;
 - (NSInteger) count;
 
-@property (retain) NSMutableDictionary *dict;
+@property (retain) AMutableDictionary *dict;
 @end
 
 /**
@@ -67,7 +66,6 @@
  */
 @interface STGroup : NSObject {
     
-    
     /**
      * Load files using what encoding?
      */
@@ -77,20 +75,20 @@
      * Every group can import templates/dictionaries from other groups.
      * The list must be synchronized (see importTemplates).
      */
-    AMutableArray *imports;
+    __strong AMutableArray *imports;
     unichar delimiterStartChar;
     unichar delimiterStopChar;
     
     /**
      * Maps template name to StringTemplate object. synchronized.
      */
-    NSMutableDictionary *templates;
+    __strong AMutableDictionary *templates;
     
     /**
      * Maps dict names to HashMap objects.  This is the list of dictionaries
      * defined by the user like typeInitMap ::= ["int":"0"]
      */
-    NSMutableDictionary *dictionaries;
+    __strong AMutableDictionary *dictionaries;
     
     /**
      * A dictionary that allows people to register a renderer for
@@ -112,7 +110,7 @@
      * 
      * This structure is synchronized.
      */
-    NSMutableDictionary *renderers;
+    __strong AMutableDictionary *renderers;
     
     /**
      * A dictionary that allows people to register a model adaptor for
@@ -122,26 +120,32 @@
      * ST initializes with model adaptors that know how to pull
      * properties out of Objects, Maps, and STs.
      */
-    NSMutableDictionary *adaptors;
+    __strong AMutableDictionary *adaptors;
     
     /**
      * Cache exact attribute type to adaptor object
      */
-    NSMutableDictionary *typeToAdaptorCache;
+    __strong AMutableDictionary *typeToAdaptorCache;
     
 	/** Cache exact attribute type to renderer object */
-	NSMutableDictionary *typeToRendererCache;
+	__strong AMutableDictionary *typeToRendererCache;
     /**
      * The errMgr for entire group; all compilations and executions.
      * This gets copied to parsers, walkers, and interpreters.
      */
-    ErrorManager *errMgr;
+    __strong ErrorManager *errMgr;
+    /** v3 compatibility; used to iterate across values not keys like v4.
+     *  But to convert ANTLR templates, it's too hard to find without
+     *  static typing in templates.
+     */
+    BOOL iterateAcrossValues;
 }
 
 + (CompiledST *) NOT_FOUND_ST;
 + (NSString *) DEFAULT_KEY;
 + (NSString *) DICT_KEY;
 + (STGroup *) defaultGroup;
++ (void) resetDefaultGroup;
 
 + (ErrorManager *) DEFAULT_ERR_MGR;
 + (BOOL) debug;
@@ -156,6 +160,7 @@
 + (id) newSTGroup:(unichar)startChar delimiterStopChar:(unichar)stopChar;
 - (id) init;
 - (id) init:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
+- (void)dealloc;
 - (ST *) getInstanceOf:(NSString *)name;
 - (ST *) getEmbeddedInstanceOf:(Interpreter *)interp who:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)name;
 - (ST *) createSingleton:(STToken *)templateToken;
@@ -166,12 +171,11 @@
 - (void) load;
 - (CompiledST *) lookupImportedTemplate:(NSString *)name;
 - (CompiledST *) rawGetTemplate:(NSString *)name;
-- (NSMutableDictionary *) rawGetDictionary:(NSString *)name;
+- (AMutableDictionary *) rawGetDictionary:(NSString *)name;
 - (BOOL) isDictionary:(NSString *)name;
 - (CompiledST *) defineTemplate:(NSString *)templateName template:(NSString *)template;
 
 - (CompiledST *) defineTemplate:(NSString *)aName argsS:(NSString *)argsS template:(NSString *)template;
-- (CompiledST *) defineTemplate:(NSString *)name argsS:(NSString *)argsS template:(NSString *)template templateToken:(STToken *)templateToken;
 - (CompiledST *) defineTemplate:(NSString *)templateName nameT:(STToken *)nameT args:(AMutableArray *)args template:(NSString *)template templateToken:(STToken *)templateToken;
 - (CompiledST *) defineTemplateAlias:(STToken *)aliasT targetT:(STToken *)targetT;
 - (CompiledST *) defineRegion:(NSString *)enclosingTemplateName regionT:(STToken *)regionT template:(NSString *)template templateToken:(STToken *)templateToken;
@@ -179,20 +183,20 @@
 - (void) rawDefineTemplate:(NSString *)name code:(CompiledST *)code defT:(STToken *)defT;
 - (void) undefineTemplate:(NSString *)name;
 - (CompiledST *) compile:(NSString *)srcName name:(NSString *)name args:(AMutableArray *)args template:(NSString *)template templateToken:(STToken *)templateToken;
-- (void) defineDictionary:(NSString *)name mapping:(NSMutableDictionary *)mapping;
+- (void) defineDictionary:(NSString *)name mapping:(AMutableDictionary *)mapping;
 - (void) importTemplates:(STGroup *)g;
 - (void) importTemplatesWithFileName:(STToken *)fileNameToken;
 - (void) loadGroupFile:(NSString *)prefix fileName:(NSString *)fileName;
 - (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<ANTLRCharStream>)templateStream;
 - (CompiledST *) loadAbsoluteTemplateFile:(NSString *) fileName;
-- (void) registerModelAdaptor:(id)attributeType adaptor:(id<ModelAdaptor>)adaptor;
-- (void) invalidateModelAdaptorCache:(id)attributeType;
-- (id<ModelAdaptor>) getModelAdaptor:(id)attributeType;
-- (void) registerRenderer:(id)attributeType r:(AttributeRenderer *)r;
-- (AttributeRenderer *) getAttributeRenderer:(id)attributeType;
-- (ST *) createStringTemplate;
-- (ST *) createStringTemplateInternally;
-- (ST *) createStringTemplateInternally:(ST *)proto;
+- (void) registerModelAdaptor:(Class)attributeType adaptor:(id<ModelAdaptor>)adaptor;
+- (void) invalidateModelAdaptorCache:(Class)attributeType;
+- (id<ModelAdaptor>) getModelAdaptor:(Class)attributeType;
+- (void) registerRenderer:(Class)attributeType r:(id<AttributeRenderer>)r;
+- (id<AttributeRenderer>) getAttributeRenderer:(Class)attributeType;
+- (ST *) createStringTemplate:(CompiledST *)anImpl;
+- (ST *) createStringTemplateInternally:(CompiledST *)anImpl;
+- (ST *) createStringTemplateInternallyWithProto:(ST *)proto;
 - (NSURL *)getURL:(NSString *)fileName;
 - (NSURL *)getRootDirURL;
 - (NSString *) description;
@@ -210,12 +214,13 @@
 @property (retain) AMutableArray *imports;
 @property (assign) unichar delimiterStartChar;
 @property (assign) unichar delimiterStopChar;
-@property (retain) NSMutableDictionary *templates;
-@property (retain) NSMutableDictionary *dictionaries;
-@property (retain) NSMutableDictionary *renderers;
-@property (retain) NSMutableDictionary *adaptors;
+@property (retain) AMutableDictionary *templates;
+@property (retain) AMutableDictionary *dictionaries;
+@property (retain) AMutableDictionary *renderers;
+@property (retain) AMutableDictionary *adaptors;
 @property (retain) ErrorManager *errMgr;
-@property (retain) NSMutableDictionary *typeToAdaptorCache;
-@property (retain) NSMutableDictionary *typeToRendererCache;
+@property (retain) AMutableDictionary *typeToAdaptorCache;
+@property (retain) AMutableDictionary *typeToRendererCache;
+@property (assign) BOOL iterateAcrossValues;
 
 @end

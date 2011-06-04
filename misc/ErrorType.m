@@ -35,6 +35,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 @"can't set attribute %@; template %@ has no such attribute",
 @"no such template: super.%@",
 @"attribute %@ isn't defined",
+@"implicitly-defined attribute %s not visible",
 @"missing argument definitions",
 @"no such property or can't access: %@",
 @"iterating through %@ values in zip map but template has %@ declared arguments",
@@ -56,6 +57,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 @"no such option: %@",
 @"invalid template name or path: %@",
 @"anonymous template has %d arg(s) but mapped across %d value(s)",
+@"required parameters (%s) must appear before optional parameters",
 @"%@",
 @"error writing output caused by",
 @"can't load group file %@" };
@@ -81,6 +83,12 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 {
 //    return @"attribute %@ isn't defined";
     return ErrorType_Data[NO_SUCH_ATTRIBUTE];
+}
+
++ (NSString *) REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE
+{
+//    return @"attribute %@ isn't defined";
+    return ErrorType_Data[REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE];
 }
 
 + (NSString *) MISSING_FORMAL_ARGUMENTS
@@ -211,6 +219,12 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     return ErrorType_Data[ANON_ARGUMENT_MISMATCH];
 }
 
++ (NSString *) REQUIRED_PARAMETER_AFTER_OPTIONAL
+{
+    //  return @"required parameters (%s) must appear before optional parameters",
+    return ErrorType_Data[REQUIRED_PARAMETER_AFTER_OPTIONAL];
+}
+
 // INTERNAL ERRORS
 + (NSString *) INTERNAL_ERROR
 {
@@ -239,17 +253,17 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 
 + (id) newErrorType
 {
-    return [[[ErrorType alloc] init] retain];
+    return [[ErrorType alloc] init];
 }
 
 + (id) newErrorTypeWithErrNum:(NSInteger) msgNum
 {
-    return [[[ErrorType alloc] init] retain];
+    return [[ErrorType alloc] init];
 }
 
 + (id) newErrorTypeWithMsg:(NSString *) aMsg
 {
-    return [[[ErrorType alloc] initWithMsg:aMsg] retain];
+    return [[ErrorType alloc] initWithMsg:aMsg];
 }
 
 - (id) init
@@ -258,7 +272,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     if (self != nil ) {
         message = nil;
         NSInteger idx = 0;
-        msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
+        msgs = [AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
             [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%d", idx]];
         }
@@ -272,7 +286,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     if (self != nil ) {
         message = nil;
         NSInteger idx = 0;
-        msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
+        msgs = [AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
             [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%d", idx]];
         }
@@ -285,14 +299,25 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 {
     self=[super init];
     if (self != nil ) {
-        message = aMsg;
+        message = [NSString stringWithString:aMsg];
+        if ( message ) [message retain];
         NSInteger idx = 0;
-        msgs = [NSMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
+        msgs = [[AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS] retain];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
             [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithString:[self description:idx]]];
         }
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ErrorType" );
+#endif
+    if ( message ) [message release];
+    if ( msgs ) [msgs release];
+    [super dealloc];
 }
 
 - (NSInteger) ErrorTypeValueOf:(NSString *)text
@@ -305,6 +330,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
         else if ([text isEqualToString:@"NO_IMPORTED_TEMPLATE"])
             return NO_IMPORTED_TEMPLATE;
         else if ([text isEqualToString:@"NO_SUCH_ATTRIBUTE"])
+            return NO_SUCH_ATTRIBUTE;
+        else if ([text isEqualToString:@"REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE"])
             return NO_SUCH_ATTRIBUTE;
         else if ([text isEqualToString:@"MISSING_FORMAL_ARGUMENTS"])
             return MISSING_FORMAL_ARGUMENTS;
@@ -348,6 +375,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return INVALID_TEMPLATE_NAME;
         else if ([text isEqualToString:@"ANON_ARGUMENT_MISMATCH"])
             return ANON_ARGUMENT_MISMATCH;
+        else if ([text isEqualToString:@"REQUIRED_PARAMETER_AFTER_OPTIONAL"])
+            return REQUIRED_PARAMETER_AFTER_OPTIONAL;
         else if ([text isEqualToString:@"INTERNAL_ERROR"])
             return INTERNAL_ERROR;
         else if ([text isEqualToString:@"WRITE_IO_ERROR"])
@@ -386,6 +415,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return @"NO_IMPORTED_TEMPLATE";
         case NO_SUCH_ATTRIBUTE:
             return @"NO_SUCH_ATTRIBUTE";
+        case REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE:
+            return @"REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE";
         case MISSING_FORMAL_ARGUMENTS:
             return @"MISSING_FORMAL_ARGUMENTS";
         case NO_SUCH_PROPERTY:
@@ -428,6 +459,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
             return @"INVALID_TEMPLATE_NAME";
         case ANON_ARGUMENT_MISMATCH:
             return @"ANON_ARGUMENT_MISMATCH";
+        case REQUIRED_PARAMETER_AFTER_OPTIONAL:
+            return @"REQUIRED_PARAMETER_AFTER_OPTIONAL";
         case INTERNAL_ERROR:
             return @"INTERNAL_ERROR";
         case WRITE_IO_ERROR:
@@ -441,21 +474,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 }
 
 // getters and setters
-- (NSString *) getMessage
-{
-    return message;
-}
 
-- (void) setMessage:(NSString *)msg
-{
-    message = msg;
-}
-
-- (void) dealloc
-{
-    [message release];
-    [super dealloc];
-}
 @synthesize message;
 @synthesize msgs;
 @end

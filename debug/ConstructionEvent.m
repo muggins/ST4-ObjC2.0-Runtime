@@ -26,6 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import "ConstructionEvent.h"
+#import <ANTLR/ANTLR.h>
 
 @implementation StackTraceElement
 
@@ -53,8 +54,18 @@
     self=[super init];
     if ( self != nil ) {
         msg = aMsg;
+        if ( msg ) [msg retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in StackTraceElement" );
+#endif
+    if ( msg ) [msg release];
+    [super dealloc];
 }
 
 - (NSString *) description
@@ -82,10 +93,23 @@
 {
     self=[super init];
     if ( self != nil ) {
-        stack = [[NSException alloc] init];
-        sTEntryPoint = [StackTraceElement newStackTraceElement];
+        stack = [[[NSException alloc] init] retain];
+        sTEntryPoint = [[StackTraceElement newStackTraceElement] retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ConstructionEvent" );
+#endif
+    if ( addrs ) [addrs release];
+    if ( fileName ) [fileName release];
+    if ( stack ) [stack release];
+    if ( sTEntryPoint ) [sTEntryPoint release];
+    if ( trace ) [trace release];
+    [super dealloc];
 }
 
 - (NSString *) fileName
@@ -100,30 +124,30 @@
 
 - (id) sTEntryPoint
 {
-    addrs = [stack callStackReturnAddresses];
-    trace = [stack callStackSymbols];
-    
-    for (NSString *traceStr in trace) {
+    addrs = [[stack callStackReturnAddresses] retain];
+    trace = [[stack callStackSymbols] retain];
+
+//    for (NSString *traceStr in trace) {
+    NSString *traceStr;
+    ArrayIterator *it = [ArrayIterator newIterator:trace];
+    while ( [it hasNext] ) {
+        traceStr = (NSString *)[it nextObject];
         NSLog( @"%@", traceStr);
         // TODO: remove special after testing
-        if ([traceStr hasPrefix:@"main("] > 0)
+        if ([traceStr hasPrefix:@"main("] > 0) {
             return traceStr;
-        if (![traceStr hasPrefix:@"org.stringtemplate"])
+        }
+        if (![traceStr hasPrefix:@"org.stringtemplate"]) {
             return traceStr;
+        }
     }
     return trace;
 }
 
-- (void) dealloc
-{
-    [stack release];
-    [super dealloc];
-}
-
-@synthesize fileName;
-@synthesize line;
+//@synthesize fileName;
+//@synthesize line;
 @synthesize stack;
-@synthesize sTEntryPoint;
+//@synthesize sTEntryPoint;
 @synthesize addrs;
 @synthesize trace;
 

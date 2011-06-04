@@ -33,9 +33,9 @@
  */
 
 @interface STCompiletimeMessage : STMessage {
-  STToken *templateToken;
-  STToken *token;
-  NSString *srcName;
+  __strong STToken *templateToken;
+  __strong STToken *token;
+  __strong NSString *srcName;
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(STToken *)aTemplateToken t:(STToken *)t;

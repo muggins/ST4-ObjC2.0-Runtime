@@ -45,13 +45,14 @@
 
 @property (retain) ST *who;
 
-+ (void) initialize;
 + (NSString *) toString:(ST *)aWho;
 + (NSString *) description:(ST *)aWho;
 
 + (id) newSTDumpWithWho:(ST *)aWho;
 
 - (id) initWithWho:(ST *)aWho;
+
+- (void) dealloc;
 - (NSString *) description;
 - (NSString *) toString;
 - (NSString *) description:(NSInteger)n;

@@ -29,14 +29,14 @@
 
 @implementation EvalTemplateEvent
 
-+ (id) newEvalTemplateEventWithWho:(ST *)aWho start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar
 {
-    return [[EvalTemplateEvent alloc] initWithWho:aWho start:anExprStartChar stop:anExprStopChar];
+    return [[EvalTemplateEvent alloc] init:aScope start:anExprStartChar stop:anExprStopChar];
 }
 
-- (id) initWithWho:(ST *)aWho start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar
+- (id) init:(InstanceScope *)aScope start:(NSInteger)anExprStartChar stop:(NSInteger)anExprStopChar
 {
-    self=[super initWithWho:aWho start:anExprStartChar stop:anExprStopChar];
+    self=[super init:aScope start:anExprStartChar stop:anExprStopChar];
     return self;
 }
 

@@ -42,7 +42,6 @@
 #import "ErrorBuffer.h"
 #import <Cocoa/Cocoa.h>
 #import "ErrorManager.h"
-#import "MultiMap.h"
 #import "StringWriter.h"
 #import "ConstructionEvent.h"
 
@@ -74,12 +73,12 @@
     /**
      * Track construction-time add attribute "events"; used for ST user-level debugging
      */
-    MultiMap *addAttrEvents;
+    NSMutableDictionary *addAttrEvents;
     AMutableArray *events;
 }
 
 @property(retain) ConstructionEvent *newSTEvent;
-@property(retain) MultiMap *addAttrEvents;
+@property(retain) NSMutableDictionary *addAttrEvents;
 @property(retain) AMutableArray *events;
 
 + (id) newDebugSTWithProto:(ST *)proto;

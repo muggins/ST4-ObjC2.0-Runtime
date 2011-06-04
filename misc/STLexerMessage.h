@@ -38,6 +38,7 @@
 
 - (id) init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause;
 
+- (void) dealloc;
 - (NSString *) description;
 - (NSString *) toString;
 

@@ -1,30 +1,30 @@
 /*
- [The "BSD license"]
- Copyright (c) 2009 Terence Parr
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- 3. The name of the author may not be used to endorse or promote products
-    derived from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 tree grammar CodeGenerator;
 
@@ -35,6 +35,33 @@ options {
 }
 
 @header {
+/*
+ * [The "BSD license"]
+ *  Copyright (c) 2011 Terence Parr and Alan Condit
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *  1. Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *  3. The name of the author may not be used to endorse or promote products
+ *     derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ *  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #import "STToken.h"
 #import "Compiler.h"
 #import "CompiledST.h"
@@ -45,6 +72,7 @@ options {
 }
 
 @memVars {
+	template_Scope *template_scope;
 	NSString *outermostTemplateName;	// name of overall template
 	CompiledST *outermostImpl;
 	STToken *templateToken;			    // overall template token
@@ -76,12 +104,12 @@ options {
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
+- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
+- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
+- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
+- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
 - (void) emit:(short)anOpcode;
 - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSString *)arg;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSString *)anArg2;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSString *)anArg;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(ANTLRCommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
@@ -119,7 +147,8 @@ options {
 	               template:(NSString *)aTemplate
 	                  token:(STToken *)aTemplateToken
 	{
-		if (self = [super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]]) {
+		self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
+		if ( self != nil ) {
             /* ruleAttributeScopeInit */
             template_scope = [template_Scope newtemplate_Scope];
             template_stack = [ANTLRSymbolStack newANTLRSymbolStackWithLen:30];
@@ -215,11 +244,11 @@ chunk
 
 element
 	:	^(INDENTED_EXPR INDENT compoundElement[$INDENT]) // ignore indent in front of IF and region blocks
-	|	compoundElement[null]
-    |	^(INDENTED_EXPR INDENT {[$template::cstate indent:$INDENT.text];} singleElement {[$template::cstate emit:Bytecode.INSTR_DEDENT];})
+	|	compoundElement[nil]
+    |	^(INDENTED_EXPR INDENT {[$template::cstate indent:$INDENT];} singleElement {[$template::cstate emit:Bytecode.INSTR_DEDENT];})
 	|	singleElement
     ;
-    
+
 singleElement
 	:	exprElement
 	|	TEXT
@@ -268,7 +297,7 @@ region[ANTLRCommonTree *indent] returns [NSString *name]
 subtemplate returns [NSString *name, NSInteger nargs]
 @init {
     $name = [Compiler getNewSubtemplateName];
-	AMutableArray *args = [AMutableArray arrayWithCapacity:16];
+	AMutableArray *args = [AMutableArray arrayWithCapacity:5];
 }
 	:	^(	SUBTEMPLATE
 			(^(ARGS (ID {[args addObject:[FormalArgument newFormalArgument:$ID.text]];})+))*
@@ -277,11 +306,10 @@ subtemplate returns [NSString *name, NSInteger nargs]
 			{
 			CompiledST *sub = $template.impl;
 			sub.isAnonSubtemplate = true;
-			if ( STGroup.debug ) {
-				sub.ast = $SUBTEMPLATE;
-				[sub.ast setUnknownTokenBoundaries];
-				sub.tokens = [input getTokenStream];
-			}
+	        sub.templateDefStartToken = $SUBTEMPLATE.token;
+			sub.ast = $SUBTEMPLATE;
+			[sub.ast setUnknownTokenBoundaries];
+			sub.tokens = [input getTokenStream];
 			//sub.dump();
 			[outermostImpl addImplicitlyDefinedTemplate:sub];
 			}
@@ -331,7 +359,7 @@ ifstat[ANTLRCommonTree *indent]
 					[endRefs addInteger:[self address]+1];
 					[self emit1:$el opcode:Bytecode.INSTR_BR arg:-1]; // br end
 					// update previous branch instruction
-					[self write:prevBranchOperand value:(short)[self address]];
+                    [self write:prevBranchOperand value:(short)[self address]];
 					prevBranchOperand = -1;
 					}
 					chunk
@@ -340,10 +368,10 @@ ifstat[ANTLRCommonTree *indent]
 		 )
 		{
 		if ( prevBranchOperand>=0 ) {
-			[self write:prevBranchOperand value:(short)[self address]];
+            [self write:prevBranchOperand value:(short)[self address]];
 		}
-        for (int opnd = 0; opnd < [endRefs count]; opnd++) {
-            [self write:opnd value:(short)[self address]];
+        for (int i = 0; i < [endRefs count]; i++) {
+            [self write:[endRefs integerAtIndex:i] value:(short)[self address]];
         }
 		}
 	;
@@ -382,8 +410,9 @@ mapTemplateRef[NSInteger num_exprs]
 	:	^(	INCLUDE ID
 			{for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$INCLUDE opcode:Bytecode.INSTR_NULL];}
 			args
-		 )
+		)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs )
 			[self emit1:$INCLUDE opcode:Bytecode.INSTR_NEW_BOX_ARGS s:$ID.text];
 		else
@@ -399,7 +428,10 @@ mapTemplateRef[NSInteger num_exprs]
                                 arg2:$num_exprs];
 		}
 		for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$subtemplate.start opcode:Bytecode.INSTR_NULL];
-        [self emit2:$subtemplate.start opcode:Bytecode.INSTR_NEW s:$subtemplate.name arg2:$num_exprs];
+        [self emit2:$subtemplate.start
+             opcode:Bytecode.INSTR_NEW
+                  s:$subtemplate.name
+               arg2:$num_exprs];
 		}
 
 	|	^(	INCLUDE_IND expr
@@ -408,7 +440,9 @@ mapTemplateRef[NSInteger num_exprs]
 			for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$INCLUDE_IND opcode:Bytecode.INSTR_NULL];
 			}
 			args
-			{[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:($args.n+$num_exprs)];}
+			{
+			[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:($args.n+$num_exprs)];
+			}
 		 )
 	;
 
@@ -416,25 +450,26 @@ includeExpr
 	:	^(EXEC_FUNC ID expr?)		{[self func:$ID];}
 	|	^(INCLUDE ID args)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs ) [self emit1:$INCLUDE opcode:Bytecode.INSTR_NEW_BOX_ARGS s:$ID.text];
 		else [self emit2:$INCLUDE opcode:Bytecode.INSTR_NEW s:$ID.text arg2:$args.n];
 		}
 	|	^(INCLUDE_SUPER ID args)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs ) [self emit1:$INCLUDE_SUPER opcode:Bytecode.INSTR_SUPER_NEW_BOX_ARGS s:$ID.text];
 		else [self emit2:$INCLUDE_SUPER opcode:Bytecode.INSTR_SUPER_NEW s:$ID.text arg2:$args.n];
 		}
 	|	^(INCLUDE_REGION ID)		{
 									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.token];
+										[Compiler defineBlankRegion:outermostImpl token:$ID.token];
 									//impl.dump();
 									[self emit2:$INCLUDE_REGION opcode:Bytecode.INSTR_NEW s:impl.name arg2:0];
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
-									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl name:$ID.token];
-									//impl.dump();
-									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:impl.name arg2:0];
+									 NSString *mangled =
+		                                [STGroup getMangledRegionName:outermostImpl.name name:$ID.text];
+									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:mangled arg2:0];
 									}
 	|	primary
 	;
@@ -442,26 +477,28 @@ includeExpr
 primary
 	:	ID				{[self refAttr:$ID];}
 	|	STRING			{[self emit1:$STRING opcode:Bytecode.INSTR_LOAD_STR s:[Misc strip:$STRING.text n:1]];}	
-	|	TRUE			{[self emit:$TRUE opcode:Bytecode.INSTR_TRUE];}
-	|	FALSE			{[self emit:$FALSE opcode:Bytecode.INSTR_FALSE];}
+	|	T_TRUE			{[self emit:$T_TRUE opcode:Bytecode.INSTR_TRUE];}
+	|	T_FALSE			{[self emit:$T_FALSE opcode:Bytecode.INSTR_FALSE];}
 	|	subtemplate		// push a subtemplate but ignore args since we can't pass any to it here
 		                {[self emit2:$start opcode:Bytecode.INSTR_NEW s:$subtemplate.name arg2:0];}
 	|	list
 	|	^(	INCLUDE_IND
-			expr 		{[self emit:$INCLUDE_IND opcode:Bytecode.INSTR_TOSTR];}
-			args		{[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:$args.n];}
+			expr        {[self emit:$INCLUDE_IND opcode:Bytecode.INSTR_TOSTR];}
+			args        {[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:$args.n];}
 		 )
 	|	^(TO_STR expr)	{[self emit:$TO_STR opcode:Bytecode.INSTR_TOSTR];}
 	;
 
 arg : expr ;
 
-args returns [NSInteger n=0, BOOL namedArgs=NO]
+args returns [NSInteger n=0, BOOL namedArgs=NO, BOOL passThru]
 	:	( arg {$n++;} )+
 	|	{[self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=YES;}
 		(	^(eq='=' ID expr)
 			{$n++; [self emit1:$eq opcode:Bytecode.INSTR_STORE_ARG arg:[self defineString:$ID.text]];}
 		)+
+		( '...' {$passThru=YES;} )?
+    |   '...' {$passThru=YES; [self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=YES;}
 	|
  	;
 
@@ -469,4 +506,4 @@ list:	{[self emit:Bytecode.INSTR_LIST];}
 		^(LIST (listElement {[self emit:$listElement.start opcode:Bytecode.INSTR_ADD];})* )
 	;
 
-listElement : expr | tNULL {[self emit:$tNULL opcode:Bytecode.INSTR_NULL];} ;
+listElement : expr | TNULL {[self emit:$TNULL opcode:Bytecode.INSTR_NULL];} ;

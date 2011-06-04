@@ -41,8 +41,6 @@
 #import "STGroup.h"
 #import "ST.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
-#import "MultiMap.h"
 
 RegionTypeEnum RegionTypeValueOf(NSString *text)
 {
@@ -98,13 +96,13 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 
 - (void) addObject:(id)anObject
 {
-    if (anObject == nil) anObject = [NSNull null];
+    //    if (anObject == nil) anObject = [NSNull null];
     [super addObject:anObject];
 }
 
 - (void) insertObject:(id)anObject atIndex:(NSInteger)anIdx
 {
-    if (anObject == nil) anObject = [NSNull null];
+    //    if (anObject == nil) anObject = [NSNull null];
     if (anIdx < count)
         [super insertObject:anObject atIndex:anIdx];
     else
@@ -144,24 +142,6 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 
 @end
 
-#ifdef DONTUSEYET
-	/** Events during template hierarchy construction (not evaluation) */
-	public static class DebugState {
-		/** Record who made us? ConstructionEvent creates Exception to grab stack */
-		public ConstructionEvent newSTEvent;
-
-		/** Track construction-time add attribute "events"; used for ST user-level debugging */
-		public MultiMap<String, AddAttributeEvent> addAttrEvents = new MultiMap<String, AddAttributeEvent>();
-	}
-
-
-	/** If Interpreter.trackCreationEvents, track creation, add-attr events
-	 *  for each object. Create this object on first use.
-	 */
-	public DebugState debugState;
-
-#endif
-
 @implementation DebugState
 
 @synthesize newSTEvent;
@@ -184,10 +164,20 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
     return self;
 }
 
-/** Track construction-time add attribute "events"; used for ST user-level debugging */
-- (MultiMap *)addAttrEvents
+- (void) dealloc
 {
-    addAttrEvents = [MultiMap newMultiMap];
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STGroup_Anon1" );
+#endif
+    if ( newSTEvent ) [newSTEvent release];
+    if ( addAttrEvents ) [addAttrEvents release];
+    [super dealloc];
+}
+
+/** Track construction-time add attribute "events"; used for ST user-level debugging */
+- (AMutableDictionary *)addAttrEvents
+{
+    addAttrEvents = [AMutableDictionary dictionaryWithCapacity:25];
     return addAttrEvents;
 }
 
@@ -199,35 +189,43 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
  * Cache exception since this could happen a lot if people use "missing"
  * to mean boolean false.
  */
-static STNoSuchPropertyException *cachedNoSuchPropException;
+static STNoSuchAttributeException *cachedNoSuchAttrException;
 
 static NSInteger NO_WRAP = 80;
 NSString * const VERSION = @"@version@";
 static NSString *UNKNOWN_NAME = @"anonymous";
 static NSString *EMPTY_ATTR = @"";
+static DebugState *st_debugState = nil;
 
 @synthesize impl;
 @synthesize locals;
 @synthesize enclosingInstance;
 @synthesize groupThatCreatedThisInstance;
-@synthesize debugState;
+//@synthesize debugState;
+
++ (DebugState *) debugState
+{
+    if ( st_debugState == nil )
+        st_debugState = [DebugState newDebugState];
+    return st_debugState;
+}
 
 + (void) initialize
 {
-    cachedNoSuchPropException = [STNoSuchPropertyException newException:nil];
+    cachedNoSuchAttrException = [STNoSuchAttributeException newException:nil];
     EMPTY_ATTR = @"";
 }
 
-+ (id) cachedNoSuchPropException;
++ (STNoSuchAttributeException *) cachedNoSuchAttrException;
 {
-    if ( cachedNoSuchPropException == nil )
-        cachedNoSuchPropException = [STNoSuchPropertyException newException:@"NSP"];
-    return cachedNoSuchPropException;
+    if ( cachedNoSuchAttrException == nil )
+        cachedNoSuchAttrException = [STNoSuchAttributeException newException:@"NSAttr"];
+    return cachedNoSuchAttrException;
 }
 
-+ (void) setCachedNoSuchPropException:(id)e
++ (void) setCachedNoSuchAttrException:(id)e
 {
-    cachedNoSuchPropException = e;
+    cachedNoSuchAttrException = e;
 }
 
 + (RegionTypeEnum) IMPLICIT
@@ -265,6 +263,11 @@ static NSString *EMPTY_ATTR = @"";
     return debugState;
 }
 
+- (void)setDebugState:(DebugState *)aState
+{
+    debugState = aState;
+}
+
 /*
  + (AttributeList *) attributeList
 {
@@ -275,27 +278,31 @@ static NSString *EMPTY_ATTR = @"";
 /** Used by group creation routine, not by users */
 + (id) newST
 {
-    return [[[ST alloc] init] retain];
+    return [[ST alloc] init];
 }
 
 + (id) newSTWithTemplate:(NSString *)aTemplate
 {
-    return [[[ST alloc] initWithTemplate:(NSString *)aTemplate] retain];
+    return [[ST alloc] initWithTemplate:(NSString *)aTemplate];
 }
 
 + (id) newST:(NSString *)aTemplate delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar
 {
-    return [[[ST alloc] init:aTemplate delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar] retain];
+    return [[ST alloc] init:aTemplate delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
 }
 
 + (id) newST:(STGroup *)aGroup template:(NSString *)aTemplate
 {
-    return [[[ST alloc] init:aGroup template:aTemplate] retain];
+    return [[ST alloc] init:aGroup template:aTemplate];
 }
 
+/** Clone a prototype template.
+ *  Copy all fields minus debugState; don't call this(), which creates
+ *  ctor event
+ */
 + (id) newSTWithProto:(ST *)aProto
 {
-    return [[[ST alloc] initWithProto:(ST *)aProto] retain];
+    return [[ST alloc] initWithProto:(ST *)aProto];
 }
 
 /**
@@ -305,17 +312,22 @@ static NSString *EMPTY_ATTR = @"";
 {
     self=[super init];
     if ( self != nil ) {
-        if (EMPTY_ATTR == nil)
+        if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
-		if ( STGroup.trackCreationEvents ) {
-			if ( debugState==nil ) debugState = [DebugState newDebugState];
-			debugState.newSTEvent = [ConstructionEvent newConstructionEvent];
-		}
+            [EMPTY_ATTR retain];
+        }
+        if ( st_debugState==nil ) st_debugState = [[DebugState newDebugState] retain];
+        if ( STGroup.trackCreationEvents ) {
+            debugState = st_debugState;
+            st_debugState.newSTEvent = [[ConstructionEvent newEvent] retain];
+        }
         groupThatCreatedThisInstance = STGroup.defaultGroup;
+        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
         impl = [groupThatCreatedThisInstance compile:[groupThatCreatedThisInstance getFileName] name:nil args:nil template:nil templateToken:nil];
         impl.hasFormalArgs = NO;
         impl.name = UNKNOWN_NAME;
         [impl defineImplicitlyDefinedTemplates:groupThatCreatedThisInstance];
+        [impl retain];
     }
     return self;
 }
@@ -328,13 +340,17 @@ static NSString *EMPTY_ATTR = @"";
 {
     self=[super init];
     if ( self != nil ) {
-        if (EMPTY_ATTR == nil)
+        if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
+            [EMPTY_ATTR retain];
+        }
         groupThatCreatedThisInstance = STGroup.defaultGroup;
+        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
         impl = [groupThatCreatedThisInstance compile:[groupThatCreatedThisInstance getFileName] name:nil args:nil template:aTemplate templateToken:nil];
         impl.hasFormalArgs = NO;
         impl.name = UNKNOWN_NAME;
         [impl defineImplicitlyDefinedTemplates:groupThatCreatedThisInstance];
+        [impl retain];
     }
     return self;
 }
@@ -348,13 +364,17 @@ static NSString *EMPTY_ATTR = @"";
 {
     self=[super init];
     if ( self != nil ) {
-        if (EMPTY_ATTR == nil)
+        if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
+            [EMPTY_ATTR retain];
+        }
         groupThatCreatedThisInstance = [[STGroup alloc] init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
+        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
         impl = [groupThatCreatedThisInstance compile:[groupThatCreatedThisInstance getFileName] name:nil args:nil template:template templateToken:nil];
         impl.hasFormalArgs = NO;
         impl.name = UNKNOWN_NAME;
         [impl defineImplicitlyDefinedTemplates:groupThatCreatedThisInstance];
+        [impl retain];
     }
     return self;
 }
@@ -363,13 +383,17 @@ static NSString *EMPTY_ATTR = @"";
 {
     self=[super init];
     if ( self != nil ) {
-        if (EMPTY_ATTR == nil)
+        if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
+            [EMPTY_ATTR retain];
+        }
         groupThatCreatedThisInstance = group;
+        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
         impl = [groupThatCreatedThisInstance compile:[group getFileName] name:nil args:nil template:template templateToken:nil];
         impl.hasFormalArgs = NO;
         impl.name = UNKNOWN_NAME;
         [impl defineImplicitlyDefinedTemplates:groupThatCreatedThisInstance];
+        [impl retain];
     }
     return self;
 }
@@ -382,16 +406,34 @@ static NSString *EMPTY_ATTR = @"";
 {
     self=[super init];
     if ( self != nil ) {
-        if (EMPTY_ATTR == nil)
+        if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
-        impl = proto.impl;
-        if (proto.locals != nil) {
-            locals = [AMutableArray arrayWithArray:proto.locals];
+            [EMPTY_ATTR retain];
         }
+        impl = proto.impl;
+        [impl retain];
         enclosingInstance = proto.enclosingInstance;
+        if ( enclosingInstance ) [enclosingInstance retain];
+        if (proto.locals != nil) {
+            locals = [[AMutableArray arrayWithArray:proto.locals] retain];
+        }
         groupThatCreatedThisInstance = proto.groupThatCreatedThisInstance;
+        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
     }
     return self;
+}
+
+- (void)dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in ST" );
+#endif
+    if ( impl ) [impl release];
+    if ( locals ) [locals release];
+    if ( enclosingInstance ) [enclosingInstance release];
+    if ( debugState ) [debugState release];
+    if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance release];
+    [super dealloc];
 }
 
 /**
@@ -415,10 +457,10 @@ static NSString *EMPTY_ATTR = @"";
     }
 #pragma mark fix this
 #ifdef DONTUSEYET
-	if ( STGroup.trackCreationEvents ) {
-		if ( debugState==nil ) debugState = [DebugState newDebugState];
-		[[debugState addAttrEvents] map:aName, new AddAttributeEvent:value forKey:aName]];
-	}
+    if ( STGroup.trackCreationEvents ) {
+        if ( debugState==nil ) debugState = [DebugState newDebugState];
+        [[debugState addAttrEvents] map:aName event:[AddAttributeEvent newEvent:value forKey:aName]];
+    }
 #endif
     FormalArgument *arg = nil;
     if (impl.hasFormalArgs) {
@@ -436,7 +478,7 @@ static NSString *EMPTY_ATTR = @"";
             arg = [FormalArgument newFormalArgument:aName];
             [impl addArg:arg];
             if (locals == nil)
-                locals = [AMutableArray arrayWithCapacity:5];
+                locals = [[AMutableArray arrayWithCapacity:5] retain];
             [locals insertObject:EMPTY_ATTR atIndex:arg.index];
         }
     }
@@ -450,10 +492,13 @@ static NSString *EMPTY_ATTR = @"";
     }
     AttributeList *multi = [ST convertToAttributeList:curvalue];
     [locals replaceObjectAtIndex:arg.index withObject:multi];
+#ifdef DONTUSENOMO
     if ( [value isKindOfClass:[NSDictionary class]] ) {
         [multi addObjectsFromArray:(NSArray *)[value allValues]];
     }
-    else if ( [value isKindOfClass:[NSArray class]] ) {
+    else
+#endif
+    if ( [value isKindOfClass:[NSArray class]] ) {
         [multi addObjectsFromArray:(AMutableArray *)value];
     }
     else {
@@ -469,38 +514,39 @@ static NSString *EMPTY_ATTR = @"";
 
 #pragma mark fix this
 #ifdef DONTUSEYET
-	/** Split "aggrName.{propName1,propName2}" into list [propName1, propName2]
-	 *  and the aggrName. Spaces are allowed around ','.
-	 */
+    /** Split "aggrName.{propName1,propName2}" into list [propName1, propName2]
+     *  and the aggrName. Spaces are allowed around ','.
+     */
 - (ST *) addAggr:(NSString *)aggrSpec values:(id)values
 {
-		NSRange dot = [aggrSpec rangeOfString:@".{"];
-		if ( values == nil || values.length == 0 ) {
-			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"missing values for aggregate attribute format: %@", aggrSpec]];
-		}
-		int finalCurly = [aggrSpec indexOfCharacter:'}'];
-		if ( dot.length < 0 || finalCurly < 0 ) {
-			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
-		}
-		NSString *aggrName = [aggrSpec subStringWithRange:(NSMakeRange(0, dot.location)];
-		NSString *propString = [aggrSpec subStringWithRange:NSMakeRange(dot.location+2, ([aggrSpec length]-(dot.location+3)))];
-//		propString = propString.trim();
-		NSString[] *propNames = propString.split("\\ *,\\ *");
-		if ( propNames==nil || [propNames length]==0 ) {
-			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
-		}
-		if ( values.length != propNames.length ) {
-			@throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"number of properties and values mismatch for aggregate attribute format: %@", aggrSpec]];
-		}
-		int i=0;
-		Aggregate *aggr = [Aggregate newAggregate];
-		for (NSString *p in propNames) {
-			id v = values[i++];
-			[aggr.properties setObject:v forKey:p];
-		}
+        NSRange dot = [aggrSpec rangeOfString:@".{"];
+        if ( values == nil || values.length == 0 ) {
+            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"missing values for aggregate attribute format: %@", aggrSpec]];
+        }
+        int finalCurly = [aggrSpec indexOfCharacter:'}'];
+        if ( dot.length < 0 || finalCurly < 0 ) {
+            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+        }
+        NSString *aggrName = [aggrSpec subStringWithRange:(NSMakeRange(0, dot.location)];
+        NSString *propString = [aggrSpec subStringWithRange:NSMakeRange(dot.location+2, ([aggrSpec length]-(dot.location+3)))];
+//      propString = propString.trim();
+        NSString[] *propNames = propString.split("\\ *,\\ *");
+        if ( propNames==nil || [propNames length]==0 ) {
+            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+        }
+        if ( values.length != propNames.length ) {
+            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"number of properties and values mismatch for aggregate attribute format: %@", aggrSpec]];
+        }
+        int i=0;
+        Aggregate *aggr = [Aggregate newAggregate];
+        NSString *p;
+        for (NSString *p in propNames) {
+            id v = values[i++];
+            [aggr.properties setObject:v forKey:p];
+        }
 
-		[ST add:aggrName value:aggr]; // now add as usual
-		return self;
+        [ST add:aggrName value:aggr]; // now add as usual
+        return self;
 }
 #endif
 
@@ -516,7 +562,7 @@ static NSString *EMPTY_ATTR = @"";
         return;
     }
     FormalArgument *arg = [impl.formalArguments objectForKey:name];
-    if ( arg == nil || arg == (FormalArgument *)[NSNull null]) {
+    if ( arg == nil ) {
         @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     if ( arg.index < [locals count] ) {
@@ -537,13 +583,15 @@ static NSString *EMPTY_ATTR = @"";
         @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     FormalArgument *arg = [impl.formalArguments objectForKey:name];
-    if ( arg == nil || arg == (FormalArgument *)[NSNull null] ) {
+    if ( arg == nil ) {
         @throw [ANTLRIllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     if ( arg.index < [locals count] ) {
         [locals replaceObjectAtIndex:arg.index withObject:value];
     } else if ( arg.index == [locals count] ) {
         [locals insertObject:value atIndex:arg.index];
+    } else {
+        [locals addObject:value];
     }
 }
 
@@ -563,15 +611,18 @@ static NSString *EMPTY_ATTR = @"";
     return nil;
 }
 
-- (NSMutableDictionary *) getAttributes
+- (AMutableDictionary *) getAttributes
 {
     if ( impl.formalArguments == nil )
         return nil;
-    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithCapacity:16];
-    for (FormalArgument *arg in [impl.formalArguments allValues]) {
+    AMutableDictionary *attributes = [AMutableDictionary dictionaryWithCapacity:16];
+    ArrayIterator *it = [ArrayIterator newIteratorForDictObj:impl.formalArguments];
+    FormalArgument *arg;
+//    for (FormalArgument *arg in [impl.formalArguments allValues]) {
+    while ( [it hasNext] ) {
+        arg = [it nextObject];
         id  obj = [locals objectAtIndex:arg.index];
         if ( obj == ST.EMPTY_ATTR ) {
-            //obj = [NSNull null];
             continue;
         }
         [attributes setObject:obj forKey:arg.name];
@@ -584,7 +635,7 @@ static NSString *EMPTY_ATTR = @"";
     AttributeList *multi;
     if ( curvalue == nil ) {
         multi = [AttributeList arrayWithCapacity:5]; // make list to hold multiple values
-        [multi addObject:[NSNull null]];                // add previous single-valued attribute
+        [multi addObject:nil];                // add previous single-valued attribute
     }
     else if ( [curvalue isKindOfClass:[AttributeList class]]) { // already a list made by ST
         multi = (AttributeList *)curvalue;
@@ -647,14 +698,14 @@ static NSString *EMPTY_ATTR = @"";
 - (NSInteger) writeFile:(NSString *)outputFile
            Listener:(id<STErrorListener>)listener
 {
-	return [self writeFile:outputFile Listener:listener Encoding:NSUTF8StringEncoding LineWidth:Writer.NO_WRAP Locale:[NSLocale currentLocale]];
+    return [self writeFile:outputFile Listener:listener Encoding:NSUTF8StringEncoding LineWidth:Writer.NO_WRAP Locale:[NSLocale currentLocale]];
 }
 
 - (NSInteger) writeFile:(NSString *)outputFile
            Listener:(id<STErrorListener>)listener
            Encoding:(NSStringEncoding)encoding
 {
-	return [self writeFile:outputFile Listener:listener Encoding:encoding LineWidth:Writer.NO_WRAP Locale:[NSLocale currentLocale]];
+    return [self writeFile:outputFile Listener:listener Encoding:encoding LineWidth:Writer.NO_WRAP Locale:[NSLocale currentLocale]];
 }
 
 - (NSInteger) writeFile:(NSString *)outputFile
@@ -662,37 +713,36 @@ static NSString *EMPTY_ATTR = @"";
            Encoding:(NSStringEncoding)encoding
            LineWidth:(NSInteger)lineWidth
 {
-	return [self writeFile:outputFile Listener:listener Encoding:encoding LineWidth:lineWidth Locale:[NSLocale currentLocale]];
+    return [self writeFile:outputFile Listener:listener Encoding:encoding LineWidth:lineWidth Locale:[NSLocale currentLocale]];
 }
 
 - (NSInteger) writeFile:(NSString *)outputFile
-		   Listener:(id<STErrorListener>)listener
-		   Encoding:(NSStringEncoding)encoding
-		  LineWidth:(NSInteger)lineWidth
-			 Locale:(NSLocale *)locale
+           Listener:(id<STErrorListener>)listener
+           Encoding:(NSStringEncoding)encoding
+          LineWidth:(NSInteger)lineWidth
+             Locale:(NSLocale *)locale
 {
-	id<STWriter>bw = nil;
-    NSError *error;
+    id<STWriter>bw = nil;
+    // NSError *error;
     NSInteger n = 0;
 
     @try {
-	    NSString *fn = [outputFile stringByStandardizingPath];
-        NSURL *f = [NSURL fileURLWithPath:fn];
-        NSFileHandle *fh = [NSFileHandle fileHandleForWritingToURL:f error:&error];
-
-		//FileOutputStream *fos = [FileOutputStream newFileOutputStream:outputFile];
-		OutputStreamWriter *osw = [OutputStreamWriter newWriter:nil encoding:encoding];
-		bw = [BufferedWriter newWriterWithWriter:osw];
-		AutoIndentWriter *w = [AutoIndentWriter newWriter:bw];
-		[w setLineWidth:lineWidth];
-		n = [self write:w locale:locale listener:listener];
-		[bw close];
-		bw = nil;
-		return n;
-	}
-	@finally {
-		if (bw != nil) [bw close];
-	}
+        //NSString *fn = [outputFile stringByStandardizingPath];
+        //NSURL *f = [NSURL fileURLWithPath:fn];
+        //NSFileHandle *fh = [NSFileHandle fileHandleForWritingToURL:f error:&error];
+        //FileOutputStream *fos = [FileOutputStream newFileOutputStream:outputFile];
+        OutputStreamWriter *osw = [OutputStreamWriter newWriter:nil encoding:encoding];
+        bw = [BufferedWriter newWriterWithWriter:osw];
+        AutoIndentWriter *w = [AutoIndentWriter newWriter:bw];
+        [w setLineWidth:lineWidth];
+        n = [self write:w locale:locale listener:listener];
+        [bw close];
+        bw = nil;
+        return n;
+    }
+    @finally {
+        if (bw != nil) [bw close];
+    }
     return n;
 }
 
@@ -723,7 +773,7 @@ static NSString *EMPTY_ATTR = @"";
 
 #pragma mark fix this sometime
 #ifdef DONTUSEYET
-	// LAUNCH A WINDOW TO INSPECT TEMPLATE HIERARCHY
+    // LAUNCH A WINDOW TO INSPECT TEMPLATE HIERARCHY
 
 - (STViz *)inspect
 {
@@ -732,37 +782,37 @@ static NSString *EMPTY_ATTR = @"";
 
 - (STViz *)inspect:(NSInteger)lineWidth
 {
-		return [self inspect:impl.nativeGroup.errMgr locale:(NSLocale *)[NSLocale currentLocale] lineWidth:(NSInteger)lineWidth];
+        return [self inspect:impl.nativeGroup.errMgr locale:(NSLocale *)[NSLocale currentLocale] lineWidth:(NSInteger)lineWidth];
 }
 
 - (STViz *)inspect:(NSLocale *)locale
 {
-	return [self inspect:impl.nativeGroup.errMgr locale:locale lineWidth:STWriter.NO_WRAP];
+    return [self inspect:impl.nativeGroup.errMgr locale:locale lineWidth:STWriter.NO_WRAP];
 }
 
 - (STViz *)inspect:(ErrorManager *)errMgr
             locale:(NSLocale *)locale
          lineWidth:(NSInteger)lineWidth
 {
-		ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-		[impl.nativeGroup setListener:errors];
-		StringWriter *wr1 = [StringWriter newStringWriter];
-		id<STWriter>wr = [AutoIndentWriter newAutoIndentWriter:wr1];
-		[wr setLineWidth:lineWidth];
-		Interpreter *interp =
-			[Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
-		[interp exec:wr  who:self]; // render and track events
-		AMutableArray *events = [interp getEvents];
-		EvalTemplateEvent *overallTemplateEval =
-			[(EvalTemplateEvent *)events get([events size]-1];
-		STViz *viz = [STViz newSTViz:errMgr
-		                        root:overallTemplateEval
-		                      output:[wr1 toString]
-		                 interpreter:interp
-							   trace:[interp getExecutionTrace]
-							  errors:errors.errors];
-		viz.open();
-		return viz;
+        ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
+        [impl.nativeGroup setListener:errors];
+        StringWriter *wr1 = [StringWriter newStringWriter];
+        id<STWriter>wr = [AutoIndentWriter newAutoIndentWriter:wr1];
+        [wr setLineWidth:lineWidth];
+        Interpreter *interp =
+            [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
+        [interp exec:wr  who:self]; // render and track events
+        AMutableArray *events = [interp getEvents];
+        EvalTemplateEvent *overallTemplateEval =
+            [(EvalTemplateEvent *)events get([events size]-1];
+        STViz *viz = [STViz newSTViz:errMgr
+                                root:overallTemplateEval
+                              output:[wr1 toString]
+                         interpreter:interp
+                               trace:[interp getExecutionTrace]
+                              errors:errors.errors];
+        viz.open();
+        return viz;
 }
 
 #endif
@@ -790,7 +840,7 @@ static NSString *EMPTY_ATTR = @"";
     id<STWriter>wr = [AutoIndentWriter newWriter:wr1];
     [wr setLineWidth:lineWidth];
     Interpreter *interp =
-			[Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
+            [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
     [interp exec:wr who:self]; // render and track events
     return [interp getEvents];
 }
@@ -799,7 +849,11 @@ static NSString *EMPTY_ATTR = @"";
 {
     if (impl == nil)
         return @"bad-template()";
-    return [NSString stringWithFormat:@"%@()", impl.name];
+    NSString *name = [NSString stringWithFormat:@"%@()", impl.name];
+    if ( impl.isRegion ) {
+        name = [NSString stringWithFormat:@"@%@", [STGroup getUnMangledTemplateName:name]];
+    }
+    return name;
 }
 
 - (NSString *) toString
@@ -829,21 +883,16 @@ static NSString *EMPTY_ATTR = @"";
     NSLog( @"Template = %@", aTemplate );
     ST *st = [ST newSTWithTemplate:aTemplate];
     NSInteger i = 1;
-    
-    for (id a in theAttributes) {
+
+    id a;
+    ArrayIterator *it = [ArrayIterator newIterator:theAttributes];
+//    for (id a in theAttributes) {
+    while ( [it hasNext] ) {
+        a = [it nextObject];
         [st add:[NSString stringWithFormat:@"arg%d", i] value:a];
         i++;
     }
     return [st renderWithLineWidth:lineWidth];
-}
-
-- (void) dealloc
-{
-    [impl release];
-    [locals release];
-    [enclosingInstance release];
-    [groupThatCreatedThisInstance release];
-    [super dealloc];
 }
 
 // getters and setters

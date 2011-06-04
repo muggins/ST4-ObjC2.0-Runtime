@@ -36,14 +36,16 @@
 @class ErrorManager;
 @class AttributeList;
 @class InstanceScope;
+@class InterpEvent;
 
 
 @interface Interpreter_Anon1 : NSObject {
-    NSMutableDictionary *dict;
+    AMutableDictionary *dict;
 }
 
 + (id) newInterpreter_Anon1;
 - (id) init;
+- (void)dealloc;
 - (BOOL) containsObject:(NSString *)text;
 - (id) objectForKey:(NSString *)key;
 - (void) setObject:(id)obj forKey:(id)key;
@@ -51,7 +53,7 @@
 - (NSEnumerator *) keyEnumerator;
 - (NSArray *) objectEnumerator;
 
-@property (retain) NSMutableDictionary *dict;
+@property (retain) AMutableDictionary *dict;
 
 @end
 
@@ -121,44 +123,44 @@ NSString *OptionDescription(OptionEnum value);
     /**
      * Operand stack, grows upwards
      */
-    id operands[100];
+    __strong id operands[100];
     NSInteger sp;
     NSInteger current_ip;
     NSInteger nwline;
     
-	/** Stack of enclosing instances (scopes).  Used for dynamic scoping
-	 *  of attributes.
-	 */
-	InstanceScope *currentScope;
+    /** Stack of enclosing instances (scopes).  Used for dynamic scoping
+     *  of attributes.
+     */
+    __strong InstanceScope *currentScope;
     /**
      * Exec st with respect to this group. Once set in ST.toString(),
      * it should be fixed. ST has group also.
      */
-    STGroup *group;
+    __strong STGroup *group;
     
     /**
      * For renderers, we have to pass in the locale
      */
-    NSLocale *locale;
-    ErrorManager *errMgr;
+    __strong NSLocale *locale;
+    __strong ErrorManager *errMgr;
     
-	/** If trace mode, track trace here */
-	// TODO: track the pieces not a string and track what it contributes to output
-    AMutableArray *executeTrace;
+    /** If trace mode, track trace here */
+    // TODO: track the pieces not a string and track what it contributes to output
+    __strong AMutableArray *executeTrace;
     
-	/*
-	 *  Track everything happening in interp if debug across all templates.
-	 *  The last event in this field is the EvalTemplateEvent for the root
-	 *  template.
-	 */
-    AMutableArray *events;
+    /*
+     *  Track everything happening in interp if debug across all templates.
+     *  The last event in this field is the EvalTemplateEvent for the root
+     *  template.
+     */
+    __strong AMutableArray *events;
     //Map<ST, List<InterpEvent>> debugInfo;
-    NSMutableDictionary *debugInfo;
+    __strong AMutableDictionary *debugInfo;
     BOOL debug;
 }
 
 + (NSInteger) DEFAULT_OPERAND_STACK_SIZE;
-+ (NSDictionary *) predefinedAnonSubtemplateAttributes;
++ (AMutableDictionary *) predefinedAnonSubtemplateAttributes;
 + (Interpreter_Anon3 *) Option;
 
 + (id) newInterpreter:(STGroup *)aGroup locale:(NSLocale *)aLocale debug:(BOOL)aDebug;
@@ -168,6 +170,8 @@ NSString *OptionDescription(OptionEnum value);
 - (id) init:(STGroup *)group errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
 - (id) init:(STGroup *)aGroup locale:(NSLocale *)aLocale errMgr:(ErrorManager *)anErrMgr debug:(BOOL)aDebug;
 - (id) init:(STGroup *)group locale:(NSLocale *)locale errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
+
+- (void)dealloc;
 #ifdef USE_FREQ_COUNT
 - (void) dumpOpcodeFreq;
 #endif
@@ -176,9 +180,9 @@ NSString *OptionDescription(OptionEnum value);
 - (NSInteger) _exec:(Writer *)anSTWriter who:(ST *)aWho;
 - (void) load_str:(ST *)who ip:(NSInteger)ip;
 - (void) super_new:(ST *)aWho name:(NSString *)name nargs:(NSInteger)nargs;
-- (void) super_new:(ST *)aWho name:(NSString *)name attrs:(NSMutableDictionary *)attrs;
-- (void) passthru:(ST *)aWho templateName:(NSString *)templateName attrs:(AMutableArray *)attrs;
-- (void) storeArgs:(ST *)aWho attrs:(NSMutableDictionary *)attrs st:(ST *)st;
+- (void) super_new:(ST *)aWho name:(NSString *)name attrs:(AMutableDictionary *)attrs;
+- (void) passthru:(ST *)aWho templateName:(NSString *)templateName attrs:(AMutableDictionary *)attrs;
+- (void) storeArgs:(ST *)aWho attrs:(AMutableDictionary *)attrs st:(ST *)st;
 - (void) storeArgs:(ST *)aWho nargs:(NSInteger)nargs st:(ST *)st;
 - (void) indent:(id<STWriter>)wr1 who:(ST *)aWho index:(NSInteger)strIndex;
 - (NSInteger) writeObjectNoOptions:(Writer *)wr1 who:(ST *)aWho obj:(id)obj;
@@ -203,21 +207,23 @@ NSString *OptionDescription(OptionEnum value);
 - (NSInteger) length:(id)v;
 - (NSString *) description:(id<STWriter>)aWriter who:(ST *)aWho value:(id)value;
 - (NSString *) toString:(id<STWriter>)aWriter who:(ST *)aWho value:(id)value;
-+ (id) convertAnythingIteratableToIterator:(id)obj;
-+ (ArrayIterator *) convertAnythingToIterator:(id)obj;
+- (id) convertAnythingIteratableToIterator:(id)obj;
+- (ArrayIterator *) convertAnythingToIterator:(id)obj;
 - (BOOL) testAttributeTrue:(id)a;
 - (id) getObjectProperty:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj property:(id)property;
+- (AMutableDictionary *) getDictionary:(STGroup *)g name:(NSString *)name;
+- (id) getAttribute:(ST *)aWho name:(NSString *)name;
 - (void) setDefaultArguments:(id<STWriter>)wr1 who:(ST *)invokedST;
 - (void) popScope;
 - (void) pushScope:(ST *)aWho;
-- (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope;
-- (AMutableArray *)getEnclosingInstanceStack:(InstanceScope *)scope topdown:(BOOL)topdown;
-- (AMutableArray *) getScopeStack:(InstanceScope *)scope direction:(BOOL)topdown;
-- (AMutableArray *) getEvalTemplateEventStack:(InstanceScope *)scope direction:(BOOL)topdown;
++ (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope;
++ (AMutableArray *)getEnclosingInstanceStack:(InstanceScope *)scope topdown:(BOOL)topdown;
++ (AMutableArray *) getScopeStack:(InstanceScope *)scope direction:(BOOL)topdown;
++ (AMutableArray *) getEvalTemplateEventStack:(InstanceScope *)scope direction:(BOOL)topdown;
 - (void) trace:(ST *)aWho ip:(NSInteger)ip;
 - (void) printForTrace:(NSMutableString *)tr obj:(id)obj;
 - (AMutableArray *) getEvents;
-- (AMutableArray *) getEvents:(ST *)st;
+- (void) trackDebugEvent:(ST *)aWho event:(InterpEvent *)e;
 - (AMutableArray *) getExecutionTrace;
 + (NSInteger) getShort:(char *)memory index:(NSInteger)index;
 
@@ -231,7 +237,7 @@ NSString *OptionDescription(OptionEnum value);
 @property (retain) ErrorManager *errMgr;
 @property (retain) AMutableArray *events;
 @property (retain) AMutableArray *executeTrace;
-@property (retain) NSMutableDictionary *debugInfo;
+@property (retain) AMutableDictionary *debugInfo;
 @property (assign) BOOL debug;
 
 @end

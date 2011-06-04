@@ -26,7 +26,6 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import <ANTLR/ANTLR.h>
-#import "AMutableArray.h"
 
 /**
  * A unique set of strings where we can get a string's index.
@@ -34,7 +33,7 @@
  */
 
 @interface StringTable : NSObject {
-  NSMutableDictionary *table;
+  __strong AMutableDictionary *table;
   NSInteger i;
 }
 
@@ -43,6 +42,6 @@
 - (AMutableArray *) toArray;
 - (void) setObject:(id)obj forKey:(id)aKey;
 
-@property (retain) NSMutableDictionary *table;
+@property (retain) AMutableDictionary *table;
 @property NSInteger i;
 @end

@@ -1,4 +1,4 @@
-// $ANTLR 3.3.1-SNAPSHOT Mar 09, 2011 24:00:43 /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-04-06 18:27:38
+// $ANTLR ${project.version} ${buildNumber} /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g 2011-05-08 16:46:26
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -51,6 +51,7 @@
 /* End of Header action.
  * =============================================================================
  */
+
 #ifndef ANTLR3TokenTypeAlreadyDefined
 #define ANTLR3TokenTypeAlreadyDefined
 typedef enum {
@@ -68,6 +69,18 @@ typedef enum {
 #undef EOF
 #endif
 #define EOF -1
+#define ID 4
+#define WS 5
+#define STRING 6
+#define ANONYMOUS_TEMPLATE 7
+#define COMMENT 8
+#define LINE_COMMENT 9
+#define BIGSTRING 10
+#define BIGSTRING_NO_NL 11
+#ifndef T_TRUE
+#define T_TRUE 12
+#define T_FALSE 13
+#endif
 #define T__14 14
 #define T__15 15
 #define T__16 16
@@ -83,25 +96,38 @@ typedef enum {
 #define T__26 26
 #define T__27 27
 #define T__28 28
-#define ID 4
-#define WS 5
-#define STRING 6
-#define ANONYMOUS_TEMPLATE 7
-#define COMMENT 8
-#define LINE_COMMENT 9
-#define BIGSTRING 10
-#define BIGSTRING_NO_NL 11
-#ifndef T_TRUE
-#define T_TRUE 12
-#define T_FALSE 13
-#endif
 #pragma mark Dynamic Global Scopes
-#pragma mark Dynamic Rule Scopes
-#pragma mark Rule Return Scopes start
+#pragma mark Dynamic Rule Scopes Interface start
+/* start of ruleAttributeScopeInterface */
+
+@interface formalArgs_Scope : ANTLRSymbolsScope {
+    BOOL hasOptionalParameter;
+
+}
+
+/* start properties */
+
+@property (assign, getter=gethasOptionalParameter, setter=sethasOptionalParameter:) BOOL hasOptionalParameter;
+
+/* end properties */
+
++ (formalArgs_Scope *)newformalArgs_Scope;
+- (id) init;
+- (BOOL)gethasOptionalParameter;
+- (void)sethasOptionalParameter:(BOOL)aVal;
+
+@end /* end of ruleAttributeScopeInterface */
+
+
+#pragma mark Dynamic Rule Scopes Interface stop
+
+#pragma mark Rule Return Scopes Interface start
+#pragma mark Rule Return Scopes Interface stop
 
 /* Interface grammar class */
 @interface GroupParser : ANTLRParser { /* line 572 */
 /* ObjC start of ruleAttributeScopeMemVar */
+formalArgs_Scope *formalArgs_scope;
 
 
 /* ObjC end of ruleAttributeScopeMemVar */
@@ -131,8 +157,10 @@ STGroup *group;
 + (id) newGroupParser:(id<ANTLRTokenStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
++ (NSInteger) TANONYMOUS_TEMPLATE;
 + (NSInteger) TBIGSTRING;
 + (NSInteger) TBIGSTRING_NO_NL;
++ (NSInteger) TID;
 + (NSInteger) TTRUE;
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e;
 - (NSString *) getSourceName;
@@ -151,13 +179,13 @@ STGroup *group;
 - (void)templateDef:(NSString *)prefix ; 
 - (AMutableArray *)formalArgs; 
 - (void)formalArg:(AMutableArray *)args ; 
-- (void)formalArgWithDefaultValue:(AMutableArray *)args ; 
 - (void)dictDef; 
-- (NSMutableDictionary *)dict; 
-- (void)dictPairs:(NSMutableDictionary *)mapping ; 
-- (void)defaultValuePair:(NSMutableDictionary *)mapping ; 
-- (void)keyValuePair:(NSMutableDictionary *)mapping ; 
+- (AMutableDictionary *)dict; 
+- (void)dictPairs:(AMutableDictionary *)mapping ; 
+- (void)defaultValuePair:(AMutableDictionary *)mapping ; 
+- (void)keyValuePair:(AMutableDictionary *)mapping ; 
 - (id)keyValue; 
 
 
 @end /* end of GroupParser interface */
+

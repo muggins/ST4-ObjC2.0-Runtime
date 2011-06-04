@@ -25,12 +25,12 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "STGroupDir.h"
 #import "STException.h"
 #import "GroupLexer.h"
 #import "GroupParser.h"
-#import "AMutableArray.h"
 
 @implementation STGroupDir
 
@@ -39,27 +39,27 @@
 
 + (id) newSTGroupDir:(NSString *)aDirName
 {
-    return [[[STGroupDir alloc] init:aDirName encoding:NSASCIIStringEncoding delimiterStartChar:'<' delimiterStopChar:'>'] retain];
+    return [[STGroupDir alloc] init:aDirName encoding:NSASCIIStringEncoding delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
 + (id) newSTGroupDir:(NSString *)aDirName encoding:(NSStringEncoding)theEncoding
 {
-    return [[[STGroupDir alloc] init:aDirName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'] retain];
+    return [[STGroupDir alloc] init:aDirName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
 + (id) newSTGroupDir:(NSString *)aDirName delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupDir alloc] init:aDirName encoding:NSASCIIStringEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupDir alloc] init:aDirName encoding:NSASCIIStringEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 + (id) newSTGroupDir:(NSString *)aDirName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupDir alloc] init:aDirName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupDir alloc] init:aDirName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 + (id) newSTGroupDirWithURL:(NSURL *)theRoot encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupDir alloc] initWithURL:theRoot encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupDir alloc] initWithURL:theRoot encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 - (id) init:(NSString *)aDirName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
@@ -103,11 +103,21 @@
     self=[super init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
     if ( self != nil ) {
         root = theRoot;
+        if ( root ) [root retain];
         encoding = theEncoding;
+        if ( encoding ) [encoding retain];
     }
     return self;
 }
 
+- (void) dealloc {
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STGroupDir" );
+#endif
+    if ( groupDirName ) [groupDirName release];
+    if ( root ) [root release];
+    [super dealloc];
+}
 
 /**
  * Load a template from dir or group file.  Group file is given
@@ -210,12 +220,6 @@
 - (NSString *) getRootDir
 {
     return groupDirName;
-}
-
-- (void) dealloc {
-    [groupDirName release];
-    [root release];
-    [super dealloc];
 }
 
 @end

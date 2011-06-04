@@ -72,6 +72,7 @@ options {
 }
 
 @memVars {
+	template_Scope *template_scope;
 	NSString *outermostTemplateName;	// name of overall template
 	CompiledST *outermostImpl;
 	STToken *templateToken;			    // overall template token
@@ -80,6 +81,7 @@ options {
 }
 
 @properties {
+	@property(retain) template_Scope *template_scope;
 	@property(retain) NSString *outermostTemplateName; // name of overall template
 	@property(retain) CompiledST *outermostImpl;
 	@property(retain) STToken *templateToken;// overall template token
@@ -119,6 +121,7 @@ options {
 }
 
 @synthesize {
+	@synthesize template_scope;
 	@synthesize outermostTemplateName; // name of overall template
 	@synthesize outermostImpl;
 	@synthesize templateToken;// overall template token
@@ -127,90 +130,107 @@ options {
 }
 
 @methods {
-	+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)anInput
-	                 errMgr:(ErrorManager *)anErrMgr
-	                   name:(NSString *)aName
-	               template:(NSString *)aTemplate
-	                  token:(STToken *)aTemplateToken
-	{
-	    return [[[CodeGenerator alloc] init:anInput
-		                            errMgr:anErrMgr
-	                                  name:aName
-	                              template:aTemplate
-	                                 token:aTemplateToken] retain];
-	}
-	
-	- (id) init:(id<ANTLRTreeNodeStream>)anInput
-		                 errMgr:(ErrorManager *)anErrMgr
-	                   name:(NSString *)aName
-	               template:(NSString *)aTemplate
-	                  token:(STToken *)aTemplateToken
-	{
-		self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
-		if ( self != nil ) {
-            /* ruleAttributeScopeInit */
-            template_scope = [template_Scope newtemplate_Scope];
-            template_stack = [ANTLRSymbolStack newANTLRSymbolStackWithLen:30];
-			errMgr = anErrMgr;
-			outermostTemplateName = aName;
-			template = aTemplate;
-			templateToken = aTemplateToken;
-		}
-		return self;
-	}
++ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)anInput
+                 errMgr:(ErrorManager *)anErrMgr
+                   name:(NSString *)aName
+               template:(NSString *)aTemplate
+                  token:(STToken *)aTemplateToken
+{
+    return [[[CodeGenerator alloc] init:anInput
+                                errMgr:anErrMgr
+                                  name:aName
+                              template:aTemplate
+                                 token:aTemplateToken] retain];
+}
 
-	// convience funcs to hide offensive sending of emit messages to
-	// CompilationState temp data object.
-
-	- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
-	{
-		[$template::cstate emit1:opAST opcode:anOpcode arg:arg];
-	}
-	
-	- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
-	{
-		[$template::cstate emit1:opAST opcode:anOpcode s:arg];
-	}
-	
-	- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
-	{
-		[$template::cstate emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
-	}
-	
-	- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
-	{
-		[$template::cstate emit2:opAST opcode:anOpcode s:s arg2:anArg];
-	}
-	
-	- (void) emit:(short)anOpcode
-	{
-		[$template::cstate emit:anOpcode];
+- (id) init:(id<ANTLRTreeNodeStream>)anInput
+                     errMgr:(ErrorManager *)anErrMgr
+                   name:(NSString *)aName
+               template:(NSString *)aTemplate
+                  token:(STToken *)aTemplateToken
+{
+    self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
+    if ( self != nil ) {
+        /* ruleAttributeScopeInit */
+        template_scope = [[template_Scope newtemplate_Scope] retain];
+        template_stack = [[ANTLRSymbolStack newANTLRSymbolStackWithLen:30] retain];
+        errMgr = anErrMgr;
+        if ( errMgr ) [errMgr retain];
+        outermostTemplateName = aName;
+        if ( outermostTemplateName ) [outermostTemplateName retain];
+        template = aTemplate;
+        if ( template ) [template retain];
+        templateToken = aTemplateToken;
+        if ( templateToken ) [templateToken retain];
     }
-    
-    - (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
-    {
-		[$template::cstate emit:opAST opcode:anOpcode];
-	}
-	
-	- (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s
-	{
-		[$template::cstate insert:addr opcode:anOpcode s:s];
-	}
-	
-	- (void) setOption:(ANTLRCommonTree *)anID
-	{
-		[$template::cstate setOption:anID];
-	}
-	
-	- (void) write:(NSInteger)addr value:(short)value
-	{
-		[$template::cstate write:addr value:value];
-	}
-	
-	- (NSInteger) address { return $template::cstate.ip; }
-	- (void) func:(ANTLRCommonTree *)aTree { [$template::cstate func:templateToken tree:aTree]; }
-	- (void) refAttr:(ANTLRCommonTree *)aTree { [$template::cstate refAttr:templateToken tree:aTree]; }
-	- (NSInteger) defineString:(NSString *)s { return [$template::cstate defineString:s]; }
+    return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in CodeGenerator" );
+#endif
+    if ( outermostTemplateName ) [outermostTemplateName release];
+    if ( outermostImpl ) [outermostImpl release];
+    if ( templateToken ) [templateToken release];
+    if ( template ) [template release];
+    if ( errMgr ) [errMgr release];
+    [super dealloc];
+}
+
+// convience funcs to hide offensive sending of emit messages to
+// CompilationState temp data object.
+
+- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
+{
+    [$template::cstate emit1:opAST opcode:anOpcode arg:arg];
+}
+
+- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
+{
+    [$template::cstate emit1:opAST opcode:anOpcode s:arg];
+}
+
+- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
+{
+    [$template::cstate emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
+}
+
+- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
+{
+    [$template::cstate emit2:opAST opcode:anOpcode s:s arg2:anArg];
+}
+
+- (void) emit:(short)anOpcode
+{
+    [$template::cstate emit:anOpcode];
+}
+
+- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
+{
+    [$template::cstate emit:opAST opcode:anOpcode];
+}
+
+- (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s
+{
+    [$template::cstate insert:addr opcode:anOpcode s:s];
+}
+
+- (void) setOption:(ANTLRCommonTree *)anID
+{
+    [$template::cstate setOption:anID];
+}
+
+- (void) write:(NSInteger)addr value:(short)value
+{
+    [$template::cstate write:addr value:value];
+}
+
+- (NSInteger) address { return $template::cstate.ip; }
+- (void) func:(ANTLRCommonTree *)aTree { [$template::cstate func:templateToken tree:aTree]; }
+- (void) refAttr:(ANTLRCommonTree *)aTree { [$template::cstate refAttr:templateToken tree:aTree]; }
+- (NSInteger) defineString:(NSString *)s { return [$template::cstate defineString:s]; }
 }
 
 templateAndEOF : template[nil ,nil] EOF; // hush warning; ignore
@@ -409,8 +429,9 @@ mapTemplateRef[NSInteger num_exprs]
 	:	^(	INCLUDE ID
 			{for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$INCLUDE opcode:Bytecode.INSTR_NULL];}
 			args
-		 )
+		)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs )
 			[self emit1:$INCLUDE opcode:Bytecode.INSTR_NEW_BOX_ARGS s:$ID.text];
 		else
@@ -426,7 +447,10 @@ mapTemplateRef[NSInteger num_exprs]
                                 arg2:$num_exprs];
 		}
 		for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$subtemplate.start opcode:Bytecode.INSTR_NULL];
-        [self emit2:$subtemplate.start opcode:Bytecode.INSTR_NEW s:$subtemplate.name arg2:$num_exprs];
+        [self emit2:$subtemplate.start
+             opcode:Bytecode.INSTR_NEW
+                  s:$subtemplate.name
+               arg2:$num_exprs];
 		}
 
 	|	^(	INCLUDE_IND expr
@@ -435,7 +459,9 @@ mapTemplateRef[NSInteger num_exprs]
 			for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$INCLUDE_IND opcode:Bytecode.INSTR_NULL];
 			}
 			args
-			{[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:($args.n+$num_exprs)];}
+			{
+			[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:($args.n+$num_exprs)];
+			}
 		 )
 	;
 
@@ -443,11 +469,13 @@ includeExpr
 	:	^(EXEC_FUNC ID expr?)		{[self func:$ID];}
 	|	^(INCLUDE ID args)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs ) [self emit1:$INCLUDE opcode:Bytecode.INSTR_NEW_BOX_ARGS s:$ID.text];
 		else [self emit2:$INCLUDE opcode:Bytecode.INSTR_NEW s:$ID.text arg2:$args.n];
 		}
 	|	^(INCLUDE_SUPER ID args)
 		{
+		if ( $args.passThru ) [self emit1:$start opcode:Bytecode.INSTR_PASSTHRU s:$ID.text];
 		if ( $args.namedArgs ) [self emit1:$INCLUDE_SUPER opcode:Bytecode.INSTR_SUPER_NEW_BOX_ARGS s:$ID.text];
 		else [self emit2:$INCLUDE_SUPER opcode:Bytecode.INSTR_SUPER_NEW s:$ID.text arg2:$args.n];
 		}
@@ -458,10 +486,9 @@ includeExpr
 									[self emit2:$INCLUDE_REGION opcode:Bytecode.INSTR_NEW s:impl.name arg2:0];
 									}
 	|	^(INCLUDE_SUPER_REGION ID)	{
-									CompiledST *impl =
-										[Compiler defineBlankRegion:outermostImpl token:$ID.token];
-									//impl.dump();
-									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:impl.name arg2:0];
+									 NSString *mangled =
+		                                [STGroup getMangledRegionName:outermostImpl.name name:$ID.text];
+									[self emit2:$INCLUDE_SUPER_REGION opcode:Bytecode.INSTR_SUPER_NEW s:mangled arg2:0];
 									}
 	|	primary
 	;
@@ -475,20 +502,22 @@ primary
 		                {[self emit2:$start opcode:Bytecode.INSTR_NEW s:$subtemplate.name arg2:0];}
 	|	list
 	|	^(	INCLUDE_IND
-			expr 		{[self emit:$INCLUDE_IND opcode:Bytecode.INSTR_TOSTR];}
-			args		{[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:$args.n];}
+			expr        {[self emit:$INCLUDE_IND opcode:Bytecode.INSTR_TOSTR];}
+			args        {[self emit1:$INCLUDE_IND opcode:Bytecode.INSTR_NEW_IND arg:$args.n];}
 		 )
 	|	^(TO_STR expr)	{[self emit:$TO_STR opcode:Bytecode.INSTR_TOSTR];}
 	;
 
 arg : expr ;
 
-args returns [NSInteger n=0, BOOL namedArgs=NO]
+args returns [NSInteger n=0, BOOL namedArgs=NO, BOOL passThru]
 	:	( arg {$n++;} )+
 	|	{[self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=YES;}
 		(	^(eq='=' ID expr)
 			{$n++; [self emit1:$eq opcode:Bytecode.INSTR_STORE_ARG arg:[self defineString:$ID.text]];}
 		)+
+		( '...' {$passThru=YES;} )?
+    |   '...' {$passThru=YES; [self emit:$args.start opcode:Bytecode.INSTR_ARGS]; $namedArgs=YES;}
 	|
  	;
 

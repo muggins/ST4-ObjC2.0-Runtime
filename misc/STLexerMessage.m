@@ -25,11 +25,11 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "STLexerMessage.h"
 #import "STLexer.h"
 #import "GroupLexer.h"
-#import "AMutableArray.h"
 
 @implementation STLexerMessage
 
@@ -39,7 +39,7 @@
 
 + (id) newMessage:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause
 {
-    return [[[STLexerMessage alloc] init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause] retain];
+    return [[STLexerMessage alloc] init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause];
 }
 
 - (id) init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken cause:(NSException *)aCause
@@ -47,11 +47,27 @@
     self=[super init:LEXER_ERROR who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
         msg = aMsg;
-        if (msg == nil) msg = @"nil";
+        if (msg == nil) {
+            msg = @"nil";
+        }
+        [msg retain];
         templateToken = aTemplateToken;
+        if ( templateToken ) [templateToken retain];
         srcName = aSrcName;
+        if ( srcName ) [srcName retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STLexerMessage" );
+#endif
+    if ( msg ) [msg release];
+    if ( templateToken ) [templateToken release];
+    if ( srcName ) [srcName release];
+    [super dealloc];
 }
 
 - (NSString *) description
@@ -61,11 +77,11 @@
     NSInteger charPos = re.charPositionInLine;
     if (templateToken != nil) {
         NSInteger templateDelimiterSize = 1;
-        if ([templateToken getType] == BIGSTRING) {
+        if ( templateToken.type == BIGSTRING) {
             templateDelimiterSize = 2;
         }
-        line += [templateToken getLine] - 1;
-        charPos += [templateToken getCharPositionInLine] + templateDelimiterSize;
+        line += templateToken.line - 1;
+        charPos += templateToken.charPositionInLine + templateDelimiterSize;
     }
     NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
     if (srcName != nil) {
@@ -77,14 +93,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc
-{
-    [msg release];
-    [templateToken release];
-    [srcName release];
-    [super dealloc];
 }
 
 @end

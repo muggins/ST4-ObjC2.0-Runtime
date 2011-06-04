@@ -102,20 +102,18 @@
 + (void) initialize;
 
 + (id) newSTLexer:(id<ANTLRCharStream>)input;
++ (id) newSTLexer:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
 + (id) newSTLexer:(ErrorManager *)errMgr
             input:(id<ANTLRCharStream>)input
-    templateToken:(STToken *)templateToken;
-+ (id) newSTLexer:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input
-                                 templateToken:(STToken *)templateToken
-                            delimiterStartChar:(unichar)delimiterStartChar
-                             delimiterStopChar:(unichar)delimiterStopChar;
+    templateToken:(STToken *)templateToken
+delimiterStartChar:(unichar)delimiterStartChar
+delimiterStopChar:(unichar)delimiterStopChar;
 
 - (id) initWithInput:(id<ANTLRCharStream>)input;
 - (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
-- (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input
-                           templateToken:(STToken *)templateToken
-                      delimiterStartChar:(unichar)delimiterStartChar
-                       delimiterStopChar:(unichar)delimiterStopChar;
+- (id) init:(ErrorManager *)errMgr
+      input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken
+delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 
 - (STToken *) nextToken;
 - (void) match:(unichar)x;
@@ -165,7 +163,7 @@
 @interface STLexer_NO_NL : STLexer {
 }
 
-- (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)errMgr
++ (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)errMgr
                                input:(id<ANTLRCharStream>)anInput
                        templateToken:(STToken *)aTemplateToken
                   delimiterStartChar:(unichar)aStartChar

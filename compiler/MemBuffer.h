@@ -38,8 +38,8 @@
 @interface MemBuffer : NSObject {
 	//MemBuffer *fNext;
     NSInteger BuffSize;
-    NSMutableData *buffer;
-    char *ptrBuffer;
+    __strong NSMutableData *buffer;
+    __strong char *ptrBuffer;
     NSInteger count;
     NSInteger ptr;
 }
@@ -47,7 +47,7 @@
 @property (assign) NSInteger BuffSize;
 @property (retain) NSMutableData *buffer;
 @property (assign) char *ptrBuffer;
-@property (assign) NSInteger count;
+@property (assign, getter=count) NSInteger count;
 @property (assign) NSInteger ptr;
 
 // Contruction/Destruction

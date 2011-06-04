@@ -32,7 +32,6 @@
 #import "STLexer.h"
 #import "STException.h"
 #import "STParser.h"
-#import "AMutableArray.h"
 
 #ifndef ANTLR3TokenTypeAlreadyDefined
 #define ANTLR3TokenTypeAlreadyDefined
@@ -177,9 +176,11 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = '>';
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [AMutableArray arrayWithCapacity:16];
+        tokens = [[AMutableArray arrayWithCapacity:16] retain];
         errMgr = STGroup.DEFAULT_ERR_MGR;
+        if ( errMgr ) [errMgr retain];
         input = anInput;
+        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = nil;
     }
@@ -194,9 +195,11 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = '>';
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [AMutableArray arrayWithCapacity:16];
+        tokens = [[AMutableArray arrayWithCapacity:16] retain];
         errMgr = anErrMgr;
+        if ( errMgr ) [errMgr retain];
         input = anInput;
+        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = aTemplateToken;
     }
@@ -211,15 +214,30 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = aStopChar;
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [AMutableArray arrayWithCapacity:16];
+        tokens = [[AMutableArray arrayWithCapacity:16] retain];
         errMgr = anErrMgr;
+        if ( errMgr ) [errMgr retain];
         input = anInput;
+        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = aTemplateToken;
+        if ( templateToken ) [templateToken retain];
     }
     return self;
 }
 
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STLexer" );
+#endif
+    if ( errMgr ) [errMgr release];
+    if ( input ) [input release];
+    if ( tokens ) [tokens release];
+    if ( templateToken ) [templateToken release];
+    [super dealloc];
+}
 
 - (STToken *) nextToken
 {
@@ -261,9 +279,9 @@ delimiterStopChar:(unichar)aStopChar
 {
     
     while (YES) {
-        startCharIndex = [input getIndex];
-        startLine = [input getLine];
-        startCharPositionInLine = [input getCharPositionInLine];
+        startCharIndex = input.index;
+        startLine = input.line;
+        startCharPositionInLine = input.charPositionInLine;
         if (c == (unichar) EOF_TYPE)
             return [self newToken:ANTLRTokenTypeEOF];
         STToken *t;
@@ -278,7 +296,7 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) outside
 {
-    if ([input getCharPositionInLine] == 0 && (c == ' ' || c == '\t')) {
+    if (input.charPositionInLine == 0 && (c == ' ' || c == '\t')) {
         while (c == ' ' || c == '\t') // scarf indent
             [self consume];
         if (c != (unichar) EOF_TYPE)
@@ -359,7 +377,7 @@ delimiterStopChar:(unichar)aStopChar
                 }
                 if ([STLexer isIDStartLetter:c]) {
                     STToken *anID = [self mID];
-                    NSString *name = [anID getText];
+                    NSString *name = anID.text;
                     if ([name isEqualToString:@"if"])
                         return [self newToken:IF];
                     else if ([name isEqualToString:@"endif"])
@@ -414,8 +432,12 @@ delimiterStopChar:(unichar)aStopChar
         [argTokens addObject:[self newTokenFromPreviousChar:PIPE]];
         if ([STLexer isWS:c])
             [self consume];
-        for (STToken *t in argTokens)
-            [self emit:t];
+//        STToken *t;
+        ArrayIterator *it = [ArrayIterator newIterator:argTokens];
+        while ( [it hasNext] )
+           [self emit:[it nextObject]];
+//        for (STToken *t in argTokens)
+//            [self emit:t];
         [input release:m];
         scanningInsideExpr = NO;
         startCharIndex = curlyStartChar;
@@ -434,8 +456,8 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) mESCAPE
 {
-    startCharIndex = [input getIndex];
-    startCharPositionInLine = [input getCharPositionInLine];
+    startCharIndex = input.index;
+    startCharPositionInLine = input.charPositionInLine;
     [self consume];
     if (c == 'u') return [self mUNICODE];
     NSString *text = nil;
@@ -454,7 +476,7 @@ delimiterStopChar:(unichar)aStopChar
             return SKIP;
     }
     [self consume];
-    STToken *t = [self newToken:TEXT text:text pos:[input getCharPositionInLine]-2];
+    STToken *t = [self newToken:TEXT text:text pos:input.charPositionInLine-2];
     [self match:delimiterStopChar];
     return t;
 }
@@ -490,7 +512,7 @@ delimiterStopChar:(unichar)aStopChar
         // ESCAPE kills >
         //NSString *utext = [NSString stringWithCString:chars encoding:NSASCIIStringEncoding];
     unichar uc = (unichar)[[NSString stringWithCString:chars encoding:NSASCIIStringEncoding] intValue];
-    STToken *t = [self newToken:TEXT text:[NSString stringWithFormat:@"%4x", uc] pos:[input getCharPositionInLine]-6];
+    STToken *t = [self newToken:TEXT text:[NSString stringWithFormat:@"%4x", uc] pos:input.charPositionInLine-6];
     [self consume];
     [self match:delimiterStopChar];
     return t;
@@ -538,9 +560,9 @@ delimiterStopChar:(unichar)aStopChar
  */
 - (STToken *) mID
 {
-    startCharIndex = [input getIndex];
-    startLine = [input getLine];
-    startCharPositionInLine = [input getCharPositionInLine];
+    startCharIndex = input.index;
+    startLine = input.line;
+    startCharPositionInLine = input.charPositionInLine;
     [self consume];
     while ([STLexer isIDLetter:c]) {
         [self consume];
@@ -577,8 +599,8 @@ delimiterStopChar:(unichar)aStopChar
         [self consume];
         if (c == (unichar) EOF_TYPE) {
             ANTLRRecognitionException *re = [ANTLRMismatchedTokenException newException:'"' Stream:input];
-            re.line = [input getLine];
-            re.charPositionInLine = [input getCharPositionInLine];
+            re.line = input.line;
+            re.charPositionInLine = input.charPositionInLine;
             [errMgr lexerError:[input getSourceName] msg:@"EOF in string" templateToken:templateToken e:re];
         }
     }
@@ -602,8 +624,8 @@ delimiterStopChar:(unichar)aStopChar
     while (!(c == '!' && [input LA:2] == delimiterStopChar)) {
         if (c == (unichar)EOF) {
             ANTLRRecognitionException *re = [ANTLRMismatchedTokenException newException:(NSInteger)'!' Stream:input];
-            re.line = [input getLine];
-            re.charPositionInLine = [input getCharPositionInLine];
+            re.line = input.line;
+            re.charPositionInLine = input.charPositionInLine;
             [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"Nonterminated comment starting at %d:%d: '!%c' missing", startLine, startCharPositionInLine, delimiterStopChar] templateToken:templateToken e:re];
         break;
         }
@@ -647,7 +669,7 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) newToken:(NSInteger)ttype
 {
-    STToken *t = [[STToken newToken:input type:ttype start:startCharIndex stop:[input getIndex]-1] retain];
+    STToken *t = [STToken newToken:input type:ttype start:startCharIndex stop:input.index-1];
     [t setLine:startLine];
     [t setCharPositionInLine:startCharPositionInLine];
     return t;
@@ -655,9 +677,9 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) newTokenFromPreviousChar:(NSInteger)ttype
 {
-    STToken *t = [[STToken newToken:input type:ttype start:[input getIndex]-1 stop:[input getIndex]-1] retain];
-    [t setLine:[input getLine]];
-    [t setCharPositionInLine:[input getCharPositionInLine]-1];
+    STToken *t = [STToken newToken:input type:ttype start:input.index-1 stop:input.index-1];
+    [t setLine:input.line];
+    [t setCharPositionInLine:input.charPositionInLine-1];
     return t;
 }
 
@@ -665,17 +687,17 @@ delimiterStopChar:(unichar)aStopChar
 {
     STToken *t = [STToken newToken:ttype text:text];
     [t setStart:startCharIndex];
-    [t setStop:[input index]-1];
-    [t setLine:[input getLine]];
+    [t setStop:input.index-1];
+    [t setLine:input.line];
     [t setCharPositionInLine:pos];
     return t;
 }
 
 - (STToken *) newToken:(NSInteger)ttype text:(NSString *)text
 {
-    STToken *t = [[STToken newToken:ttype text:text] retain];
+    STToken *t = [STToken newToken:ttype text:text];
     [t setStart:startCharIndex];
-    [t setStop:[input getIndex] - 1];
+    [t setStop:input.index - 1];
     [t setLine:startLine];
     [t setCharPositionInLine:startCharPositionInLine];
     return t;
@@ -684,15 +706,6 @@ delimiterStopChar:(unichar)aStopChar
 - (NSString *) errorHeader
 {
     return [NSString stringWithFormat:@"%d:%d", startLine, startCharPositionInLine];
-}
-
-- (void) dealloc
-{
-    [errMgr release];
-    [templateToken release];
-    [input release];
-    [tokens release];
-    [super dealloc];
 }
 
 - (NSString *) getSourceName
@@ -730,7 +743,7 @@ delimiterStopChar:(unichar)aStopChar
 
 @implementation STLexer_NO_NL
 
-- (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)anErrMgr
++ (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)anErrMgr
                                input:(id<ANTLRCharStream>)anInput
                        templateToken:(STToken *)aTemplateToken
                   delimiterStartChar:(unichar)aStartChar
@@ -768,8 +781,8 @@ delimiterStopChar:(unichar)aStopChar
 - (STToken *)nextToken
 {
     STToken *t = [super nextToken];
-	while ( [t getType] == NEWLINE ||
-	        [t getType] == INDENT ) {
+	while ( t.type == NEWLINE ||
+	        t.type == INDENT ) {
 		t = [super nextToken];
 	}
 	return t;

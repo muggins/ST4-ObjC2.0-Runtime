@@ -31,17 +31,17 @@
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause
 {
-    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:nil arg2:nil] retain];
+    return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:nil arg2:nil];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
-    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:nil] retain];
+    return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:nil];
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
-    return [[[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:anArg2] retain];
+    return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:anArg2];
 }
 
 #ifdef DONTUSENOMO
@@ -60,7 +60,9 @@
     self=[super init:anError who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
         token = t;
+        if ( token ) [token retain];
         srcName = srcName;
+        if ( srcName ) [srcName retain];
     }
     return self;
 }
@@ -71,9 +73,20 @@
     self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         token = t;
-        srcName = srcName;
+        if ( token ) [token retain];
+        srcName = aSrcName;
+        if ( srcName ) [srcName retain];
     }
     return self;
+}
+
+- (void) dealloc {
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in STGroupCompiletimeMessage" );
+#endif
+    if ( token ) [token release];
+    if ( srcName ) [srcName release];
+    [super dealloc];
 }
 
 - (NSString *) description
@@ -82,8 +95,8 @@
     NSInteger line = 0;
     NSInteger charPos = -1;
     if ( token != nil ) {
-        line = [token getLine];
-        charPos = [token getCharPositionInLine];
+        line = token.line;
+        charPos = token.charPositionInLine;
     }
     else if (re != nil) {
         line = re.line;
@@ -99,12 +112,6 @@
 - (NSString *) toString
 {
     return [self description];
-}
-
-- (void) dealloc {
-    [token release];
-    [srcName release];
-    [super dealloc];
 }
 
 @synthesize token;

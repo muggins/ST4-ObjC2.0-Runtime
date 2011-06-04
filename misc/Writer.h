@@ -29,12 +29,11 @@
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
 #import "STWriter.h"
-#import "AMutableArray.h"
 
 @interface Writer : NSMutableString<STWriter> {
     NSInteger capacity;
     NSMutableData *data;
-    char *ptr;
+    __strong char *ptr;
     NSInteger ip;
     id lock;
 
@@ -83,6 +82,7 @@
 - (id) init;
 - (id) initWithCapacity:(NSUInteger)aLen;
 - (id) initWithWriter:(Writer *)aWriter;  // just for initializing subclasses
+- (void) dealloc;
 - (id) copyWithZone:(NSZone *)aZone;
 - (NSUInteger) count;
 - (NSUInteger) length;
@@ -124,7 +124,7 @@
 @property (assign) BOOL atStartOfLine;
 @property (assign) NSInteger charPosition;
 @property (assign) NSInteger charIndex;
-@property (assign) NSInteger lineWidth;
+@property (assign, setter = setLineWidth:) NSInteger lineWidth;
 
 
 @end
@@ -180,7 +180,8 @@
 - (id) initWithFD:(NSInteger)fd;
 - (id) initWithFH:(NSFileHandle *)file append:(BOOL)append;
 - (id) initWithFN:(NSString *)filename append:(BOOL)append;
-- (void) writeStr:(NSString *)str;
+- (void) dealloc;
+- (NSInteger) writeStr:(NSString *)str;
 
 - (void) close;
 
