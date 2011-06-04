@@ -51,7 +51,6 @@
 #import "Writer.h"
 
 @interface AutoIndentWriter : Writer {
-    
 }
 
 + (id) newWriter;
