@@ -29,23 +29,23 @@
 
 @implementation STGroupCompiletimeMessage
 
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause
 {
     return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:nil arg2:nil];
 }
 
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
     return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:nil];
 }
 
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
     return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:anArg arg2:anArg2];
 }
 
 #ifdef DONTUSENOMO
-- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause
+- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause
 {
     self=[super init:anError who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
@@ -55,7 +55,7 @@
     return self;
 }
 
-- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg
+- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg
 {
     self=[super init:anError who:nil cause:aCause arg:nil arg2:nil arg3:nil];
     if ( self != nil ) {
@@ -68,7 +68,7 @@
 }
 #endif
 
-- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
+- (id) init:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2
 {
     self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
@@ -91,7 +91,7 @@
 
 - (NSString *) description
 {
-    ANTLRRecognitionException *re = (ANTLRRecognitionException *)cause;
+    RecognitionException *re = (RecognitionException *)cause;
     NSInteger line = 0;
     NSInteger charPos = -1;
     if ( token != nil ) {

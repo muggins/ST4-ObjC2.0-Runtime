@@ -88,7 +88,7 @@
 #define T__27 27
 #define T__28 28
 /* interface lexer class */
-@interface GroupLexer : ANTLRLexer { // line 283
+@interface GroupLexer : Lexer { // line 283
 /* ObjC start of actions.lexer.memVars */
 
 STGroup *group;
@@ -96,12 +96,12 @@ STGroup *group;
 /* ObjC end of actions.lexer.memVars */
 }
 + (void) initialize;
-+ (GroupLexer *)newGroupLexerWithCharStream:(id<ANTLRCharStream>)anInput;
++ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput;
 /* ObjC start actions.lexer.methodsDecl */
 
 @property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
 
-- (void) reportError:(ANTLRRecognitionException *)e;
+- (void) reportError:(RecognitionException *)e;
 - (NSString *) getSourceName;
 
 /* ObjC end actions.lexer.methodsDecl */

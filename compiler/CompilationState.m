@@ -41,12 +41,12 @@
 
 + (id) newCompilationState:(ErrorManager *)anErrMgr
                       name:(NSString *)aName
-                    stream:(ANTLRCommonTokenStream *)theTokens
+                    stream:(CommonTokenStream *)theTokens
 {
     return [[CompilationState alloc] init:anErrMgr name:aName stream:theTokens];
 }
 
-- (id) init:(ErrorManager *)anErrMgr name:(NSString *)aName stream:(ANTLRCommonTokenStream *)theTokens
+- (id) init:(ErrorManager *)anErrMgr name:(NSString *)aName stream:(CommonTokenStream *)theTokens
 {
     self=[super init];
     if ( self != nil ) {
@@ -80,7 +80,7 @@
     return [stringtable addObject:s];
 }
 
-- (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
+- (void) refAttr:(STToken *)templateToken tree:(CommonTree *)aTree
 {
     if ( aTree == nil )
         @throw [STNoSuchAttributeException newException:@"nil tree in refAttr()"];
@@ -101,14 +101,14 @@
     }
 }
 
-- (void) setOption:(ANTLRCommonTree *)aTree
+- (void) setOption:(CommonTree *)aTree
 {
     NSInteger Opt;
     Opt = (NSInteger)[[[Compiler getSupportedOptions] objectForKey:aTree.text] intValue];
     [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:Opt];
 }
 
-- (void) func:(STToken *)templateToken tree:(ANTLRCommonTree *)aTree
+- (void) func:(STToken *)templateToken tree:(CommonTree *)aTree
 {
     NSString *funcBytecode = [[[Compiler funcs] getDict] objectForKey:aTree.text];
     if (funcBytecode == nil) {
@@ -125,21 +125,21 @@
     [self emit:nil opcode:opcode];
 }
 
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)opcode
+- (void) emit:(CommonTree *)opAST opcode:(short)opcode
 {
     [self ensureCapacity:1];
     if (opAST != nil) {
         NSInteger i = [opAST getTokenStartIndex];
         NSInteger j = [opAST getTokenStopIndex];
-        NSInteger p = [((ANTLRCommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
-        NSInteger q = [((ANTLRCommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
+        NSInteger p = [((CommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
+        NSInteger q = [((CommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
         if (!(p < 0 || q < 0))
             [impl.sourceMap addObject:[Interval newInterval:p b:q]];
     }
     [impl.instrs insertChar:opcode atIndex:ip++];
 }
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg
+- (void) emit1:(CommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg
 {
     [self emit:opAST opcode:opcode];
     [self ensureCapacity:Bytecode.OPND_SIZE_IN_BYTES];
@@ -147,7 +147,7 @@
     ip += Bytecode.OPND_SIZE_IN_BYTES;
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg arg2:(NSInteger)arg2
+- (void) emit2:(CommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg arg2:(NSInteger)arg2
 {
     [self emit:opAST opcode:opcode];
     [self ensureCapacity:Bytecode.OPND_SIZE_IN_BYTES * 2];
@@ -157,13 +157,13 @@
     ip += Bytecode.OPND_SIZE_IN_BYTES;
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s arg2:(NSInteger)arg2
+- (void) emit2:(CommonTree *)opAST opcode:(short)opcode s:(NSString *)s arg2:(NSInteger)arg2
 {
     NSInteger i = [self defineString:s];
     [self emit2:opAST opcode:opcode arg:i arg2:arg2];
 }
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s
+- (void) emit1:(CommonTree *)opAST opcode:(short)opcode s:(NSString *)s
 {
     NSInteger i = [self defineString:s];
     [self emit1:opAST opcode:opcode arg:i];
@@ -203,7 +203,7 @@
     }
 }
 
-- (void) indent:(ANTLRCommonTree *)indent
+- (void) indent:(CommonTree *)indent
 {
     [self emit1:indent opcode:Bytecode.INSTR_INDENT s:indent.text];
 }

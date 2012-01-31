@@ -72,7 +72,7 @@
 
 - (NSString *) description
 {
-    ANTLRRecognitionException *re = (ANTLRRecognitionException *)cause;
+    RecognitionException *re = (RecognitionException *)cause;
     NSInteger line = re.line;
     NSInteger charPos = re.charPositionInLine;
     if (templateToken != nil) {

@@ -69,7 +69,7 @@
         }
         ip = 0;
         indents = [[AMutableArray arrayWithCapacity:5] retain];
-        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
+        anchors = [[IntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -94,7 +94,7 @@
         }
         ip = 0;
         indents = [[AMutableArray arrayWithCapacity:5] retain];
-        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
+        anchors = [[IntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -128,7 +128,7 @@
             self.ip = writer.ip;
         }
         indents = [[AMutableArray arrayWithCapacity:5] retain];
-        anchors = [[ANTLRIntArray newArrayWithLen:5] retain];
+        anchors = [[IntArray newArrayWithLen:5] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;

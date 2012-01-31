@@ -47,7 +47,7 @@
      * Stack of integer anchors (char positions in line); avoid Integer
      * creation overhead.
      */
-    ANTLRIntArray *anchors;
+    IntArray *anchors;
     NSInteger anchors_sp;
     
     /**
@@ -117,7 +117,7 @@
 @property (retain) id lock;
 
 @property (retain) AMutableArray *indents;
-@property (retain) ANTLRIntArray *anchors;
+@property (retain) IntArray *anchors;
 @property (assign) NSInteger anchors_sp;
 @property (retain) NSString *newline;
 @property (retain) Writer *writer;

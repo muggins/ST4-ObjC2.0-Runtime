@@ -33,7 +33,7 @@
 
 @class STToken;
 /**
- * We build STToken tokens instead of relying on ANTLRCommonToken so we
+ * We build STToken tokens instead of relying on CommonToken so we
  * can override toString(). It just converts token types to
  * token names like 23 to LDELIM.
  */
@@ -51,7 +51,7 @@
  * via STLexer.tokens file (which must remain consistent).
  */
 
-@interface STLexer : NSObject <ANTLRTokenSource> {
+@interface STLexer : NSObject <TokenSource> {
     
     /**
      * What char starts an expression?
@@ -74,7 +74,7 @@
     NSInteger subtemplateDepth;
     ErrorManager *errMgr;
     STToken *templateToken;
-    id<ANTLRCharStream> input;
+    id<CharStream> input;
     unichar c;
     
     /**
@@ -101,18 +101,18 @@
 
 + (void) initialize;
 
-+ (id) newSTLexer:(id<ANTLRCharStream>)input;
-+ (id) newSTLexer:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
++ (id) newSTLexer:(id<CharStream>)input;
++ (id) newSTLexer:(ErrorManager *)errMgr input:(id<CharStream>)input templateToken:(STToken *)templateToken;
 + (id) newSTLexer:(ErrorManager *)errMgr
-            input:(id<ANTLRCharStream>)input
+            input:(id<CharStream>)input
     templateToken:(STToken *)templateToken
 delimiterStartChar:(unichar)delimiterStartChar
 delimiterStopChar:(unichar)delimiterStopChar;
 
-- (id) initWithInput:(id<ANTLRCharStream>)input;
-- (id) init:(ErrorManager *)errMgr input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken;
+- (id) initWithInput:(id<CharStream>)input;
+- (id) init:(ErrorManager *)errMgr input:(id<CharStream>)input templateToken:(STToken *)templateToken;
 - (id) init:(ErrorManager *)errMgr
-      input:(id<ANTLRCharStream>)input templateToken:(STToken *)templateToken
+      input:(id<CharStream>)input templateToken:(STToken *)templateToken
 delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 
 - (STToken *) nextToken;
@@ -148,7 +148,7 @@ delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimi
 @property (assign) NSInteger subtemplateDepth;
 @property (retain) ErrorManager *errMgr;
 @property (retain) STToken *templateToken;
-@property (retain) id<ANTLRCharStream> input;
+@property (retain) id<CharStream> input;
 @property (assign) unichar c;
 @property (assign) NSInteger startCharIndex;
 @property (assign) NSInteger startLine;
@@ -164,13 +164,13 @@ delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimi
 }
 
 + (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)errMgr
-                               input:(id<ANTLRCharStream>)anInput
+                               input:(id<CharStream>)anInput
                        templateToken:(STToken *)aTemplateToken
                   delimiterStartChar:(unichar)aStartChar
                    delimiterStopChar:(unichar)aStopChar;
 
 - (id) init:(ErrorManager *)anErrMgr
-             input:(id<ANTLRCharStream>)anInput                             
+             input:(id<CharStream>)anInput                             
      templateToken:(STToken *)aTemplateToken
 delimiterStartChar:(unichar)aStartChar
  delimiterStopChar:(unichar)aStopChar;

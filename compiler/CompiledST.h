@@ -53,10 +53,10 @@
     /** The token that begins template definition; could be <@r> of region. */
     __strong STToken *templateDefStartToken;
     /** Overall token stream for template (debug only) */
-    __strong ANTLRCommonTokenStream *tokens;
+    __strong CommonTokenStream *tokens;
     
 	/** How do we interpret syntax of template? (debug only) */
-    __strong ANTLRCommonTree *ast;
+    __strong CommonTree *ast;
     
     /** Must be non null map if !noFormalArgs */
     __strong AMutableDictionary *formalArguments;
@@ -96,8 +96,8 @@
 @property (retain) NSString *name;
 @property (retain) NSString *template;
 @property (retain) STToken *templateDefStartToken;
-@property (retain) ANTLRCommonTokenStream *tokens;
-@property (retain) ANTLRCommonTree *ast;
+@property (retain) CommonTokenStream *tokens;
+@property (retain) CommonTree *ast;
 @property (retain) AMutableDictionary *formalArguments;
 @property (assign) BOOL hasFormalArgs;
 @property (assign) NSInteger numberOfArgsWithDefaultValues;
@@ -111,7 +111,7 @@
 @property (assign) NSInteger codeSize;
 @property (retain) AMutableArray *sourceMap;
 
-+ (id) newCompiledST;
++ (CompiledST *) newCompiledST;
 - (id) init;
 - (id) copyWithZone:(NSZone *)aZone;
 - (void) addImplicitlyDefinedTemplate:(CompiledST *)sub;

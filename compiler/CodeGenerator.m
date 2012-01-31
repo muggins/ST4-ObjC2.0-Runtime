@@ -524,7 +524,7 @@ static const unsigned long long FOLLOW_TNULL_in_listElement1087_data[] = { 0x000
 
 #pragma mark Dynamic Rule Scopes ruleAttributeScope
 /* ruleAttributeScope */
-static ANTLRSymbolStack *template_stack;
+static SymbolStack *template_stack;
 
 
 #pragma mark global Attribute Scopes globalAttributeScope
@@ -541,115 +541,115 @@ static ANTLRSymbolStack *template_stack;
 + (void) initialize
 {
     #pragma mark Bitsets
-    FOLLOW_template_in_templateAndEOF74 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_templateAndEOF74_data Count:(NSUInteger)1] retain];
-    FOLLOW_EOF_in_templateAndEOF77 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_EOF_in_templateAndEOF77_data Count:(NSUInteger)1] retain];
-    FOLLOW_chunk_in_template101 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_template101_data Count:(NSUInteger)1] retain];
-    FOLLOW_element_in_chunk116 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_element_in_chunk116_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENTED_EXPR_in_element129 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INDENTED_EXPR_in_element129_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_element131 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element131_data Count:(NSUInteger)1] retain];
-    FOLLOW_compoundElement_in_element133 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element133_data Count:(NSUInteger)1] retain];
-    FOLLOW_compoundElement_in_element141 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element141_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENTED_EXPR_in_element151 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INDENTED_EXPR_in_element151_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_element153 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element153_data Count:(NSUInteger)1] retain];
-    FOLLOW_singleElement_in_element157 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element157_data Count:(NSUInteger)1] retain];
-    FOLLOW_singleElement_in_element165 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element165_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprElement_in_singleElement179 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_exprElement_in_singleElement179_data Count:(NSUInteger)1] retain];
-    FOLLOW_TEXT_in_singleElement184 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_TEXT_in_singleElement184_data Count:(NSUInteger)1] retain];
-    FOLLOW_NEWLINE_in_singleElement193 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_singleElement193_data Count:(NSUInteger)1] retain];
-    FOLLOW_ifstat_in_compoundElement207 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ifstat_in_compoundElement207_data Count:(NSUInteger)1] retain];
-    FOLLOW_region_in_compoundElement213 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_region_in_compoundElement213_data Count:(NSUInteger)1] retain];
-    FOLLOW_EXPR_in_exprElement232 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_EXPR_in_exprElement232_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_exprElement234 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_exprElement234_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprOptions_in_exprElement237 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_exprOptions_in_exprElement237_data Count:(NSUInteger)1] retain];
-    FOLLOW_REGION_in_region275 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_REGION_in_region275_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_region277 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_region277_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_region287 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_region287_data Count:(NSUInteger)1] retain];
-    FOLLOW_SUBTEMPLATE_in_subtemplate320 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_SUBTEMPLATE_in_subtemplate320_data Count:(NSUInteger)1] retain];
-    FOLLOW_ARGS_in_subtemplate327 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ARGS_in_subtemplate327_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_subtemplate330 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate330_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_subtemplate347 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_subtemplate347_data Count:(NSUInteger)1] retain];
-    FOLLOW_IF_in_ifstat384 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_IF_in_ifstat384_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_ifstat386 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat386_data Count:(NSUInteger)1] retain];
-    FOLLOW_chunk_in_ifstat396 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat396_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELSEIF_in_ifstat406 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ELSEIF_in_ifstat406_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_ifstat420 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat420_data Count:(NSUInteger)1] retain];
-    FOLLOW_chunk_in_ifstat432 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat432_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELSE_in_ifstat455 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ELSE_in_ifstat455_data Count:(NSUInteger)1] retain];
-    FOLLOW_chunk_in_ifstat469 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat469_data Count:(NSUInteger)1] retain];
-    FOLLOW_OR_in_conditional503 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_OR_in_conditional503_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_conditional505 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional505_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_conditional507 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional507_data Count:(NSUInteger)1] retain];
-    FOLLOW_AND_in_conditional517 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_AND_in_conditional517_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_conditional519 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional519_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_conditional521 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional521_data Count:(NSUInteger)1] retain];
-    FOLLOW_BANG_in_conditional531 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_BANG_in_conditional531_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_conditional533 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional533_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_conditional545 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_conditional545_data Count:(NSUInteger)1] retain];
-    FOLLOW_OPTIONS_in_exprOptions559 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_OPTIONS_in_exprOptions559_data Count:(NSUInteger)1] retain];
-    FOLLOW_option_in_exprOptions561 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions561_data Count:(NSUInteger)1] retain];
-    FOLLOW_EQUALS_in_option573 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_option573_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_option575 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_option575_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_option577 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_option577_data Count:(NSUInteger)1] retain];
-    FOLLOW_ZIP_in_expr596 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ZIP_in_expr596_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELEMENTS_in_expr599 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ELEMENTS_in_expr599_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_expr602 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_expr602_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_expr609 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_expr609_data Count:(NSUInteger)1] retain];
-    FOLLOW_MAP_in_expr621 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_MAP_in_expr621_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_expr623 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_expr623_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_expr626 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_expr626_data Count:(NSUInteger)1] retain];
-    FOLLOW_prop_in_expr641 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_prop_in_expr641_data Count:(NSUInteger)1] retain];
-    FOLLOW_includeExpr_in_expr646 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_includeExpr_in_expr646_data Count:(NSUInteger)1] retain];
-    FOLLOW_PROP_in_prop656 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_PROP_in_prop656_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_prop658 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop658_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_prop660 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_prop660_data Count:(NSUInteger)1] retain];
-    FOLLOW_PROP_IND_in_prop674 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_PROP_IND_in_prop674_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_prop676 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop676_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_prop678 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop678_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_in_mapTemplateRef698 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_in_mapTemplateRef698_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_mapTemplateRef700 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_mapTemplateRef700_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_mapTemplateRef710 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef710_data Count:(NSUInteger)1] retain];
-    FOLLOW_subtemplate_in_mapTemplateRef723 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_mapTemplateRef723_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_IND_in_mapTemplateRef735 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_IND_in_mapTemplateRef735_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_mapTemplateRef737 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_mapTemplateRef737_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_mapTemplateRef747 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef747_data Count:(NSUInteger)1] retain];
-    FOLLOW_EXEC_FUNC_in_includeExpr769 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_EXEC_FUNC_in_includeExpr769_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr771 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr771_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_includeExpr773 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_includeExpr773_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_in_includeExpr784 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_in_includeExpr784_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr786 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr786_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_includeExpr788 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr788_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_SUPER_in_includeExpr799 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_SUPER_in_includeExpr799_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr801 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr801_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_includeExpr803 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr803_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_REGION_in_includeExpr814 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_REGION_in_includeExpr814_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr816 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr816_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr828 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr828_data Count:(NSUInteger)1] retain];
-    FOLLOW_primary_in_includeExpr836 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_primary_in_includeExpr836_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_primary847 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_primary847_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_primary857 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_primary857_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_TRUE_in_primary867 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_primary867_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_FALSE_in_primary876 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_primary876_data Count:(NSUInteger)1] retain];
-    FOLLOW_subtemplate_in_primary885 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_primary885_data Count:(NSUInteger)1] retain];
-    FOLLOW_list_in_primary912 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_list_in_primary912_data Count:(NSUInteger)1] retain];
-    FOLLOW_INCLUDE_IND_in_primary919 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_IND_in_primary919_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_primary924 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary924_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_primary938 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_primary938_data Count:(NSUInteger)1] retain];
-    FOLLOW_TO_STR_in_primary958 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_TO_STR_in_primary958_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_primary960 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary960_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_arg973 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_arg973_data Count:(NSUInteger)1] retain];
-    FOLLOW_arg_in_args989 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_args989_data Count:(NSUInteger)1] retain];
-    FOLLOW_EQUALS_in_args1008 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_args1008_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_args1010 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_args1010_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_args1012 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_args1012_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELLIPSIS_in_args1029 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args1029_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELLIPSIS_in_args1044 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args1044_data Count:(NSUInteger)1] retain];
-    FOLLOW_LIST_in_list1064 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_LIST_in_list1064_data Count:(NSUInteger)1] retain];
-    FOLLOW_listElement_in_list1067 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list1067_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_listElement1083 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_listElement1083_data Count:(NSUInteger)1] retain];
-    FOLLOW_TNULL_in_listElement1087 = [[ANTLRBitSet newANTLRBitSetWithBits:(const unsigned long long *)FOLLOW_TNULL_in_listElement1087_data Count:(NSUInteger)1] retain];
+    FOLLOW_template_in_templateAndEOF74 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_templateAndEOF74_data Count:(NSUInteger)1] retain];
+    FOLLOW_EOF_in_templateAndEOF77 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EOF_in_templateAndEOF77_data Count:(NSUInteger)1] retain];
+    FOLLOW_chunk_in_template101 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_template101_data Count:(NSUInteger)1] retain];
+    FOLLOW_element_in_chunk116 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_element_in_chunk116_data Count:(NSUInteger)1] retain];
+    FOLLOW_INDENTED_EXPR_in_element129 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENTED_EXPR_in_element129_data Count:(NSUInteger)1] retain];
+    FOLLOW_INDENT_in_element131 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element131_data Count:(NSUInteger)1] retain];
+    FOLLOW_compoundElement_in_element133 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element133_data Count:(NSUInteger)1] retain];
+    FOLLOW_compoundElement_in_element141 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element141_data Count:(NSUInteger)1] retain];
+    FOLLOW_INDENTED_EXPR_in_element151 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENTED_EXPR_in_element151_data Count:(NSUInteger)1] retain];
+    FOLLOW_INDENT_in_element153 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element153_data Count:(NSUInteger)1] retain];
+    FOLLOW_singleElement_in_element157 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element157_data Count:(NSUInteger)1] retain];
+    FOLLOW_singleElement_in_element165 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element165_data Count:(NSUInteger)1] retain];
+    FOLLOW_exprElement_in_singleElement179 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprElement_in_singleElement179_data Count:(NSUInteger)1] retain];
+    FOLLOW_TEXT_in_singleElement184 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_TEXT_in_singleElement184_data Count:(NSUInteger)1] retain];
+    FOLLOW_NEWLINE_in_singleElement193 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_singleElement193_data Count:(NSUInteger)1] retain];
+    FOLLOW_ifstat_in_compoundElement207 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ifstat_in_compoundElement207_data Count:(NSUInteger)1] retain];
+    FOLLOW_region_in_compoundElement213 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_region_in_compoundElement213_data Count:(NSUInteger)1] retain];
+    FOLLOW_EXPR_in_exprElement232 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EXPR_in_exprElement232_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_exprElement234 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_exprElement234_data Count:(NSUInteger)1] retain];
+    FOLLOW_exprOptions_in_exprElement237 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprOptions_in_exprElement237_data Count:(NSUInteger)1] retain];
+    FOLLOW_REGION_in_region275 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_REGION_in_region275_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_region277 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_region277_data Count:(NSUInteger)1] retain];
+    FOLLOW_template_in_region287 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_region287_data Count:(NSUInteger)1] retain];
+    FOLLOW_SUBTEMPLATE_in_subtemplate320 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SUBTEMPLATE_in_subtemplate320_data Count:(NSUInteger)1] retain];
+    FOLLOW_ARGS_in_subtemplate327 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ARGS_in_subtemplate327_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_subtemplate330 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate330_data Count:(NSUInteger)1] retain];
+    FOLLOW_template_in_subtemplate347 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_subtemplate347_data Count:(NSUInteger)1] retain];
+    FOLLOW_IF_in_ifstat384 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_IF_in_ifstat384_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_ifstat386 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat386_data Count:(NSUInteger)1] retain];
+    FOLLOW_chunk_in_ifstat396 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat396_data Count:(NSUInteger)1] retain];
+    FOLLOW_ELSEIF_in_ifstat406 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSEIF_in_ifstat406_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_ifstat420 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat420_data Count:(NSUInteger)1] retain];
+    FOLLOW_chunk_in_ifstat432 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat432_data Count:(NSUInteger)1] retain];
+    FOLLOW_ELSE_in_ifstat455 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSE_in_ifstat455_data Count:(NSUInteger)1] retain];
+    FOLLOW_chunk_in_ifstat469 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_chunk_in_ifstat469_data Count:(NSUInteger)1] retain];
+    FOLLOW_OR_in_conditional503 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_OR_in_conditional503_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_conditional505 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional505_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_conditional507 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional507_data Count:(NSUInteger)1] retain];
+    FOLLOW_AND_in_conditional517 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AND_in_conditional517_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_conditional519 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional519_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_conditional521 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional521_data Count:(NSUInteger)1] retain];
+    FOLLOW_BANG_in_conditional531 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BANG_in_conditional531_data Count:(NSUInteger)1] retain];
+    FOLLOW_conditional_in_conditional533 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_conditional533_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_conditional545 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_conditional545_data Count:(NSUInteger)1] retain];
+    FOLLOW_OPTIONS_in_exprOptions559 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_OPTIONS_in_exprOptions559_data Count:(NSUInteger)1] retain];
+    FOLLOW_option_in_exprOptions561 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions561_data Count:(NSUInteger)1] retain];
+    FOLLOW_EQUALS_in_option573 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_option573_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_option575 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_option575_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_option577 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_option577_data Count:(NSUInteger)1] retain];
+    FOLLOW_ZIP_in_expr596 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ZIP_in_expr596_data Count:(NSUInteger)1] retain];
+    FOLLOW_ELEMENTS_in_expr599 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELEMENTS_in_expr599_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_expr602 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_expr602_data Count:(NSUInteger)1] retain];
+    FOLLOW_mapTemplateRef_in_expr609 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_expr609_data Count:(NSUInteger)1] retain];
+    FOLLOW_MAP_in_expr621 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_MAP_in_expr621_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_expr623 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_expr623_data Count:(NSUInteger)1] retain];
+    FOLLOW_mapTemplateRef_in_expr626 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_expr626_data Count:(NSUInteger)1] retain];
+    FOLLOW_prop_in_expr641 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_prop_in_expr641_data Count:(NSUInteger)1] retain];
+    FOLLOW_includeExpr_in_expr646 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_includeExpr_in_expr646_data Count:(NSUInteger)1] retain];
+    FOLLOW_PROP_in_prop656 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_PROP_in_prop656_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_prop658 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop658_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_prop660 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_prop660_data Count:(NSUInteger)1] retain];
+    FOLLOW_PROP_IND_in_prop674 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_PROP_IND_in_prop674_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_prop676 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop676_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_prop678 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_prop678_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_in_mapTemplateRef698 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_in_mapTemplateRef698_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_mapTemplateRef700 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_mapTemplateRef700_data Count:(NSUInteger)1] retain];
+    FOLLOW_args_in_mapTemplateRef710 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef710_data Count:(NSUInteger)1] retain];
+    FOLLOW_subtemplate_in_mapTemplateRef723 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_mapTemplateRef723_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_IND_in_mapTemplateRef735 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_IND_in_mapTemplateRef735_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_mapTemplateRef737 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_mapTemplateRef737_data Count:(NSUInteger)1] retain];
+    FOLLOW_args_in_mapTemplateRef747 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef747_data Count:(NSUInteger)1] retain];
+    FOLLOW_EXEC_FUNC_in_includeExpr769 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EXEC_FUNC_in_includeExpr769_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_includeExpr771 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr771_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_includeExpr773 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_includeExpr773_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_in_includeExpr784 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_in_includeExpr784_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_includeExpr786 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr786_data Count:(NSUInteger)1] retain];
+    FOLLOW_args_in_includeExpr788 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr788_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_SUPER_in_includeExpr799 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_SUPER_in_includeExpr799_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_includeExpr801 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr801_data Count:(NSUInteger)1] retain];
+    FOLLOW_args_in_includeExpr803 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr803_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_REGION_in_includeExpr814 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_REGION_in_includeExpr814_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_includeExpr816 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr816_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_includeExpr828 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr828_data Count:(NSUInteger)1] retain];
+    FOLLOW_primary_in_includeExpr836 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_primary_in_includeExpr836_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_primary847 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_primary847_data Count:(NSUInteger)1] retain];
+    FOLLOW_STRING_in_primary857 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_primary857_data Count:(NSUInteger)1] retain];
+    FOLLOW_T_TRUE_in_primary867 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_primary867_data Count:(NSUInteger)1] retain];
+    FOLLOW_T_FALSE_in_primary876 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_primary876_data Count:(NSUInteger)1] retain];
+    FOLLOW_subtemplate_in_primary885 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_primary885_data Count:(NSUInteger)1] retain];
+    FOLLOW_list_in_primary912 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_list_in_primary912_data Count:(NSUInteger)1] retain];
+    FOLLOW_INCLUDE_IND_in_primary919 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INCLUDE_IND_in_primary919_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_primary924 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary924_data Count:(NSUInteger)1] retain];
+    FOLLOW_args_in_primary938 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_primary938_data Count:(NSUInteger)1] retain];
+    FOLLOW_TO_STR_in_primary958 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_TO_STR_in_primary958_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_primary960 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary960_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_arg973 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_arg973_data Count:(NSUInteger)1] retain];
+    FOLLOW_arg_in_args989 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_args989_data Count:(NSUInteger)1] retain];
+    FOLLOW_EQUALS_in_args1008 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_args1008_data Count:(NSUInteger)1] retain];
+    FOLLOW_ID_in_args1010 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_args1010_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_args1012 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_args1012_data Count:(NSUInteger)1] retain];
+    FOLLOW_ELLIPSIS_in_args1029 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args1029_data Count:(NSUInteger)1] retain];
+    FOLLOW_ELLIPSIS_in_args1044 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args1044_data Count:(NSUInteger)1] retain];
+    FOLLOW_LIST_in_list1064 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LIST_in_list1064_data Count:(NSUInteger)1] retain];
+    FOLLOW_listElement_in_list1067 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list1067_data Count:(NSUInteger)1] retain];
+    FOLLOW_expr_in_listElement1083 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_listElement1083_data Count:(NSUInteger)1] retain];
+    FOLLOW_TNULL_in_listElement1087 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_TNULL_in_listElement1087_data Count:(NSUInteger)1] retain];
 
-    [ANTLRBaseRecognizer setTokenNames:[[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
+    [BaseRecognizer setTokenNames:[[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
  @"ID", @"WS", @"STRING", @"ANONYMOUS_TEMPLATE", @"COMMENT", @"LINE_COMMENT", 
  @"BIGSTRING", @"BIGSTRING_NO_NL", @"T_FALSE", @"T_TRUE", @"IF", @"ELSE", 
  @"ELSEIF", @"ENDIF", @"SUPER", @"SEMI", @"BANG", @"ELLIPSIS", @"EQUALS", 
@@ -659,17 +659,17 @@ static ANTLRSymbolStack *template_stack;
  @"EXPR", @"INCLUDE", @"INCLUDE_IND", @"INCLUDE_REGION", @"INCLUDE_SUPER", 
  @"INCLUDE_SUPER_REGION", @"INDENTED_EXPR", @"LIST", @"MAP", @"OPTIONS", 
  @"PROP", @"PROP_IND", @"REGION", @"SUBTEMPLATE", @"TNULL", @"TO_STR", @"ZIP", nil] retain]];
-    [ANTLRBaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g"];
+    [BaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g"];
 }
 
-+ (CodeGenerator *)newCodeGenerator:(id<ANTLRTreeNodeStream>)aStream
++ (CodeGenerator *)newCodeGenerator:(id<TreeNodeStream>)aStream
 {
     return [[CodeGenerator alloc] initWithStream:aStream];
 }
 
 /* ObjC start actions.(actionScope).methods */
 
-+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)anInput
++ (id) newCodeGenerator:(id<TreeNodeStream>)anInput
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
@@ -682,30 +682,30 @@ static ANTLRSymbolStack *template_stack;
                                  token:aTemplateToken];
 }
 
-- (id) initWithStream:(id<ANTLRTreeNodeStream>)aStream
+- (id) initWithStream:(id<TreeNodeStream>)aStream
 {
-    self = [super initWithStream:aStream State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedStateWithRuleLen:22+1]];
+    self = [super initWithStream:aStream State:[RecognizerSharedState newRecognizerSharedStateWithRuleLen:22+1]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
         template_scope = [[template_Scope newtemplate_Scope] retain];
-        template_stack = [[ANTLRSymbolStack newANTLRSymbolStackWithLen:30] retain];
+        template_stack = [[SymbolStack newSymbolStackWithLen:30] retain];
         /* start of actions-actionScope-init */
         /* start of init */
     }
     return self;
 }
 
-- (id) init:(id<ANTLRTreeNodeStream>)anInput
+- (id) init:(id<TreeNodeStream>)anInput
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
                   token:(STToken *)aTemplateToken
 {
-    self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
+    self=[super initWithStream:anInput State:[RecognizerSharedState newRecognizerSharedState]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
         template_scope = [[template_Scope newtemplate_Scope] retain];
-        template_stack = [[ANTLRSymbolStack newANTLRSymbolStackWithLen:30] retain];
+        template_stack = [[SymbolStack newSymbolStackWithLen:30] retain];
         errMgr = anErrMgr;
         if ( errMgr ) [errMgr retain];
         outermostTemplateName = aName;
@@ -734,22 +734,22 @@ static ANTLRSymbolStack *template_stack;
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
 {
     [((template_Scope *)[template_stack peek]).cstate emit1:opAST opcode:anOpcode arg:arg];
 }
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
 {
     [((template_Scope *)[template_stack peek]).cstate emit1:opAST opcode:anOpcode s:arg];
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
 {
     [((template_Scope *)[template_stack peek]).cstate emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
 {
     [((template_Scope *)[template_stack peek]).cstate emit2:opAST opcode:anOpcode s:s arg2:anArg];
 }
@@ -759,7 +759,7 @@ static ANTLRSymbolStack *template_stack;
     [((template_Scope *)[template_stack peek]).cstate emit:anOpcode];
 }
 
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
+- (void) emit:(CommonTree *)opAST opcode:(short)anOpcode
 {
     [((template_Scope *)[template_stack peek]).cstate emit:opAST opcode:anOpcode];
 }
@@ -769,7 +769,7 @@ static ANTLRSymbolStack *template_stack;
     [((template_Scope *)[template_stack peek]).cstate insert:addr opcode:anOpcode s:s];
 }
 
-- (void) setOption:(ANTLRCommonTree *)anID
+- (void) setOption:(CommonTree *)anID
 {
     [((template_Scope *)[template_stack peek]).cstate setOption:anID];
 }
@@ -780,8 +780,8 @@ static ANTLRSymbolStack *template_stack;
 }
 
 - (NSInteger) address { return ((template_Scope *)[template_stack peek]).cstate.ip; }
-- (void) func:(ANTLRCommonTree *)aTree { [((template_Scope *)[template_stack peek]).cstate func:templateToken tree:aTree]; }
-- (void) refAttr:(ANTLRCommonTree *)aTree { [((template_Scope *)[template_stack peek]).cstate refAttr:templateToken tree:aTree]; }
+- (void) func:(CommonTree *)aTree { [((template_Scope *)[template_stack peek]).cstate func:templateToken tree:aTree]; }
+- (void) refAttr:(CommonTree *)aTree { [((template_Scope *)[template_stack peek]).cstate refAttr:templateToken tree:aTree]; }
 - (NSInteger) defineString:(NSString *)s { return [((template_Scope *)[template_stack peek]).cstate defineString:s]; }
 
 /* ObjC end actions.(actionScope).methods */
@@ -818,7 +818,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -892,7 +892,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -957,7 +957,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -981,8 +981,8 @@ static ANTLRSymbolStack *template_stack;
     /* ruleDeclarations */
 
     @try {
-        ANTLRCommonTree *INDENT1 = nil;
-        ANTLRCommonTree *INDENT2 = nil;
+        CommonTree *INDENT1 = nil;
+        CommonTree *INDENT2 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:245:2: ( ^( INDENTED_EXPR INDENT compoundElement[$INDENT] ) | compoundElement[nil] | ^( INDENTED_EXPR INDENT singleElement ) | singleElement ) //ruleblock
         NSInteger alt2=4;
@@ -1005,21 +1005,21 @@ static ANTLRSymbolStack *template_stack;
                             alt2=3;
                         }
                         else {
-                            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:2 state:5 stream:input];
+                            NoViableAltException *nvae = [NoViableAltException newException:2 state:5 stream:input];
                             nvae.c = LA2_5;
                             @throw nvae;
 
                         }
                     }
                     else {
-                        ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:2 state:4 stream:input];
+                        NoViableAltException *nvae = [NoViableAltException newException:2 state:4 stream:input];
                         nvae.c = LA2_4;
                         @throw nvae;
 
                     }
                 }
                 else {
-                    ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:2 state:1 stream:input];
+                    NoViableAltException *nvae = [NoViableAltException newException:2 state:1 stream:input];
                     nvae.c = LA2_1;
                     @throw nvae;
 
@@ -1041,7 +1041,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:2 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:2 state:0 stream:input];
             nvae.c = charLA2;
             @throw nvae;
 
@@ -1057,7 +1057,7 @@ static ANTLRSymbolStack *template_stack;
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    INDENT1=(ANTLRCommonTree *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_element131]; 
+                    INDENT1=(CommonTree *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_element131]; 
 
                     /* ruleRef */
                     [self pushFollow:FOLLOW_compoundElement_in_element133];
@@ -1095,7 +1095,7 @@ static ANTLRSymbolStack *template_stack;
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    INDENT2=(ANTLRCommonTree *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_element153]; 
+                    INDENT2=(CommonTree *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_element153]; 
 
 
                     [((template_Scope *)[template_stack peek]).cstate indent:INDENT2];
@@ -1137,7 +1137,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1161,7 +1161,7 @@ static ANTLRSymbolStack *template_stack;
     /* ruleDeclarations */
 
     @try {
-        ANTLRCommonTree *TEXT3 = nil;
+        CommonTree *TEXT3 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:252:2: ( exprElement | TEXT | NEWLINE ) //ruleblock
         NSInteger alt3=3;
@@ -1184,7 +1184,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:3 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:3 state:0 stream:input];
             nvae.c = charLA3;
             @throw nvae;
 
@@ -1209,7 +1209,7 @@ static ANTLRSymbolStack *template_stack;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:253:4: TEXT // alt
                 {
 
-                TEXT3=(ANTLRCommonTree *)[self match:input TokenType:TEXT Follow:FOLLOW_TEXT_in_singleElement184]; 
+                TEXT3=(CommonTree *)[self match:input TokenType:TEXT Follow:FOLLOW_TEXT_in_singleElement184]; 
 
 
 
@@ -1238,7 +1238,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1253,9 +1253,9 @@ static ANTLRSymbolStack *template_stack;
 
 /*
  * $ANTLR start compoundElement
- * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:262:1: compoundElement[ANTLRCommonTree *indent] : ( ifstat[indent] | region[indent] );
+ * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:262:1: compoundElement[CommonTree *indent] : ( ifstat[indent] | region[indent] );
  */
-- (void) compoundElement:(ANTLRCommonTree *)indent 
+- (void) compoundElement:(CommonTree *)indent 
 {
     /* ruleScopeSetUp */
 
@@ -1273,7 +1273,7 @@ static ANTLRSymbolStack *template_stack;
             alt4=2;
         }
         else {
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:4 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:4 state:0 stream:input];
             nvae.c = LA4_0;
             @throw nvae;
 
@@ -1312,7 +1312,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1337,14 +1337,14 @@ static ANTLRSymbolStack *template_stack;
 
      short op = Bytecode.INSTR_WRITE; 
     @try {
-        ANTLRCommonTree *EXPR4 = nil;
+        CommonTree *EXPR4 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:269:2: ( ^( EXPR expr ( exprOptions )? ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:269:4: ^( EXPR expr ( exprOptions )? ) // alt
         {
 
 
-        EXPR4=(ANTLRCommonTree *)[self match:input TokenType:EXPR Follow:FOLLOW_EXPR_in_exprElement232]; 
+        EXPR4=(CommonTree *)[self match:input TokenType:EXPR Follow:FOLLOW_EXPR_in_exprElement232]; 
 
             [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -1398,7 +1398,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1413,9 +1413,9 @@ static ANTLRSymbolStack *template_stack;
 
 /*
  * $ANTLR start region
- * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:273:1: region[ANTLRCommonTree *indent] returns [NSString *name] : ^( REGION ID template[$name,nil] ) ;
+ * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:273:1: region[CommonTree *indent] returns [NSString *name] : ^( REGION ID template[$name,nil] ) ;
  */
-- (CodeGenerator_region_return *) region:(ANTLRCommonTree *)indent 
+- (CodeGenerator_region_return *) region:(CommonTree *)indent 
 {
     /* ruleScopeSetUp */
 
@@ -1428,7 +1428,7 @@ static ANTLRSymbolStack *template_stack;
         if ( indent != nil ) [((template_Scope *)[template_stack peek]).cstate indent:indent];
 
     @try {
-        ANTLRCommonTree *ID5 = nil;
+        CommonTree *ID5 = nil;
          CompiledST * template6 = nil ;
          
 
@@ -1441,7 +1441,7 @@ static ANTLRSymbolStack *template_stack;
 
             [self match:input TokenType:DOWN Follow:nil]; 
 
-            ID5=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_region277]; 
+            ID5=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_region277]; 
 
 
              retval.name = [STGroup getMangledRegionName:outermostTemplateName name:(ID5!=nil?ID5.text:nil)]; /* added to returnSetAttributeRef */
@@ -1467,10 +1467,10 @@ static ANTLRSymbolStack *template_stack;
                         sub.templateDefStartToken = (STToken *)ID5.token;
                         //sub.dump();
                         [outermostImpl addImplicitlyDefinedTemplate:sub];
-                        [self emit2:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_NEW s:
+                        [self emit2:((CommonTree *)retval.start) opcode:Bytecode.INSTR_NEW s:
             retval.name  /* added to returnAttributeRef */
              arg2:0];
-                        [self emit:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_WRITE];
+                        [self emit:((CommonTree *)retval.start) opcode:Bytecode.INSTR_WRITE];
                         
 
 
@@ -1487,7 +1487,7 @@ static ANTLRSymbolStack *template_stack;
 
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1519,8 +1519,8 @@ static ANTLRSymbolStack *template_stack;
         AMutableArray *args = [AMutableArray arrayWithCapacity:5];
 
     @try {
-        ANTLRCommonTree *ID7 = nil;
-        ANTLRCommonTree *SUBTEMPLATE9 = nil;
+        CommonTree *ID7 = nil;
+        CommonTree *SUBTEMPLATE9 = nil;
          CompiledST * template8 = nil ;
          
 
@@ -1529,7 +1529,7 @@ static ANTLRSymbolStack *template_stack;
         {
 
 
-        SUBTEMPLATE9=(ANTLRCommonTree *)[self match:input TokenType:SUBTEMPLATE Follow:FOLLOW_SUBTEMPLATE_in_subtemplate320]; 
+        SUBTEMPLATE9=(CommonTree *)[self match:input TokenType:SUBTEMPLATE Follow:FOLLOW_SUBTEMPLATE_in_subtemplate320]; 
 
         if ( [input LA:1] == DOWN ) {
             [self match:input TokenType:DOWN Follow:nil]; 
@@ -1568,7 +1568,7 @@ static ANTLRSymbolStack *template_stack;
                                         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:302:13: ID // alt
                                         {
 
-                                        ID7=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate330]; 
+                                        ID7=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate330]; 
 
 
                                         [args addObject:[FormalArgument newFormalArgument:(ID7!=nil?ID7.text:nil)]];
@@ -1580,8 +1580,8 @@ static ANTLRSymbolStack *template_stack;
                                     default :
                                         if ( cnt6 >= 1 )
                                             goto loop6;
-                                        ANTLREarlyExitException *eee =
-                                            [ANTLREarlyExitException newException:input decisionNumber:6];
+                                        EarlyExitException *eee =
+                                            [EarlyExitException newException:input decisionNumber:6];
                                         @throw eee;
                                 }
                                 cnt6++;
@@ -1638,7 +1638,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1653,9 +1653,9 @@ static ANTLRSymbolStack *template_stack;
 
 /*
  * $ANTLR start ifstat
- * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:318:1: ifstat[ANTLRCommonTree *indent] : ^(i= 'if' conditional chunk ( ^(eif= 'elseif' ec= conditional chunk ) )* ( ^(el= 'else' chunk ) )? ) ;
+ * /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:318:1: ifstat[CommonTree *indent] : ^(i= 'if' conditional chunk ( ^(eif= 'elseif' ec= conditional chunk ) )* ( ^(el= 'else' chunk ) )? ) ;
  */
-- (void) ifstat:(ANTLRCommonTree *)indent 
+- (void) ifstat:(CommonTree *)indent 
 {
     /* ruleScopeSetUp */
 
@@ -1669,13 +1669,13 @@ static ANTLRSymbolStack *template_stack;
         /** Branch instruction operands that are forward refs to end of IF.
          *  We need to update them once we see the endif.
          */
-        ANTLRIntArray *endRefs = [[ANTLRIntArray newArrayWithLen:16] retain];
+        IntArray *endRefs = [[IntArray newArrayWithLen:16] retain];
         if ( indent!=nil ) [((template_Scope *)[template_stack peek]).cstate indent:indent];
 
     @try {
-        ANTLRCommonTree *i = nil;
-        ANTLRCommonTree *eif = nil;
-        ANTLRCommonTree *el = nil;
+        CommonTree *i = nil;
+        CommonTree *eif = nil;
+        CommonTree *el = nil;
          CodeGenerator_conditional_return * ec = nil ;
          
 
@@ -1684,7 +1684,7 @@ static ANTLRSymbolStack *template_stack;
         {
 
 
-        i=(ANTLRCommonTree *)[self match:input TokenType:IF Follow:FOLLOW_IF_in_ifstat384]; 
+        i=(CommonTree *)[self match:input TokenType:IF Follow:FOLLOW_IF_in_ifstat384]; 
 
             [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -1726,7 +1726,7 @@ static ANTLRSymbolStack *template_stack;
                         {
 
 
-                        eif=(ANTLRCommonTree *)[self match:input TokenType:ELSEIF Follow:FOLLOW_ELSEIF_in_ifstat406]; 
+                        eif=(CommonTree *)[self match:input TokenType:ELSEIF Follow:FOLLOW_ELSEIF_in_ifstat406]; 
 
 
 
@@ -1753,7 +1753,7 @@ static ANTLRSymbolStack *template_stack;
 
                                             prevBranchOperand = [self address]+1;
                                             // write placeholder as branch target
-                                            [self emit1:(ec!=nil?((ANTLRCommonTree *)ec.start):nil) opcode:Bytecode.INSTR_BRF arg:-1];
+                                            [self emit1:(ec!=nil?((CommonTree *)ec.start):nil) opcode:Bytecode.INSTR_BRF arg:-1];
                                             
 
 
@@ -1791,7 +1791,7 @@ static ANTLRSymbolStack *template_stack;
                     {
 
 
-                    el=(ANTLRCommonTree *)[self match:input TokenType:ELSE Follow:FOLLOW_ELSE_in_ifstat455]; 
+                    el=(CommonTree *)[self match:input TokenType:ELSE Follow:FOLLOW_ELSE_in_ifstat455]; 
 
 
 
@@ -1849,7 +1849,7 @@ static ANTLRSymbolStack *template_stack;
 
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -1918,7 +1918,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:10 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:10 state:0 stream:input];
             nvae.c = charLA10;
             @throw nvae;
 
@@ -2038,7 +2038,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2117,7 +2117,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2141,7 +2141,7 @@ static ANTLRSymbolStack *template_stack;
     /* ruleDeclarations */
 
     @try {
-        ANTLRCommonTree *ID10 = nil;
+        CommonTree *ID10 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:387:8: ( ^( '=' ID expr ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:387:10: ^( '=' ID expr ) // alt
@@ -2152,7 +2152,7 @@ static ANTLRSymbolStack *template_stack;
 
             [self match:input TokenType:DOWN Follow:nil]; 
 
-            ID10=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_option575]; 
+            ID10=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_option575]; 
 
             /* ruleRef */
             [self pushFollow:FOLLOW_expr_in_option577];
@@ -2174,7 +2174,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2199,8 +2199,8 @@ static ANTLRSymbolStack *template_stack;
 
     NSInteger nt = 0, ne = 0;
     @try {
-        ANTLRCommonTree *ZIP11 = nil;
-        ANTLRCommonTree *MAP12 = nil;
+        CommonTree *ZIP11 = nil;
+        CommonTree *MAP12 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:391:2: ( ^( ZIP ^( ELEMENTS ( expr )+ ) mapTemplateRef[ne] ) | ^( MAP expr ( mapTemplateRef[1] )+ ) | prop | includeExpr ) //ruleblock
         NSInteger alt14=4;
@@ -2241,7 +2241,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:14 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:14 state:0 stream:input];
             nvae.c = charLA14;
             @throw nvae;
 
@@ -2253,7 +2253,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                ZIP11=(ANTLRCommonTree *)[self match:input TokenType:ZIP Follow:FOLLOW_ZIP_in_expr596]; 
+                ZIP11=(CommonTree *)[self match:input TokenType:ZIP Follow:FOLLOW_ZIP_in_expr596]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -2295,8 +2295,8 @@ static ANTLRSymbolStack *template_stack;
                                 default :
                                     if ( cnt12 >= 1 )
                                         goto loop12;
-                                    ANTLREarlyExitException *eee =
-                                        [ANTLREarlyExitException newException:input decisionNumber:12];
+                                    EarlyExitException *eee =
+                                        [EarlyExitException newException:input decisionNumber:12];
                                     @throw eee;
                             }
                             cnt12++;
@@ -2329,7 +2329,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                MAP12=(ANTLRCommonTree *)[self match:input TokenType:MAP Follow:FOLLOW_MAP_in_expr621]; 
+                MAP12=(CommonTree *)[self match:input TokenType:MAP Follow:FOLLOW_MAP_in_expr621]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -2374,8 +2374,8 @@ static ANTLRSymbolStack *template_stack;
                             default :
                                 if ( cnt13 >= 1 )
                                     goto loop13;
-                                ANTLREarlyExitException *eee =
-                                    [ANTLREarlyExitException newException:input decisionNumber:13];
+                                EarlyExitException *eee =
+                                    [EarlyExitException newException:input decisionNumber:13];
                                 @throw eee;
                         }
                         cnt13++;
@@ -2430,7 +2430,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2454,9 +2454,9 @@ static ANTLRSymbolStack *template_stack;
     /* ruleDeclarations */
 
     @try {
-        ANTLRCommonTree *PROP13 = nil;
-        ANTLRCommonTree *ID14 = nil;
-        ANTLRCommonTree *PROP_IND15 = nil;
+        CommonTree *PROP13 = nil;
+        CommonTree *ID14 = nil;
+        CommonTree *PROP_IND15 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:404:5: ( ^( PROP expr ID ) | ^( PROP_IND expr expr ) ) //ruleblock
         NSInteger alt15=2;
@@ -2469,7 +2469,7 @@ static ANTLRSymbolStack *template_stack;
             alt15=2;
         }
         else {
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:15 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:15 state:0 stream:input];
             nvae.c = LA15_0;
             @throw nvae;
 
@@ -2480,7 +2480,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                PROP13=(ANTLRCommonTree *)[self match:input TokenType:PROP Follow:FOLLOW_PROP_in_prop656]; 
+                PROP13=(CommonTree *)[self match:input TokenType:PROP Follow:FOLLOW_PROP_in_prop656]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -2492,7 +2492,7 @@ static ANTLRSymbolStack *template_stack;
 
 
 
-                    ID14=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_prop660]; 
+                    ID14=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_prop660]; 
 
                     [self match:input TokenType:UP Follow:nil]; 
 
@@ -2508,7 +2508,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                PROP_IND15=(ANTLRCommonTree *)[self match:input TokenType:PROP_IND Follow:FOLLOW_PROP_IND_in_prop674]; 
+                PROP_IND15=(CommonTree *)[self match:input TokenType:PROP_IND Follow:FOLLOW_PROP_IND_in_prop674]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -2542,7 +2542,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2569,9 +2569,9 @@ static ANTLRSymbolStack *template_stack;
 
 
     @try {
-        ANTLRCommonTree *INCLUDE16 = nil;
-        ANTLRCommonTree *ID18 = nil;
-        ANTLRCommonTree *INCLUDE_IND20 = nil;
+        CommonTree *INCLUDE16 = nil;
+        CommonTree *ID18 = nil;
+        CommonTree *INCLUDE_IND20 = nil;
          CodeGenerator_args_return * args17 = nil ;
          
          CodeGenerator_subtemplate_return * subtemplate19 = nil ;
@@ -2600,7 +2600,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:16 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:16 state:0 stream:input];
             nvae.c = charLA16;
             @throw nvae;
 
@@ -2612,11 +2612,11 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE16=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE Follow:FOLLOW_INCLUDE_in_mapTemplateRef698]; 
+                INCLUDE16=(CommonTree *)[self match:input TokenType:INCLUDE Follow:FOLLOW_INCLUDE_in_mapTemplateRef698]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID18=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_mapTemplateRef700]; 
+                    ID18=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_mapTemplateRef700]; 
 
 
                     for (NSInteger i=1; i<=num_exprs; i++) [self emit:INCLUDE16 opcode:Bytecode.INSTR_NULL];
@@ -2636,7 +2636,7 @@ static ANTLRSymbolStack *template_stack;
 
 
                         if ( (args17!=nil?args17.passThru:NO )
-                 ) [self emit1:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID18!=nil?ID18.text:nil)];
+                 ) [self emit1:((CommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID18!=nil?ID18.text:nil)];
                         if ( 
                 (args17!=nil?args17.namedArgs:NO )
                  )
@@ -2667,12 +2667,12 @@ static ANTLRSymbolStack *template_stack;
                  != num_exprs ) {
                             [errMgr compileTimeError:ANON_ARGUMENT_MISMATCH
                                        templateToken:templateToken
-                                                   t:(STToken *)(subtemplate19!=nil?((ANTLRCommonTree *)subtemplate19.start):nil).token
+                                                   t:(STToken *)(subtemplate19!=nil?((CommonTree *)subtemplate19.start):nil).token
                                                  arg:(id)(subtemplate19!=nil?subtemplate19.nargs:0 )
                                                 arg2:(id)num_exprs];
                         }
-                        for (NSInteger i=1; i<=num_exprs; i++) [self emit:(subtemplate19!=nil?((ANTLRCommonTree *)subtemplate19.start):nil) opcode:Bytecode.INSTR_NULL];
-                        [self emit2:(subtemplate19!=nil?((ANTLRCommonTree *)subtemplate19.start):nil)
+                        for (NSInteger i=1; i<=num_exprs; i++) [self emit:(subtemplate19!=nil?((CommonTree *)subtemplate19.start):nil) opcode:Bytecode.INSTR_NULL];
+                        [self emit2:(subtemplate19!=nil?((CommonTree *)subtemplate19.start):nil)
                              opcode:Bytecode.INSTR_NEW
                                   s:
                 (subtemplate19!=nil?subtemplate19.name:nil )
@@ -2688,7 +2688,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE_IND20=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE_IND Follow:FOLLOW_INCLUDE_IND_in_mapTemplateRef735]; 
+                INCLUDE_IND20=(CommonTree *)[self match:input TokenType:INCLUDE_IND Follow:FOLLOW_INCLUDE_IND_in_mapTemplateRef735]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -2716,7 +2716,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2743,15 +2743,15 @@ static ANTLRSymbolStack *template_stack;
 
 
     @try {
-        ANTLRCommonTree *ID22 = nil;
-        ANTLRCommonTree *ID24 = nil;
-        ANTLRCommonTree *INCLUDE25 = nil;
-        ANTLRCommonTree *ID27 = nil;
-        ANTLRCommonTree *INCLUDE_SUPER28 = nil;
-        ANTLRCommonTree *ID29 = nil;
-        ANTLRCommonTree *INCLUDE_REGION30 = nil;
-        ANTLRCommonTree *ID31 = nil;
-        ANTLRCommonTree *INCLUDE_SUPER_REGION32 = nil;
+        CommonTree *ID22 = nil;
+        CommonTree *ID24 = nil;
+        CommonTree *INCLUDE25 = nil;
+        CommonTree *ID27 = nil;
+        CommonTree *INCLUDE_SUPER28 = nil;
+        CommonTree *ID29 = nil;
+        CommonTree *INCLUDE_REGION30 = nil;
+        CommonTree *ID31 = nil;
+        CommonTree *INCLUDE_SUPER_REGION32 = nil;
          CodeGenerator_args_return * args23 = nil ;
          
          CodeGenerator_args_return * args26 = nil ;
@@ -2800,7 +2800,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:18 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:18 state:0 stream:input];
             nvae.c = charLA18;
             @throw nvae;
 
@@ -2816,7 +2816,7 @@ static ANTLRSymbolStack *template_stack;
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID22=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr771]; 
+                    ID22=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr771]; 
 
                     // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:449:19: ( expr )? // block
                     NSInteger alt17=2;
@@ -2858,11 +2858,11 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE25=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE Follow:FOLLOW_INCLUDE_in_includeExpr784]; 
+                INCLUDE25=(CommonTree *)[self match:input TokenType:INCLUDE Follow:FOLLOW_INCLUDE_in_includeExpr784]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID24=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr786]; 
+                    ID24=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr786]; 
 
                     /* ruleRef */
                     [self pushFollow:FOLLOW_args_in_includeExpr788];
@@ -2874,7 +2874,7 @@ static ANTLRSymbolStack *template_stack;
 
                     [self match:input TokenType:UP Follow:nil]; 
                     if ( (args23!=nil?args23.passThru:NO ) )
-                        [self emit1:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID24!=nil?ID24.text:nil)];
+                        [self emit1:((CommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID24!=nil?ID24.text:nil)];
                     if ( (args23!=nil?args23.namedArgs:NO ) )
                         [self emit1:INCLUDE25 opcode:Bytecode.INSTR_NEW_BOX_ARGS s:(ID24!=nil?ID24.text:nil)];
                     else
@@ -2886,11 +2886,11 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE_SUPER28=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE_SUPER Follow:FOLLOW_INCLUDE_SUPER_in_includeExpr799]; 
+                INCLUDE_SUPER28=(CommonTree *)[self match:input TokenType:INCLUDE_SUPER Follow:FOLLOW_INCLUDE_SUPER_in_includeExpr799]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID27=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr801]; 
+                    ID27=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr801]; 
 
                     /* ruleRef */
                     [self pushFollow:FOLLOW_args_in_includeExpr803];
@@ -2902,7 +2902,7 @@ static ANTLRSymbolStack *template_stack;
 
                     [self match:input TokenType:UP Follow:nil]; 
                     if ( (args26!=nil?args26.passThru:NO ) )
-                        [self emit1:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID27!=nil?ID27.text:nil)];
+                        [self emit1:((CommonTree *)retval.start) opcode:Bytecode.INSTR_PASSTHRU s:(ID27!=nil?ID27.text:nil)];
                     if ( (args26!=nil?args26.namedArgs:NO ) )
                         [self emit1:INCLUDE_SUPER28 opcode:Bytecode.INSTR_SUPER_NEW_BOX_ARGS s:(ID27!=nil?ID27.text:nil)];
                     else
@@ -2914,11 +2914,11 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE_REGION30=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE_REGION Follow:FOLLOW_INCLUDE_REGION_in_includeExpr814]; 
+                INCLUDE_REGION30=(CommonTree *)[self match:input TokenType:INCLUDE_REGION Follow:FOLLOW_INCLUDE_REGION_in_includeExpr814]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID29=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr816]; 
+                    ID29=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr816]; 
 
                     [self match:input TokenType:UP Follow:nil]; 
                     CompiledST *impl = [Compiler defineBlankRegion:outermostImpl token:(STToken *)ID29.token];
@@ -2931,11 +2931,11 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE_SUPER_REGION32=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE_SUPER_REGION Follow:FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826]; 
+                INCLUDE_SUPER_REGION32=(CommonTree *)[self match:input TokenType:INCLUDE_SUPER_REGION Follow:FOLLOW_INCLUDE_SUPER_REGION_in_includeExpr826]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
-                    ID31=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr828]; 
+                    ID31=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr828]; 
 
                     [self match:input TokenType:UP Follow:nil]; 
 
@@ -2969,7 +2969,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -2996,12 +2996,12 @@ static ANTLRSymbolStack *template_stack;
 
 
     @try {
-        ANTLRCommonTree *ID33 = nil;
-        ANTLRCommonTree *STRING34 = nil;
-        ANTLRCommonTree *T_TRUE35 = nil;
-        ANTLRCommonTree *T_FALSE36 = nil;
-        ANTLRCommonTree *INCLUDE_IND38 = nil;
-        ANTLRCommonTree *TO_STR40 = nil;
+        CommonTree *ID33 = nil;
+        CommonTree *STRING34 = nil;
+        CommonTree *T_TRUE35 = nil;
+        CommonTree *T_FALSE36 = nil;
+        CommonTree *INCLUDE_IND38 = nil;
+        CommonTree *TO_STR40 = nil;
          CodeGenerator_subtemplate_return * subtemplate37 = nil ;
          
          CodeGenerator_args_return * args39 = nil ;
@@ -3053,7 +3053,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:19 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:19 state:0 stream:input];
             nvae.c = charLA19;
             @throw nvae;
 
@@ -3064,7 +3064,7 @@ static ANTLRSymbolStack *template_stack;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:477:4: ID // alt
                 {
 
-                ID33=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_primary847]; 
+                ID33=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_primary847]; 
 
 
                 [self refAttr:ID33];
@@ -3076,7 +3076,7 @@ static ANTLRSymbolStack *template_stack;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:478:4: STRING // alt
                 {
 
-                STRING34=(ANTLRCommonTree *)[self match:input TokenType:STRING Follow:FOLLOW_STRING_in_primary857]; 
+                STRING34=(CommonTree *)[self match:input TokenType:STRING Follow:FOLLOW_STRING_in_primary857]; 
 
 
                 [self emit1:STRING34 opcode:Bytecode.INSTR_LOAD_STR s:[Misc strip:(STRING34!=nil?STRING34.text:nil) n:1]];
@@ -3088,7 +3088,7 @@ static ANTLRSymbolStack *template_stack;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:479:4: T_TRUE // alt
                 {
 
-                T_TRUE35=(ANTLRCommonTree *)[self match:input TokenType:T_TRUE Follow:FOLLOW_T_TRUE_in_primary867]; 
+                T_TRUE35=(CommonTree *)[self match:input TokenType:T_TRUE Follow:FOLLOW_T_TRUE_in_primary867]; 
 
 
                 [self emit:T_TRUE35 opcode:Bytecode.INSTR_TRUE];
@@ -3100,7 +3100,7 @@ static ANTLRSymbolStack *template_stack;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:480:4: T_FALSE // alt
                 {
 
-                T_FALSE36=(ANTLRCommonTree *)[self match:input TokenType:T_FALSE Follow:FOLLOW_T_FALSE_in_primary876]; 
+                T_FALSE36=(CommonTree *)[self match:input TokenType:T_FALSE Follow:FOLLOW_T_FALSE_in_primary876]; 
 
 
                 [self emit:T_FALSE36 opcode:Bytecode.INSTR_FALSE];
@@ -3121,7 +3121,7 @@ static ANTLRSymbolStack *template_stack;
 
 
 
-                [self emit2:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_NEW s:
+                [self emit2:((CommonTree *)retval.start) opcode:Bytecode.INSTR_NEW s:
                 (subtemplate37!=nil?subtemplate37.name:nil )
                  arg2:0];
 
@@ -3147,7 +3147,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                INCLUDE_IND38=(ANTLRCommonTree *)[self match:input TokenType:INCLUDE_IND Follow:FOLLOW_INCLUDE_IND_in_primary919]; 
+                INCLUDE_IND38=(CommonTree *)[self match:input TokenType:INCLUDE_IND Follow:FOLLOW_INCLUDE_IND_in_primary919]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -3187,7 +3187,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                TO_STR40=(ANTLRCommonTree *)[self match:input TokenType:TO_STR Follow:FOLLOW_TO_STR_in_primary958]; 
+                TO_STR40=(CommonTree *)[self match:input TokenType:TO_STR Follow:FOLLOW_TO_STR_in_primary958]; 
 
                     [self match:input TokenType:DOWN Follow:nil]; 
 
@@ -3213,7 +3213,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -3254,7 +3254,7 @@ static ANTLRSymbolStack *template_stack;
         /* token+rule list labels */
 
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -3281,8 +3281,8 @@ static ANTLRSymbolStack *template_stack;
 
 
     @try {
-        ANTLRCommonTree *eq = nil;
-        ANTLRCommonTree *ID41 = nil;
+        CommonTree *eq = nil;
+        CommonTree *ID41 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:494:2: ( ( arg )+ | ( ^(eq= '=' ID expr ) )+ ( '...' )? | '...' |) //ruleblock
         NSInteger alt23=4;
@@ -3326,7 +3326,7 @@ static ANTLRSymbolStack *template_stack;
                 break;
 
         default: ;
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:23 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:23 state:0 stream:input];
             nvae.c = charLA23;
             @throw nvae;
 
@@ -3363,8 +3363,8 @@ static ANTLRSymbolStack *template_stack;
                         default :
                             if ( cnt20 >= 1 )
                                 goto loop20;
-                            ANTLREarlyExitException *eee =
-                                [ANTLREarlyExitException newException:input decisionNumber:20];
+                            EarlyExitException *eee =
+                                [EarlyExitException newException:input decisionNumber:20];
                             @throw eee;
                     }
                     cnt20++;
@@ -3377,7 +3377,7 @@ static ANTLRSymbolStack *template_stack;
                 {
 
 
-                [self emit:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_ARGS]; 
+                [self emit:((CommonTree *)retval.start) opcode:Bytecode.INSTR_ARGS]; 
                  retval.namedArgs =YES; /* added to returnSetAttributeRef */
 
 
@@ -3394,9 +3394,9 @@ static ANTLRSymbolStack *template_stack;
                         case 1 : ;
                             // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:496:5: ^(eq= '=' ID expr ) // alt
                             {
-                                eq=(ANTLRCommonTree *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_args1008]; 
+                                eq=(CommonTree *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_args1008]; 
                                 [self match:input TokenType:DOWN Follow:nil]; 
-                                ID41=(ANTLRCommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_args1010]; 
+                                ID41=(CommonTree *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_args1010]; 
                                 /* ruleRef */
                                 [self pushFollow:FOLLOW_expr_in_args1012];
                                 [self expr];
@@ -3410,8 +3410,8 @@ static ANTLRSymbolStack *template_stack;
                         default :
                             if ( cnt21 >= 1 )
                                 goto loop21;
-                            ANTLREarlyExitException *eee =
-                                [ANTLREarlyExitException newException:input decisionNumber:21];
+                            EarlyExitException *eee =
+                                [EarlyExitException newException:input decisionNumber:21];
                             @throw eee;
                     }
                     cnt21++;
@@ -3442,7 +3442,7 @@ static ANTLRSymbolStack *template_stack;
                 {
                 [self match:input TokenType:ELLIPSIS Follow:FOLLOW_ELLIPSIS_in_args1044]; 
                 retval.passThru =YES; /* added to returnSetAttributeRef */
-                [self emit:((ANTLRCommonTree *)retval.start) opcode:Bytecode.INSTR_ARGS]; 
+                [self emit:((CommonTree *)retval.start) opcode:Bytecode.INSTR_ARGS]; 
                 retval.namedArgs =YES; /* added to returnSetAttributeRef */
                 }
                 break;
@@ -3454,7 +3454,7 @@ static ANTLRSymbolStack *template_stack;
         }
         /* token+rule list labels */
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -3510,7 +3510,7 @@ static ANTLRSymbolStack *template_stack;
                         [self pushFollow:FOLLOW_listElement_in_list1067];
                         listElement42 = [self listElement];
                         [self popFollow];
-                        [self emit:(listElement42!=nil?((ANTLRCommonTree *)listElement42.start):nil) opcode:Bytecode.INSTR_ADD];
+                        [self emit:(listElement42!=nil?((CommonTree *)listElement42.start):nil) opcode:Bytecode.INSTR_ADD];
                         }
                         break;
                     default :
@@ -3523,7 +3523,7 @@ static ANTLRSymbolStack *template_stack;
         }
         /* token+rule list labels */
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }
@@ -3548,7 +3548,7 @@ static ANTLRSymbolStack *template_stack;
 
 
     @try {
-        ANTLRCommonTree *TNULL43 = nil;
+        CommonTree *TNULL43 = nil;
 
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:508:13: ( expr | TNULL ) //ruleblock
         NSInteger alt25=2;
@@ -3561,7 +3561,7 @@ static ANTLRSymbolStack *template_stack;
             alt25=2;
         }
         else {
-            ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:25 state:0 stream:input];
+            NoViableAltException *nvae = [NoViableAltException newException:25 state:0 stream:input];
             nvae.c = LA25_0;
             @throw nvae;
 
@@ -3579,14 +3579,14 @@ static ANTLRSymbolStack *template_stack;
             case 2 : ;
                 // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/CodeGenerator.g:508:22: TNULL // alt
                 {
-                TNULL43=(ANTLRCommonTree *)[self match:input TokenType:TNULL Follow:FOLLOW_TNULL_in_listElement1087]; 
+                TNULL43=(CommonTree *)[self match:input TokenType:TNULL Follow:FOLLOW_TNULL_in_listElement1087]; 
                 [self emit:TNULL43 opcode:Bytecode.INSTR_NULL];
                 }
                 break;
         }
         /* token+rule list labels */
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportError:re];
         [self recover:input Exception:re];
     }

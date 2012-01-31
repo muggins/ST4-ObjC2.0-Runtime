@@ -147,7 +147,7 @@
 
 + (id) newException:(NSString *)aReason
 {
-    return [[IllegalArgumentException alloc] initWithName:@"File Not Found Exception" reason:aReason userInfo:nil];
+    return [[FileNotFoundException alloc] initWithName:@"File Not Found Exception" reason:aReason userInfo:nil];
 }
 
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason
@@ -165,32 +165,11 @@
 
 @end
 
-@implementation IllegalArgumentException
-
-+ (id) newException:(NSString *)aReason
-{
-    return [[IllegalArgumentException alloc] initWithName:@"Illegal Argument Exception" reason:aReason userInfo:nil];
-}
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason
-{
-    self=[super initWithName:aName reason:aReason userInfo:nil];
-    return self;
-}
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason userInfo:(NSDictionary *)userInfo
-{
-    self=[super initWithName:aName reason:aReason userInfo:userInfo];
-    return self;
-}
-
-@end
-
 @implementation IllegalAccessException
 
 + (id) newException:(NSString *)aReason
 {
-    return [[IllegalArgumentException alloc] initWithName:@"Illegal Access Exception" reason:aReason userInfo:nil];
+    return [[IllegalAccessException alloc] initWithName:@"Illegal Access Exception" reason:aReason userInfo:nil];
 }
 
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason
@@ -211,7 +190,7 @@
 
 + (id) newException:(NSString *)aReason
 {
-    return [[IllegalArgumentException alloc] initWithName:@"Malformed URL Exception" reason:aReason userInfo:nil];
+    return [[MalformedURLException alloc] initWithName:@"Malformed URL Exception" reason:aReason userInfo:nil];
 }
 
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason
@@ -232,7 +211,7 @@
 
 + (id) newException:(NSString *)aReason
 {
-    return [[IllegalArgumentException alloc] initWithName:@"IO Exception" reason:aReason userInfo:nil];
+    return [[IOException alloc] initWithName:@"IO Exception" reason:aReason userInfo:nil];
 }
 
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason
@@ -249,23 +228,3 @@
 
 @end
 
-@implementation UnsupportedOperationException
-
-+ (id) newException:(NSString *)aReason
-{
-    return [[IllegalArgumentException alloc] initWithName:@"Unsupported Operation Exception" reason:aReason userInfo:nil];
-}
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason
-{
-    self=[super initWithName:aName reason:aReason userInfo:nil];
-    return self;
-}
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason userInfo:(NSDictionary *)userInfo
-{
-    self=[super initWithName:aName reason:aReason userInfo:userInfo];
-    return self;
-}
-
-@end

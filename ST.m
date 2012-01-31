@@ -27,6 +27,7 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import <ANTLR/RuntimeException.h>
 #import "Interpreter.h"
 #import "ErrorType.h"
 #import "FormalArgument.h"
@@ -453,7 +454,7 @@ static DebugState *st_debugState = nil;
         return self;
     aRange = [aName rangeOfString:@"."];
     if (aRange.location != NSNotFound) {
-        @throw [ANTLRIllegalArgumentException newException:@"cannot have '.' in attribute names"];
+        @throw [IllegalArgumentException newException:@"cannot have '.' in attribute names"];
     }
 #pragma mark fix this
 #ifdef DONTUSEYET
@@ -467,7 +468,7 @@ static DebugState *st_debugState = nil;
         if (impl.formalArguments != nil)
             arg = [impl.formalArguments objectForKey:aName];
         if (arg == nil) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", aName]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", aName]];
         }
     }
     else {
@@ -521,21 +522,21 @@ static DebugState *st_debugState = nil;
 {
         NSRange dot = [aggrSpec rangeOfString:@".{"];
         if ( values == nil || values.length == 0 ) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"missing values for aggregate attribute format: %@", aggrSpec]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"missing values for aggregate attribute format: %@", aggrSpec]];
         }
         int finalCurly = [aggrSpec indexOfCharacter:'}'];
         if ( dot.length < 0 || finalCurly < 0 ) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
         }
         NSString *aggrName = [aggrSpec subStringWithRange:(NSMakeRange(0, dot.location)];
         NSString *propString = [aggrSpec subStringWithRange:NSMakeRange(dot.location+2, ([aggrSpec length]-(dot.location+3)))];
 //      propString = propString.trim();
         NSString[] *propNames = propString.split("\\ *,\\ *");
         if ( propNames==nil || [propNames length]==0 ) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"invalid aggregate attribute format: %@", aggrSpec]];
         }
         if ( values.length != propNames.length ) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"number of properties and values mismatch for aggregate attribute format: %@", aggrSpec]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"number of properties and values mismatch for aggregate attribute format: %@", aggrSpec]];
         }
         int i=0;
         Aggregate *aggr = [Aggregate newAggregate];
@@ -557,13 +558,13 @@ static DebugState *st_debugState = nil;
 {
     if ( impl.formalArguments == nil ) {
         if ( impl.hasFormalArgs ) {
-            @throw [ANTLRIllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
+            @throw [IllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
         }
         return;
     }
     FormalArgument *arg = [impl.formalArguments objectForKey:name];
     if ( arg == nil ) {
-        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     if ( arg.index < [locals count] ) {
         [locals replaceObjectAtIndex:arg.index withObject:EMPTY_ATTR];
@@ -580,11 +581,11 @@ static DebugState *st_debugState = nil;
 - (void) rawSetAttribute:(NSString *)name value:(id)value
 {
     if ( impl.formalArguments == nil ) {
-        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     FormalArgument *arg = [impl.formalArguments objectForKey:name];
     if ( arg == nil ) {
-        @throw [ANTLRIllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
+        @throw [IllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
     if ( arg.index < [locals count] ) {
         [locals replaceObjectAtIndex:arg.index withObject:value];

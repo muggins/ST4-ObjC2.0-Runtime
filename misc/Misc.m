@@ -178,7 +178,7 @@ static NSString *const newline = @"\n";
         // [f setAccessible:YES];
         ;
     }
-    @catch (ANTLRRuntimeException *se) {
+    @catch (RuntimeException *se) {
     }
     return object_getIvar(obj, f);
 }
@@ -195,7 +195,7 @@ static NSString *const newline = @"\n";
             @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
         }
     }
-    @catch (ANTLRRuntimeException *se) {
+    @catch (RuntimeException *se) {
         if ( [se isKindOfClass:[STNoSuchPropertyException class]] )
             @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
     }

@@ -27,6 +27,7 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import <ANTLR/RuntimeException.h>
 #import "STErrorListener.h"
 #import "ST.h"
 #import "STGroup.h"
@@ -474,14 +475,14 @@ static BOOL trackCreationEvents = NO;
                   templateToken:(STToken *)templateToken
 {
     if (templateName == nil || [templateName length] == 0) {
-        @throw [ANTLRIllegalArgumentException newException:@"empty template name"];
+        @throw [IllegalArgumentException newException:@"empty template name"];
     }
     NSInteger i;
     for (i = ([templateName length]-1); i >= 0; i-- ) {
         if ( [templateName characterAtIndex:i] == '.' ) break;
     }
     if (i >= 0) {
-        @throw [ANTLRIllegalArgumentException newException:@"cannot have '.' in template names"];
+        @throw [IllegalArgumentException newException:@"cannot have '.' in template names"];
     }
     template = [Misc trimOneStartingNewline:template];
     template = [Misc trimOneTrailingNewline:template];
@@ -718,14 +719,14 @@ static BOOL trackCreationEvents = NO;
             g = [STGroupFile newSTGroupFile:fileUnderRoot encoding:encoding delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
             [g setListener:[self getListener]];
         }
-        @catch (ANTLRIllegalArgumentException *iae) { // not relative to this group
+        @catch (IllegalArgumentException *iae) { // not relative to this group
                                                //System.out.println("look in path: "+fileName);
                                                // try in CLASSPATH
             @try {
                 g = [STGroupFile newSTGroupFile:aFileName delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
                 [g setListener:[self getListener]];
             }
-            @catch (ANTLRIllegalArgumentException *iae2) {
+            @catch (IllegalArgumentException *iae2) {
                 g = nil;
             }
         }
@@ -735,13 +736,13 @@ static BOOL trackCreationEvents = NO;
             g = [STGroupDir newSTGroupDir:fileUnderRoot encoding:encoding delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
             [g setListener:[self getListener]];
         }
-        @catch (ANTLRIllegalArgumentException *iae) { // not relative to this group
+        @catch (IllegalArgumentException *iae) { // not relative to this group
             // try in CLASSPATH
             @try {
                 g = [STGroupDir newSTGroupDir:aFileName delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
                 [g setListener:[self getListener]];
             }
-            @catch (ANTLRIllegalArgumentException *iae2) {
+            @catch (IllegalArgumentException *iae2) {
                 g = nil;
             }
         }
@@ -768,7 +769,7 @@ static BOOL trackCreationEvents = NO;
         ANTLRInputStream *fs = [ANTLRInputStream newANTLRInputStream:fh];
         fs.name = aFileName;
         GroupLexer *lexer = [GroupLexer newGroupLexerWithCharStream:fs];
-        ANTLRCommonTokenStream *tokens = [ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer];
+        CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
         aParser = [GroupParser newGroupParser:tokens];
         [aParser group:self arg1:prefix];
     }
@@ -794,17 +795,17 @@ static BOOL trackCreationEvents = NO;
 }
 
 /** Load template stream into this group */
-- (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<ANTLRCharStream>)templateStream
+- (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<CharStream>)templateStream
 {
     GroupLexer *lexer = [GroupLexer newGroupLexerWithCharStream:templateStream];
-    ANTLRCommonTokenStream *tokens = [ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer];
+    CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
     GroupParser *parser = [GroupParser newGroupParser:tokens];
     parser.group = self;
     lexer.group = self;
     @try {
         [parser templateDef:prefix];
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [errMgr groupSyntaxError:SYNTAX_ERROR srcName:fileName e:re msg:[re getMessage]];
     }
     NSString *templateName = [Misc getFileNameNoSuffix:fileName];
@@ -827,7 +828,7 @@ static BOOL trackCreationEvents = NO;
 {
     //class_getName(Class cls)
     if ( attributeType == nil ) {
-        @throw [ANTLRIllegalArgumentException newException:
+        @throw [IllegalArgumentException newException:
                 [NSString stringWithFormat:@"can't register ModelAdaptor for primitive type %@",
                  NSStringFromClass(attributeType)]];
     }
@@ -876,7 +877,7 @@ static BOOL trackCreationEvents = NO;
 {
     /*
      if ( attributeType.isPrimitive() ) {
-        @throw [ANTLRIllegalArgumentException newException:
+        @throw [IllegalArgumentException newException:
             [NSString stringWithFormat:@"can't register ModelAdaptor for primitive type %@",
             [attributeType getSimpleName]];
      }

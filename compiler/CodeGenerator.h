@@ -132,7 +132,7 @@ typedef enum {
 #pragma mark Dynamic Rule Scopes ruleAttributeScopeInterface
 /* start of ruleAttributeScopeInterface */
 
-@interface template_Scope : ANTLRSymbolsScope {
+@interface template_Scope : SymbolsScope {
     CompilationState * cstate;
 }
 
@@ -152,7 +152,7 @@ typedef enum {
 
 #pragma mark Rule Return Scopes returnScopeInterface
 /* returnScopeInterface CodeGenerator_region_return */
-@interface CodeGenerator_region_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_region_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 NSString * name;
 
@@ -174,7 +174,7 @@ NSString * name;
 
 
 /* returnScopeInterface CodeGenerator_subtemplate_return */
-@interface CodeGenerator_subtemplate_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_subtemplate_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 NSString * name;
 
@@ -203,7 +203,7 @@ NSInteger nargs;
 
 
 /* returnScopeInterface CodeGenerator_conditional_return */
-@interface CodeGenerator_conditional_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_conditional_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 }
 /* start property declarations */
@@ -216,7 +216,7 @@ NSInteger nargs;
 
 
 /* returnScopeInterface CodeGenerator_mapTemplateRef_return */
-@interface CodeGenerator_mapTemplateRef_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_mapTemplateRef_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 }
 /* start property declarations */
@@ -229,7 +229,7 @@ NSInteger nargs;
 
 
 /* returnScopeInterface CodeGenerator_includeExpr_return */
-@interface CodeGenerator_includeExpr_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_includeExpr_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 }
 /* start property declarations */
@@ -242,7 +242,7 @@ NSInteger nargs;
 
 
 /* returnScopeInterface CodeGenerator_primary_return */
-@interface CodeGenerator_primary_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_primary_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 }
 /* start property declarations */
@@ -255,7 +255,7 @@ NSInteger nargs;
 
 
 /* returnScopeInterface CodeGenerator_args_return */
-@interface CodeGenerator_args_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_args_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 NSInteger n;
 
@@ -291,7 +291,7 @@ BOOL passThru;
 
 
 /* returnScopeInterface CodeGenerator_listElement_return */
-@interface CodeGenerator_listElement_return : ANTLRTreeRuleReturnScope { /* returnScopeInterface line 1838 */
+@interface CodeGenerator_listElement_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 }
 /* start property declarations */
@@ -305,7 +305,7 @@ BOOL passThru;
 
 
 /* Interface grammar class */
-@interface CodeGenerator  : ANTLRTreeParser { /* line 572 */
+@interface CodeGenerator  : TreeParser { /* line 572 */
 #pragma mark Dynamic Rule Scopes ruleAttributeScopeDecl
     template_Scope *template_scope;
 
@@ -336,16 +336,16 @@ BOOL passThru;
 /* ObjC end of properties */
 
 + (void) initialize;
-+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)aStream;
++ (id) newCodeGenerator:(id<TreeNodeStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
-+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)input
++ (id) newCodeGenerator:(id<TreeNodeStream>)input
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
                   token:(STToken *)aTemplateToken;
 
-- (id) init:(id<ANTLRTreeNodeStream>)input
+- (id) init:(id<TreeNodeStream>)input
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
@@ -355,18 +355,18 @@ BOOL passThru;
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
 - (void) emit:(short)anOpcode;
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
+- (void) emit:(CommonTree *)opAST opcode:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
-- (void) setOption:(ANTLRCommonTree *)anID;
+- (void) setOption:(CommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
 - (NSInteger) address;
-- (void) func:(ANTLRCommonTree *)aTree;
-- (void) refAttr:(ANTLRCommonTree *)aTree;
+- (void) func:(CommonTree *)aTree;
+- (void) refAttr:(CommonTree *)aTree;
 - (NSInteger) defineString:(NSString *)s;
 
 /* ObjC end of actions.(actionScope).methodsDecl */
@@ -379,11 +379,11 @@ BOOL passThru;
 - (void)chunk; 
 - (void)element; 
 - (void)singleElement; 
-- (void)compoundElement:(ANTLRCommonTree *)indent ; 
+- (void)compoundElement:(CommonTree *)indent ; 
 - (void)exprElement; 
-- (CodeGenerator_region_return *)region:(ANTLRCommonTree *)indent ; 
+- (CodeGenerator_region_return *)region:(CommonTree *)indent ; 
 - (CodeGenerator_subtemplate_return *)subtemplate; 
-- (void)ifstat:(ANTLRCommonTree *)indent ; 
+- (void)ifstat:(CommonTree *)indent ; 
 - (CodeGenerator_conditional_return *)conditional; 
 - (void)exprOptions; 
 - (void)option; 

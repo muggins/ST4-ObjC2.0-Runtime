@@ -31,7 +31,7 @@
 #import "InterpEvent.h"
 #import "AddAttributeEvent.h"
 #import "CompiledST.h"
-#import "AMutableArray.h"
+#import <ANTLR/AMutableArray.h>
 #import "Interpreter.h"
 
 @implementation State

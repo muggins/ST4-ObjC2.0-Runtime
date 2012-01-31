@@ -100,7 +100,7 @@ typedef enum {
 #pragma mark Dynamic Rule Scopes Interface start
 /* start of ruleAttributeScopeInterface */
 
-@interface formalArgs_Scope : ANTLRSymbolsScope {
+@interface formalArgs_Scope : SymbolsScope {
     BOOL hasOptionalParameter;
 
 }
@@ -125,7 +125,7 @@ typedef enum {
 #pragma mark Rule Return Scopes Interface stop
 
 /* Interface grammar class */
-@interface GroupParser : ANTLRParser { /* line 572 */
+@interface GroupParser : Parser { /* line 572 */
 /* ObjC start of ruleAttributeScopeMemVar */
 formalArgs_Scope *formalArgs_scope;
 
@@ -154,7 +154,7 @@ STGroup *group;
 /* ObjC end of properties */
 
 + (void) initialize;
-+ (id) newGroupParser:(id<ANTLRTokenStream>)aStream;
++ (id) newGroupParser:(id<TokenStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
 + (NSInteger) TANONYMOUS_TEMPLATE;
@@ -162,7 +162,7 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e;
+- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
 - (NSString *) getErrorMessage:(NSException *)e TokenNames:(AMutableArray *)TokenNames;

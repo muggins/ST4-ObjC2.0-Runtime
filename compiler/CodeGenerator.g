@@ -29,9 +29,9 @@
 tree grammar CodeGenerator;
 
 options {
-	tokenVocab=STParser;
-	ASTLabelType=ANTLRCommonTree;
 	language=ObjC;
+	tokenVocab=STParser;
+	ASTLabelType=CommonTree;
 }
 
 @header {
@@ -90,13 +90,13 @@ options {
 }
 
 @methodsDecl {
-+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)input
++ (id) newCodeGenerator:(id<TreeNodeStream>)input
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
                   token:(STToken *)aTemplateToken;
 
-- (id) init:(id<ANTLRTreeNodeStream>)input
+- (id) init:(id<TreeNodeStream>)input
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
@@ -105,18 +105,18 @@ options {
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
 - (void) emit:(short)anOpcode;
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode;
+- (void) emit:(CommonTree *)opAST opcode:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
-- (void) setOption:(ANTLRCommonTree *)anID;
+- (void) setOption:(CommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
 - (NSInteger) address;
-- (void) func:(ANTLRCommonTree *)aTree;
-- (void) refAttr:(ANTLRCommonTree *)aTree;
+- (void) func:(CommonTree *)aTree;
+- (void) refAttr:(CommonTree *)aTree;
 - (NSInteger) defineString:(NSString *)s;
 }
 
@@ -130,7 +130,7 @@ options {
 }
 
 @methods {
-+ (id) newCodeGenerator:(id<ANTLRTreeNodeStream>)anInput
++ (id) newCodeGenerator:(id<TreeNodeStream>)anInput
                  errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
@@ -143,17 +143,17 @@ options {
                                  token:aTemplateToken] retain];
 }
 
-- (id) init:(id<ANTLRTreeNodeStream>)anInput
+- (id) init:(id<TreeNodeStream>)anInput
                      errMgr:(ErrorManager *)anErrMgr
                    name:(NSString *)aName
                template:(NSString *)aTemplate
                   token:(STToken *)aTemplateToken
 {
-    self=[super initWithStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedState]];
+    self=[super initWithStream:anInput State:[RecognizerSharedState newRecognizerSharedState]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
         template_scope = [[template_Scope newtemplate_Scope] retain];
-        template_stack = [[ANTLRSymbolStack newANTLRSymbolStackWithLen:30] retain];
+        template_stack = [[SymbolStack newSymbolStackWithLen:30] retain];
         errMgr = anErrMgr;
         if ( errMgr ) [errMgr retain];
         outermostTemplateName = aName;
@@ -182,22 +182,22 @@ options {
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg
 {
     [$template::cstate emit1:opAST opcode:anOpcode arg:arg];
 }
 
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
+- (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg
 {
     [$template::cstate emit1:opAST opcode:anOpcode s:arg];
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2
 {
     [$template::cstate emit2:opAST opcode:anOpcode arg:anArg arg2:anArg2];
 }
 
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
+- (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg
 {
     [$template::cstate emit2:opAST opcode:anOpcode s:s arg2:anArg];
 }
@@ -207,7 +207,7 @@ options {
     [$template::cstate emit:anOpcode];
 }
 
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)anOpcode
+- (void) emit:(CommonTree *)opAST opcode:(short)anOpcode
 {
     [$template::cstate emit:opAST opcode:anOpcode];
 }
@@ -217,7 +217,7 @@ options {
     [$template::cstate insert:addr opcode:anOpcode s:s];
 }
 
-- (void) setOption:(ANTLRCommonTree *)anID
+- (void) setOption:(CommonTree *)anID
 {
     [$template::cstate setOption:anID];
 }
@@ -228,8 +228,8 @@ options {
 }
 
 - (NSInteger) address { return $template::cstate.ip; }
-- (void) func:(ANTLRCommonTree *)aTree { [$template::cstate func:templateToken tree:aTree]; }
-- (void) refAttr:(ANTLRCommonTree *)aTree { [$template::cstate refAttr:templateToken tree:aTree]; }
+- (void) func:(CommonTree *)aTree { [$template::cstate func:templateToken tree:aTree]; }
+- (void) refAttr:(CommonTree *)aTree { [$template::cstate refAttr:templateToken tree:aTree]; }
 - (NSInteger) defineString:(NSString *)s { return [$template::cstate defineString:s]; }
 }
 
@@ -279,7 +279,7 @@ singleElement
 	|	NEWLINE {[self emit:Bytecode.INSTR_NEWLINE];}
 	;
 
-compoundElement[ANTLRCommonTree *indent]
+compoundElement[CommonTree *indent]
 	:	ifstat[indent]
 	|	region[indent]
 	;
@@ -290,7 +290,7 @@ exprElement
 		{[self emit:$EXPR opcode:op];}
 	;
 
-region[ANTLRCommonTree *indent] returns [NSString *name]
+region[CommonTree *indent] returns [NSString *name]
 @init {
     if ( indent != nil ) [$template::cstate indent:indent];
 }
@@ -335,7 +335,7 @@ subtemplate returns [NSString *name, NSInteger nargs]
 		 )
 	;
 
-ifstat[ANTLRCommonTree *indent]
+ifstat[CommonTree *indent]
 @init {
     /** Tracks address of branch operand (in code block).  It's how
      *  we backpatch forward references when generating code for IFs.
@@ -344,7 +344,7 @@ ifstat[ANTLRCommonTree *indent]
     /** Branch instruction operands that are forward refs to end of IF.
      *  We need to update them once we see the endif.
      */
-    ANTLRIntArray *endRefs = [[ANTLRIntArray newArrayWithLen:16] retain];
+    IntArray *endRefs = [[IntArray newArrayWithLen:16] retain];
     if ( indent!=nil ) [$template::cstate indent:indent];
 }
 @after {

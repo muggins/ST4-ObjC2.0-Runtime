@@ -12,10 +12,10 @@
 @implementation STViz_Anon2
 
 - (void) valueChanged:(TreeSelectionEvent *)treeSelectionEvent {
-    ANTLRCommonTree *node = (ANTLRCommonTree *)[[treeSelectionEvent newLeadSelectionPath] lastPathComponent];
+    CommonTree *node = (CommonTree *)[[treeSelectionEvent newLeadSelectionPath] lastPathComponent];
     NSLog([@"select AST: " stringByAppendingString:node]);
-    ANTLRCommonToken *a = (ANTLRCommonToken *)[currentST.impl.tokens get:[node tokenStartIndex]];
-    ANTLRCommonToken *b = (ANTLRCommonToken *)[currentST.impl.tokens get:[node tokenStopIndex]];
+    CommonToken *a = (CommonToken *)[currentST.impl.tokens get:[node tokenStartIndex]];
+    CommonToken *b = (CommonToken *)[currentST.impl.tokens get:[node tokenStopIndex]];
     [self highlight:m.template param1:[a startIndex] param2:[b stopIndex]];
 }
 

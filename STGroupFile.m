@@ -27,6 +27,7 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import <ANTLR/RuntimeException.h>
 #import "STGroupFile.h"
 #import "STException.h"
 #import "ErrorManager.h"
@@ -94,7 +95,7 @@
     self=[super init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
     if ( self != nil ) {
         if (![aFileName hasSuffix:@".stg"]) {
-            @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"Group file names must end in .stg: %@", aFileName]];
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"Group file names must end in .stg: %@", aFileName]];
         }
         @try {
             fileName = aFileName;
@@ -121,7 +122,7 @@
 #endif
                 URL = [NSURL fileURLWithPath:fileName];
                 if (URL == nil) {
-                    @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"No such group file: %@", fileName]];
+                    @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"No such group file: %@", fileName]];
                 }
             }
         }

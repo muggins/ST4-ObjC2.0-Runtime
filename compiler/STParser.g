@@ -33,7 +33,7 @@ options {
     tokenVocab=STLexer;
     TokenLabelType=STToken;
     output=AST;
-    ASTLabelType=ANTLRCommonTree;
+    ASTLabelType=CommonTree;
     language=ObjC;
 }
 
@@ -62,9 +62,9 @@ STToken *templateToken;
 }
 
 @methodsDecl {
-+ (id) newSTParser:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
-- (id) init:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
-- (id) recoverFromMismatchedToken:(id<ANTLRIntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow;
++ (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
+- (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken;
+- (id) recoverFromMismatchedToken:(id<IntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow;
 }
 
 @synthesize {
@@ -74,16 +74,16 @@ STToken *templateToken;
 }
 
 @methods {
-+ (id) newSTParser:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken
++ (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken
 {
     return [[[STParser alloc] init:anInput error:anErrMgr token:aTemplateToken] retain];
 }
 
-- (id) init:(id<ANTLRTokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken
+- (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(STToken *)aTemplateToken
 {
-    self = [super initWithTokenStream:(id<ANTLRTokenStream>)anInput];
+    self = [super initWithTokenStream:(id<TokenStream>)anInput];
     if ( self != nil ) {
-        [self setTreeAdaptor:[[ANTLRCommonTreeAdaptor newTreeAdaptor] retain]];
+        [self setTreeAdaptor:[[CommonTreeAdaptor newTreeAdaptor] retain]];
         errMgr = anErrMgr;
         if ( errMgr ) [errMgr retain];
         templateToken = aTemplateToken;
@@ -92,14 +92,14 @@ STToken *templateToken;
     return self;
 }
 
-- (id) recoverFromMismatchedToken:(id<ANTLRIntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow
+- (id) recoverFromMismatchedToken:(id<IntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow
 {
-    @throw [ANTLRMismatchedTokenException newException:ttype Stream:anInput];
+    @throw [MismatchedTokenException newException:ttype Stream:anInput];
 }
 }
 
 @rulecatch {
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         @throw re;
     }
 }

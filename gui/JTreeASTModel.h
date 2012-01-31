@@ -9,7 +9,7 @@
 }
 
 @property(nonatomic, retain, readonly) id root;
-- (id) init:(ANTLRCommonTreeAdaptor *)adaptor root:(id)root;
+- (id) init:(CommonTreeAdaptor *)adaptor root:(id)root;
 - (id) initWithRoot:(id)root;
 - (NSInteger) getChildCount:(id)parent;
 - (NSInteger) getIndexOfChild:(id)parent child:(id)child;

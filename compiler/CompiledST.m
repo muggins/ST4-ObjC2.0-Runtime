@@ -59,7 +59,7 @@
 @synthesize codeSize;
 @synthesize sourceMap;
 
-+ (id) newCompiledST
++ (CompiledST *) newCompiledST
 {
     return [[CompiledST alloc] init];
 }

@@ -53,38 +53,38 @@
 	 *  next address to write to.  Byte-addressable memory.
 	 */
   NSInteger ip;
-  __strong ANTLRCommonTokenStream *tokens;
+  __strong CommonTokenStream *tokens;
   __strong ErrorManager *errMgr;
 }
 
 + (id) newCompilationState:(ErrorManager *)anErrMgr
                       name:(NSString *)name
-                    stream:(ANTLRCommonTokenStream *)tokens;
+                    stream:(CommonTokenStream *)tokens;
 
 - (id) init:(ErrorManager *)anErrMgr
        name:(NSString *)aName
-     stream:(ANTLRCommonTokenStream *)theTokens;
+     stream:(CommonTokenStream *)theTokens;
      
 - (NSInteger) defineString:(NSString *)s;
-- (void) refAttr:(STToken *)templateToken tree:(ANTLRCommonTree *)id;
-- (void) setOption:(ANTLRCommonTree *)id;
-- (void) func:(STToken *)templateToken tree:(ANTLRCommonTree *)id;
+- (void) refAttr:(STToken *)templateToken tree:(CommonTree *)id;
+- (void) setOption:(CommonTree *)id;
+- (void) func:(STToken *)templateToken tree:(CommonTree *)id;
 - (void) emit:(short)opcode;
-- (void) emit:(ANTLRCommonTree *)opAST opcode:(short)opcode;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg;
-- (void) emit1:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg arg2:(NSInteger)arg2;
-- (void) emit2:(ANTLRCommonTree *)opAST opcode:(short)opcode s:(NSString *)s arg2:(NSInteger)arg2;
+- (void) emit:(CommonTree *)opAST opcode:(short)opcode;
+- (void) emit1:(CommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg;
+- (void) emit1:(CommonTree *)opAST opcode:(short)opcode s:(NSString *)s;
+- (void) emit2:(CommonTree *)opAST opcode:(short)opcode arg:(NSInteger)arg arg2:(NSInteger)arg2;
+- (void) emit2:(CommonTree *)opAST opcode:(short)opcode s:(NSString *)s arg2:(NSInteger)arg2;
 - (void) insert:(NSInteger)addr opcode:(short)opcode s:(NSString *)s;
 - (void) write:(NSInteger)addr value:(short)value;
 - (void) ensureCapacity:(NSInteger)n;
-- (void) indent:(ANTLRCommonTree *)indent;
+- (void) indent:(CommonTree *)indent;
 //+ (void) writeShort:(char *)memory index:(NSInteger)index value:(short)value;
 
 @property (retain) CompiledST *impl;
 @property (retain) StringTable *stringtable;
 @property (assign) NSInteger ip;
-@property (retain) ANTLRCommonTokenStream *tokens;
+@property (retain) CommonTokenStream *tokens;
 @property (retain) ErrorManager *errMgr;
 
 @end

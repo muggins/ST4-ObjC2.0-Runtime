@@ -113,8 +113,8 @@
                     args:(AMutableArray *)args
                 template:(NSString *)template
            templateToken:(STToken *)templateToken;
-- (void) reportMessageAndThrowSTException:(ANTLRCommonTokenStream *)tokens
+- (void) reportMessageAndThrowSTException:(CommonTokenStream *)tokens
                             templateToken:(STToken *)templateToken
-                                  aParser:(ANTLRParser *)aParser
-                                       re:(ANTLRRecognitionException *)re;
+                                  aParser:(Parser *)aParser
+                                       re:(RecognitionException *)re;
 @end

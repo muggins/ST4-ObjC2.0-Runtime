@@ -176,17 +176,17 @@ static ErrorManager *DEFAULT_ERR_MGR;
     [listener compileTimeError:[STCompiletimeMessage newMessage:anError srcName:srcName templateToken:aTemplateToken t:t cause:nil arg:arg arg2:arg2]];
 }
 
-- (void) lexerError:(NSString *)srcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken e:(ANTLRRecognitionException *)e
+- (void) lexerError:(NSString *)srcName msg:(NSString *)aMsg templateToken:(STToken *)aTemplateToken e:(RecognitionException *)e
 {
     [listener compileTimeError:[STLexerMessage newMessage:srcName msg:aMsg templateToken:aTemplateToken cause:e]];
 }
 
-- (void) groupSyntaxError:(ErrorTypeEnum)anError srcName:(NSString *)srcName e:(ANTLRRecognitionException *)e msg:(NSString *)aMsg
+- (void) groupSyntaxError:(ErrorTypeEnum)anError srcName:(NSString *)srcName e:(RecognitionException *)e msg:(NSString *)aMsg
 {
     [listener compileTimeError:[STGroupCompiletimeMessage newMessage:anError srcName:srcName t:e.token cause:e arg:aMsg]];
 }
 
-- (void) groupLexerError:(ErrorTypeEnum)anError srcName:(NSString *)srcName e:(ANTLRRecognitionException *)e msg:(NSString *)aMsg
+- (void) groupLexerError:(ErrorTypeEnum)anError srcName:(NSString *)srcName e:(RecognitionException *)e msg:(NSString *)aMsg
 {
     [listener compileTimeError:[STGroupCompiletimeMessage newMessage:anError srcName:srcName t:e.token cause:e arg:aMsg]];
 }

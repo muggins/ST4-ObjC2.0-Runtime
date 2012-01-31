@@ -28,7 +28,7 @@
 #import <ANTLR/Antlr.h>
 #import "InstanceScope.h"
 
-@interface STException : ANTLRRuntimeException {
+@interface STException : RuntimeException {
 }
 + (id) newException:(NSString *)aReason;
 
@@ -37,7 +37,7 @@
 - (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
 @end
 
-@interface STNoSuchAttributeException : ANTLRRuntimeException {
+@interface STNoSuchAttributeException : RuntimeException {
     InstanceScope *scope;
 	NSString *attrName;
 }
@@ -54,7 +54,7 @@
 
 @end
 
-@interface STNoSuchMethodException : ANTLRRuntimeException
+@interface STNoSuchMethodException : RuntimeException
 {
     NSString *methodName;
 }
@@ -67,7 +67,7 @@
 @property (retain) NSString *methodName;
 @end
 
-@interface STNoSuchPropertyException : ANTLRRuntimeException
+@interface STNoSuchPropertyException : RuntimeException
 {
     NSString *propertyName;
 }
@@ -80,7 +80,7 @@
 @property (retain) NSString *propertyName;
 @end
 
-@interface FileNotFoundException : ANTLRRuntimeException {
+@interface FileNotFoundException : RuntimeException {
 }
 
 + (id) newException:(NSString *)aReason;
@@ -90,7 +90,7 @@
 
 @end
 
-@interface IllegalArgumentException : ANTLRRuntimeException {
+@interface IllegalAccessException : RuntimeException {
 }
 
 + (id) newException:(NSString *)aReason;
@@ -100,7 +100,7 @@
 
 @end
 
-@interface IllegalAccessException : ANTLRRuntimeException {
+@interface MalformedURLException : RuntimeException {
 }
 
 + (id) newException:(NSString *)aReason;
@@ -110,27 +110,7 @@
 
 @end
 
-@interface MalformedURLException : ANTLRRuntimeException {
-}
-
-+ (id) newException:(NSString *)aReason;
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason;
-- (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
-
-@end
-
-@interface IOException : ANTLRRuntimeException {
-}
-
-+ (id) newException:(NSString *)aReason;
-
-- (id) initWithName:(NSString *)aName reason:(NSString *)aReason;
-- (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
-
-@end
-
-@interface UnsupportedOperationException : ANTLRRuntimeException {
+@interface IOException : RuntimeException {
 }
 
 + (id) newException:(NSString *)aReason;

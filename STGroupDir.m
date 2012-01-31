@@ -86,7 +86,7 @@
                     root = [cl getResource:aDirName];
                 }
                 if (root == nil) {
-                    @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat@"No such directory: %@", aDirName]];
+                    @throw [IllegalArgumentException newException:[NSString stringWithFormat@"No such directory: %@", aDirName]];
                 }
 #endif
             }
@@ -192,7 +192,7 @@
     }
     GroupLexer *lexer = [GroupLexer newGroupLexerWithCharStream:fs];
     fs.name = aFileName;
-    ANTLRCommonTokenStream *tokens = [ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer];
+    CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
     GroupParser *aParser = [GroupParser newGroupParser:tokens];
     aParser.group = self;
     lexer.group = self;
@@ -200,7 +200,7 @@
     @try {
         [aParser templateDef:prefix];
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [errMgr groupSyntaxError:SYNTAX_ERROR srcName:[Misc getFileName:[f absoluteString]] e:re msg:[re reason]];
     }
     return [templates objectForKey:templateName];

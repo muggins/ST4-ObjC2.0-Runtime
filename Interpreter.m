@@ -27,6 +27,7 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import <ANTLR/RuntimeException.h>
 #import "STErrorListener.h"
 #import "AttributeRenderer.h"
 #import "Interpreter.h"
@@ -1517,7 +1518,7 @@ static BOOL trace = NO;
             ((ST *)value).enclosingInstance = aWho;
         StringWriter *sw = [StringWriter newWriter];
         @try {
-            if ( wr1 == nil ) @throw [ANTLRIllegalArgumentException newException:@"Writer wr1 is nil"];
+            if ( wr1 == nil ) @throw [IllegalArgumentException newException:@"Writer wr1 is nil"];
             writerClass = [wr1 class];
             // Constructor *ctor = [writerClass  getConstructor:@"newWriter"];
             stw = [[wr1 class] newWriterWithWriter:sw];

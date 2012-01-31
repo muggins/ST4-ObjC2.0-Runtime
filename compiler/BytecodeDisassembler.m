@@ -27,6 +27,7 @@
  */
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
+#import <ANTLR/RuntimeException.h>
 #import "STErrorListener.h"
 #import "BytecodeDisassembler.h"
 #import "Bytecode.h"
@@ -106,11 +107,11 @@
 {
     NSInteger opcode = [code.instrs charAtIndex:ip];
     if (ip >= code.codeSize) {
-        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"ip out of range: %d", ip]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"ip out of range: %d", ip]];
     }
     Instruction *I = Bytecode.instructions[opcode];
     if (I == nil) {
-        @throw [ANTLRIllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
     }
     NSString *instrName = I.name;
     [buf appendFormat:@"%04d:\t%-14s", ip, [instrName cStringUsingEncoding:NSASCIIStringEncoding]];

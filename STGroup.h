@@ -187,7 +187,7 @@
 - (void) importTemplates:(STGroup *)g;
 - (void) importTemplatesWithFileName:(STToken *)fileNameToken;
 - (void) loadGroupFile:(NSString *)prefix fileName:(NSString *)fileName;
-- (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<ANTLRCharStream>)templateStream;
+- (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName stream:(id<CharStream>)templateStream;
 - (CompiledST *) loadAbsoluteTemplateFile:(NSString *) fileName;
 - (void) registerModelAdaptor:(Class)attributeType adaptor:(id<ModelAdaptor>)adaptor;
 - (void) invalidateModelAdaptorCache:(Class)attributeType;

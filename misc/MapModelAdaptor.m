@@ -27,8 +27,9 @@
  */
 #import "STErrorListener.h"
 #import "MapModelAdaptor.h"
-#import "AMutableArray.h"
+#import <ANTLR/AMutableArray.h>
 #import "Interpreter.h"
+#import "CompiledST.h"
 
 @implementation MapModelAdaptor
 

@@ -33,23 +33,23 @@
  */
 
 @interface STGroupCompiletimeMessage : STMessage {
-  ANTLRCommonToken *token;
+  CommonToken *token;
   NSString *srcName;
 }
 
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause;
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg;
-+ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2;
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause;
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg;
++ (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2;
 
 #ifdef DONTUSENOMO
-- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause;
-- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)arg;
+- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(CommonToken *)t cause:(NSException *)aCause;
+- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)arg;
 #endif
-- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(ANTLRCommonToken *)t cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
+- (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 - (NSString *) description;
 - (NSString *) toString;
 
-@property (retain) ANTLRCommonToken *token;
+@property (retain) CommonToken *token;
 @property (retain) NSString *srcName;
 
 @end

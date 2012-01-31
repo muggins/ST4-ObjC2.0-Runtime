@@ -180,11 +180,6 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
         [buf appendString:@"   "];
 }
 
-- (void) dealloc
-{
-    [super dealloc];
-}
-
 @end
 
 NSInteger compare(NSString *s1, NSString *s2, void *context)

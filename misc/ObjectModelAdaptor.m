@@ -204,7 +204,7 @@ static STNoSuchPropertyException *cachedException;
 {
     self=[super init];
     if ( self != nil ) {
-        classAndPropertyToMemberCache = [[ANTLRDoubleKeyMap alloc] init];
+        classAndPropertyToMemberCache = [[DoubleKeyMap alloc] init];
     }
     return self;
 }

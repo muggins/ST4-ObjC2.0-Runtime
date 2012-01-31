@@ -113,7 +113,7 @@ typedef enum {
 
 static STToken *SKIP;
 static char Token_EOF = (char)-1;            // EOF char
-static NSInteger EOF_TYPE = ANTLRTokenTypeEOF;  // EOF token type
+static NSInteger EOF_TYPE = TokenTypeEOF;  // EOF token type
 static NSInteger RCURLY = 31;
 static NSInteger LDELIM = 33;
 
@@ -147,20 +147,20 @@ static NSInteger LDELIM = 33;
     SKIP = [[STToken alloc] init:-1 text:@"<skip>"];
 }
 
-+ (id) newSTLexer:(id<ANTLRCharStream>)anInput
++ (id) newSTLexer:(id<CharStream>)anInput
 {
     return [[STLexer alloc] initWithInput:anInput];
 }
 
 + (id) newSTLexer:(ErrorManager *)anErrMgr
-            input:(id<ANTLRCharStream>)anInput
+            input:(id<CharStream>)anInput
     templateToken:(STToken *)aTemplateToken
 {
     return [[STLexer alloc] init:anErrMgr input:anInput templateToken:aTemplateToken];
 }
 
 + (id) newSTLexer:(ErrorManager *)anErrMgr
-            input:(id<ANTLRCharStream>)anInput
+            input:(id<CharStream>)anInput
     templateToken:(STToken *)aTemplateToken
 delimiterStartChar:(unichar)aStartChar
 delimiterStopChar:(unichar)aStopChar
@@ -168,7 +168,7 @@ delimiterStopChar:(unichar)aStopChar
     return [[STLexer alloc] init:anErrMgr input:anInput templateToken:aTemplateToken delimiterStartChar:aStartChar delimiterStopChar:aStopChar];
 }
 
-- (id) initWithInput:(id<ANTLRCharStream>)anInput
+- (id) initWithInput:(id<CharStream>)anInput
 {
     self=[super init];
     if ( self != nil ) {
@@ -187,7 +187,7 @@ delimiterStopChar:(unichar)aStopChar
     return self;
 }
 
-- (id) init:(ErrorManager *)anErrMgr input:(id<ANTLRCharStream>)anInput templateToken:(STToken *)aTemplateToken
+- (id) init:(ErrorManager *)anErrMgr input:(id<CharStream>)anInput templateToken:(STToken *)aTemplateToken
 {
     self=[super init];
     if ( self != nil ) {
@@ -206,7 +206,7 @@ delimiterStopChar:(unichar)aStopChar
     return self;
 }
 
-- (id) init:(ErrorManager *)anErrMgr input:(id<ANTLRCharStream>)anInput templateToken:(STToken *)aTemplateToken delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
+- (id) init:(ErrorManager *)anErrMgr input:(id<CharStream>)anInput templateToken:(STToken *)aTemplateToken delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar
 {
     self=[super init];
     if ( self != nil ) {
@@ -280,10 +280,10 @@ delimiterStopChar:(unichar)aStopChar
     
     while (YES) {
         startCharIndex = input.index;
-        startLine = input.line;
-        startCharPositionInLine = input.charPositionInLine;
+        startLine = [input getLine];
+        startCharPositionInLine = [input getCharPositionInLine];
         if (c == (unichar) EOF_TYPE)
-            return [self newToken:ANTLRTokenTypeEOF];
+            return [self newToken:TokenTypeEOF];
         STToken *t;
         if (scanningInsideExpr)
             t = [self inside];
@@ -296,7 +296,7 @@ delimiterStopChar:(unichar)aStopChar
 
 - (STToken *) outside
 {
-    if (input.charPositionInLine == 0 && (c == ' ' || c == '\t')) {
+    if ([input getCharPositionInLine] == 0 && (c == ' ' || c == '\t')) {
         while (c == ' ' || c == '\t') // scarf indent
             [self consume];
         if (c != (unichar) EOF_TYPE)
@@ -394,7 +394,7 @@ delimiterStopChar:(unichar)aStopChar
                         return [self newToken:T_FALSE];
                     return anID;
                 }
-                ANTLRNoViableAltException *re = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+                NoViableAltException *re = [NoViableAltException newException:0 state:0 stream:input];
                 re.line = startLine;
                 re.charPositionInLine = startCharPositionInLine;
                 [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid character '%c'", c] templateToken:templateToken e:re];
@@ -457,11 +457,11 @@ delimiterStopChar:(unichar)aStopChar
 - (STToken *) mESCAPE
 {
     startCharIndex = input.index;
-    startCharPositionInLine = input.charPositionInLine;
+    startCharPositionInLine = [input getCharPositionInLine];
     [self consume];
     if (c == 'u') return [self mUNICODE];
     NSString *text = nil;
-    ANTLRNoViableAltException *e;
+    NoViableAltException *e;
     
     switch (c) {
         case '\\': [self mLINEBREAK]; return SKIP;
@@ -469,14 +469,14 @@ delimiterStopChar:(unichar)aStopChar
         case 't': text = @"\t"; break;
         case ' ': text = @" "; break;
         default:
-            e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+            e = [NoViableAltException newException:0 state:0 stream:input];
             [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid escaped char: '%c'", c] templateToken:templateToken e:e];
             [self consume];
             [self match:delimiterStopChar];
             return SKIP;
     }
     [self consume];
-    STToken *t = [self newToken:TEXT text:text pos:input.charPositionInLine-2];
+    STToken *t = [self newToken:TEXT text:text pos:[input getCharPositionInLine]-2];
     [self match:delimiterStopChar];
     return t;
 }
@@ -486,25 +486,25 @@ delimiterStopChar:(unichar)aStopChar
     [self consume];
     char chars[5];
     if (![STLexer isUnicodeLetter:c]) {
-        ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+        NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
         [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid unicode char: '%c'", c] templateToken:templateToken e:e];
     }
     chars[0] = c;
     [self consume];
     if (![STLexer isUnicodeLetter:c]) {
-        ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+        NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
         [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid unicode char: '%c'", c] templateToken:templateToken e:e];
     }
     chars[1] = c;
     [self consume];
     if (![STLexer isUnicodeLetter:c]) {
-        ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+        NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
         [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid unicode char: '%c'", c] templateToken:templateToken e:e];
     }
     chars[2] = c;
     [self consume];
     if (![STLexer isUnicodeLetter:c]) {
-        ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+        NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
         [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid unicode char: '%c'", c] templateToken:templateToken e:e];
     }
     chars[3] = c;
@@ -512,7 +512,7 @@ delimiterStopChar:(unichar)aStopChar
         // ESCAPE kills >
         //NSString *utext = [NSString stringWithCString:chars encoding:NSASCIIStringEncoding];
     unichar uc = (unichar)[[NSString stringWithCString:chars encoding:NSASCIIStringEncoding] intValue];
-    STToken *t = [self newToken:TEXT text:[NSString stringWithFormat:@"%4x", uc] pos:input.charPositionInLine-6];
+    STToken *t = [self newToken:TEXT text:[NSString stringWithFormat:@"%4x", uc] pos:[input getCharPositionInLine]-6];
     [self consume];
     [self match:delimiterStopChar];
     return t;
@@ -561,8 +561,8 @@ delimiterStopChar:(unichar)aStopChar
 - (STToken *) mID
 {
     startCharIndex = input.index;
-    startLine = input.line;
-    startCharPositionInLine = input.charPositionInLine;
+    startLine = [input getLine];
+    startCharPositionInLine = [input getCharPositionInLine];
     [self consume];
     while ([STLexer isIDLetter:c]) {
         [self consume];
@@ -598,9 +598,9 @@ delimiterStopChar:(unichar)aStopChar
         [buf appendFormat:@"%c", c];
         [self consume];
         if (c == (unichar) EOF_TYPE) {
-            ANTLRRecognitionException *re = [ANTLRMismatchedTokenException newException:'"' Stream:input];
-            re.line = input.line;
-            re.charPositionInLine = input.charPositionInLine;
+            RecognitionException *re = [MismatchedTokenException newException:'"' Stream:input];
+            re.line = [input getLine];
+            re.charPositionInLine = [input getCharPositionInLine];
             [errMgr lexerError:[input getSourceName] msg:@"EOF in string" templateToken:templateToken e:re];
         }
     }
@@ -623,9 +623,9 @@ delimiterStopChar:(unichar)aStopChar
     [self match:'!'];
     while (!(c == '!' && [input LA:2] == delimiterStopChar)) {
         if (c == (unichar)EOF) {
-            ANTLRRecognitionException *re = [ANTLRMismatchedTokenException newException:(NSInteger)'!' Stream:input];
-            re.line = input.line;
-            re.charPositionInLine = input.charPositionInLine;
+            RecognitionException *re = [MismatchedTokenException newException:(NSInteger)'!' Stream:input];
+            re.line = [input getLine];
+            re.charPositionInLine = [input getCharPositionInLine];
             [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"Nonterminated comment starting at %d:%d: '!%c' missing", startLine, startCharPositionInLine, delimiterStopChar] templateToken:templateToken e:re];
         break;
         }
@@ -678,8 +678,8 @@ delimiterStopChar:(unichar)aStopChar
 - (STToken *) newTokenFromPreviousChar:(NSInteger)ttype
 {
     STToken *t = [STToken newToken:input type:ttype start:input.index-1 stop:input.index-1];
-    [t setLine:input.line];
-    [t setCharPositionInLine:input.charPositionInLine-1];
+    [t setLine:[input getLine]];
+    [t setCharPositionInLine:[input getCharPositionInLine]-1];
     return t;
 }
 
@@ -688,7 +688,7 @@ delimiterStopChar:(unichar)aStopChar
     STToken *t = [STToken newToken:ttype text:text];
     [t setStart:startCharIndex];
     [t setStop:input.index-1];
-    [t setLine:input.line];
+    [t setLine:[input getLine]];
     [t setCharPositionInLine:pos];
     return t;
 }
@@ -719,7 +719,7 @@ delimiterStopChar:(unichar)aStopChar
 }
 
 + (NSString *) str:(NSInteger)aChar {
-    if (aChar == (unichar) ANTLRTokenTypeEOF)
+    if (aChar == (unichar) TokenTypeEOF)
         return @"<EOF>";
     return [NSString stringWithFormat:@"\\u%4x", (unichar)aChar];
 }
@@ -744,7 +744,7 @@ delimiterStopChar:(unichar)aStopChar
 @implementation STLexer_NO_NL
 
 + (STLexer_NO_NL *) newSTLexer_NO_NL:(ErrorManager *)anErrMgr
-                               input:(id<ANTLRCharStream>)anInput
+                               input:(id<CharStream>)anInput
                        templateToken:(STToken *)aTemplateToken
                   delimiterStartChar:(unichar)aStartChar
                    delimiterStopChar:(unichar)aStopChar
@@ -757,7 +757,7 @@ delimiterStopChar:(unichar)aStopChar
 }
 
 - (id) init:(ErrorManager *)anErrMgr
-      input:(id<ANTLRCharStream>)anInput
+      input:(id<CharStream>)anInput
       templateToken:(STToken *)aTemplateToken
       delimiterStartChar:(unichar)aStartChar
       delimiterStopChar:(unichar)aStopChar

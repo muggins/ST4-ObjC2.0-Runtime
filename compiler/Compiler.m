@@ -372,14 +372,14 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         lexer = [STLexer newSTLexer:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
 	}
 
-    ANTLRCommonTokenStream *tokens = [[ANTLRCommonTokenStream newANTLRCommonTokenStreamWithTokenSource:lexer] retain];
+    CommonTokenStream *tokens = [[CommonTokenStream newCommonTokenStreamWithTokenSource:lexer] retain];
     STParser *p = [STParser newSTParser:tokens error:group.errMgr token:aTemplateToken];
     STParser_templateAndEOF_return *r = nil;
     
     @try {
         r = [p templateAndEOF];
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [self reportMessageAndThrowSTException:tokens templateToken:aTemplateToken aParser:p re:re];
         return nil;
     }
@@ -388,7 +388,7 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         [impl defineFormalArgs:args];
         return impl;
     }
-    ANTLRCommonTreeNodeStream *nodes = [[ANTLRCommonTreeNodeStream newANTLRCommonTreeNodeStream:r.tree] retain];
+    CommonTreeNodeStream *nodes = [[CommonTreeNodeStream newCommonTreeNodeStream:r.tree] retain];
     [nodes setTokenStream:tokens];
     CodeGenerator *gen = [CodeGenerator newCodeGenerator:nodes errMgr:group.errMgr name:name template:template token:aTemplateToken];
 
@@ -399,11 +399,11 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         if ( impl.nativeGroup ) [impl.nativeGroup retain];
 		impl.template = template;
         if ( template ) [template retain];
-        impl.ast = [(ANTLRCommonTree *)r.tree retain];
+        impl.ast = [(CommonTree *)r.tree retain];
         [impl.ast setUnknownTokenBoundaries];
         impl.tokens = [tokens retain];
     }
-    @catch (ANTLRRecognitionException *re) {
+    @catch (RecognitionException *re) {
         [group.errMgr internalError:nil msg:@"bad tree structure" e:re];
     }
     if ( mustRelease ) [a release];
@@ -428,17 +428,17 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, ++subtemplateCount];
 }
 
-- (void) reportMessageAndThrowSTException:(ANTLRCommonTokenStream *)tokens
+- (void) reportMessageAndThrowSTException:(CommonTokenStream *)tokens
                             templateToken:(STToken *)templateToken
-                                  aParser:(ANTLRParser *)aParser
-                                       re:(ANTLRRecognitionException *)re
+                                  aParser:(Parser *)aParser
+                                       re:(RecognitionException *)re
 {
     NSString *msg;
     if ( re.token.type == STLexer.EOF_TYPE) {
         msg = @"premature EOF";
         [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }
-    else if ([re isKindOfClass:[ANTLRNoViableAltException class]]) {
+    else if ([re isKindOfClass:[NoViableAltException class]]) {
         msg = [NSString stringWithFormat:@"'%@' came as a complete surprise to me", re.token.text];
         [group.errMgr compileTimeError:SYNTAX_ERROR templateToken:templateToken t:re.token arg:msg];
     }

@@ -122,7 +122,7 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e;
+- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
 - (NSString *) getErrorMessage:(NSException *)e TokenNames:(AMutableArray *)TokenNames;
@@ -138,7 +138,7 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
 + (NSInteger) TID { return ID; }
 + (NSInteger) TTRUE { return T_TRUE; }
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(ANTLRRecognitionException *)e
+- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e
 {
     NSString *msg = [self getErrorMessage:e TokenNames:[self getTokenNames]];
     [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
@@ -157,7 +157,7 @@ STGroup *group;
 
 - (void) error:(NSString *)msg
 {
-    ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+    NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
     [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
     [self recover:input Exception:nil];
 }
@@ -176,21 +176,21 @@ STGroup *group;
 @lexer::methodsDecl {
 @property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
 
-- (void) reportError:(ANTLRRecognitionException *)e;
+- (void) reportError:(RecognitionException *)e;
 - (NSString *) getSourceName;
 }
 
 @lexer::methods {
 @synthesize group;
 
-- (void) reportError:(ANTLRRecognitionException *)e
+- (void) reportError:(RecognitionException *)e
 {
     NSString *msg = nil;
-    if ( [e isKindOfClass:[ANTLRNoViableAltException class]] ) {
+    if ( [e isKindOfClass:[NoViableAltException class]] ) {
 #pragma error fix formatting
         msg = [NSString stringWithFormat:@"invalid character '***c'", [input LA:1]];
     }
-    else if ( [e isKindOfClass:[ANTLRMismatchedTokenException class]] && ((ANTLRMismatchedTokenException *)e).expecting=='"' ) {
+    else if ( [e isKindOfClass:[MismatchedTokenException class]] && ((MismatchedTokenException *)e).expecting=='"' ) {
         msg = @"unterminated string";
     }
     else {
@@ -215,7 +215,7 @@ self.group = lexer.group = $aGroup;
     (   'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
     |   'import' // common error: name not in string
             {
-            ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:STRING Stream:input];
+            MismatchedTokenException *e = [MismatchedTokenException newException:STRING Stream:input];
             [self reportError:e];
             }
             ID ('.' ID)* // might be a.b.c.d
@@ -239,7 +239,7 @@ groupName returns [NSString *name]
  *  elements separate from "stay in loop" prediction.
  */
 def[NSString *prefix] : templateDef[prefix] | dictDef ;
-    catch[ANTLRRecognitionException *re] {
+    catch[RecognitionException *re] {
         // pretend we already saw an error here
         state.lastErrorIndex = input.index;
         [self error:[NSString stringWithFormat:@"garbled template definition starting at '\%@'", [[input LT:1] text]]];
@@ -261,7 +261,7 @@ templateDef[NSString *prefix]
         |   {
             template = @"";
             NSString *msg = [NSString stringWithFormat:@"missing template at '\%@'", [[input LT:1] text]];
-            ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+            NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
             [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
             }
         )
@@ -336,7 +336,7 @@ dictPairs[AMutableDictionary *mapping]
         (',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
     |   defaultValuePair[mapping]
     ;
-    catch[ANTLRRecognitionException *re] {
+    catch[RecognitionException *re] {
         [self error:[NSString stringWithFormat:@"missing dictionary entry at '\%@'", [input LT:1].text]];
     }
 
@@ -358,7 +358,7 @@ keyValue returns [id value]
     |   {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID
                             {$value = STGroup.DICT_KEY;}
     ;
-    catch[ANTLRRecognitionException *re] {
+    catch[RecognitionException *re] {
         [self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] text]]];
     }
 
@@ -371,7 +371,7 @@ STRING
         |   '\\' ~'"'
         |   {
             NSString *msg = @"\\n in string";
-            ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+            NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
             [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
             }
             '\n'
@@ -419,7 +419,7 @@ ANONYMOUS_TEMPLATE
         STToken *t = [lexer nextToken];
         while ( [lexer subtemplateDepth] >= 1 || t.type != STLexer.RCURLY ) {
             if ( t.type == STLexer.EOF_TYPE ) {
-                ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:'}' Stream:input];
+                MismatchedTokenException *e = [MismatchedTokenException newException:'}' Stream:input];
                 NSString *msg = @"missing final '}' in {...} anonymous template";
                 [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
                 break;

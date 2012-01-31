@@ -57,7 +57,7 @@
 
 + (void) initialize
 {
-    [ANTLRBaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g"];
+    [BaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g"];
 }
 
 + (NSString *) tokenNameForType:(NSInteger)aTokenType
@@ -65,14 +65,14 @@
     return [[self getTokenNames] objectAtIndex:aTokenType];
 }
 
-+ (GroupLexer *)newGroupLexerWithCharStream:(id<ANTLRCharStream>)anInput
++ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput
 {
     return [[GroupLexer alloc] initWithCharStream:anInput];
 }
 
-- (id) initWithCharStream:(id<ANTLRCharStream>)anInput
+- (id) initWithCharStream:(id<CharStream>)anInput
 {
-    self = [super initWithCharStream:anInput State:[ANTLRRecognizerSharedState newANTLRRecognizerSharedStateWithRuleLen:24+1]];
+    self = [super initWithCharStream:anInput State:[RecognizerSharedState newRecognizerSharedStateWithRuleLen:24+1]];
     if ( self != nil ) {
     }
     return self;
@@ -87,14 +87,14 @@
 
 @synthesize group;
 
-- (void) reportError:(ANTLRRecognitionException *)e
+- (void) reportError:(RecognitionException *)e
 {
     NSString *msg = nil;
-    if ( [e isKindOfClass:[ANTLRNoViableAltException class]] ) {
+    if ( [e isKindOfClass:[NoViableAltException class]] ) {
 #pragma error fix formatting
         msg = [NSString stringWithFormat:@"invalid character '%c'", [input LA:1]];
     }
-    else if ( [e isKindOfClass:[ANTLRMismatchedTokenException class]] && ((ANTLRMismatchedTokenException *)e).expecting=='"' ) {
+    else if ( [e isKindOfClass:[MismatchedTokenException class]] && ((MismatchedTokenException *)e).expecting=='"' ) {
         msg = @"unterminated string";
     }
     else {
@@ -123,7 +123,7 @@
 
     @try {
         NSInteger _type = T__14;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:79:7: ( '(' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:79:9: '(' // alt
         {
@@ -155,7 +155,7 @@
 
     @try {
         NSInteger _type = T__15;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:80:7: ( ')' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:80:9: ')' // alt
         {
@@ -187,7 +187,7 @@
 
     @try {
         NSInteger _type = T__16;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:81:7: ( ',' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:81:9: ',' // alt
         {
@@ -219,7 +219,7 @@
 
     @try {
         NSInteger _type = T__17;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:82:7: ( '.' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:82:9: '.' // alt
         {
@@ -251,7 +251,7 @@
 
     @try {
         NSInteger _type = T__18;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:83:7: ( ':' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:83:9: ':' // alt
         {
@@ -283,7 +283,7 @@
 
     @try {
         NSInteger _type = T__19;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:84:7: ( '::=' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:84:9: '::=' // alt
         {
@@ -316,7 +316,7 @@
 
     @try {
         NSInteger _type = T__20;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:85:7: ( ';' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:85:9: ';' // alt
         {
@@ -348,7 +348,7 @@
 
     @try {
         NSInteger _type = T__21;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:86:7: ( '=' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:86:9: '=' // alt
         {
@@ -380,7 +380,7 @@
 
     @try {
         NSInteger _type = T__22;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:87:7: ( '@' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:87:9: '@' // alt
         {
@@ -412,7 +412,7 @@
 
     @try {
         NSInteger _type = T__23;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:88:7: ( '[' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:88:9: '[' // alt
         {
@@ -444,7 +444,7 @@
 
     @try {
         NSInteger _type = T__24;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:89:7: ( ']' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:89:9: ']' // alt
         {
@@ -476,7 +476,7 @@
 
     @try {
         NSInteger _type = T__25;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:90:7: ( 'default' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:90:9: 'default' // alt
         {
@@ -509,7 +509,7 @@
 
     @try {
         NSInteger _type = T__26;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:91:7: ( 'group' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:91:9: 'group' // alt
         {
@@ -542,7 +542,7 @@
 
     @try {
         NSInteger _type = T__27;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:92:7: ( 'implements' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:92:9: 'implements' // alt
         {
@@ -575,7 +575,7 @@
 
     @try {
         NSInteger _type = T__28;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:93:7: ( 'import' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:93:9: 'import' // alt
         {
@@ -608,14 +608,14 @@
 
     @try {
         NSInteger _type = ID;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:365:5: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:365:9: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '-' | '_' )* // alt
         {
         if ((([input LA:1] >= 'A') && ([input LA:1] <= 'Z'))||[input LA:1] == '_'||(([input LA:1] >= 'a') && ([input LA:1] <= 'z'))) {
             [input consume];
         } else {
-            ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+            MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
             [self recover:mse];
             @throw mse;
         }
@@ -636,7 +636,7 @@
                     if ([input LA:1] == '-'||(([input LA:1] >= '0') && ([input LA:1] <= '9'))||(([input LA:1] >= 'A') && ([input LA:1] <= 'Z'))||[input LA:1] == '_'||(([input LA:1] >= 'a') && ([input LA:1] <= 'z'))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -677,7 +677,7 @@
 
     @try {
         NSInteger _type = STRING;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:369:5: ( '\"' ( '\\\\' '\"' | '\\\\' ~ '\"' | '\\n' |~ ( '\\\\' | '\"' | '\\n' ) )* '\"' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:369:9: '\"' ( '\\\\' '\"' | '\\\\' ~ '\"' | '\\n' |~ ( '\\\\' | '\"' | '\\n' ) )* '\"' // alt
         {
@@ -727,7 +727,7 @@
                     if ((([input LA:1] >= 0x0000) && ([input LA:1] <= '!'))||(([input LA:1] >= '#') && ([input LA:1] <= 0xFFFF))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -740,7 +740,7 @@
                     {
 
                                 NSString *msg = @"\\n in string";
-                                ANTLRNoViableAltException *e = [ANTLRNoViableAltException newException:0 state:0 stream:input];
+                                NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
                                 [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
                                 
 
@@ -756,7 +756,7 @@
                     if ((([input LA:1] >= 0x0000) && ([input LA:1] <= '\t'))||(([input LA:1] >= 0x000B) && ([input LA:1] <= '!'))||(([input LA:1] >= '#') && ([input LA:1] <= '['))||(([input LA:1] >= ']') && ([input LA:1] <= 0xFFFF))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -806,7 +806,7 @@
 
     @try {
         NSInteger _type = BIGSTRING_NO_NL;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:388:5: ( '<%' ( options {greedy=false; } : . )* '%>' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:388:9: '<%' ( options {greedy=false; } : . )* '%>' // alt
         {
@@ -879,7 +879,7 @@
 
     @try {
         NSInteger _type = BIGSTRING;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:392:5: ( '<<' ( options {greedy=false; } : '\\\\' '>' | '\\\\' ~ '>' |~ '\\\\' )* '>>' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:392:9: '<<' ( options {greedy=false; } : '\\\\' '>' | '\\\\' ~ '>' |~ '\\\\' )* '>>' // alt
         {
@@ -938,7 +938,7 @@
                     if ((([input LA:1] >= 0x0000) && ([input LA:1] <= '='))||(([input LA:1] >= '?') && ([input LA:1] <= 0xFFFF))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -952,7 +952,7 @@
                     if ((([input LA:1] >= 0x0000) && ([input LA:1] <= '['))||(([input LA:1] >= ']') && ([input LA:1] <= 0xFFFF))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -1003,7 +1003,7 @@
 
     @try {
         NSInteger _type = ANONYMOUS_TEMPLATE;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:406:5: ( '{' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:406:9: '{' // alt
         {
@@ -1025,7 +1025,7 @@
                 STToken *t = [lexer nextToken];
                 while ( [lexer subtemplateDepth] >= 1 || t.type != STLexer.RCURLY ) {
                     if ( t.type == STLexer.EOF_TYPE ) {
-                        ANTLRMismatchedTokenException *e = [ANTLRMismatchedTokenException newException:'}' Stream:input];
+                        MismatchedTokenException *e = [MismatchedTokenException newException:'}' Stream:input];
                         NSString *msg = @"missing final '}' in {...} anonymous template";
                         [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
                         break;
@@ -1060,7 +1060,7 @@
 
     @try {
         NSInteger _type = COMMENT;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:435:5: ( '/*' ( options {greedy=false; } : . )* '*/' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:435:9: '/*' ( options {greedy=false; } : . )* '*/' // alt
         {
@@ -1136,7 +1136,7 @@
 
     @try {
         NSInteger _type = LINE_COMMENT;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:439:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:439:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' // alt
         {
@@ -1159,7 +1159,7 @@
                     if ((([input LA:1] >= 0x0000) && ([input LA:1] <= '\t'))||(([input LA:1] >= 0x000B) && ([input LA:1] <= '\f'))||(([input LA:1] >= 0x000E) && ([input LA:1] <= 0xFFFF))) {
                         [input consume];
                     } else {
-                        ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+                        MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
                         [self recover:mse];
                         @throw mse;
                     }
@@ -1226,14 +1226,14 @@
 
     @try {
         NSInteger _type = WS;
-        NSInteger _channel = ANTLRTokenChannelDefault;
+        NSInteger _channel = TokenChannelDefault;
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:442:5: ( ( ' ' | '\\r' | '\\t' | '\\n' ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr3/acondit_localhost/code/ST4/objc/main/compiler/Group.g:442:9: ( ' ' | '\\r' | '\\t' | '\\n' ) // alt
         {
         if ((([input LA:1] >= '\t') && ([input LA:1] <= '\n'))||[input LA:1] == '\r'||[input LA:1] == ' ') {
             [input consume];
         } else {
-            ANTLRMismatchedSetException *mse = [ANTLRMismatchedSetException newException:nil stream:input];
+            MismatchedSetException *mse = [MismatchedSetException newException:nil stream:input];
             [self recover:mse];
             @throw mse;
         }
@@ -1590,7 +1590,7 @@
                 alt8=19;
             }
             else {
-                ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:8 state:16 stream:input];
+                NoViableAltException *nvae = [NoViableAltException newException:8 state:16 stream:input];
                 nvae.c = LA8_16;
                 @throw nvae;
 
@@ -1613,7 +1613,7 @@
                 alt8=22;
             }
             else {
-                ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:8 state:18 stream:input];
+                NoViableAltException *nvae = [NoViableAltException newException:8 state:18 stream:input];
                 nvae.c = LA8_18;
                 @throw nvae;
 
@@ -1630,7 +1630,7 @@
             break;
 
     default: ;
-        ANTLRNoViableAltException *nvae = [ANTLRNoViableAltException newException:8 state:0 stream:input];
+        NoViableAltException *nvae = [NoViableAltException newException:8 state:0 stream:input];
         nvae.c = charLA8;
         @throw nvae;
 
