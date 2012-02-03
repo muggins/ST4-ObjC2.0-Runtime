@@ -1,84 +1,88 @@
-#import "Test.h"
+#import <Cocoa/Cocoa.h>
+#import <ANTLR/ANTLR.h>
+#import <SenTestingKit/SenTestingKit.h>
 #import "ST.h"
 #import "STGroup.h"
-#import "NSMutableArray.h"
-#import "NSMutableDictionary.h"
-#import "NSMutableArray.h"
-#import "NSMutableDictionary.h"
-#import "Assert.h"
 
-@interface TestFunctions_Anon1 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon1 : AMutableArray {
 }
 
-- (void) init;
+- (id) init;
+
 @end
 
-@interface TestFunctions_Anon2 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon2 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon;
+- (id) init;
 @end
 
-@interface TestFunctions_Anon3 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon3 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon;
+- (id) init;
 @end
 
-@interface TestFunctions_Anon4 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon4 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon;
+- (id) init;
 @end
 
-@interface TestFunctions_Anon5 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon5 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon;
+- (id) init;
 @end
 
-@interface TestFunctions_Anon6 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon6 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon:(id)a b:(id)b;
+- (id) init:a b:(id)b;
 @end
 
-@interface TestFunctions_Anon7 : NSObject <NSMutableArray> {
+@interface TestFunctions_Anon7 : AMutableArray {
 }
 
-- (void) init;
++ (id) newAnon:(id)a b:(id)b;
+- (id) init:a b:(id)b;
 @end
 
-@interface TestFunctions : BaseTest {
+@interface TestFunctions : SenTestCase {
 }
 
-- (void) testFirst;
-- (void) testLength;
-- (void) testLengthWithNullValues;
-- (void) testFirstOp;
-- (void) testTruncOp;
-- (void) testRestOp;
-- (void) testRestOpEmptyList;
-- (void) testReUseOfRestResult;
-- (void) testLastOp;
-- (void) testStripOp;
-- (void) testLengthStrip;
-- (void) testCombinedOp;
-- (void) testCatListAndSingleAttribute;
-- (void) testReUseOfCat;
-- (void) testCatListAndEmptyAttributes;
-- (void) testNestedOp;
-- (void) testFirstWithOneAttributeOp;
-- (void) testLastWithOneAttributeOp;
-- (void) testLastWithLengthOneListAttributeOp;
-- (void) testRestWithOneAttributeOp;
-- (void) testRestWithLengthOneListAttributeOp;
-- (void) testRepeatedRestOp;
-- (void) testIncomingLists;
-- (void) testFirstWithCatAttribute;
-- (void) testFirstWithListOfMaps;
-- (void) testFirstWithListOfMaps2;
-- (void) testTrim;
-- (void) testStrlen;
-- (void) testReverse;
+- (void) test01First;
+- (void) test02Length;
+- (void) test03LengthWithNullValues;
+- (void) test04FirstOp;
+- (void) test05TruncOp;
+- (void) test06RestOp;
+- (void) test07RestOpEmptyList;
+- (void) test08ReUseOfRestResult;
+- (void) test09LastOp;
+- (void) test10StripOp;
+- (void) test11LengthStrip;
+- (void) test12CombinedOp;
+- (void) test13CatListAndSingleAttribute;
+- (void) test14ReUseOfCat;
+- (void) test15CatListAndEmptyAttributes;
+- (void) test16NestedOp;
+- (void) test17FirstWithOneAttributeOp;
+- (void) test18LastWithOneAttributeOp;
+- (void) test19LastWithLengthOneListAttributeOp;
+- (void) test20RestWithOneAttributeOp;
+- (void) test21RestWithLengthOneListAttributeOp;
+- (void) test22RepeatedRestOp;
+- (void) test23IncomingLists;
+- (void) test24FirstWithCatAttribute;
+- (void) test25FirstWithListOfMaps;
+- (void) test26FirstWithListOfMaps2;
+- (void) test27Trim;
+- (void) test28Strlen;
+- (void) test29Reverse;
 @end

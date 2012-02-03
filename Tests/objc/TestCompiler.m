@@ -1,403 +1,501 @@
+#import <Cocoa/Cocoa.h>
 #import "TestCompiler.h"
 
 @implementation TestCompiler
 
-- (void) setUp {
-  org.stringtemplate.v4.compiler.Compiler.subtemplateCount = 0;
+- (void)setUp
+{
+    [super setUp];
+    
+    // Set-up code here.
 }
 
-- (void) testAttr {
-  NSString * template = @"hi <name>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [[@"write_str 0, " stringByAppendingString:@"load_attr 1, "] stringByAppendingString:@"write"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , name]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void)tearDown
+{
+    // Tear-down code here.
+    STGroup.resetDefaultGroup;
+    [super tearDown];
 }
 
-- (void) testInclude {
-  NSString * template = @"hi <foo()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, new 1 0, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test01Attr
+{
+    NSLog( @"Start test01.Attr" );
+    NSString *aTemplate = @"hi <name>";
+    NSLog( @"aTemplate = %@", aTemplate );
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSLog( @"returned from newCompiler" );
+    NSString *asmExpected = @"write_str 0, load_attr 1, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSLog( @"returned from first assert" );
+    NSString *stringsExpected = @"[hi , name]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] description];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    NSLog( @"end test01.Attr" );
+    [code release];
 }
 
-- (void) testSuperInclude {
-  NSString * template = @"<super.foo()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"super_new 0 0, write";
-  [code dump];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test02Include
+{
+    NSString *aTemplate = @"hi <foo()>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"write_str 0, new 1 0, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testSuperIncludeWithArgs {
-  NSString * template = @"<super.foo(a,{b})>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, new 1 0, super_new 2 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[a, _sub1, foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test02aIncludeWithPassThrough
+{
+    NSString *template = @"hi <foo(...)>";
+    CompiledST *code = [[[Compiler newCompiler] compile:template] retain];
+    NSString *asmExpected =
+        @"write_str 0, args, passthru 1, new_box_args 1, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] description];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testSuperIncludeWithNamedArgs {
-  NSString * template = @"<super.foo(x=a,y={b})>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"args, load_attr 0, store_arg 1, new 2 0, store_arg 3, super_new_box_args 4, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[a, x, _sub1, y, foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test02bIncludeWithPartialPassThrough
+{
+    NSString *template = @"hi <foo(x=y,...)>";
+    CompiledST *code = [[[Compiler newCompiler] compile:template] retain];
+    NSString *asmExpected =
+        @"write_str 0, args, load_attr 1, store_arg 2, passthru 3, new_box_args 3, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , y, x, foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] description];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testIncludeWithArgs {
-  NSString * template = @"hi <foo(a,b)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, load_attr 2, new 3 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , a, b, foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test03SuperInclude
+{
+    NSString *aTemplate = @"<super.foo()>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"super_new 0 0, write";
+    [code dump];
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testAnonIncludeArgs {
-  NSString * template = @"<({ a, b | <a><b>})>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"new 0 0, tostr, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[_sub1]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test04SuperIncludeWithArgs
+{
+    NSString *aTemplate = @"<super.foo(a,{b})>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"load_attr 0, new 1 0, super_new 2 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[a, _sub1, foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testAnonIncludeArgMismatch {
-  STErrorListener * errors = [[[ErrorBuffer alloc] init] autorelease];
-  NSString * template = @"<a:{foo}>";
-  STGroup * g = [[[STGroup alloc] init] autorelease];
-  g.errMgr = [[[ErrorManager alloc] init:errors] autorelease];
-  CompiledST * code = [[[[Compiler alloc] init:g] autorelease] compile:template];
-  NSString * expected = [@"1:3: anonymous template has 0 arg(s) but mapped across 1 value(s)" stringByAppendingString:newline];
-  [self assertEquals:expected arg1:[errors description]];
+- (void) test05SuperIncludeWithNamedArgs
+{
+    NSString *aTemplate = @"<super.foo(x=a,y={b})>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"args, load_attr 0, store_arg 1, new 2 0, store_arg 3, super_new_box_args 4, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[a, x, _sub1, y, foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testAnonIncludeArgMismatch2 {
-  STErrorListener * errors = [[[ErrorBuffer alloc] init] autorelease];
-  NSString * template = @"<a,b:{x|foo}>";
-  STGroup * g = [[[STGroup alloc] init] autorelease];
-  g.errMgr = [[[ErrorManager alloc] init:errors] autorelease];
-  CompiledST * code = [[[[Compiler alloc] init:g] autorelease] compile:template];
-  NSString * expected = [@"1:5: anonymous template has 1 arg(s) but mapped across 2 value(s)" stringByAppendingString:newline];
-  [self assertEquals:expected arg1:[errors description]];
+- (void) test06IncludeWithArgs
+{
+    NSString *aTemplate = @"hi <foo(a,b)>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"write_str 0, load_attr 1, load_attr 2, new 3 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , a, b, foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testAnonIncludeArgMismatch3 {
-  STErrorListener * errors = [[[ErrorBuffer alloc] init] autorelease];
-  NSString * template = @"<a:{x|foo},{bar}>";
-  STGroup * g = [[[STGroup alloc] init] autorelease];
-  g.errMgr = [[[ErrorManager alloc] init:errors] autorelease];
-  CompiledST * code = [[[[Compiler alloc] init:g] autorelease] compile:template];
-  NSString * expected = [@"1:11: anonymous template has 0 arg(s) but mapped across 1 value(s)" stringByAppendingString:newline];
-  [self assertEquals:expected arg1:[errors description]];
+- (void) test07AnonIncludeArgs
+{
+    NSString *aTemplate = @"<({ a, b | <a><b>})>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"new 0 0, tostr, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[_sub1]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    [code release];
 }
 
-- (void) testIndirectIncludeWitArgs {
-  NSString * template = @"hi <(foo)(a,b)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, tostr, load_attr 2, load_attr 3, new_ind 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , foo, a, b]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test08AnonIncludeArgMismatch
+{
+    ErrorBuffer *errors = [[ErrorBuffer newErrorBuffer] retain];
+    NSString *aTemplate = @"<a:{foo}>";
+    STGroup *g = [[STGroup newSTGroup] retain];
+    g.errMgr = [ErrorManager newErrorManagerWithListener:errors];
+    CompiledST *code = [[[Compiler newCompiler:g] compile:aTemplate] retain];
+    NSString *expected = @"1:3: anonymous template has 0 arg(s) but mapped across 1 value(s)";
+    NSString *result = [errors toString];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    [code release];
+    [g release];
+    [errors release];
 }
 
-- (void) testProp {
-  NSString * template = @"hi <a.b>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, load_prop 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , a, b]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test09AnonIncludeArgMismatch2
+{
+    ErrorBuffer *errors = [[ErrorBuffer newErrorBuffer] retain];
+    NSString *aTemplate = @"<a,b:{x|foo}>";
+    STGroup *g = [[STGroup newSTGroup] retain];
+    g.errMgr = [ErrorManager newErrorManagerWithListener:errors];
+    CompiledST *code = [[[Compiler newCompiler:g] compile:aTemplate] retain];
+    NSString *expected = @"1:5: anonymous template has 1 arg(s) but mapped across 2 value(s)";
+    NSString *result = [errors toString];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    [code release];
+    [g release];
+    [errors release];
 }
 
-- (void) testProp2 {
-  NSString * template = @"<u.id>: <u.name>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [@"load_attr 0, load_prop 1, write, write_str 2, " stringByAppendingString:@"load_attr 0, load_prop 3, write"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[u, id, : , name]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test10AnonIncludeArgMismatch3
+{
+    ErrorBuffer *errors = [[ErrorBuffer newErrorBuffer] retain];
+    NSString *aTemplate = @"<a:{x|foo},{bar}>";
+    STGroup *g = [[STGroup newSTGroup] retain];
+    g.errMgr = [ErrorManager newErrorManagerWithListener:errors];
+    CompiledST *code = [[[Compiler newCompiler:g] compile:aTemplate] retain];
+    NSString *expected = @"1:11: anonymous template has 0 arg(s) but mapped across 1 value(s)";
+    STAssertTrue( [expected isEqualTo:[errors toString]], @"Expected \"%@\" but had \"%@\"", expected, [errors toString] );
+    [code release];
+    [g release];
+    [errors release];
 }
 
-- (void) testMap {
-  NSString * template = @"<name:bold()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, new 1 1, map, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, bold]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test11IndirectIncludeWitArgs
+{
+    NSString *aTemplate = @"hi <(foo)(a,b)>";
+    CompiledST *code = [[[Compiler newCompiler] compile:aTemplate] retain];
+    NSString *asmExpected = @"write_str 0, load_attr 1, tostr, load_attr 2, load_attr 3, new_ind 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , foo, a, b]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult);
+    [code release];
 }
 
-- (void) testMapAsOption {
-  NSString * template = @"<a; wrap=name:bold()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [@"load_attr 0, options, load_attr 1, null, new 2 1, map, " stringByAppendingString:@"store_option 4, write_opt"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[a, name, bold]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test12Prop
+{
+    NSString *aTemplate = @"hi <a.b>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, load_prop 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , a, b]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testMapArg {
-  NSString * template = @"<name:bold(x)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, load_attr 1, new 2 2, map, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, x, bold]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test13Prop2
+{
+    NSString *aTemplate = @"<u.id>: <u.name>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, load_prop 1, write, write_str 2, load_attr 0, load_prop 3, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[u, id, : , name]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testIndirectMapArg {
-  NSString * template = @"<name:(t)(x)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, load_attr 1, tostr, null, load_attr 2, new_ind 2, map, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, t, x]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test14Map
+{
+    NSString *aTemplate = @"<name:bold()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, new 1 1, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, bold]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testRepeatedMap {
-  NSString * template = @"<name:bold():italics()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, new 1 1, map, null, new 2 1, map, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, bold, italics]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test15MapAsOption
+{
+    NSString *aTemplate = @"<a; wrap=name:bold()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, options, load_attr 1, null, new 2 1, map, store_option 4, write_opt";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[a, name, bold]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testRepeatedMapArg {
-  NSString * template = @"<name:bold(x):italics(x,y)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [@"load_attr 0, null, load_attr 1, new 2 2, map, " stringByAppendingString:@"null, load_attr 1, load_attr 3, new 4 3, map, write"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, x, bold, y, italics]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test16MapArg
+{
+    NSString *aTemplate = @"<name:bold(x)>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, load_attr 1, new 2 2, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, x, bold]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testRotMap {
-  NSString * template = @"<name:bold(),italics()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, new 1 1, null, new 2 1, rot_map 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, bold, italics]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test17IndirectMapArg
+{
+    NSString *aTemplate = @"<name:(t)(x)>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, load_attr 1, tostr, null, load_attr 2, new_ind 2, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, t, x]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testRotMapArg {
-  NSString * template = @"<name:bold(x),italics()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, load_attr 1, new 2 2, null, new 3 1, rot_map 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, x, bold, italics]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test18RepeatedMap
+{
+    NSString *aTemplate = @"<name:bold():italics()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, new 1 1, map, null, new 2 1, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, bold, italics]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testZipMap {
-  NSString * template = @"<names,phones:bold()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, load_attr 1, null, null, new 2 2, zip_map 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[names, phones, bold]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test19RepeatedMapArg
+{
+    NSString *aTemplate = @"<name:bold(x):italics(x,y)>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, load_attr 1, new 2 2, map, null, load_attr 1, load_attr 3, new 4 3, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, x, bold, y, italics]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testZipMapArg {
-  NSString * template = @"<names,phones:bold(x)>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, load_attr 1, null, null, load_attr 2, new 3 3, zip_map 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[names, phones, x, bold]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test20RotMap
+{
+    NSString *aTemplate = @"<name:bold(),italics()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, new 1 1, null, new 2 1, rot_map 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, bold, italics]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testAnonMap {
-  NSString * template = @"<name:{n | <n>}>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, null, new 1 1, map, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[name, _sub1]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test21RotMapArg
+{
+    NSString *aTemplate = @"<name:bold(x),italics()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, load_attr 1, new 2 2, null, new 3 1, rot_map 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, x, bold, italics]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testAnonZipMap {
-  NSString * template = @"<a,b:{x,y | <x><y>}>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"load_attr 0, load_attr 1, null, null, new 2 2, zip_map 2, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[a, b, _sub1]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test22ZipMap
+{
+    NSString *aTemplate = @"<names,phones:bold()>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, load_attr 1, null, null, new 2 2, zip_map 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[names, phones, bold]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testIf {
-  NSString * template = @"go: <if(name)>hi, foo<endif>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, brf 12, write_str 2";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[go: , name, hi, foo]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test23ZipMapArg
+{
+    NSString *aTemplate = @"<names,phones:bold(x)>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, load_attr 1, null, null, load_attr 2, new 3 3, zip_map 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[names, phones, x, bold]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testIfElse {
-  NSString * template = @"go: <if(name)>hi, foo<else>bye<endif>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [[[[[@"write_str 0, " stringByAppendingString:@"load_attr 1, "] stringByAppendingString:@"brf 15, "] stringByAppendingString:@"write_str 2, "] stringByAppendingString:@"br 18, "] stringByAppendingString:@"write_str 3"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[go: , name, hi, foo, bye]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test24AnonMap
+{
+    NSString *aTemplate = @"<name:{n | <n>}>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, null, new 1 1, map, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[name, _sub1]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testElseIf {
-  NSString * template = @"go: <if(name)>hi, foo<elseif(user)>a user<endif>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [[[[[[[@"write_str 0, " stringByAppendingString:@"load_attr 1, "] stringByAppendingString:@"brf 15, "] stringByAppendingString:@"write_str 2, "] stringByAppendingString:@"br 24, "] stringByAppendingString:@"load_attr 3, "] stringByAppendingString:@"brf 24, "] stringByAppendingString:@"write_str 4"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[go: , name, hi, foo, user, a user]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test25AnonZipMap
+{
+    NSString *aTemplate = @"<a,b:{x,y | <x><y>}>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"load_attr 0, load_attr 1, null, null, new 2 2, zip_map 2, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[a, b, _sub1]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testElseIfElse {
-  NSString * template = @"go: <if(name)>hi, foo<elseif(user)>a user<else>bye<endif>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [[[[[[[[[@"write_str 0, " stringByAppendingString:@"load_attr 1, "] stringByAppendingString:@"brf 15, "] stringByAppendingString:@"write_str 2, "] stringByAppendingString:@"br 30, "] stringByAppendingString:@"load_attr 3, "] stringByAppendingString:@"brf 27, "] stringByAppendingString:@"write_str 4, "] stringByAppendingString:@"br 30, "] stringByAppendingString:@"write_str 5"];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[go: , name, hi, foo, user, a user, bye]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test26If
+{
+    NSString *aTemplate = @"go: <if(name)>hi, foo<endif>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, brf 12, write_str 2";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[go: , name, hi, foo]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testOption {
-  NSString * template = @"hi <name; separator=\"x\">";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, options, load_str 2, store_option 3, write_opt";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , name, x]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test27IfElse
+{
+    NSString *aTemplate = @"go: <if(name)>hi, foo<else>bye<endif>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, brf 15, write_str 2, br 18, write_str 3";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[go: , name, hi, foo, bye]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testOptionAsTemplate {
-  NSString * template = @"hi <name; separator={, }>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"write_str 0, load_attr 1, options, new 2 0, store_option 3, write_opt";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[hi , name, _sub1]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test28ElseIf
+{
+    NSString *aTemplate = @"go: <if(name)>hi, foo<elseif(user)>a user<endif>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, brf 15, write_str 2, br 24, load_attr 3, brf 24, write_str 4";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[go: , name, hi, foo, user, a user]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testOptions {
-  NSString * template = @"hi <name; anchor, wrap=foo(), separator=\", \">";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = [[[[[[[[[@"write_str 0, " stringByAppendingString:@"load_attr 1, "] stringByAppendingString:@"options, "] stringByAppendingString:@"load_str 2, "] stringByAppendingString:@"store_option 0, "] stringByAppendingString:@"new 3 0, "] stringByAppendingString:@"store_option 4, "] stringByAppendingString:@"load_str 4, "] stringByAppendingString:@"store_option 3, "] stringByAppendingString:@"write_opt"];
-  NSString * stringsExpected = @"[hi , name, true, foo, , ]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
+- (void) test29ElseIfElse
+{
+    NSString *aTemplate = @"go: <if(name)>hi, foo<elseif(user)>a user<else>bye<endif>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, brf 15, write_str 2, br 30, load_attr 3, brf 27, write_str 4, br 30, write_str 5";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[go: , name, hi, foo, user, a user, bye]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testEmptyList {
-  NSString * template = @"<[]>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"list, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test30Option
+{
+    NSString *aTemplate = @"hi <name; separator=\"x\">";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, options, load_str 2, store_option 3, write_opt";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , name, x]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testList {
-  NSString * template = @"<[a,b]>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:template];
-  NSString * asmExpected = @"list, load_attr 0, add, load_attr 1, add, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[a, b]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test31OptionAsTemplate
+{
+    NSString *aTemplate = @"hi <name; separator={, }>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"write_str 0, load_attr 1, options, new 2 0, store_option 3, write_opt";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[hi , name, _sub1]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
-- (void) testEmbeddedRegion {
-  NSString * template = @"<@r>foo<@end>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:@"a" arg1:template];
-  NSString * asmExpected = @"new 0 0, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[region__a__r]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test32Options
+{
+    NSString *aTemplate = @"hi <name; anchor, wrap=foo(), separator=\", \">";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *stringsExpected = @"[hi , name, true, foo, , ]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+    NSString *asmExpected = @"write_str 0, load_attr 1, options, load_str 2, store_option 0, new 3 0, store_option 4, load_str 4, store_option 3, write_opt";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
 }
 
-- (void) testRegion {
-  NSString * template = @"x:<@r()>";
-  CompiledST * code = [[[[Compiler alloc] init] autorelease] compile:@"a" arg1:template];
-  NSString * asmExpected = @"write_str 0, new 1 0, write";
-  NSString * asmResult = [code instrs];
-  [self assertEquals:asmExpected arg1:asmResult];
-  NSString * stringsExpected = @"[x:, region__a__r]";
-  NSString * stringsResult = [Arrays description:code.strings];
-  [self assertEquals:stringsExpected arg1:stringsResult];
+- (void) test33EmptyList
+{
+    NSString *aTemplate = @"<[]>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"list, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+}
+
+- (void) test34List
+{
+    NSString *aTemplate = @"<[a,b]>";
+    CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
+    NSString *asmExpected = @"list, load_attr 0, add, load_attr 1, add, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[a, b]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+}
+
+- (void) test35EmbeddedRegion
+{
+    NSString *aTemplate = @"<@r>foo<@end>";
+    CompiledST *code = [[Compiler newCompiler] compile:@"a" template:aTemplate];
+    NSString *asmExpected = @"new 0 0, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[region__a__r]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
+}
+
+- (void) test36Region
+{
+    NSString *aTemplate = @"x:<@r()>";
+    CompiledST *code = [[Compiler newCompiler] compile:@"a" template:aTemplate];
+    NSString *asmExpected = @"write_str 0, new 1 0, write";
+    NSString *asmResult = [code dis_instrs];
+    STAssertTrue( [asmExpected isEqualTo:asmResult], @"Expected \"%@\" but had \"%@\"", asmExpected, asmResult );
+    NSString *stringsExpected = @"[x:, region__a__r]";
+    NSString *stringsResult = [[Strings newStringsWithArray:code.strings] toString];
+    STAssertTrue( [stringsExpected isEqualTo:stringsResult], @"Expected \"%@\" but had \"%@\"", stringsExpected, stringsResult );
 }
 
 @end

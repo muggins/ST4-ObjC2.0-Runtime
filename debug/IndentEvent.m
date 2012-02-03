@@ -25,25 +25,21 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <ANTLR/ANTLR.h>
-#import "STMessage.h"
 
-@interface STLexerMessage : STMessage {
-  NSString *msg;
-  CommonToken *templateToken;
-  NSString *srcName;
+#import "IndentEvent.h"
+
+
+@implementation IndentEvent
+
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStartChar:(NSInteger)anExprStartChar exprStopChar:(NSInteger)anExprStopChar
+{
+    return [[IndentEvent alloc] init:(InstanceScope *)aScope start:aStart stop:aStop exprStart:anExprStartChar exprStop:anExprStopChar];
 }
 
-+ (id) newMessage:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(CommonToken *)aTemplateToken cause:(NSException *)aCause;
-
-- (id) init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(CommonToken *)aTemplateToken cause:(NSException *)aCause;
-
-- (void) dealloc;
-- (NSString *) description;
-- (NSString *) toString;
-
-@property (retain, getter=getMsg, setter=setMsg:) NSString *msg;
-@property (retain, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
-@property (retain, getter=getSrcName, setter=setSrcName:) NSString *srcName;
+- (id) init:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStartChar exprStop:(NSInteger)anExprStopChar
+{
+    self=[super init:(InstanceScope *)aScope start:aStart stop:aStop exprStart:anExprStartChar exprStop:anExprStopChar];
+    return self;
+}
 
 @end

@@ -1,7 +1,17 @@
-#import "Test.h"
+#import <Cocoa/Cocoa.h>
+#import <ANTLR/ANTLR.h>
+#import <SenTestingKit/SenTestingKit.h>
+#import "STLexer.h"
+#import "STToken.h"
 
-@interface TestLexer : BaseTest {
+@interface TestLexer : SenTestCase {
 }
+
+- (void)setUp;
+- (void)tearDown;
+
+- (void) checkTokens:(NSString *)template expected:(NSString *)expected;
+- (void) checkTokens:(NSString *)template expected:(NSString *)expected delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 
 - (void) testOneExpr;
 - (void) testOneExprSurrounded;

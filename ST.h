@@ -26,7 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import <ANTLR/ANTLR.h>
-#import "STToken.h"
+#import <ANTLR/CommonToken.h>
 #import "Writer.h"
 #import "STGroup.h"
 #import "STErrorListener.h"
@@ -88,12 +88,12 @@ typedef enum {
 }
 
 @property (retain) ConstructionEvent *newSTEvent;
-@property (retain, getter = addAttrEvents) AMutableDictionary *addAttrEvents;
+@property (retain) AMutableDictionary *addAttrEvents;
 
 + (id) newDebugState;
 - (id) init;
 
-- (AMutableDictionary *)addAttrEvents;
+- (AMutableDictionary *)setAddAttrEvents;
 @end
 
 /**

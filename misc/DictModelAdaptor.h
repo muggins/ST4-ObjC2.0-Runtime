@@ -25,25 +25,16 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <ANTLR/ANTLR.h>
-#import "STMessage.h"
+#import "ModelAdaptor.h"
+#import "ST.h"
+#import "STGroup.h"
+#import "Interpreter.h"
 
-@interface STLexerMessage : STMessage {
-  NSString *msg;
-  CommonToken *templateToken;
-  NSString *srcName;
+@interface DictModelAdaptor : NSObject <ModelAdaptor> {
 }
 
-+ (id) newMessage:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(CommonToken *)aTemplateToken cause:(NSException *)aCause;
++ (id) newDictModelAdaptor;
 
-- (id) init:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(CommonToken *)aTemplateToken cause:(NSException *)aCause;
-
-- (void) dealloc;
-- (NSString *) description;
-- (NSString *) toString;
-
-@property (retain, getter=getMsg, setter=setMsg:) NSString *msg;
-@property (retain, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
-@property (retain, getter=getSrcName, setter=setSrcName:) NSString *srcName;
-
+- (id) init;
+- (id) getProperty:(Interpreter *)interp who:(ST *)who obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

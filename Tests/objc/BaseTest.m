@@ -1,15 +1,57 @@
+//
+//  BaseTest.m
+//  BaseTest
+//
+//  Created by Alan Condit on 4/3/11.
+//  Copyright 2011 Alan's MachineWorks. All rights reserved.
+//
+
 #import "BaseTest.h"
+#import "STGroup.h"
+#import "STLexer.h"
+#import "Writer.h"
+#import "ErrorManager.h"
+#import "STGroup.h"
+#import "Compiler.h"
+
+NSString *const tmpdir = @"~/Documents/tmp";
+NSString *const newline = @"\n"/* Misc.newline */;
 
 @implementation User
 
-@synthesize manager;
+@synthesize num;
 @synthesize name;
+@synthesize manager;
+@synthesize parkingSpot;
+
++ (id) new
+{
+    return [[User alloc] init];
+}
+
++ (id) newUser:(NSInteger)aNum name:(NSString *)aName
+{
+    return [[User alloc] init:aNum name:aName];
+}
+
+- (id) init
+{
+    if ( (self=[super init]) != nil ) {
+        num = 0;
+        name = @"";
+        manager = YES;
+        parkingSpot = YES;
+    }
+    return self;
+}
 
 - (id) init:(int)aNum name:(NSString *)aName
 {
-    if (self = [super init]) {
+    if ( (self=[super init]) != nil ) {
         num = aNum;
         name = aName;
+        manager = YES;
+        parkingSpot = YES;
     }
     return self;
 }
@@ -19,8 +61,12 @@
     return YES;
 }
 
-- (void) dealloc {
-    [name release];
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in User" );
+#endif
+    if ( name ) [name release];
     [super dealloc];
 }
 
@@ -28,8 +74,9 @@
 
 @implementation HashableUser
 
-- (id) init:(int)aNum name:(NSString *)aName {
-    if (self = [super init:aNum arg1:aName]) {
+- (id) init:(int)aNum name:(NSString *)aName
+{
+    if ( (self=[super init:aNum name:aName]) != nil ) {
     }
     return self;
 }
@@ -39,10 +86,10 @@
     return num;
 }
 
-- (BOOL) isEqualTo:(NSObject *)o
+- (BOOL) isEqualTo:(NSObject *)obj
 {
-    if ([o conformsToProtocol:@protocol(HashableUser)]) {
-        HashableUser *hu = (HashableUser *)o;
+    if ([obj isKindOfClass:[HashableUser class]]) {
+        HashableUser *hu = (HashableUser *)obj;
         return num == hu.num && [name isEqualTo:hu.name];
     }
     return NO;
@@ -50,36 +97,56 @@
 
 @end
 
-NSString * const tmpdir = [System getProperty:@"java.io.tmpdir"];
-NSString * const newline = Misc.newline;
-
 @implementation BaseTest
 
 @synthesize randomDir;
 
-- (void) setUp
+- (void)setUp
 {
-    STGroup.defaultGroup = [[[STGroup alloc] init] autorelease];
-    Compiler.subtemplateCount = 0;
-    STGroup.debug = NO;
+    [super setUp];
+    
+    // Set-up code here.
+}
+
+- (void)tearDown
+{
+    // Tear-down code here.
+    
+    [super tearDown];
 }
 
 + (void) writeFile:(NSString *)dir fileName:(NSString *)fileName content:(NSString *)content
 {
+    NSString *path;
+    NSFileHandle *fh;
+    // NSError *error;
+    NSString *str;
+    NSArray *cs;
     
     @try {
-        File * f = [[[File alloc] init:dir arg1:fileName] autorelease];
+        path = [[dir stringByAppendingPathComponent:fileName] stringByExpandingTildeInPath];
+        // NSFileHandle *f = [[File alloc] init:dir arg1:fileName];
+        fh = [NSFileHandle fileHandleForWritingAtPath:path];
+#ifdef DONTUSENOMo
         if (![[f parentFile] exists])
             [[f parentFile] mkdirs];
-        FileWriter * w = [[[FileWriter alloc] init:f] autorelease];
-        BufferedWriter * bw = [[[BufferedWriter alloc] init:w] autorelease];
-        [bw write:content];
+#endif
+        FileWriter *fw = [[FileWriter newWriterWithFH:fh] retain];
+        BufferedWriter *bw = [[BufferedWriter newWriter] retain];
+        [bw writeStr:content];
+        [fw writeStr:content];
         [bw close];
-        [w close];
+        [fw close];
     }
-    @catch (IOException * ioe) {
-        [System.err println:@"can't write file"];
-        [ioe printStackTrace:System.err];
+    @catch (IOException *ioe) {
+        //[System.err println:@"can't write file"];
+        NSLog( @"can't write file" );
+        //[ioe printStackTrace:System.err];
+        cs = [ioe callStackSymbols];
+        for (int i=0; i < [cs count]; i++ ) {
+            str = [cs objectAtIndex:i];
+            NSLog( @"CallStack = %@\n", str );
+        }
     }
 }
 
@@ -90,32 +157,111 @@ NSString * const newline = Misc.newline;
 
 - (void) checkTokens:(NSString *)template expected:(NSString *)expected delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar
 {
-    STLexer *lexer = [[[STLexer alloc] init:STGroup.DEFAULT_ERR_MGR arg1:[[[ANTLRStringStream alloc] init:template] autorelease] arg2:nil arg3:delimiterStartChar arg4:delimiterStopChar] autorelease];
-    ANTLRCommonTokenStream *tokens = [[[ANTLRCommonTokenStream alloc] init:lexer] autorelease];
-    NSMutableString *buf = [[NSMutableString stringWithCapacity:30] autorelease];
-    [buf append:@"["];
+    STLexer *lexer = [[STLexer newSTLexer:STGroup.DEFAULT_ERR_MGR input:[ANTLRStringStream newANTLRStringStream:template] templateToken:nil delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar] retain];
+    CommonTokenStream *tokens = [[CommonTokenStream newCommonTokenStreamWithTokenSource:lexer] retain];
+    NSMutableString *buf = [[NSMutableString stringWithCapacity:30] retain];
+    [buf appendString:@"["];
     int i = 1;
-    Token * t = [tokens LT:i];
-    
-    while ([t type] != Token.EOF) {
+    CommonToken *t = [tokens LT:i];
+    while (t.type != TokenTypeEOF) {
         if (i > 1)
-            [buf append:@", "];
-        [buf append:t];
+            [buf appendString:@", "];
+        [buf appendString:[t toString]];
         i++;
         t = [tokens LT:i];
     }
     
-    [buf append:@"]"];
-    NSString *result = [buf description];
+    [buf appendString:@"]"];
+    NSString *result = [NSString stringWithString:buf];
     STAssertTrue( [expected isEqualToString:result], @"Expected %@, but got \"%@\"", expected, result );
 }
 
 + (NSString *) randomDir
 {
-    NSString * randomDir = [tmpdir stringByAppendingString:@"dir"] + [NSString valueOf:(int)([Math random] * 100000)];
-    File * f = [[[File alloc] init:randomDir] autorelease];
-    [f mkdirs];
-    return randomDir;
+    BOOL isDir;
+    NSError *error;
+    NSFileManager *defaultManager;
+    NSString *randomDir = [NSString stringWithFormat:@"%@dir%d", tmpdir, (int)arc4random()];
+    defaultManager = [NSFileManager defaultManager];
+    if (![defaultManager fileExistsAtPath:randomDir isDirectory:&isDir]) {
+        if ([defaultManager createDirectoryAtPath:randomDir withIntermediateDirectories:NO attributes:nil error:&error] ) {
+            NSLog( @"Created \"%@\"", randomDir );
+            return randomDir;
+        }
+    }
+    return nil;
 }
 
 @end
+
+@implementation Strings
+
++ (id) newStringsWithArray:(AMutableArray *)anArray
+{
+    return [[[Strings alloc] initWithArray:(AMutableArray *)anArray] retain];
+}
+
+- (id) initWithArray:(AMutableArray *)anArray
+{
+    self=[super init];
+    if ( self != nil ) {
+        if ( [anArray isKindOfClass:[NSArray class]] ) {
+            thisArray = [anArray retain];
+        }
+    }
+    return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in Strings" );
+#endif
+    if ( thisArray ) [thisArray release];
+    [super dealloc];
+}
+
+- (void) addObject:(id)anObject
+{
+    [thisArray addObject:anObject];
+}
+
+- (id) objectAtIndex:(NSInteger)idx
+{
+    return [thisArray objectAtIndex:idx];
+}
+
+- (NSString *)description
+{
+    NSInteger i;
+    NSMutableString *str = nil;
+
+    if (thisArray != nil) {
+        str = [NSMutableString stringWithCapacity:16];
+        NSInteger count;
+        count = [thisArray count];
+        id obj;
+        [str appendString:@"["];
+        for (i=0; i < count; i++ ) {
+            obj = [thisArray objectAtIndex:i];
+            if ([obj isKindOfClass:[NSString class]]) {
+                [str appendString:obj];
+                NSLog( @"String %d = %@\n", i, obj);
+            }
+            if ( i < count-1) {
+                [str appendString:@", "];
+            }
+        }
+        [str appendString:@"]"];
+    }
+    return [NSString stringWithString:str];
+}
+
+- (NSString *) toString
+{
+    return [self description];
+}
+
+@synthesize thisArray;
+@end
+

@@ -25,55 +25,57 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
-#import <Foundation/Foundation.h>
+#import "STErrorListener.h"
+#import "DictModelAdaptor.h"
+#import "Interpreter.h"
+#import "CompiledST.h"
 
-/**
- * Iterator for an array so I don't have to copy the array to a List
- * just to make it iteratable.
- */
+@implementation DictModelAdaptor
 
-/*
- * this is the state structure for FastEnumeration
- typedef struct {
- unsigned long state;
- id *itemsPtr;
- unsigned long *mutationsPtr;
- unsigned long extra[5];
- } NSFastEnumerationState;
- */
-
-@interface ArrayIterator : NSObject {
-    
-    id peekObj;
-    /**
-     * NSArrays are fixed size; precompute count.
-     */
-    NSInteger count;
-    NSInteger index;
-    NSArray *anArray;
-    
++ (id) newDictModelAdaptor
+{
+    return [[DictModelAdaptor alloc] init];
 }
 
-+ (ArrayIterator *) newIterator:(NSArray *)array;
-+ (ArrayIterator *) newIteratorForDictKey:(NSDictionary *)dict;
-+ (ArrayIterator *) newIteratorForDictObj:(NSDictionary *)dict;
+- (id) init
+{
+    self = [super init];
+    return self;
+}
 
-- (id) initWithArray:(NSArray *)array;
-- (id) initWithDictKey:(NSDictionary *)dict;
-- (id) initWithDictObj:(NSDictionary *)dict;
-
-- (BOOL) hasNext;
-- (id) nextObject;
-- (NSArray *)allObjects;
-- (void) removeObjectAtIndex:(NSInteger)idx;
-- (NSInteger) count;
-- (void) dealloc;
-
-@property (retain) id peekObj;
-@property (assign, getter=count) NSInteger count;
-@property (assign) NSInteger index;
-@property (retain) NSArray *anArray;
+- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
+{
+    id value;
+    AMutableDictionary *dict = (AMutableDictionary *)obj;
+    if ( aProperty == nil ) {
+        value = [dict objectForKey:STGroup.DEFAULT_KEY];
+    }
+    else if ( [aProperty isEqualTo:@"keys"] ) {
+        value = [dict allKeys];
+    }
+    else if ( [aProperty isEqualTo:@"values"] ) {
+        value = [dict allValues];
+    }
+    else if ( [dict objectForKey:aProperty] ) {
+        value = [dict objectForKey:aProperty];
+    }
+    else if ( [dict objectForKey:aPropertyName] ) { // if can't find the key, try toString version
+        value = [dict objectForKey:aPropertyName];
+    }
+    else {
+        value = [dict objectForKey:STGroup.DEFAULT_KEY]; // not found, use default
+    }
+    if ( value == STGroup.DICT_KEY ) {
+        value = aProperty;
+    }
+    if ( [value isKindOfClass:[ST class]] ) {
+        ST *st = (ST *)value;
+        st = [st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
+        st.enclosingInstance = aWho;
+        value = st;
+    }
+    return value;
+}
 
 @end

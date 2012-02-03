@@ -1,371 +1,477 @@
 #import "TestFunctions.h"
+#import "BaseTest.h"
+#import "STGroupFile.h"
 
 @implementation TestFunctions_Anon1
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:@"Ter"];
-    [self add:@"Tom"];
-  }
-  return self;
++ (id) newAnon
+{
+    return [[TestFunctions_Anon1 alloc] init];
+}
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        [self addObject:@"Ter"];
+        [self addObject:@"Tom"];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon2
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:@"Ter"];
-    [self add:@"Tom"];
-  }
-  return self;
++ (id) newAnon
+{
+    return [[TestFunctions_Anon2 alloc] init];
+}
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        [self addObject:@"Ter"];
+        [self addObject:@"Tom"];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon3
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:@"Ter"];
-    [self add:nil];
-    [self add:@"Tom"];
-    [self add:nil];
-  }
-  return self;
++ (id) newAnon
+{
+    return [[TestFunctions_Anon3 alloc] init];
+}
+
+- (id) init
+{
+    if ( (self=[super init]) != nil ) {
+        [self addObject:@"Ter"];
+        [self addObject:nil];
+        [self addObject:@"Tom"];
+        [self addObject:nil];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon4
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:@"Ter"];
-  }
-  return self;
++ (id) newAnon
+{
+    return [[TestFunctions_Anon4 alloc] init];
+}
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        [self addObject:@"Ter"];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon5
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:@"Ter"];
-  }
-  return self;
++ (id) newAnon
+{
+    return [[TestFunctions_Anon5 alloc] init];
+}
+
+- (id) init
+{
+    self=[super init];
+    if ( self != nil ) {
+        [self addObject:@"Ter"];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon6
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:m1];
-    [self add:m2];
-  }
-  return self;
++ (id) newAnon:(id)a b:(id)b
+{
+    return [[TestFunctions_Anon6 alloc] init:a b:b];
+}
+
+- (id) init:(id)a b:(id)b
+{
+    if ( (self=[super init]) != nil ) {
+        [self addObject:a];
+        [self addObject:b];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions_Anon7
 
-- (void) init {
-  if (self = [super init]) {
-    [self add:m1];
-    [self add:m2];
-  }
-  return self;
++ (id) newAnon:(id)a b:(id)b
+{
+    return [[TestFunctions_Anon7 alloc] init:a b:b];
+}
+
+- (id) init:(id)a b:(id)b
+{
+    self=[super init];
+    if ( self != nil ) {
+        [self addObject:a];
+        [self addObject:b];
+    }
+    return self;
 }
 
 @end
 
 @implementation TestFunctions
 
-- (void) testFirst {
-  NSString * template = @"<first(names)>";
-  ST * st = [[[ST alloc] init:template] autorelease];
-  NSMutableArray * names = [[[TestFunctions_Anon1 alloc] init] autorelease];
-  [st add:@"names" arg1:names];
-  NSString * expected = @"Ter";
-  NSString * result = [st render];
-  [self assertEquals:expected arg1:result];
+- (void) test01First
+{
+    NSString *template = @"<first(names)>";
+    ST *st = [ST newSTWithTemplate:template];
+    AMutableArray *names = [TestFunctions_Anon1 newAnon];
+    [st add:@"names" value:names];
+    NSString *expected = @"Ter";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLength {
-  NSString * template = @"<length(names)>";
-  ST * st = [[[ST alloc] init:template] autorelease];
-  NSMutableArray * names = [[[TestFunctions_Anon2 alloc] init] autorelease];
-  [st add:@"names" arg1:names];
-  NSString * expected = @"2";
-  NSString * result = [st render];
-  [self assertEquals:expected arg1:result];
+- (void) test02Length
+{
+    NSString *template = @"<length(names)>";
+    ST *st = [ST newSTWithTemplate:template];
+    AMutableArray *names = [TestFunctions_Anon2 newAnon];
+    [st add:@"names" value:names];
+    NSString *expected = @"2";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLengthWithNullValues {
-  NSString * template = @"<length(names)>";
-  ST * st = [[[ST alloc] init:template] autorelease];
-  NSMutableArray * names = [[[TestFunctions_Anon3 alloc] init] autorelease];
-  [st add:@"names" arg1:names];
-  NSString * expected = @"4";
-  NSString * result = [st render];
-  [self assertEquals:expected arg1:result];
+- (void) test03LengthWithNullValues
+{
+    NSString *template = @"<length(names)>";
+    ST *st = [ST newSTWithTemplate:template];
+    AMutableArray *names = [TestFunctions_Anon3 newAnon];
+    [st add:@"names" value:names];
+    NSString *expected = @"4";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testFirstOp {
-  ST * e = [[[ST alloc] init:@"<first(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test04FirstOp
+{
+    ST *e = [ST newSTWithTemplate:@"<first(names)>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testTruncOp {
-  ST * e = [[[ST alloc] init:@"<trunc(names); separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Ter, Tom";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test05TruncOp
+{
+    ST *e = [ST newSTWithTemplate:@"<trunc(names); separator=\", \">"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Ter, Tom";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testRestOp {
-  ST * e = [[[ST alloc] init:@"<rest(names); separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Tom, Sriram";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test06RestOp
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names); separator=\", \">"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Tom, Sriram";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testRestOpEmptyList {
-  ST * e = [[[ST alloc] init:@"<rest(names); separator=\", \">"] autorelease];
-  [e add:@"names" arg1:[[[NSMutableArray alloc] init] autorelease]];
-  NSString * expecting = @"";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test07RestOpEmptyList
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names); separator=\", \">"];
+    [e add:@"names" value:[AMutableArray arrayWithCapacity:16]];
+    NSString *expected = @"";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testReUseOfRestResult {
-  NSString * templates = [[@"a(names) ::= \"<b(rest(names))>\"" stringByAppendingString:newline] stringByAppendingString:@"b(x) ::= \"<x>, <x>\""] + newline;
-  [self writeFile:tmpdir arg1:@"t.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"t.stg"]] autorelease];
-  ST * e = [group getInstanceOf:@"a"];
-  NSMutableArray * names = [[[NSMutableArray alloc] init] autorelease];
-  [names addObject:@"Ter"];
-  [names addObject:@"Tom"];
-  [e add:@"names" arg1:names];
-  NSString * expecting = @"Tom, Tom";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test08ReUseOfRestResult
+{
+    NSString *templates =@"a(names) ::= \"<b(rest(names))>\"\nb(x) ::= \"<x>, <x>\"\n";
+    [BaseTest writeFile:tmpdir fileName:@"t.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingPathComponent:@"t.stg"]];
+    ST *e = [group getInstanceOf:@"a"];
+    AMutableArray *names = [AMutableArray arrayWithCapacity:16];
+    [names addObject:@"Ter"];
+    [names addObject:@"Tom"];
+    [e add:@"names" value:names];
+    NSString *expected = @"Tom, Tom";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLastOp {
-  ST * e = [[[ST alloc] init:@"<last(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Sriram";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test09LastOp
+{
+    ST *e = [ST newSTWithTemplate:@"<last(names)>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Sriram";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testStripOp {
-  ST * e = [[[ST alloc] init:@"<strip(names); null=\"n/a\">"] autorelease];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:@"Sriram"];
-  [e add:@"names" arg1:nil];
-  NSString * expecting = @"TomSriram";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test10StripOp
+{
+    ST *e = [ST newSTWithTemplate:@"<strip(names); null=\"n/a\">"];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:@"Sriram"];
+    [e add:@"names" value:nil];
+    NSString *expected = @"TomSriram";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLengthStrip {
-  ST * e = [[[ST alloc] init:@"<length(strip(names))>"] autorelease];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:nil];
-  [e add:@"names" arg1:@"Sriram"];
-  [e add:@"names" arg1:nil];
-  NSString * expecting = @"2";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test11LengthStrip
+{
+    ST *e = [ST newSTWithTemplate:@"<length(strip(names))>"];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:nil];
+    [e add:@"names" value:@"Sriram"];
+    [e add:@"names" value:nil];
+    NSString *expected = @"2";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCombinedOp {
-  ST * e = [[[ST alloc] init:@"<[first(mine),rest(yours)]; separator=\", \">"] autorelease];
-  [e add:@"mine" arg1:@"1"];
-  [e add:@"mine" arg1:@"2"];
-  [e add:@"mine" arg1:@"3"];
-  [e add:@"yours" arg1:@"a"];
-  [e add:@"yours" arg1:@"b"];
-  NSString * expecting = @"1, b";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test12CombinedOp
+{
+    ST *e = [ST newSTWithTemplate:@"<[first(mine),rest(yours)]; separator=\", \">"];
+    [e add:@"mine" value:@"1"];
+    [e add:@"mine" value:@"2"];
+    [e add:@"mine" value:@"3"];
+    [e add:@"yours" value:@"a"];
+    [e add:@"yours" value:@"b"];
+    NSString *expected = @"1, b";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatListAndSingleAttribute {
-  ST * e = [[[ST alloc] init:@"<[mine,yours]; separator=\", \">"] autorelease];
-  [e add:@"mine" arg1:@"1"];
-  [e add:@"mine" arg1:@"2"];
-  [e add:@"mine" arg1:@"3"];
-  [e add:@"yours" arg1:@"a"];
-  NSString * expecting = @"1, 2, 3, a";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test13CatListAndSingleAttribute
+{
+    ST *e = [ST newSTWithTemplate:@"<[mine,yours]; separator=\", \">"];
+    [e add:@"mine" value:@"1"];
+    [e add:@"mine" value:@"2"];
+    [e add:@"mine" value:@"3"];
+    [e add:@"yours" value:@"a"];
+    NSString *expected = @"1, 2, 3, a";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testReUseOfCat {
-  NSString * templates = [[@"a(mine,yours) ::= \"<b([mine,yours])>\"" stringByAppendingString:newline] stringByAppendingString:@"b(x) ::= \"<x>, <x>\""] + newline;
-  [self writeFile:tmpdir arg1:@"t.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"t.stg"]] autorelease];
-  ST * e = [group getInstanceOf:@"a"];
-  NSMutableArray * mine = [[[NSMutableArray alloc] init] autorelease];
-  [mine addObject:@"Ter"];
-  [mine addObject:@"Tom"];
-  [e add:@"mine" arg1:mine];
-  NSMutableArray * yours = [[[NSMutableArray alloc] init] autorelease];
-  [yours addObject:@"Foo"];
-  [e add:@"yours" arg1:yours];
-  NSString * expecting = @"TerTomFoo, TerTomFoo";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test14ReUseOfCat
+{
+    NSString *templates = @"a(mine,yours) ::= \"<b([mine,yours])>\"\nb(x) ::= \"<x>, <x>\"\n";
+    [BaseTest writeFile:tmpdir fileName:@"t.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingPathComponent:@"t.stg"]];
+    ST *e = [group getInstanceOf:@"a"];
+    AMutableArray *mine = [AMutableArray arrayWithCapacity:16];
+    [mine addObject:@"Ter"];
+    [mine addObject:@"Tom"];
+    [e add:@"mine" value:mine];
+    AMutableArray *yours = [AMutableArray arrayWithCapacity:16];
+    [yours addObject:@"Foo"];
+    [e add:@"yours" value:yours];
+    NSString *expected = @"TerTomFoo, TerTomFoo";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatListAndEmptyAttributes {
-  ST * e = [[[ST alloc] init:@"<[x,mine,y,yours,z]; separator=\", \">"] autorelease];
-  [e add:@"mine" arg1:@"1"];
-  [e add:@"mine" arg1:@"2"];
-  [e add:@"mine" arg1:@"3"];
-  [e add:@"yours" arg1:@"a"];
-  NSString * expecting = @"1, 2, 3, a";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test15CatListAndEmptyAttributes
+{
+    ST *e = [ST newSTWithTemplate:@"<[x,mine,y,yours,z]; separator=\", \">"];
+    [e add:@"mine" value:@"1"];
+    [e add:@"mine" value:@"2"];
+    [e add:@"mine" value:@"3"];
+    [e add:@"yours" value:@"a"];
+    NSString *expected = @"1, 2, 3, a";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testNestedOp {
-  ST * e = [[[ST alloc] init:@"<first(rest(names))>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Tom";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test16NestedOp
+{
+    ST *e = [ST newSTWithTemplate:@"<first(rest(names))>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Tom";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testFirstWithOneAttributeOp {
-  ST * e = [[[ST alloc] init:@"<first(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test17FirstWithOneAttributeOp
+{
+    ST *e = [ST newSTWithTemplate:@"<first(names)>"];
+    [e add:@"names" value:@"Ter"];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLastWithOneAttributeOp {
-  ST * e = [[[ST alloc] init:@"<last(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test18LastWithOneAttributeOp
+{
+    ST *e = [ST newSTWithTemplate:@"<last(names)>"];
+    [e add:@"names" value:@"Ter"];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLastWithLengthOneListAttributeOp {
-  ST * e = [[[ST alloc] init:@"<last(names)>"] autorelease];
-  [e add:@"names" arg1:[[[TestFunctions_Anon4 alloc] init] autorelease]];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test19LastWithLengthOneListAttributeOp
+{
+    ST *e = [ST newSTWithTemplate:@"<last(names)>"];
+    [e add:@"names" value:((TestFunctions_Anon4 *)[[TestFunctions_Anon4 alloc] init])];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testRestWithOneAttributeOp {
-  ST * e = [[[ST alloc] init:@"<rest(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  NSString * expecting = @"";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test20RestWithOneAttributeOp
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names)>"];
+    [e add:@"names" value:@"Ter"];
+    NSString *expected = @"";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testRestWithLengthOneListAttributeOp {
-  ST * e = [[[ST alloc] init:@"<rest(names)>"] autorelease];
-  [e add:@"names" arg1:[[[TestFunctions_Anon5 alloc] init] autorelease]];
-  NSString * expecting = @"";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test21RestWithLengthOneListAttributeOp
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names)>"];
+    [e add:@"names" value:((TestFunctions_Anon5 *)[[TestFunctions_Anon5 alloc] init])];
+    NSString *expected = @"";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testRepeatedRestOp {
-  ST * e = [[[ST alloc] init:@"<rest(names)>, <rest(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  NSString * expecting = @"Tom, Tom";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test22RepeatedRestOp
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names)>, <rest(names)>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    NSString *expected = @"Tom, Tom";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testIncomingLists {
-  ST * e = [[[ST alloc] init:@"<rest(names)>, <rest(names)>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  NSString * expecting = @"Tom, Tom";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test23IncomingLists
+{
+    ST *e = [ST newSTWithTemplate:@"<rest(names)>, <rest(names)>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    NSString *expected = @"Tom, Tom";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testFirstWithCatAttribute {
-  ST * e = [[[ST alloc] init:@"<first([names,phones])>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test24FirstWithCatAttribute
+{
+    ST *e = [ST newSTWithTemplate:@"<first([names,phones])>"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"phones" value:@"1"];
+    [e add:@"phones" value:@"2"];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testFirstWithListOfMaps {
-  ST * e = [[[ST alloc] init:@"<first(maps).Ter>"] autorelease];
-  NSMutableDictionary * m1 = [[[NSMutableDictionary alloc] init] autorelease];
-  NSMutableDictionary * m2 = [[[NSMutableDictionary alloc] init] autorelease];
-  [m1 setObject:@"Ter" arg1:@"x5707"];
-  [e add:@"maps" arg1:m1];
-  [m2 setObject:@"Tom" arg1:@"x5332"];
-  [e add:@"maps" arg1:m2];
-  NSString * expecting = @"x5707";
-  [self assertEquals:expecting arg1:[e render]];
-  NSMutableArray * list = [[[TestFunctions_Anon6 alloc] init] autorelease];
-  [e add:@"maps" arg1:list];
-  expecting = @"x5707";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test25FirstWithListOfMaps
+{
+    ST *e = [ST newSTWithTemplate:@"<first(maps).Ter>"];
+    AMutableDictionary *m1 = [AMutableDictionary dictionaryWithCapacity:16];
+    AMutableDictionary *m2 = [AMutableDictionary dictionaryWithCapacity:16];
+    [m1 setObject:@"x5707" forKey:@"Ter"];
+    [e add:@"maps" value:m1];
+    [m2 setObject:@"x5332" forKey:@"Tom"];
+    [e add:@"maps" value:m2];
+    NSString *expected = @"x5707";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
+    AMutableArray *list = [TestFunctions_Anon6 newAnon:m1 b:m2];
+    [e add:@"maps" value:list];
+    expected = @"x5707";
+    result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testFirstWithListOfMaps2 {
-  ST * e = [[[ST alloc] init:@"<first(maps):{ m | <m>!}>"] autorelease];
-  NSMutableDictionary * m1 = [[[NSMutableDictionary alloc] init] autorelease];
-  NSMutableDictionary * m2 = [[[NSMutableDictionary alloc] init] autorelease];
-  [m1 setObject:@"Ter" arg1:@"x5707"];
-  [e add:@"maps" arg1:m1];
-  [m2 setObject:@"Tom" arg1:@"x5332"];
-  [e add:@"maps" arg1:m2];
-  NSString * expecting = @"Ter!";
-  [self assertEquals:expecting arg1:[e render]];
-  NSMutableArray * list = [[[TestFunctions_Anon7 alloc] init] autorelease];
-  [e add:@"maps" arg1:list];
-  expecting = @"Ter!";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test26FirstWithListOfMaps2
+{
+    ST *e = [ST newSTWithTemplate:@"<first(maps):{ m | <m>!}>"];
+    AMutableDictionary *m1 = [AMutableDictionary dictionaryWithCapacity:16];
+    AMutableDictionary *m2 = [AMutableDictionary dictionaryWithCapacity:16];
+    [m1 setObject:@"x5707" forKey:@"Ter"];
+    [e add:@"maps" value:m1];
+    [m2 setObject:@"x5332" forKey:@"Tom"];
+    [e add:@"maps" value:m2];
+    NSString *expected = @"Ter!";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
+    AMutableArray *list = [TestFunctions_Anon7 newAnon:m1 b:m2];
+    [e add:@"maps" value:list];
+    expected = @"Ter!";
+    result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testTrim {
-  ST * e = [[[ST alloc] init:@"<trim(name)>"] autorelease];
-  [e add:@"name" arg1:@" Ter  \n"];
-  NSString * expecting = @"Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test27Trim
+{
+    ST *e = [ST newSTWithTemplate:@"<trim(name)>"];
+    [e add:@"name" value:@" Ter  \n"];
+    NSString *expected = @"Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testStrlen {
-  ST * e = [[[ST alloc] init:@"<strlen(name)>"] autorelease];
-  [e add:@"name" arg1:@"012345"];
-  NSString * expecting = @"6";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test28Strlen
+{
+    ST *e = [ST newSTWithTemplate:@"<strlen(name)>"];
+    [e add:@"name" value:@"012345"];
+    NSString *expected = @"6";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testReverse {
-  ST * e = [[[ST alloc] init:@"<reverse(names); separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"names" arg1:@"Sriram"];
-  NSString * expecting = @"Sriram, Tom, Ter";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test29Reverse
+{
+    ST *e = [ST newSTWithTemplate:@"<reverse(names); separator=\", \">"];
+    [e add:@"names" value:@"Ter"];
+    [e add:@"names" value:@"Tom"];
+    [e add:@"names" value:@"Sriram"];
+    NSString *expected = @"Sriram, Tom, Ter";
+    NSString *result = [e render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
 @end
