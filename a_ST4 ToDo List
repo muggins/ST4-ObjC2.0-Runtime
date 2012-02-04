@@ -1,9 +1,7 @@
-All of the files in 'compiler' now compile.
-All of the files in 'debug' now compile
-none of the files in 'gui' compile
-1 file in 'misc' that won't compile (objectModelAdaptor)
-4 files in 'main' that won't compile (STGroup, STGroupDir and STGroupFile and Interpreter).
+All of the files now compile.
 
-Then the hard work begins, finding any and all bugs in translation.
-
-Do you have any testing files that I should convert to test with?
+OcTest runs the tests with garbage collection on GCON and GCOFF.
+ST4 ObjC also passes all of the TestCompiler tests with GCON.
+ST4 ObjC also passes all of the TestFunction tests with GCON.
+ST4 ObjC also passes all of the TestLexer tests with GCON.
+ST4 ObjC passes first 22 TextCoreBasics tests with GCON.
