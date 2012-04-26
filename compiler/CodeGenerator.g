@@ -102,6 +102,7 @@ options {
                template:(NSString *)aTemplate
                   token:(CommonToken *)aTemplateToken;
 
+- (void) dealloc;
 // convience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
@@ -171,6 +172,7 @@ options {
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CodeGenerator" );
 #endif
+    if ( template_scope ) [template_scope release];
     if ( outermostTemplateName ) [outermostTemplateName release];
     if ( outermostImpl ) [outermostImpl release];
     if ( templateToken ) [templateToken release];
@@ -458,8 +460,8 @@ mapTemplateRef[NSInteger num_exprs]
             [errMgr compileTimeError:ANON_ARGUMENT_MISMATCH
                        templateToken:templateToken
                                    t:$subtemplate.start.token
-                                 arg:$subtemplate.nargs
-                                arg2:$num_exprs];
+                                argN:$subtemplate.nargs
+                               arg2N:$num_exprs];
 		}
 		for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$subtemplate.start opcode:Bytecode.INSTR_NULL];
         [self emit2:$subtemplate.start

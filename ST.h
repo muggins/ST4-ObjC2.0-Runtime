@@ -84,16 +84,17 @@ typedef enum {
     /** Record who made us? ConstructionEvent creates Exception to grab stack */
     __strong ConstructionEvent *newSTEvent;
     /** Track construction-time add attribute "events"; used for ST user-level debugging */
-    __strong AMutableDictionary *addAttrEvents;
+    __strong LinkedHashMap *addAttrEvents;
 }
 
 @property (retain) ConstructionEvent *newSTEvent;
-@property (retain) AMutableDictionary *addAttrEvents;
+@property (retain) LinkedHashMap *addAttrEvents;
 
 + (id) newDebugState;
 - (id) init;
+- (void) dealloc;
 
-- (AMutableDictionary *)setAddAttrEvents;
+- (LinkedHashMap *)setAddAttrEvents;
 @end
 
 /**
@@ -166,23 +167,21 @@ typedef enum {
 + (DebugState *)debugState;
 //+ (AttributeList *) attributeList;
 
-+ (id) newST;
-+ (id) newSTWithTemplate:(NSString *)template;
-+ (id) newST:(NSString *)template delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
-+ (id) newST:(STGroup *)group template:(NSString *)template;
-+ (id) newSTWithProto:(ST *)proto;
-- (id) init;
-- (id) initWithTemplate:(NSString *)template;
-- (id) init:(NSString *)template delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
-- (id) init:(STGroup *)group template:(NSString *)template;
++ (ST *) newST;
++ (ST *) newSTWithTemplate:(NSString *)template;
++ (ST *) newST:(NSString *)template delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
++ (ST *) newST:(STGroup *)aGroup template:(NSString *)template;
++ (ST *) newSTWithProto:(ST *)proto;
+- (id) init:(STGroup *)aGroup template:(NSString *)template;
 - (id) initWithProto:(ST *)proto;
 - (void)dealloc;
 - (ST *) add:(NSString *)name value:(id)value;
 - (ST *) addInt:(NSString *)name value:(NSInteger)value;
+- (ST *) addAggr:(NSString *)aggrSpec values:(id)values;
 - (void) remove:(NSString *)name;
 - (void) rawSetAttribute:(NSString *)name value:(id)value;
 - (id) getAttribute:(NSString *)name;
-- (AMutableDictionary *) getAttributes;
+- (LinkedHashMap *) getAttributes;
 + (AttributeList *) convertToAttributeList:(id)curvalue;
 - (NSString *) getName;
 - (NSInteger) write:(Writer *)wr1;

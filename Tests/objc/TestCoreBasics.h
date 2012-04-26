@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <GHUnit/GHTestCase.h>
 #import "ErrorBuffer.h"
 #import "STException.h"
 #import "STRuntimeMessage.h"
@@ -48,7 +48,7 @@
 
 @end
 
-@interface TestCoreBasics : SenTestCase {
+@interface TestCoreBasics : BaseTest {
 }
 - (void)setUp;
 - (void)tearDown;
@@ -72,12 +72,12 @@
 - (void) test16Include;
 - (void) test17IncludeWithArg;
 - (void) test18IncludeWithArg2;
-#ifdef DONTUSEYET
+//#ifdef DONTUSEYET
 - (void) test18aPassThruWithDefaultValue;
 - (void) test18bPassThruWithDefaultValueThatLacksDefinitionAbove;
 - (void) test18cPassThruPartialArgs;
 - (void) test18dPassThruNoMissingArgs;
-#endif
+//#endif
 - (void) test19IncludeWithNestedArgs;
 - (void) test20DefineTemplate;
 - (void) test21Map;

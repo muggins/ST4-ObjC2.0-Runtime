@@ -26,6 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import "NumberRenderer.h"
+#import <ANTLR/ACNumber.h>
 
 @implementation NumberRenderer
 
@@ -38,13 +39,15 @@
 - (NSString *) description:(id)obj formatString:(NSString *)formatString locale:(NSLocale *)locale
 {
     if (formatString == nil)
-        return [obj description];
+        return ((obj!=nil)?[obj description]:@"NumberRenderer called with obj=<nil>");
     //Formatter *f = [[Formatter alloc] init:locale];
     //[f format:formatString param1:obj];
     //return [f description];
+    if ( [obj isKindOfClass:[ACNumber class]] )
+        return [obj description];
     if ([obj isKindOfClass:[NSString class]] )
         return [NSString stringWithFormat:formatString, obj];
-    return nil;
+    return @"NumberRenderer called with obj != NSString class object";
 }
 
 - (NSString *) toString:(id)obj formatString:(NSString *)formatString locale:(NSLocale *)locale

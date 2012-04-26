@@ -31,11 +31,14 @@
 #import "StringWriter.h"
 
 @interface PrintWriter : Writer {
-
+    Writer *writer;
+    BOOL autoFlush;
+    BOOL trouble;
+    NSString *lineSeparator;
 }
 
 + (id) newWriter;
-+ (id) newWriterWithWriter:(Writer *)sw;
++ (id) newWriter:(Writer *)sw;
 + (id) stringWithCapacity:(NSUInteger)len;
 
 - (id) initWithCapacity:(NSUInteger)aLen;

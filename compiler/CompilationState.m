@@ -30,6 +30,7 @@
 #import "CompilationState.h"
 #import "Bytecode.h"
 #import "STException.h"
+#import "Misc.h"
 
 @implementation CompilationState
 
@@ -59,6 +60,7 @@
         if ( tokens ) [tokens retain];
         impl.name = aName;
         if ( impl.name ) [impl.name retain];
+        impl.prefix = [Misc getPrefix:aName];
     }
     return self;
 }
@@ -133,8 +135,14 @@
         NSInteger j = [opAST getTokenStopIndex];
         NSInteger p = [((CommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
         NSInteger q = [((CommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
-        if (!(p < 0 || q < 0))
-            [impl.sourceMap addObject:[Interval newInterval:p b:q]];
+        if (!(p < 0 || q < 0)) {
+            j = [impl.sourceMap count];
+            if ( j <= ip ) {
+                for (NSInteger i = j; i <= ip; i++ )
+                    [impl.sourceMap addObject:[NSNull null]];
+            }
+            [impl.sourceMap replaceObjectAtIndex:ip withObject:[Interval newInterval:p b:q]];
+        }
     }
     [impl.instrs insertChar:opcode atIndex:ip++];
 }

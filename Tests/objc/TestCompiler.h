@@ -1,6 +1,5 @@
 #import <Cocoa/Cocoa.h>
 #import <ANTLR/ANTLR.h>
-#import <SenTestingKit/SenTestingKit.h>
 #import "STErrorListener.h"
 #import "STGroup.h"
 #import "CompiledST.h"
@@ -10,11 +9,8 @@
 #import "BaseTest.h"
 #import "Writer.h"
 
-@interface TestCompiler : SenTestCase {
+@interface TestCompiler : BaseTest {
 }
-
-- (void)setUp;
-- (void)tearDown;
 
 - (void) test01Attr;
 - (void) test02Include;
@@ -28,7 +24,7 @@
 - (void) test08AnonIncludeArgMismatch;
 - (void) test09AnonIncludeArgMismatch2;
 - (void) test10AnonIncludeArgMismatch3;
-- (void) test11IndirectIncludeWitArgs;
+- (void) test11IndirectIncludeWithArgs;
 - (void) test12Prop;
 - (void) test13Prop2;
 - (void) test14Map;

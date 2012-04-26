@@ -36,29 +36,20 @@
 
 + (id) newSTGroupString:(NSString *)aTemplate
 {
-    return [[STGroupString alloc] initWithText:aTemplate];
+    return [[STGroupString alloc] init:@"<string>" text:aTemplate delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
-- (id) initWithText:(NSString *)theText
++ (id) newSTGroupString:(NSString *)aSourceName text:(NSString *)aTemplate
 {
-    self = [super init:'<' delimiterStopChar:'>'];
-    if ( self != nil ) {
-        alreadyLoaded = NO;
-        sourceName = @"<string>";
-        text = theText;
-    }
-    return self;
+    return [[STGroupString alloc] init:aSourceName text:aTemplate delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
-- (id) init:(NSString *)aSourceName text:(NSString *)theText
++ (id) newSTGroupString:(NSString *)aSourceName
+                   text:(NSString *)aTemplate
+     delimiterStartChar:(unichar)aStartChar
+      delimiterStopChar:(unichar)aStopChar
 {
-    self = [super init:'<' delimiterStopChar:'>'];
-    if ( self != nil ) {
-        alreadyLoaded = NO;
-        sourceName = aSourceName;
-        text = theText;
-    }
-    return self;
+    return [[STGroupString alloc] init:aSourceName text:aTemplate delimiterStartChar:aStartChar delimiterStopChar:aStopChar];
 }
 
 - (id) init:(NSString *)aSourceName text:(NSString *)theText
@@ -88,8 +79,9 @@
 
 - (BOOL) isDictionary:(NSString *)name
 {
-	if ( !alreadyLoaded ) [self load];
-	return [super isDictionary:name];
+    if ( !alreadyLoaded )
+        [self load];
+    return [super isDictionary:name];
 }
 
 - (BOOL) isDefined:(NSString *)name
@@ -101,7 +93,7 @@
 
 - (CompiledST *) load:(NSString *)name
 {
-    if (!alreadyLoaded)
+    if ( !alreadyLoaded )
         [self load];
     return [self rawGetTemplate:name];
 }
@@ -110,15 +102,16 @@
 {
     if (alreadyLoaded)
         return;
+    alreadyLoaded = YES;
     GroupParser *parser = nil;
     
     @try {
-        ANTLRStringStream * fs = [ANTLRStringStream newANTLRStringStream:text];
+        ANTLRStringStream *fs = [ANTLRStringStream newANTLRStringStream:text];
         fs.name = sourceName;
-        GroupLexer * lexer = [GroupLexer newGroupLexerWithCharStream:fs];
+        GroupLexer *lexer = [GroupLexer newGroupLexerWithCharStream:fs];
         CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
         parser = [GroupParser newGroupParser:tokens];
-        [parser group:self arg1:@""];
+        [parser group:self arg1:@"/"];
     }
     @catch (NSException * e) {
         [errMgr IOError:nil error:CANT_LOAD_GROUP_FILE e:e arg:@"<string>"];

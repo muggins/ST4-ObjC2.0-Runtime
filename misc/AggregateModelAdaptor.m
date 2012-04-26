@@ -25,53 +25,59 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import "InterpEvent.h"
-#import "InstanceScope.h"
+#import <ANTLR/ANTLR.h>
+#import "STErrorListener.h"
+#import "AggregateModelAdaptor.h"
+#import "Interpreter.h"
+#import "CompiledST.h"
 
-@implementation InterpEvent
+@implementation AggregateModelAdaptor
 
-+ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop
++ (id) newAggregateModelAdaptor
 {
-    return [[InterpEvent alloc] init:aScope start:(NSInteger)theStart stop:(NSInteger)theStop];
+    return [[AggregateModelAdaptor alloc] init];
 }
 
-- (id) init:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop
+- (id) init
 {
-    self=[super init];
-    if ( self != nil ) {
-        scope = aScope;
-        outputStartChar = theStart;
-        outputStopChar = theStop;
-    }
+    self = [super init];
     return self;
 }
 
-- (void) InterpEvent:(InstanceScope *)aScope start:(NSInteger)aStartChar stop:(NSInteger)aStopChar
+- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
-    scope = aScope;
-    outputStartChar = aStartChar;
-    outputStopChar = aStopChar;
+    id value;
+    Aggregate *aggr = (Aggregate *)obj;
+    if ( aProperty == nil ) {
+        value = [aggr.props objectForKey:STGroup.DEFAULT_KEY];
+    }
+    else if ( [aProperty isEqualTo:@"keys"] ) {
+        value = [aggr.props allKeys];
+    }
+    else if ( [aProperty isEqualTo:@"values"] ) {
+        value = [aggr.props allValues];
+    }
+    else if ( [aProperty isKindOfClass:[NSString class]] && [aggr.props objectForKey:aProperty] ) {
+        value = [aggr.props objectForKey:aProperty];
+    }
+    else if ( [aggr.props objectForKey:aPropertyName] ) { // if can't find the key, try toString version
+        value = [aggr.props objectForKey:aPropertyName];
+    }
+    else {
+        value = [aggr.props objectForKey:STGroup.DEFAULT_KEY]; // not found, use default
+    }
+    if ( value == STGroup.DICT_KEY ) {
+        value = aProperty;
+    }
+/*
+    if ( [value isKindOfClass:[ST class]] ) {
+        ST *st = (ST *)value;
+        st = [st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
+        st.enclosingInstance = aWho;
+        value = st;
+    }
+ */
+    return value;
 }
 
-
-- (NSString *) description
-{
-    return [NSString stringWithFormat:@"{who=%@, start=%d, stop=%d}",
-            [self className], outputStartChar, outputStopChar];
-}
-
-- (NSString *) toString
-{
-    return [self description];
-}
-
-- (void) dealloc
-{
-    if ( scope ) [scope release];
-    [super dealloc];
-}
-
-@synthesize scope;
-@synthesize outputStartChar;
-@synthesize outputStopChar;
 @end

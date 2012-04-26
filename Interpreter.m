@@ -64,6 +64,7 @@
 #import "PrintWriter.h"
 #import "NoIndentWriter.h"
 #import "GroupParser.h"
+#import "ACNumber.h"
 
 @implementation Interpreter_Anon1
 
@@ -352,6 +353,7 @@ static BOOL trace = NO;
 @synthesize sp;
 @synthesize current_ip;
 @synthesize nwline;
+@synthesize currentScope;
 @synthesize group;
 @synthesize locale;
 @synthesize errMgr;
@@ -457,41 +459,36 @@ static BOOL trace = NO;
 #endif
 
 /** Execute template self and return how many characters it wrote to out */
-- (NSInteger) exec:(Writer *)anSTWriter who:(ST *)aWho
+- (NSInteger) exec:(id<STWriter>)anSTWriter who:(ST *)aWho
 {
+    if ( debug ) NSLog( @"[self exec:[aWho getName]]\n" );
     [self pushScope:aWho];
-    currentScope = [InstanceScope newInstanceScope:currentScope who:aWho]; // push scope
-    if ( debug ) {
-        currentScope.events = [[AMutableArray arrayWithCapacity:5] retain];
-        currentScope.childEvalTemplateEvents = [[AMutableArray arrayWithCapacity:5] retain];
-    }
-    currentScope.ret_ip = current_ip;
     @try {
+        [self setDefaultArguments:anSTWriter who:aWho];
         NSInteger n = [self _exec:anSTWriter who:aWho];
         return n;
     }
     @catch (NSException *e) {
         StringWriter *sw = [[StringWriter newWriter] retain];
-#ifdef DONTUSEYET
-        PrintWriter *pw = [[PrintWriter newWriterWithWriter:sw] retain];
+        PrintWriter *pw = [[PrintWriter newWriter:sw] retain];
         [e printStackTrace:pw];
-#endif
+        [pw flush];
         [errMgr runTimeError:self
                          who:aWho
                           ip:current_ip
                        error:INTERNAL_ERROR
-                         arg:[NSString stringWithFormat:@"internal error caused by: %@", [sw toString]]];
+                         arg:[NSString stringWithFormat:@"internal error caused by: %@", [sw description]]];
         return 0;
     }
     @finally {
         [self popScope]; // pop scope
     }
-    return current_ip;
+//    return current_ip;
 }
 /**
  * Execute template self and return how many characters it wrote to out
  */
-- (NSInteger) _exec:(Writer *)anSTWriter who:(ST *)aWho
+- (NSInteger) _exec:(id<STWriter>)anSTWriter who:(ST *)aWho
 {
     NSInteger start = [anSTWriter index];
     NSInteger prevOpcode = 0;
@@ -596,6 +593,7 @@ static BOOL trace = NO;
                 [self storeArgs:aWho attrs:attrs st:st];
                  operands[++sp] = st;
                 break;
+// start here checking
             case  DEF_INSTR_SUPER_NEW:
                 nameIndex = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
@@ -759,7 +757,8 @@ static BOOL trace = NO;
             case  DEF_INSTR_INDENT:
                 idx = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
-                [anSTWriter pushIndentation:[aWho.impl.strings objectAtIndex:idx]];
+                [self indent:anSTWriter who:aWho index:idx];
+//                [anSTWriter pushIndentation:[aWho.impl.strings objectAtIndex:idx]];
                 break;
             case  DEF_INSTR_DEDENT:
                 [anSTWriter popIndentation];
@@ -787,10 +786,10 @@ static BOOL trace = NO;
                  operands[++sp] = nil;
                 break;
             case DEF_INSTR_TRUE:
-                operands[++sp] = (id) YES;
+                operands[++sp] = [ACNumber numberWithBool:YES];
                 break;
             case DEF_INSTR_FALSE :
-                operands[++sp] = NO;
+                operands[++sp] = [ACNumber numberWithBool:NO];
                 break;
             case DEF_INSTR_WRITE_STR :
                 idx = [code shortAtIndex:ip];
@@ -859,7 +858,7 @@ static BOOL trace = NO;
         st = [aWho.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
     }
     else {
-        st = [imported.nativeGroup createStringTemplateInternally:[CompiledST newCompiledST]];
+        st = [imported.nativeGroup createStringTemplateInternally:imported];
         st.groupThatCreatedThisInstance = group;
     }
 
@@ -872,6 +871,7 @@ static BOOL trace = NO;
 {
     CompiledST *c = [group lookupTemplate:templateName];
     if ( c == nil ) return; // will get error later
+    if ( c.formalArguments == nil ) return;
     id obj;
 //    for (FormalArgument *arg in [c.formalArguments allValues]) {
     FormalArgument *arg;
@@ -915,9 +915,9 @@ static BOOL trace = NO;
                          who:aWho
                           ip:current_ip
                        error:ARGUMENT_COUNT_MISMATCH
-                         arg:(id)nargs
+                        argN:nargs
                         arg2:st.impl.name
-                        arg3:(id)nformalArgs];
+                       arg3N:nformalArgs];
     }
     NSString *argName;
 /*
@@ -957,9 +957,9 @@ static BOOL trace = NO;
                          who:aWho
                           ip:current_ip
                        error:ARGUMENT_COUNT_MISMATCH
-                         arg:(id)nargs
+                        argN:nargs
                         arg2:st.impl.name
-                        arg3:(id)nformalArgs];
+                       arg3N:nformalArgs];
     }
     if ( st.impl.formalArguments == nil ) return;
 
@@ -990,7 +990,7 @@ static BOOL trace = NO;
 /** Write out an expression result that doesn't use expression options.
  *  E.g., <name>
  */
-- (NSInteger) writeObjectNoOptions:(Writer *)wr1 who:(ST *)aWho obj:(id)obj
+- (NSInteger) writeObjectNoOptions:(id<STWriter>)wr1 who:(ST *)aWho obj:(id)obj
 {
     if ( wr1 == nil ) @throw [NSException exceptionWithName:@"Cant send msg to nil" reason:@"wr1 is nil" userInfo:nil];
     int aStart = [wr1 index]; // track char we're about to write
@@ -1009,7 +1009,7 @@ static BOOL trace = NO;
 /** Write out an expression result that uses expression options.
  *  E.g., <names; separator=", ">
  */
-- (NSInteger) writeObjectWithOptions:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeObjectWithOptions:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
 {
     NSInteger start = [anSTWriter index];
     // precompute all option values (render all the way to strings)
@@ -1043,7 +1043,7 @@ static BOOL trace = NO;
 /** Generic method to emit text for an object. It differentiates
  *  between templates, iterable objects, and plain old Java objects (POJOs)
  */
-- (NSInteger) writeObject:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeObject:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
 {
     NSInteger n = 0;
     if ( obj == nil ) {
@@ -1084,7 +1084,7 @@ static BOOL trace = NO;
     return n;
 }
 
-- (NSInteger) writeIterator:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeIterator:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
 {
     if ( obj == nil ) return 0;
     NSInteger n = 0;
@@ -1112,7 +1112,7 @@ static BOOL trace = NO;
     return n;
 }
 
-- (NSInteger) writePOJO:(Writer *)anSTWriter obj:(id)obj options:(AMutableArray *)options {
+- (NSInteger) writePOJO:(id<STWriter>)anSTWriter obj:(id)obj options:(AMutableArray *)options {
     NSString *formatString = nil;
     NSString *v;
     id<AttributeRenderer> r = nil;
@@ -1188,8 +1188,8 @@ static BOOL trace = NO;
 
 - (AMutableArray *) rot_map_iterator:(ST *)aWho iter:(id)attr proto:(AMutableArray *)prototypes
 {
-    ArrayIterator *iter = (ArrayIterator *)attr;
     AMutableArray *mapped = [[AMutableArray arrayWithCapacity:5] retain];
+    ArrayIterator *iter = (ArrayIterator *)attr;
     NSInteger i0 = 0;
     NSInteger i = 1;
     NSInteger ti = 0;
@@ -1245,7 +1245,7 @@ static BOOL trace = NO;
     // todo: track formal args not names for efficient filling of locals
     NSArray *formalArg_array = [formalArguments allValues];
     FormalArgument *formalArg;
-    cnt = [formalArguments count];
+    cnt = [formalArg_array count];
     AMutableDictionary *fAIndexes = [[AMutableDictionary dictionaryWithCapacity:cnt] retain];
     for ( i = 0; i < cnt; i++ ) {
         formalArg = [formalArg_array objectAtIndex:i];
@@ -1263,8 +1263,8 @@ static BOOL trace = NO;
                          who:aWho
                           ip:current_ip
                        error:MAP_ARGUMENT_COUNT_MISMATCH
-                         arg:(id)numExprs
-                        arg2:(id)nformalArgs];
+                        argN:numExprs
+                       arg2N:nformalArgs];
         // TODO just fill first n
         // truncate arg list to match smaller size
         NSInteger cnt = [formalArgumentNames count];
@@ -1307,10 +1307,13 @@ static BOOL trace = NO;
 - (void) setFirstArgument:(ST *)aWho st:(ST *)st attr:(id)attr
 {
     if (st.impl.formalArguments == nil) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:ARGUMENT_COUNT_MISMATCH arg:(id)1 arg2:(id)st.impl.name arg3:(id)0];
+        [errMgr runTimeError:self who:aWho ip:current_ip error:ARGUMENT_COUNT_MISMATCH argN:1 arg2:(id)st.impl.name arg3N:0];
         return;
     }
-    [st.locals insertObject:attr atIndex:0];
+    if ( [st.locals count] == 0 )
+        [st.locals addObject:attr];
+    else
+        [st.locals replaceObjectAtIndex:0 withObject:attr];
 }
 
 - (void) addToList:(AMutableArray *)list obj:(id)obj
@@ -1512,22 +1515,24 @@ static BOOL trace = NO;
     Class writerClass;
     Writer *stw;
     if ( value != nil ) {
+        if ([value isKindOfClass:[ACNumber class]])
+            return [value description];
         if ([value isKindOfClass:[NSString class]])
             return (NSString *)value;
-        if ([value isKindOfClass:[ST class]])
-            ((ST *)value).enclosingInstance = aWho;
+//        if ([value isKindOfClass:[ST class]])
+//            ((ST *)value).enclosingInstance = aWho;
         StringWriter *sw = [StringWriter newWriter];
+        stw = nil;
         @try {
             if ( wr1 == nil ) @throw [IllegalArgumentException newException:@"Writer wr1 is nil"];
             writerClass = [wr1 class];
-            // Constructor *ctor = [writerClass  getConstructor:@"newWriter"];
-            stw = [[wr1 class] newWriterWithWriter:sw];
+            stw = [[wr1 class] newWriter:(id<STWriter>)sw];
         }
         @catch (NSException *e) {
-            stw = [[wr1 class] newWriterWithWriter:sw];
+            stw = [AutoIndentWriter newWriter:sw];
             [errMgr runTimeError:self who:aWho ip:current_ip error:WRITER_CTOR_ISSUE arg:NSStringFromClass([wr1 class])];
         }
-        [self writeObjectNoOptions:[NoIndentWriter newNoIdentWriter:sw] who:aWho obj:value];
+        [self writeObjectNoOptions:stw who:aWho obj:value];
         return [sw description];
     }
     return nil;
@@ -1576,8 +1581,10 @@ static BOOL trace = NO;
 
 - (BOOL) testAttributeTrue:(id)a
 {
-    if (a == nil)
+    if (a < 100)
         return NO;
+    if ([a isKindOfClass:[ACNumber class]])
+        return [(NSNumber *)a boolValue];
     if ([a isKindOfClass:[NSNumber class]])
         return [(NSNumber *)a boolValue];
     if ([a isKindOfClass:[NSString class]])
@@ -1693,7 +1700,7 @@ static BOOL trace = NO;
             // rather than setting x to the template for later
             // eval.
 #pragma mark remove debugging print statements
-            NSLog( @"setting def arg %@ to %@", arg.name, defaultArgST );
+            // NSLog( @"setting def arg %@ to %@", arg.name, defaultArgST );
             NSString *defArgTemplate = arg.defaultValueToken.text;
             if ( [defArgTemplate hasPrefix:[NSString stringWithFormat:@"{%c(", group.delimiterStartChar]] &&
                 [defArgTemplate hasSuffix:[NSString stringWithFormat:@")%c}", group.delimiterStopChar]] ) {
@@ -1729,7 +1736,7 @@ static BOOL trace = NO;
  *  a String of these instance names in order from topmost to lowest;
  *  here that would be "[z y x]".
  */
-+ (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope
+- (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope
 {
     AMutableArray *templates = [Interpreter getEnclosingInstanceStack:scope topdown:YES];
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
@@ -1801,7 +1808,7 @@ static BOOL trace = NO;
         [self printForTrace:tr obj:obj];
     }
     
-    [tr appendFormat:@" ], calls=%@, sp=%d, nw=%d", [Interpreter getEnclosingInstanceStackString:currentScope], sp, nwline];
+    [tr appendFormat:@" ], calls=%@, sp=%d, nw=%d", [self getEnclosingInstanceStackString:currentScope], sp, nwline];
     NSString *s = [NSString stringWithString:tr];
     if (debug)
         [executeTrace addObject:s];

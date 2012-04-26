@@ -57,7 +57,7 @@
     else if ( [aProperty isEqualTo:@"values"] ) {
         value = [dict allValues];
     }
-    else if ( [dict objectForKey:aProperty] ) {
+    else if ( [aProperty isKindOfClass:[NSString class]] && [dict objectForKey:aProperty] ) {
         value = [dict objectForKey:aProperty];
     }
     else if ( [dict objectForKey:aPropertyName] ) { // if can't find the key, try toString version
@@ -69,12 +69,14 @@
     if ( value == STGroup.DICT_KEY ) {
         value = aProperty;
     }
+/*
     if ( [value isKindOfClass:[ST class]] ) {
         ST *st = (ST *)value;
         st = [st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
         st.enclosingInstance = aWho;
         value = st;
     }
+ */
     return value;
 }
 

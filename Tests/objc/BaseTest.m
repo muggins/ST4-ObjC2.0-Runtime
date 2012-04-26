@@ -103,8 +103,7 @@ NSString *const newline = @"\n"/* Misc.newline */;
 
 - (void)setUp
 {
-    [super setUp];
-    
+//     [super setUp];
     // Set-up code here.
 }
 
@@ -112,40 +111,54 @@ NSString *const newline = @"\n"/* Misc.newline */;
 {
     // Tear-down code here.
     
-    [super tearDown];
+//    [super tearDown];
 }
 
-+ (void) writeFile:(NSString *)dir fileName:(NSString *)fileName content:(NSString *)content
+- (void) writeFile:(NSString *)dir fileName:(NSString *)fileName content:(NSString *)content
 {
     NSString *path;
     NSFileHandle *fh;
-    // NSError *error;
+    NSError *error;
     NSString *str;
     NSArray *cs;
+    BOOL isDirectory;
+    BOOL dirExists;
     
     @try {
-        path = [[dir stringByAppendingPathComponent:fileName] stringByExpandingTildeInPath];
+        NSFileManager *nfm = [[NSFileManager alloc] init];
+        path = [dir stringByExpandingTildeInPath];
+        dirExists = [nfm fileExistsAtPath:path isDirectory:&isDirectory];
+        if ( !dirExists ) {
+            [nfm createDirectoryAtPath:(NSString *)path withIntermediateDirectories:YES attributes:nil error:&error];
+        }
+        path = [path stringByAppendingPathComponent:fileName];
         // NSFileHandle *f = [[File alloc] init:dir arg1:fileName];
         fh = [NSFileHandle fileHandleForWritingAtPath:path];
-#ifdef DONTUSENOMo
+        if (fh == nil) {
+            NSData *data = [NSData dataWithContentsOfFile:content];
+            if ([nfm createFileAtPath:path contents:data attributes:nil]) {
+                fh = [NSFileHandle fileHandleForWritingAtPath:path];
+            }
+        }
+#ifdef DONTUSENOMO
         if (![[f parentFile] exists])
             [[f parentFile] mkdirs];
 #endif
         FileWriter *fw = [[FileWriter newWriterWithFH:fh] retain];
-        BufferedWriter *bw = [[BufferedWriter newWriter] retain];
+        BufferedWriter *bw = [[BufferedWriter newWriter:fw] retain];
         [bw writeStr:content];
-        [fw writeStr:content];
+//        [fw writeStr:content];
         [bw close];
         [fw close];
     }
     @catch (IOException *ioe) {
         //[System.err println:@"can't write file"];
-        NSLog( @"can't write file" );
+        //NSLog( @"can't write file" );
         //[ioe printStackTrace:System.err];
         cs = [ioe callStackSymbols];
         for (int i=0; i < [cs count]; i++ ) {
             str = [cs objectAtIndex:i];
-            NSLog( @"CallStack = %@\n", str );
+            //NSLog( @"CallStack = %@\n", str );
         }
     }
 }
@@ -166,7 +179,7 @@ NSString *const newline = @"\n"/* Misc.newline */;
     while (t.type != TokenTypeEOF) {
         if (i > 1)
             [buf appendString:@", "];
-        [buf appendString:[t toString]];
+        [buf appendString:[t description]];
         i++;
         t = [tokens LT:i];
     }
@@ -176,16 +189,16 @@ NSString *const newline = @"\n"/* Misc.newline */;
     STAssertTrue( [expected isEqualToString:result], @"Expected %@, but got \"%@\"", expected, result );
 }
 
-+ (NSString *) randomDir
+- (NSString *) getRandomDir
 {
     BOOL isDir;
     NSError *error;
     NSFileManager *defaultManager;
-    NSString *randomDir = [NSString stringWithFormat:@"%@dir%d", tmpdir, (int)arc4random()];
+    randomDir = [NSString stringWithFormat:@"%@/tmpdir%d", [tmpdir stringByExpandingTildeInPath], (int)arc4random()];
     defaultManager = [NSFileManager defaultManager];
     if (![defaultManager fileExistsAtPath:randomDir isDirectory:&isDir]) {
-        if ([defaultManager createDirectoryAtPath:randomDir withIntermediateDirectories:NO attributes:nil error:&error] ) {
-            NSLog( @"Created \"%@\"", randomDir );
+        if ([defaultManager createDirectoryAtPath:randomDir withIntermediateDirectories:YES attributes:nil error:&error] ) {
+            //NSLog( @"Created \"%@\"", randomDir );
             return randomDir;
         }
     }
@@ -237,16 +250,22 @@ NSString *const newline = @"\n"/* Misc.newline */;
     NSMutableString *str = nil;
 
     if (thisArray != nil) {
-        str = [NSMutableString stringWithCapacity:16];
         NSInteger count;
         count = [thisArray count];
         id obj;
-        [str appendString:@"["];
+        str = [NSMutableString stringWithString:@"["];
         for (i=0; i < count; i++ ) {
             obj = [thisArray objectAtIndex:i];
-            if ([obj isKindOfClass:[NSString class]]) {
-                [str appendString:obj];
-                NSLog( @"String %d = %@\n", i, obj);
+            if ( obj != nil ) {
+                if ([obj isKindOfClass:[NSString class]]) {
+                    [str appendString:obj];
+                    //NSLog( @"String %d = %@\n", i, obj);
+                } else {
+                    [str appendString:[obj description]];
+                }
+            }
+            else {
+                [str appendString:@"obj=<nil>"];
             }
             if ( i < count-1) {
                 [str appendString:@", "];

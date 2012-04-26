@@ -38,6 +38,7 @@
 #import "BytecodeDisassembler.h"
 #import "GroupParser.h"
 #import "Bytecode.h"
+#import "ACNumber.h"
 
 @implementation CompiledST
 
@@ -85,8 +86,10 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CompiledST" );
 #endif
+    if ( prefix ) [prefix release];
     if ( name ) [name release];
     if ( template ) [template release];
+    if ( templateDefStartToken ) [templateDefStartToken release];
     if ( tokens ) [tokens release];
     if ( ast ) [ast release];
     if ( formalArguments ) [formalArguments release];
@@ -122,7 +125,7 @@
 {
     sub.prefix = self.prefix;
     if ( [sub.name characterAtIndex:0] != '/' ) {
-        sub.name = [NSString stringWithFormat:@"\%@", sub.name];
+        sub.name = [NSString stringWithFormat:@"%@%@", sub.prefix, sub.name];
     }
     if ( implicitlyDefinedTemplates == nil ) {
         implicitlyDefinedTemplates = [[AMutableArray arrayWithCapacity:5] retain];
@@ -135,27 +138,28 @@
     if ( formalArguments == nil )
         return;
 //    for (NSString *s in [formalArguments allKeys]) {
-    NSString *s;
+    NSString *a;
     ArrayIterator *it = (ArrayIterator *)[formalArguments keyEnumerator];
     while ( [it hasNext] ) {
-        s = (NSString *)[it nextObject];
-        FormalArgument *fa = [formalArguments objectForKey:s];
+        a = (NSString *)[it nextObject];
+        FormalArgument *fa = [formalArguments objectForKey:a];
         if (fa.defaultValueToken != nil) {
             numberOfArgsWithDefaultValues++;
             if ( fa.defaultValueToken.type == ANONYMOUS_TEMPLATE ) {
                 NSString *argSTname = [NSString stringWithFormat:@"%@_default_value", fa.name];
                 Compiler *c2 = [Compiler newCompiler:group];
                 NSString *defArgTemplate = [Misc strip:fa.defaultValueToken.text n:1];
-                fa.compiledDefaultValue = [c2 compile:[nativeGroup getFileName] name:argSTname
+                fa.compiledDefaultValue = [c2 compile:[group getFileName] name:argSTname
                        args:nil template:defArgTemplate templateToken:fa.defaultValueToken];
                 fa.compiledDefaultValue.name = argSTname;
 				[fa.compiledDefaultValue defineImplicitlyDefinedTemplates:group];
             }
-            else if ( fa.defaultValueToken.type == T_STRING ) {
+            else if ( fa.defaultValueToken.type == STRING ) {
                 fa.defaultValue = [Misc strip:fa.defaultValueToken.text n:1];
             }
             else {
-                fa.defaultValue = (id)((fa.defaultValueToken.type == GroupParser.TTRUE)? YES : NO);
+                fa.defaultValue = [ACNumber numberWithBool:((fa.defaultValueToken.type == T_TRUE)? YES : NO)];
+//                NSLog( @"%@", [fa.defaultValue description] );
             }
         }
     }
@@ -253,14 +257,14 @@
 //    BytecodeDisassembler *dis = [[BytecodeDisassembler alloc] initWithCode:self];
     BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:self];
     StringWriter *sw = [StringWriter newWriter];
-    PrintWriter *pw = [[PrintWriter newWriterWithWriter:sw] retain];
+    PrintWriter *pw = [[PrintWriter newWriter:sw] retain];
     [pw println:[dis disassemble]];
     [pw println:[NSString stringWithFormat:@"Strings:%@", [dis strings]]];
     tmp = [dis sourceMap];
     [pw println:[NSString stringWithFormat:@"Bytecode to template map:%@", (tmp!=nil?tmp:@"[dis sourceMap] returned nil")]];
     [pw close];
     [pw release];
-    return [sw toString];
+    return [sw description];
 }
 
 - (STGroup *)nativeGroup
@@ -273,7 +277,7 @@
 - (void) setNativeGroup:(STGroup *)aNativeGroup
 {
     if ( nativeGroup != aNativeGroup ) {
-        if ( nativeGroup ) [nativeGroup release];
+        if ( nativeGroup && nativeGroup != STGroup.defaultGroup ) [nativeGroup release];
         if ( aNativeGroup ) [aNativeGroup retain];
     }
     nativeGroup = aNativeGroup;

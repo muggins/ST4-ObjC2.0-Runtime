@@ -37,7 +37,7 @@
     return [[PrintWriter alloc] initWithCapacity:16];
 }
 
-+ (id) newWriterWithWriter:(StringWriter *)sw
++ (id) newWriter:(StringWriter *)sw
 {
     return [[PrintWriter alloc] initWithWriter:sw];
 }
@@ -49,24 +49,32 @@
 
 - (id) initWithCapacity:(NSUInteger)aLen
 {
-    self = [super init];
+    self = [super initWithCapacity:aLen];
+    if ( self != nil ) {
+    writer = self;
+    }
     return self;
 }
 
 - (id) initWithWriter:(Writer *)aWriter
 {
-    self = [super initWithWriter:aWriter];
+    self = [super init];
+    writer = aWriter;
     return self;
 }
 
 - (void) print:(id)msg
 {
-    NSLog( @"self=%@--msg=%@", [self description], [msg description] );
+//    [writer appendString:msg];
+    [writer writeStr:msg];
+    //NSLog( @"self=%@--msg=%@", [self className], [msg description] );
 }
 
 - (void) println:(id)msg
 {
-    NSLog( @"self=%@--msg=%@\n", [self description], [msg description] );
+//    [writer appendString:msg];
+    [writer writeStr:msg];
+    //NSLog( @"self=%@--msg=%@\n", [self className], [msg description] );
 }
 
 /*

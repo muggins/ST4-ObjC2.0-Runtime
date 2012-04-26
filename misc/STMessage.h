@@ -46,12 +46,12 @@
    * if in debug mode, has created instance, add attr events and eval
    * template events.
  */
-  ST *who;
-  ErrorTypeEnum error;
-  id arg;
-  id arg2;
-  id arg3;
-  NSException *cause;
+    ST *who;
+    ErrorTypeEnum error;
+    id arg;
+    id arg2;
+    id arg3;
+    NSException *cause;
 }
 
 + (id) newMessage:(ErrorTypeEnum)anError;
@@ -61,16 +61,10 @@
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(CommonToken *)where  arg:(id)arg;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
++ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause argN:(NSInteger)arg arg2N:(NSInteger)arg2 arg3:(id)arg3;
 
-#ifdef DONTUSENOMO
-- (id) init:(ErrorTypeEnum)anError;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(CommonToken *)where arg:(id)arg;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
-#endif
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
+- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause argN:(NSInteger)arg arg2N:(NSInteger)arg2 arg3:(id)arg3;
 
 - (void) dealloc;
 - (NSString *) description;
@@ -78,9 +72,9 @@
 
 @property (retain) ST *who;
 @property (assign) ErrorTypeEnum error;
-@property (retain) id arg;
-@property (retain) id arg2;
-@property (retain) id arg3;
+@property (assign) id arg;
+@property (assign) id arg2;
+@property (assign) id arg3;
 @property (retain) NSException *cause;
 
 @end

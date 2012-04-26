@@ -2,234 +2,285 @@
 
 @implementation TestDictionaries
 
-- (void) testDict {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"int"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"int x = 0;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test01Dict
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/test.stg", tmpdir]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"int"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"int x = 0;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictValuesAreTemplates {
-  NSString * templates = [[@"typeInit ::= [\"int\":{0<w>}, \"float\":{0.0<w>}] " stringByAppendingString:newline] stringByAppendingString:@"var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st.impl dump];
-  [st add:@"w" arg1:@"L"];
-  [st add:@"type" arg1:@"int"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"int x = 0L;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test02DictValuesAreTemplates
+{
+    NSString *templates = @"typeInit ::= [\"int\":{0<w>}, \"float\":{0.0<w>}] \nvar(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/test.stg", tmpdir]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st.impl dump];
+    [st add:@"w" value:@"L"];
+    [st add:@"type" value:@"int"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"int x = 0L;";
+    NSString *result = [st render];
+    result = (result != nil) ? result : @"result = nil";
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictKeyLookupViaTemplate {
-  NSString * templates = [[@"typeInit ::= [\"int\":{0<w>}, \"float\":{0.0<w>}] " stringByAppendingString:newline] stringByAppendingString:@"var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"w" arg1:@"L"];
-  [st add:@"type" arg1:[[[ST alloc] init:@"int"] autorelease]];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"int x = 0L;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test03DictKeyLookupViaTemplate
+{
+    NSString *templates = @"typeInit ::= [\"int\":{0<w>}, \"float\":{0.0<w>}] \nvar(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"w" value:@"L"];
+    [st add:@"type" value:[ST newSTWithTemplate:@"int"]];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"int x = 0L;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictKeyLookupAsNonToStringableObject {
-  NSString * templates = [@"foo(m,k) ::= \"<m.(k)>\"" stringByAppendingString:newline];
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"foo"];
-  NSMutableDictionary * m = [[[NSMutableDictionary alloc] init] autorelease];
-  [m setObject:[[[HashableUser alloc] init:99 arg1:@"parrt"] autorelease] arg1:@"first"];
-  [m setObject:[[[HashableUser alloc] init:172036 arg1:@"tombu"] autorelease] arg1:@"second"];
-  [m setObject:[[[HashableUser alloc] init:391 arg1:@"sriram"] autorelease] arg1:@"third"];
-  [st add:@"m" arg1:m];
-  [st add:@"k" arg1:[[[HashableUser alloc] init:172036 arg1:@"tombu"] autorelease]];
-  NSString * expecting = @"second";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test04DictKeyLookupAsNonToStringableObject
+{
+    NSString *templates = @"foo(m,k) ::= \"<m.(k)>\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"foo"];
+    AMutableDictionary *m = [[AMutableDictionary dictionaryWithCapacity:5] autorelease];
+    [m setObject:[[[HashableUser alloc] init:99 name:@"parrt"] autorelease] forKey:@"first"];
+    [m setObject:[[[HashableUser alloc] init:172036 name:@"tombu"] autorelease] forKey:@"second"];
+    [m setObject:[[[HashableUser alloc] init:391 name:@"sriram"] autorelease] forKey:@"third"];
+    [st add:@"m" value:m];
+    [st add:@"k" value:[[HashableUser alloc] init:172036 name:@"tombu"]];
+    NSString *expected = @"second";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictMissingDefaultValueIsEmpty {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"w" arg1:@"L"];
-  [st add:@"type" arg1:@"double"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"double x = ;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test05DictMissingDefaultValueIsEmpty
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nvar(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"w" value:@"L"];
+    [st add:@"type" value:@"double"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"double x = ;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictMissingDefaultValueIsEmptyForNullKey {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"w" arg1:@"L"];
-  [st add:@"type" arg1:nil];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @" x = ;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test06DictMissingDefaultValueIsEmptyForNullKey
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nvar(type,w,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"w" value:@"L"];
+    [st add:@"type" value:nil];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @" x = ;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictHiddenByFormalArg {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"var(typeInit,type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"int"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"int x = ;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test07DictHiddenByFormalArg
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nvar(typeInit,type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"int"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"int x = ;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictEmptyValueAndAngleBracketStrings {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", \"float\":, \"double\":<<0.0L>>] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"float"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"float x = ;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test08DictEmptyValueAndAngleBracketStrings
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":, \"double\":<<0.0L>>] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"float"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"float x = ;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictDefaultValue {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", default:\"null\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"UserRecord"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"UserRecord x = null;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test09DictDefaultValue
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", default:\"null\"] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"UserRecord"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"UserRecord x = null;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictNullKeyGetsDefaultValue {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", default:\"null\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @" x = null;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test10DictNullKeyGetsDefaultValue
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", default:\"null\"] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @" x = null;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictEmptyDefaultValue {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", default:] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  ErrorBuffer * errors = [[[ErrorBuffer alloc] init] autorelease];
-  STGroupFile * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  [group setListener:errors];
-  [group load];
-  NSString * expected = @"[test.stg 1:33: missing value for key at ']']";
-  NSString * result = [errors.errors description];
-  [self assertEquals:expected arg1:result];
+- (void) test11DictEmptyDefaultValue
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", default:] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
+    STGroupFile *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    [group setListener:errors];
+    [group load];
+    NSString *expected = @"[test.stg 1:33: missing value for key at ']']";
+    NSString *result = [errors.errors description];
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictDefaultValueIsKey {
-  NSString * templates = [[@"typeInit ::= [\"int\":\"0\", default:key] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"UserRecord"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"UserRecord x = UserRecord;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test12DictDefaultValueIsKey
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", default:key] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"UserRecord"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"UserRecord x = UserRecord;";
+    NSString *result = [st render];
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
 
 /**
- * Test that a map can have only the default entry.
+ *Test that a map can have only the default entry.
  */
-- (void) testDictDefaultStringAsKey {
-  NSString * templates = [[@"typeInit ::= [\"default\":\"foo\"] " stringByAppendingString:newline] stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"var"];
-  [st add:@"type" arg1:@"default"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"default x = foo;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test13DictDefaultStringAsKey
+{
+    NSString *templates = @"typeInit ::= [\"default\":\"foo\"] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"var"];
+    [st add:@"type" value:@"default"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"default x = foo;";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
 
 /**
- * Test that a map can return a <b>string</b> with the word: default.
+ *Test that a map can return a <b>string</b> with the word: default.
  */
-- (void) testDictDefaultIsDefaultString {
-  NSString * templates = [[@"map ::= [default: \"default\"] " stringByAppendingString:newline] stringByAppendingString:@"t() ::= << <map.(\"1\")> >>"] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"t"];
-  NSString * expecting = @" default ";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test14DictDefaultIsDefaultString
+{
+    NSString *templates = @"map ::= [default: \"default\"] \nt() ::= << <map.(\"1\")> >>\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"t"];
+    NSString *expected = @" default ";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictViaEnclosingTemplates {
-  NSString * templates = [[[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"intermediate(type,name) ::= \"<var(type,name)>\""] + newline stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"intermediate"];
-  [st add:@"type" arg1:@"int"];
-  [st add:@"name" arg1:@"x"];
-  NSString * expecting = @"int x = 0;";
-  NSString * result = [st render];
-  [self assertEquals:expecting arg1:result];
+- (void) test15DictViaEnclosingTemplates
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nintermediate(type,name) ::= \"<var(type,name)>\"\nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *st = [group getInstanceOf:@"intermediate"];
+    [st add:@"type" value:@"int"];
+    [st add:@"name" value:@"x"];
+    NSString *expected = @"int x = 0;";
+    NSString *result = [st render];
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) testDictViaEnclosingTemplates2 {
-  NSString * templates = [[[@"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] " stringByAppendingString:newline] stringByAppendingString:@"intermediate(stuff) ::= \"<stuff>\""] + newline stringByAppendingString:@"var(type,name) ::= \"<type> <name> = <typeInit.(type)>;\""] + newline;
-  [self writeFile:tmpdir arg1:@"test.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"test.stg"]] autorelease];
-  ST * interm = [group getInstanceOf:@"intermediate"];
-  ST * var = [group getInstanceOf:@"var"];
-  [var add:@"type" arg1:@"int"];
-  [var add:@"name" arg1:@"x"];
-  [interm add:@"stuff" arg1:var];
-  NSString * expecting = @"int x = 0;";
-  NSString * result = [interm render];
-  [self assertEquals:expecting arg1:result];
+- (void) test16DictViaEnclosingTemplates2
+{
+    NSString *templates = @"typeInit ::= [\"int\":\"0\", \"float\":\"0.0\"] \nintermediate(stuff) ::= \"<stuff>\"\nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
+    [self writeFile:tmpdir fileName:@"test.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    ST *interm = [group getInstanceOf:@"intermediate"];
+    ST *var = [group getInstanceOf:@"var"];
+    [var add:@"type" value:@"int"];
+    [var add:@"name" value:@"x"];
+    [interm add:@"stuff" value:var];
+    NSString *expected = @"int x = 0;";
+    NSString *result = [interm render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) TestAccessDictionaryFromAnonymousTemplate {
-  NSString * dir = tmpdir;
-  NSString * g = [[[[@"a() ::= <<[<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>]>>\n" stringByAppendingString:@"values ::= [\n"] stringByAppendingString:@"    \"a\":false,\n"] stringByAppendingString:@"    default:true\n"] stringByAppendingString:@"]\n"];
-  [self writeFile:dir arg1:@"g.stg" arg2:g];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"g.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"a"];
-  NSString * expected = @"[foo]";
-  NSString * result = [st render];
-  [self assertEquals:expected arg1:result];
+- (void) Test17AccessDictionaryFromAnonymousTemplate
+{
+    NSString *dir = tmpdir;
+    NSString *g = @"a() ::= <<[<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>]>>\nvalues ::= [\n    \"a\":false,\n    default:true\n]\n";
+    [self writeFile:dir fileName:@"g.stg" content:g];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/g.stg"]];
+    ST *st = [group getInstanceOf:@"a"];
+    NSString *expected = @"[foo]";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
-- (void) TestAccessDictionaryFromAnonymousTemplateInRegion {
-  NSString * dir = tmpdir;
-  NSString * g = [[[[[[[@"a() ::= <<[<@r()>]>>\n" stringByAppendingString:@"@a.r() ::= <<\n"] stringByAppendingString:@"<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>\n"] stringByAppendingString:@">>\n"] stringByAppendingString:@"values ::= [\n"] stringByAppendingString:@"    \"a\":false,\n"] stringByAppendingString:@"    default:true\n"] stringByAppendingString:@"]\n"];
-  [self writeFile:dir arg1:@"g.stg" arg2:g];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"g.stg"]] autorelease];
-  ST * st = [group getInstanceOf:@"a"];
-  NSString * expected = @"[foo]";
-  NSString * result = [st render];
-  [self assertEquals:expected arg1:result];
+- (void) Test18AccessDictionaryFromAnonymousTemplateInRegion
+{
+    NSString *dir = tmpdir;
+    NSString *g = @"a() ::= <<[<@r()>]>>\n@a.r() ::= <<\n<[\"foo\",\"a\"]:{x|<if(values.(x))><x><endif>}>\n>>\nvalues ::= [\n    \"a\":false,\n    default:true\n]\n";
+    [self writeFile:dir fileName:@"g.stg" content:g];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/g.stg"]];
+    ST *st = [group getInstanceOf:@"a"];
+    NSString *expected = @"[foo]";
+    NSString *result = [st render];
+    result = ((result != nil) ? result : @"result = nil");
+    STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
+    return;
 }
 
 @end

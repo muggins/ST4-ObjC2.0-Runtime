@@ -30,11 +30,10 @@ grammar Group;
 options {
     language=ObjC;
     tokenVocab=Group1;
-    TokenLabelType=CommonToken;
 }
 
 tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL;
-            T_TRUE='true'; T_FALSE='false'; }
+            T_TRUE; T_FALSE; }
 
 @header {
 /*
@@ -70,6 +69,7 @@ tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; B
 #import "Misc.h"
 #import "GroupLexer.h"
 #import "FormalArgument.h"
+#import "ACNumber.h"
 }
 
 @lexer::header {
@@ -157,8 +157,8 @@ STGroup *group;
 
 - (void) error:(NSString *)msg
 {
-    NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
-    [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
+    NoViableAltException *nvae = [NoViableAltException newException:0 state:0 stream:input];
+    [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:nvae msg:msg];
     [self recover:input Exception:nil];
 }
 
@@ -216,8 +216,8 @@ self.group = lexer.group = $aGroup;
     (   'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
     |   'import' // common error: name not in string
             {
-            MismatchedTokenException *e = [MismatchedTokenException newException:STRING Stream:input];
-            [self reportError:e];
+            MismatchedTokenException *mte = [MismatchedTokenException newException:STRING Stream:input];
+            [self reportError:mte];
             }
             ID ('.' ID)* // might be a.b.c.d
         )*
@@ -238,8 +238,8 @@ groupName returns [NSString *name]
 delimiters
     :	'delimiters' a=STRING ',' b=STRING
      	{
-     	group.delimiterStartChar=[$a characterAtIndex:0];
-        group.delimiterStopChar=[$b characterAtIndex:0];
+     	group.delimiterStartChar=[$a.text characterAtIndex:0];
+        group.delimiterStopChar=[$b.text characterAtIndex:0];
         }
     ;
 
@@ -278,7 +278,7 @@ templateDef[NSString *prefix]
         if ( $name.index >= 0 ) { // if ID missing
             template = [Misc strip:template n:n];
             NSString *templateName = $name.text;
-            if ( [prefix length] > 0 ) templateName = [NSString stringWithFormat: @"\%@/\%@", prefix, $name.text];
+            if ( [prefix length] > 0 ) templateName = [NSString stringWithFormat: @"\%@\%@", prefix, $name.text];
             [group defineTemplateOrRegion:templateName
             regionSurroundingTemplateName:$enclosing.text
                             templateToken:templateToken
@@ -294,21 +294,21 @@ formalArgs returns[AMutableArray *args = [AMutableArray arrayWithCapacity:5\]]
 scope {
     BOOL hasOptionalParameter;
 }
-@init { $formalArgs::hasOptionalParameter = false;}
+@init { $formalArgs::hasOptionalParameter = NO;}
     :   formalArg[$args] (',' formalArg[$args])*
     |
     ;
 
 formalArg[AMutableArray *args]
     :   ID
-        (   '=' a=(STRING|ANONYMOUS_TEMPLATE|'true'|'false') {$formalArgs::hasOptionalParameter = YES;}
+        (   '=' a=(STRING|ANONYMOUS_TEMPLATE|T_TRUE|T_FALSE) {$formalArgs::hasOptionalParameter = YES;}
         |   {
             if ( $formalArgs::hasOptionalParameter ) {
                 [group.errMgr compileTimeError:REQUIRED_PARAMETER_AFTER_OPTIONAL templateToken:nil t:$ID];
             }
             }
         )
-        {[$args addObject:[FormalArgument newFormalArgument:$ID.text]];}
+        {[$args addObject:[[FormalArgument newFormalArgument:$ID.text token:$a] retain]];}
     ;
 
 /*
@@ -362,14 +362,18 @@ keyValue returns [id value]
     |   BIGSTRING_NO_NL     {$value = [group createSingleton:$BIGSTRING_NO_NL];}
     |   ANONYMOUS_TEMPLATE  {$value = [group createSingleton:$ANONYMOUS_TEMPLATE];}
     |   STRING              {$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
-    |   T_TRUE              {$value = YES;}
-    |   T_FALSE             {$value = NO;}
+    |   T_TRUE              {$value = [ACNumber numberWithBool:YES];}
+    |   T_FALSE             {$value = [ACNumber numberWithBool:NO];}
     |   {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID
                             {$value = STGroup.DICT_KEY;}
     ;
     catch[RecognitionException *re] {
         [self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] text]]];
     }
+
+T_TRUE : 'true' ;
+
+T_FALSE : 'false' ;
 
 ID  :   ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
     ;
@@ -428,9 +432,9 @@ ANONYMOUS_TEMPLATE
         CommonToken *t = [lexer nextToken];
         while ( [lexer subtemplateDepth] >= 1 || t.type != STLexer.RCURLY ) {
             if ( t.type == STLexer.EOF_TYPE ) {
-                MismatchedTokenException *e = [MismatchedTokenException newException:'}' Stream:input];
+                MismatchedTokenException *mte = [MismatchedTokenException newException:'}' Stream:input];
                 NSString *msg = @"missing final '}' in {...} anonymous template";
-                [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
+                [group.errMgr groupLexerError:SYNTAX_ERROR srcName:[self getSourceName] e:mte msg:msg];
                 break;
             }
             t = [lexer nextToken];
@@ -441,7 +445,7 @@ ANONYMOUS_TEMPLATE
     ;
 
 COMMENT
-    :   '/*' ( options {greedy=false;} : . )* '*/' { [self skip]; }
+    :   '/*' ( options {greedy=NO;} : . )* '*/' { [self skip]; }
     ;
 
 LINE_COMMENT

@@ -1,32 +1,32 @@
-#import "Intercepter.h"
-#import "Test.h"
+#import <Cocoa/Cocoa.h>
+#import <ANTLR/ANTLR.h>
+#import "BaseTest.h"
 #import "ErrorBuffer.h"
-#import "NSMutableArray.h"
-#import "LinkedHashMap.h"
-#import "NSMutableDictionary.h"
-#import "Assert.h"
+//#import "ANTLR/AMutableArray.h"
+//#import "LinkedHashMap.h"
+//#import "ANTLR/MutableDictionary.h"
 
-@interface TestSubtemplates_Anon1 : NSObject <NSMutableArray> {
+@interface TestSubtemplates_Anon1 : AMutableArray {
 }
 
-- (void) init;
+- (id) init;
 @end
 
 @interface TestSubtemplates : BaseTest {
 }
 
-- (void) testSimpleIteration;
-- (void) testMapIterationIsByKeys;
-- (void) testSimpleIterationWithArg;
-- (void) testNestedIterationWithArg;
-- (void) testSubtemplateAsDefaultArg;
-- (void) testParallelAttributeIteration;
-- (void) testParallelAttributeIterationWithNullValue;
-- (void) testParallelAttributeIterationHasI;
-- (void) testParallelAttributeIterationWithDifferentSizes;
-- (void) testParallelAttributeIterationWithSingletons;
-- (void) testParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo;
-- (void) testEvalSTIteratingSubtemplateInSTFromAnotherGroup;
-- (void) testEvalSTIteratingSubtemplateInSTFromAnotherGroupSingleValue;
-- (void) testEvalSTFromAnotherGroup;
+- (void) test01SimpleIteration;
+- (void) test02MapIterationIsByKeys;
+- (void) test03SimpleIterationWithArg;
+- (void) test04NestedIterationWithArg;
+- (void) test05SubtemplateAsDefaultArg;
+- (void) test06ParallelAttributeIteration;
+- (void) test07ParallelAttributeIterationWithNullValue;
+- (void) test08ParallelAttributeIterationHasI;
+- (void) test09ParallelAttributeIterationWithDifferentSizes;
+- (void) test10ParallelAttributeIterationWithSingletons;
+- (void) test11ParallelAttributeIterationWithDifferentSizesTemplateRefInsideToo;
+- (void) test12EvalSTIteratingSubtemplateInSTFromAnotherGroup;
+- (void) test13EvalSTIteratingSubtemplateInSTFromAnotherGroupSingleValue;
+- (void) test14EvalSTFromAnotherGroup;
 @end
