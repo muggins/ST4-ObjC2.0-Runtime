@@ -25,9 +25,10 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import <ANTLR/RuntimeException.h>
+#import <ANTLR/LinkedHashMap.h>
 #import "STErrorListener.h"
 #import "ST.h"
 #import "STGroup.h"
@@ -56,6 +57,7 @@
 #import "STMessage.h"
 #import "STRuntimeMessage.h"
 #import "ModelAdaptor.h"
+#import "MapModelAdaptor.h"
 #import "STModelAdaptor.h"
 #import "AggregateModelAdaptor.h"
 #import "DictModelAdaptor.h"
@@ -76,11 +78,19 @@
 {
     self=[super init];
     if ( self != nil ) {
+/*
         dict = [[AMutableDictionary dictionaryWithCapacity:16] retain];
         [dict setObject:[AggregateModelAdaptor newAggregateModelAdaptor] forKey:[NSString stringWithFormat:@"%02d%@", [dict count]+1, [Aggregate className]]];
         [dict setObject:[DictModelAdaptor newDictModelAdaptor] forKey:[NSString stringWithFormat:@"%02d%@", [dict count]+1, [NSDictionary className]]];
         [dict setObject:[STModelAdaptor newSTModelAdaptor] forKey:[NSString stringWithFormat:@"%02d%@", [dict count]+1, [ST className]]];
         [dict setObject:[ObjectModelAdaptor newObjectModelAdaptor] forKey:[NSString stringWithFormat:@"%02d%@", [dict count]+1, [NSObject className]]];
+ */
+        dict = [[LinkedHashMap newLinkedHashMap:16] retain];
+        [dict put:[NSObject className] value:[ObjectModelAdaptor newModelAdaptor]];
+        [dict put:[ST className] value:[STModelAdaptor newModelAdaptor]];
+        [dict put:[HashMap className] value:[MapModelAdaptor newModelAdaptor]];
+        [dict put:[NSDictionary className] value:[DictModelAdaptor newModelAdaptor]];
+        [dict put:[Aggregate className] value:[AggregateModelAdaptor newModelAdaptor]];
     }
     return self;
 }
@@ -99,14 +109,16 @@
     return dict;
 }
 
-- (id) objectForKey:(id)aKey
+- (id) get:(id)aKey
 {
-    return [dict objectForKey:aKey];
+    //    return [dict objectForKey:aKey];
+    return [dict get:aKey];
 }
 
-- (void) setObject:(id)anObject forKey:(id)aKey
+- (void) put:(id)aKey value:(id)anObject
 {
-    [dict setObject:anObject forKey:aKey];
+    //    [dict setObject:anObject forKey:aKey];
+    [dict put:aKey value:anObject];
 }
 
 - (NSInteger) count
@@ -134,14 +146,15 @@ static ErrorManager *aDEFAULT_ERR_MGR = nil;
 /**
  * When we use key as a value in a dictionary, this is how we signify.
  */
-static NSString *const DEFAULT_KEY = @"default";
-static NSString *const DICT_KEY = @"key";
+static const NSString *DICT_KEY = @"key";
+static const NSString *DEFAULT_KEY = @"default";
 static BOOL debug = NO;
 static BOOL verbose = YES;
 static BOOL trackCreationEvents = NO;
 
 @synthesize encoding; 
 @synthesize imports;
+@synthesize importsToClearOnUnload;
 @synthesize delimiterStartChar;
 @synthesize delimiterStopChar;
 @synthesize templates;
@@ -237,12 +250,12 @@ static BOOL trackCreationEvents = NO;
         encoding = NSUTF8StringEncoding;
         delimiterStartChar = aDelimiterStartChar;
         delimiterStopChar = aDelimiterStopChar;
-        imports = [[AMutableDictionary dictionaryWithCapacity:16] retain];
-        importsToClearOnUnload = [[AMutableDictionary dictionaryWithCapacity:16] retain];
-        templates = [[AMutableDictionary dictionaryWithCapacity:16] retain];
-        dictionaries = [[AMutableDictionary dictionaryWithCapacity:16] retain];
+        imports = [[AMutableArray arrayWithCapacity:16] retain];
+        importsToClearOnUnload = [[AMutableArray arrayWithCapacity:16] retain];
+        templates = [[LinkedHashMap newLinkedHashMap:16] retain];
+        dictionaries = [[LinkedHashMap newLinkedHashMap:16] retain];
         adaptors = [[[STGroup_Anon1 newSTGroup_Anon1] getDict] retain];
-        typeToAdaptorCache = [[AMutableDictionary dictionaryWithCapacity:16] retain];
+        typeToAdaptorCache = [[LinkedHashMap newLinkedHashMap:16] retain];
         iterateAcrossValues = NO;
         errMgr = STGroup.DEFAULT_ERR_MGR;
         [errMgr retain];
@@ -340,9 +353,10 @@ static BOOL trackCreationEvents = NO;
 /** Look up a fully-qualified name */
 - (CompiledST *) lookupTemplate:(NSString *)aName
 {
+    CompiledST *code;
     if ( [aName characterAtIndex:0] != '/') aName = [NSString stringWithFormat:@"/%@", aName];
     if ( verbose ) NSLog(@"[%@ lookupTemplate:%@]\n", [self className], aName);
-    CompiledST *code = [self rawGetTemplate:aName];
+    code = [self rawGetTemplate:aName];
     if ( code == STGroup.NOT_FOUND_ST ) {
         if ( verbose ) NSLog(@"%@ previously seen as not found\n", aName);
         return nil;
@@ -352,7 +366,7 @@ static BOOL trackCreationEvents = NO;
     if ( code == nil ) code = [self lookupImportedTemplate:aName];
     if ( code == nil ) {
         if ( verbose ) NSLog(@"%@ recorded not found\n", aName);
-        [templates setObject:NOT_FOUND_ST forKey:aName];
+        [templates put:aName value:NOT_FOUND_ST];
     }
     if ( verbose && code != nil ) NSLog(@"[%@ lookupTemplate:%@] found\n", [self className], aName);
     return code;
@@ -364,16 +378,14 @@ static BOOL trackCreationEvents = NO;
  */
 - (void) unload
 {
-    [templates removeAllObjects];
-    [dictionaries removeAllObjects];
+    [templates clear];
+    [dictionaries clear];
     STGroup *imp;
     for ( imp in imports ) {
         [imp unload];
     }
-    for ( imp in importsToClearOnUnload ) {
-        [imports removeObject:imp];
-    }
-    [importsToClearOnUnload removeAllObjects];
+    if ( [imports count] > 0) [imports removeAllObjects];
+    if ( [importsToClearOnUnload count] > 0) [importsToClearOnUnload removeAllObjects];
 }
 
 /** Load st from disk if dir or load whole group file if .stg file (then
@@ -417,18 +429,19 @@ static BOOL trackCreationEvents = NO;
 
 - (CompiledST *) rawGetTemplate:(NSString *)aName
 {
-    CompiledST *c = [templates objectForKey:aName];
+    CompiledST *c;
+    c = [templates get:aName];
     return c;
 }
 
-- (AMutableDictionary *) rawGetDictionary:(NSString *)aName
+- (LinkedHashMap *) rawGetDictionary:(NSString *)aName
 {
-    return [dictionaries objectForKey:aName];
+    return [dictionaries get:aName];
 }
 
 - (BOOL) isDictionary:(NSString *)aName
 {
-    return ([dictionaries objectForKey:aName] != nil);
+    return ([dictionaries get:aName] != nil);
 }
 
 // for testing
@@ -582,12 +595,12 @@ static BOOL trackCreationEvents = NO;
     }
     code.nativeGroup = self;
     code.templateDefStartToken = defT;
-    [templates setObject:code forKey:aName];
+    [templates put:aName value:code];
 }
     
 - (void) undefineTemplate:(NSString *)aName
 {
-    [templates removeObjectForKey:aName];
+    [templates remove:aName];
 }
     
 /** Compile a template */
@@ -629,9 +642,9 @@ static BOOL trackCreationEvents = NO;
 /** Define a map for this group; not thread safe...do not keep adding
  *  these while you reference them.
  */
-- (void) defineDictionary:(NSString *)aName mapping:(AMutableDictionary *)mapping
+- (void) defineDictionary:(NSString *)aName mapping:(LinkedHashMap *)mapping
 {
-    [dictionaries setObject:mapping forKey:aName];
+    [dictionaries put:aName value:mapping];
 }
 
 - (void) importTemplates:(STGroup *)g
@@ -672,11 +685,12 @@ static BOOL trackCreationEvents = NO;
     
     STGroup *g = nil;
     // it's a relative name; search path is working dir, g.stg's dir, CLASSPATH
-    //NSURL *thisRoot = [self getRootDirURL];
-    NSString *thisRoot = @"~/";
-    NSString *fileUnderRoot = nil;
-    //System.out.println("thisRoot="+thisRoot);
-    fileUnderRoot = [thisRoot stringByAppendingPathComponent:aFileName];
+    NSString *rootPath = [[self getRootDirURL] path];
+    NSString *fileUnderRoot = [[self getRootDirURL] path];
+    if ( [fileUnderRoot hasSuffix:@".stg"] ) {
+        fileUnderRoot = [Misc getParent:fileUnderRoot];
+    }
+    fileUnderRoot = [fileUnderRoot stringByAppendingPathComponent:aFileName];
     fileUnderRoot = [fileUnderRoot stringByStandardizingPath];
     if ( isTemplateFile ) {
         g = [STGroup newSTGroup];
@@ -751,7 +765,7 @@ static BOOL trackCreationEvents = NO;
     if ( g == nil ) return;
     [imports addObject:g];
     if (clearOnUnload) {
-        [imports addObject:g];
+        [importsToClearOnUnload addObject:g];
     }
     
 }
@@ -848,19 +862,19 @@ static BOOL trackCreationEvents = NO;
                 [NSString stringWithFormat:@"can't register ModelAdaptor for primitive type %@",
                  NSStringFromClass(attributeType)]];
     }
-    [adaptors setObject:adaptor forKey:[NSString stringWithFormat:@"%02d%@", [adaptors count]+1, NSStringFromClass(attributeType)]];
+    [adaptors put:NSStringFromClass(attributeType) value:adaptor];
     [self invalidateModelAdaptorCache:attributeType];
 }
 
 /** remove at least all types in cache that are subclasses or implement attributeType */
 - (void) invalidateModelAdaptorCache:(Class)attributeType
 {
-    [typeToAdaptorCache removeAllObjects]; // be safe, not clever; whack all values
+    [typeToAdaptorCache clear]; // be safe, not clever; whack all values
 }
 
 - (id<ModelAdaptor>) getModelAdaptor:(Class)attributeType
 {
-    id<ModelAdaptor> a = [typeToAdaptorCache objectForKey:NSStringFromClass(attributeType)];
+    id<ModelAdaptor> a = [typeToAdaptorCache get:NSStringFromClass(attributeType)];
     if ( a != nil )
         return a;
 
@@ -870,17 +884,15 @@ static BOOL trackCreationEvents = NO;
     NSString *t;
 //    for ( t in [adaptors keyEnumerator] ) {
     NSString *tmp;
-    ArrayIterator *it = [adaptors keyEnumerator];
+    LHMKeyIterator *it = [adaptors newKeyIterator];
     while ( [it hasNext] ) {
-        t = (NSString *)[it nextObject];
-        tmp = [t substringFromIndex:2];
-        Class cls = objc_getClass([tmp UTF8String]);
+        t = (NSString *)[it next];
+        Class cls = objc_getClass([t UTF8String]);
         if ([attributeType isSubclassOfClass:cls]) {
-            a = [adaptors objectForKey:t];
-            break;
+            a = [adaptors get:t];
         }
     }
-    [typeToAdaptorCache setObject:a forKey:[NSString stringWithFormat:@"%02d%@", [typeToAdaptorCache count]+1, NSStringFromClass(attributeType)]];
+    [typeToAdaptorCache put:NSStringFromClass(attributeType) value:a];
     return a;
 }
 
@@ -902,12 +914,13 @@ static BOOL trackCreationEvents = NO;
             [NSString stringWithFormat:@"can't register ModelAdaptor for primitive type %@",
             [attributeType getSimpleName]];
      }
-     [typeToAdaptorCache removeAllObjects]; // be safe, not clever; whack all values
+//     [typeToAdaptorCache removeAllObjects]; // be safe, not clever; whack all values
+     [typeToAdaptorCache clear]; // be safe, not clever; whack all values
      */
     if (renderers == nil) {
-        renderers = [[AMutableArray arrayWithCapacity:5] retain];
+        renderers = [[LinkedHashMap newLinkedHashMap:5] retain];
     }
-    [renderers setObject:r forKey:[attributeType className]];
+    [renderers put:[attributeType className] value:r];
     if ( recursive ) {
         [self load];
         STGroup *g;
@@ -921,7 +934,7 @@ static BOOL trackCreationEvents = NO;
     if ( renderers == nil )     return nil;
     id<AttributeRenderer> r = nil;
     if ( typeToRendererCache != nil ) {
-        r = [typeToRendererCache objectForKey:attributeType];
+        r = [typeToRendererCache get:attributeType];
         if ( r != nil ) return r;
     }
 /*
@@ -937,20 +950,19 @@ static BOOL trackCreationEvents = NO;
         if ( t.isAssignableFrom(attributeType) ) return renderers.get(t);
     }
  */
-    NSString *t;
-//    for ( t in [renderers allKeys] ) {
-    ArrayIterator *it = (ArrayIterator *)[renderers keyEnumerator];
+    LHMEntry *e;
+    LHMEntryIterator *it = (LHMEntryIterator *)[renderers newEntryIterator];
     while ( [it hasNext] ) {
-        t = (NSString *)[it nextObject];
+        e = [it next];
         // t works for attributeType if attributeType subclasses t or implements
-        id rendererClass = objc_getClass([t UTF8String]);
-        r = [renderers objectForKey:t];
+        id rendererClass = objc_getClass([e.key UTF8String]);
+        r = [renderers get:e.key];
         if ( typeToRendererCache == nil ) {
-            typeToRendererCache = [AMutableDictionary dictionaryWithCapacity:5];
+            typeToRendererCache = [[LinkedHashMap newLinkedHashMap:16] retain];
         }
-        [typeToRendererCache setObject:r forKey:[attributeType class]];
+        [typeToRendererCache put:[attributeType class] value:r];
         if ( [[attributeType class] isSubclassOfClass:rendererClass] )
-            return [renderers objectForKey:t];
+            return r;
     }
     return nil;
 }
@@ -1039,17 +1051,16 @@ static BOOL trackCreationEvents = NO;
     if (imports != nil) [buf appendFormat:@" : %@", imports];
 
     NSString *aName;
-//    for ( aName in [templates allKeys] ) {
-    ArrayIterator *it = (ArrayIterator *)[templates keyEnumerator];
+    LinkedHashIterator *it = (LinkedHashIterator *)[templates newKeyIterator];
     while ( [it hasNext] ) {
-        aName = (NSString *)[it nextObject];
+        aName = (NSString *)[it next];
         CompiledST *c = [self rawGetTemplate:aName];
         if (c.isAnonSubtemplate || c == STGroup.NOT_FOUND_ST)
             continue;
         aName = [aName lastPathComponent];
         [buf appendFormat:@"%@(", aName];
         if (c.formalArguments != nil)
-            [buf appendString:[Misc join:(ArrayIterator *)[c.formalArguments objectEnumerator] separator:@","]];
+            [buf appendString:[Misc join:[[[c.formalArguments values] toArray] objectEnumerator] separator:@","]];
         [buf appendFormat:@") ::= <<%@%@%@>>%@", Misc.newline, c.template, Misc.newline, Misc.newline];
     }
     return [buf description];
@@ -1076,9 +1087,12 @@ static BOOL trackCreationEvents = NO;
         }
     }
 #endif
-    for ( NSString *e in [templates allKeys] ) {
-        if ( [templates objectForKey:e] != NOT_FOUND_ST ) {
-            [result addObject:e];
+    LHMEntryIterator *it = [templates newEntryIterator];
+    LHMEntry *e;
+    while ( [it hasNext] ) {
+        e = [it next];
+        if ( e.value != NOT_FOUND_ST ) {
+            [result addObject:e.key];
         }
     }
     return result;

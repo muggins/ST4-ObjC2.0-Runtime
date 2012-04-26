@@ -33,7 +33,7 @@
 
 @implementation DictModelAdaptor
 
-+ (id) newDictModelAdaptor
++ (id) newModelAdaptor
 {
     return [[DictModelAdaptor alloc] init];
 }
@@ -47,7 +47,7 @@
 - (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value;
-    AMutableDictionary *dict = (AMutableDictionary *)obj;
+    NSDictionary *dict = (NSDictionary *)obj;
     if ( aProperty == nil ) {
         value = [dict objectForKey:STGroup.DEFAULT_KEY];
     }
@@ -63,9 +63,7 @@
     else if ( [dict objectForKey:aPropertyName] ) { // if can't find the key, try toString version
         value = [dict objectForKey:aPropertyName];
     }
-    else {
-        value = [dict objectForKey:STGroup.DEFAULT_KEY]; // not found, use default
-    }
+    else value = [dict objectForKey:STGroup.DEFAULT_KEY]; // not found, use default
     if ( value == STGroup.DICT_KEY ) {
         value = aProperty;
     }

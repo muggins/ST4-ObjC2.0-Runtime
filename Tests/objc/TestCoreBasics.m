@@ -25,7 +25,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "TestCoreBasics.h"
 #import "ST.h"
@@ -70,20 +70,20 @@
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [AMutableDictionary dictionaryWithCapacity:5];
-        [aDict setObject:@"b" forKey:@"a"];
+        aDict = [LinkedHashMap newLinkedHashMap:8];
+        [aDict put:@"a" value:@"b"];
     }
     return self;
 }
 
-- (void) setObject:(id)anObj forKey:(id)aName
+- (void) put:(id)aName value:(id)anObj
 {
-    [aDict setObject:anObj forKey:aName];
+    [aDict put:aName value:anObj];
 }
 
-- (id) objectForKey:(id)aKey
+- (id) get:(id)aKey
 {
-    return [aDict objectForKey:aKey];
+    return [aDict get:aKey];
 }
 
 @end
@@ -101,21 +101,20 @@
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [AMutableDictionary dictionaryWithCapacity:16];
-        [self setObject:@"b" forKey:@"a"];
-        [self setObject:@"d" forKey:@"c"];
+        aDict = [LinkedHashMap newLinkedHashMap:16];
+        [self put:@"a" value:@"b"];
+        [self put:@"c" value:@"d"];
     }
     return self;
 }
 
-- (void) setObject:(id)anObj forKey:(id)aName
-{
-    [aDict setObject:anObj forKey:aName];
+- (void) put:(id)aName value:(id)anObj{
+    [aDict put:aName value:anObj];
 }
 
-- (id) objectForKey:(id)aKey
+- (id) get:(id)aKey
 {
-    return [aDict objectForKey:aKey];
+    return [aDict get:aKey];
 }
 
 @end
@@ -276,8 +275,8 @@
 {
     NSString * template = @"<foo:{f | <f>}>"; // checks field and method getter
     ST * st = [ST newSTWithTemplate:template];
-    //[st add:@"foo" value:[AMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"b", @"d", nil] forKeys:[NSArray arrayWithObjects:@"a", @"c", nil]]];
-    [st add:@"foo" value:[AMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"a", @"c", nil] forKeys:[NSArray arrayWithObjects:@"b", @"d", nil]]];
+    [st add:@"foo" value:[AMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"b", @"d", nil] forKeys:[NSArray arrayWithObjects:@"a", @"c", nil]]];
+    //[st add:@"foo" value:[AMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"a", @"c", nil] forKeys:[NSArray arrayWithObjects:@"b", @"d", nil]]];
     NSString * expected = @"ac";
     NSString * result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
@@ -438,16 +437,42 @@
     return;
 }
 
+- (void) test19IncludeWithNestedArgs
+{
+    NSString *aTemplate = @"load <box(foo(\"arg\"))>;";
+    ST *st = [ST newSTWithTemplate:aTemplate];
+    [st.impl.nativeGroup defineTemplate:@"box" argsS:@"y" template:@"kewl <y> daddy"];
+    [st.impl.nativeGroup defineTemplate:@"foo" argsS:@"x" template:@"blech <x>"];
+    [st add:@"name" value:@"Ter"];
+    NSString *expected = @"load kewl blech arg daddy;";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
+    return;
+}
+
 //#ifdef DONTUSEYET
+- (void) testPassThru
+{
+    NSString *templates = @"a(x,y) ::= \"<b(...)>\"\nb(x,y) ::= \"<x><y>\"\n";
+    STGroupString *group = [STGroupString newSTGroupString:templates];
+    ST *st = [group getInstanceOf:@"a"];
+    [st add:@"x" value:@"x"];
+    [st add:@"y" value:@"y"];
+    NSString *expected = @"xy";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
+}
+//#endif
+
 - (void) test18aPassThruWithDefaultValue
 {
     // should not set y when it sees "no value" from above
     NSString *templates = @"a(x,y) ::= \"<b(...)>\"\nb(x,y={99}) ::= \"<x><y>\"\n";
     STGroupString *group = [STGroupString newSTGroupString:templates];
-    ST *a = [group getInstanceOf:@"a"];
-    [a add:@"x" value:@"x"];
+    ST *st = [group getInstanceOf:@"a"];
+    [st add:@"x" value:@"x"];
     NSString *expected = @"x99";
-    NSString *result = [a render];
+    NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
     return;
 }
@@ -457,10 +482,10 @@
     // should not set y when it sees "no definition" from above
     NSString *templates = @"a(x) ::= \"<b(...)>\"\nb(x,y={99}) ::= \"<x><y>\"\n";
     STGroupString *group = [STGroupString newSTGroupString:templates];
-    ST *a = [group getInstanceOf:@"a"];
-    [a add:@"x" value:@"x"];
+    ST *st = [group getInstanceOf:@"a"];
+    [st add:@"x" value:@"x"];
     NSString *expected = @"x99";
-    NSString *result = [a render];
+    NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
     return;
 }
@@ -487,20 +512,6 @@
     [a add:@"y" value:@"y"];
     NSString *expected = @"199";
     NSString *result = [a render];
-    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
-    return;
-}
-//#endif
-
-- (void) test19IncludeWithNestedArgs
-{
-    NSString *aTemplate = @"load <box(foo(\"arg\"))>;";
-    ST *st = [ST newSTWithTemplate:aTemplate];
-    [st.impl.nativeGroup defineTemplate:@"box" argsS:@"y" template:@"kewl <y> daddy"];
-    [st.impl.nativeGroup defineTemplate:@"foo" argsS:@"x" template:@"blech <x>"];
-    [st add:@"name" value:@"Ter"];
-    NSString *expected = @"load kewl blech arg daddy;";
-    NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
     return;
 }
@@ -553,17 +564,14 @@
 
 - (void) test23MapWithExprAsTemplateName
 {
-    NSString *aTemplate = [NSString stringWithFormat:@"%@%@%@",
-                           @"d ::= [\"foo\":\"bold\"]\n",
-                           @"test(name) ::= \"<name:(d.foo)()>\"\n",
-                           @"bold(x) ::= <<*<x>*>>\n"];
+    NSString *aTemplate = @"d ::= [\"foo\":\"bold\"]\ntest(name) ::= \"<name:(d.foo)()>\"\nbold(x) ::= <<*<x>*>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:aTemplate];
     STGroupFile *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingPathComponent:@"t.stg"]];
     ST *st = [group getInstanceOf:@"test"];
     [st add:@"name" value:@"Ter"];
     [st add:@"name" value:@"Tom"];
     [st add:@"name" value:@"Sumana"];
-    //    [st.impl dump];
+//    [st.impl dump];
     NSString *expected = @"*Ter**Tom**Sumana*";
     NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
@@ -647,6 +655,7 @@
     [st add:@"name" value:@"Tom"];
     [st add:@"name" value:nil];
     [st add:@"name" value:@"Sumana"];
+    [st.impl dump];
     NSString *expected = @"1:Ter, 2:Tom, 3:Sumana";
     NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
@@ -945,8 +954,8 @@
 {
     NSString *aTemplate = @"<if(m.name)>works \\\\<endif>";
     ST *st = [ST newSTWithTemplate:aTemplate];
-    AMutableDictionary *m = [AMutableDictionary dictionaryWithCapacity:16];
-    [m setObject:@"name" forKey:@"Ter"];
+    LinkedHashMap *m = [LinkedHashMap newLinkedHashMap:16];
+    [m put:@"name" value:@"Ter"];
     [st add:@"m" value:m];
     NSString *expected = @"works \\";
     NSString *result = [st render];
@@ -979,19 +988,19 @@
 - (void) test56CharLiterals
 {
     ST *st = [ST newSTWithTemplate:@"Foo <\\n><\\n><\\t> bar\n"];
-    StringWriter *sw = [StringWriter newStringWriter];
+    StringWriter *sw = [StringWriter newWriter];
     [st write:[[AutoIndentWriter alloc] init:sw newline:@"\n"]]; // force \n as newline
     NSString *result = [sw description];
     NSString *expected = @"Foo \n\n\t bar\n";     // expect \n in output
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
     st = [ST newSTWithTemplate:[NSString stringWithFormat:@"Foo <\\n><\\t> bar%@", newline]];
-    sw = [StringWriter newStringWriter];
+    sw = [StringWriter newWriter];
     [st write:[[AutoIndentWriter alloc] init:sw newline:@"\n"]]; // force \n as newline
     expected = @"Foo \n\t bar\n";     // expect \n in output
     result = [sw description];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
     st = [ST newSTWithTemplate:@"Foo<\\ >bar<\\n>"];
-    sw = [StringWriter newStringWriter];
+    sw = [StringWriter newWriter];
     [st write:[[AutoIndentWriter alloc] init:sw newline:@"\n"]]; // force \n as newline
     result = [sw description];
     expected = @"Foo bar\n"; // forced \n
@@ -1046,7 +1055,7 @@
     STGroupFile *group = [STGroupFile newSTGroupFile];
     [group defineTemplate:@"test" argsS:@"names" template:@"<names:{n | case <n>}; separator=\", \">"];
     ST *st = [group getInstanceOf:@"test"];
-    [st add:@"names" value:[TestCoreBasics_Anon3 newAnon]];
+    [st add:@"names" value:[NSArray arrayWithObjects:@"Ter", @"Tom", nil]];
     NSString *expected = @"case Ter, case Tom";
     NSString *result = [st render];
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
@@ -1080,9 +1089,8 @@
     [self writeFile:tmpdir fileName:@"t.stg" content:aTemplate];
     STGroupFile *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingPathComponent:@"t.stg"]];
     ST *st = [group getInstanceOf:@"main"];
-    StringWriter *sw = [StringWriter new];
-    // NoIndentWriter *w = [NoIndentWriter newNoIdentWriterWithWriter:sw];
-    NoIndentWriter *w = [NoIndentWriter newNoIdentWriter];
+    StringWriter *sw = [StringWriter newWriter];
+    NoIndentWriter *w = [NoIndentWriter newWriter:sw];
     [st write:w];
     NSString *result = [sw description];
     NSString *expected = @"abc\nabc\nabc\nabc";

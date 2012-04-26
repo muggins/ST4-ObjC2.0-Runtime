@@ -1745,6 +1745,10 @@ static SymbolStack *conditional_stack;
 {
     self = [super initWithTokenStream:(id<TokenStream>)anInput];
     if ( self != nil ) {
+        /* ruleAttributeScopeInit */
+        conditional_scope = [conditional_Scope newconditional_Scope];
+        conditional_stack = [SymbolStack newSymbolStackWithLen:30];
+        
         [self setTreeAdaptor:[[CommonTreeAdaptor newTreeAdaptor] retain]];
         errMgr = anErrMgr;
         if ( errMgr ) [errMgr retain];
@@ -4425,7 +4429,7 @@ static SymbolStack *conditional_stack;
         else if ( (LA22_0==ID||LA22_0==STRING||(LA22_0 >= T_FALSE && LA22_0 <= T_TRUE)||LA22_0==SUPER||LA22_0==LBRACK||LA22_0==LCURLY||LA22_0==AT) ) {
             alt22=2;
         }
-        else if ( (LA22_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+        else if ( (LA22_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             alt22=2;
         }
         else {
@@ -4942,8 +4946,8 @@ static SymbolStack *conditional_stack;
 
 
         NSString *IDstr = [input LT:1].text;
-        NSString *defVal = [[Compiler defaultOptionValues] objectForKey:IDstr];
-        BOOL validOption = ([[Compiler getSupportedOptions] objectForKey:IDstr] != nil);
+        NSString *defVal = [[Compiler defaultOptionValues] get:IDstr];
+        BOOL validOption = ([[Compiler getSupportedOptions] get:IDstr] != nil);
 
     @try {
         /* AST ruleLabelDefs */
@@ -6022,7 +6026,7 @@ static SymbolStack *conditional_stack;
                 if ( (LA31_0==ID||LA31_0==STRING||(LA31_0 >= T_FALSE && LA31_0 <= T_TRUE)||LA31_0==SUPER||LA31_0==LBRACK||LA31_0==LCURLY||LA31_0==AT) ) {
                     alt31=1;
                 }
-                else if ( (LA31_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+                else if ( (LA31_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
                     alt31=1;
                 }
                 switch (alt31) {
@@ -6502,7 +6506,7 @@ static SymbolStack *conditional_stack;
             if ( (LA35_1==LPAREN) ) {
                 NSInteger LA35_10 = [input LA:3];
 
-                if ( (([[Compiler funcs] instrForKey:[input LT:1].text])) ) {
+                if ( (([[Compiler funcs] getInstr:[input LT:1].text])) ) {
                     alt35=1;
                 }
                 else if ( (YES) ) {
@@ -6547,7 +6551,7 @@ static SymbolStack *conditional_stack;
         else if ( (LA35_0==STRING||(LA35_0 >= T_FALSE && LA35_0 <= T_TRUE)||LA35_0==LBRACK||LA35_0==LCURLY) ) {
             alt35=6;
         }
-        else if ( (LA35_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+        else if ( (LA35_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             alt35=6;
         }
         else {
@@ -6561,8 +6565,8 @@ static SymbolStack *conditional_stack;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:260:9: {...}? ID '(' ( expr )? ')' // alt
                 {
 
-                if ( !(([[Compiler funcs] instrForKey:[input LT:1].text])) ) {
-                    @throw [FailedPredicateException newException:@"includeExpr" predicate:@"[[Compiler funcs] instrForKey:[input LT:1].text]" stream:input];
+                if ( !(([[Compiler funcs] getInstr:[input LT:1].text])) ) {
+                    @throw [FailedPredicateException newException:@"includeExpr" predicate:@"[[Compiler funcs] getInstr:[input LT:1].text]" stream:input];
                 }
                  
                 ID96=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2245];  
@@ -6580,7 +6584,7 @@ static SymbolStack *conditional_stack;
                 if ( (LA34_0==ID||LA34_0==STRING||(LA34_0 >= T_FALSE && LA34_0 <= T_TRUE)||LA34_0==SUPER||LA34_0==LBRACK||LA34_0==LCURLY||LA34_0==AT) ) {
                     alt34=1;
                 }
-                else if ( (LA34_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+                else if ( (LA34_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
                     alt34=1;
                 }
                 switch (alt34) {
@@ -7073,13 +7077,13 @@ static SymbolStack *conditional_stack;
         else if ( (LA38_0==LBRACK) ) {
             alt38=6;
         }
-        else if ( (LA38_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+        else if ( (LA38_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             NSInteger LA38_7 = [input LA:2];
 
-            if ( (([conditional_stack size]>0)) ) {
+            if ( (([conditional_stack count]>0)) ) {
                 alt38=7;
             }
-            else if ( (([conditional_stack size]==0)) ) {
+            else if ( (([conditional_stack count]==0)) ) {
                 alt38=8;
             }
             else {
@@ -7209,8 +7213,8 @@ static SymbolStack *conditional_stack;
 
 
 
-                if ( !(([conditional_stack size]>0)) ) {
-                    @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional size]>0" stream:input];
+                if ( !(([conditional_stack count]>0)) ) {
+                    @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional count]>0" stream:input];
                 }
                  
                 char_literal125=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2561]; 
@@ -7233,8 +7237,8 @@ static SymbolStack *conditional_stack;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:277:9: {...}? =>lp= '(' expr ')' ( '(' ( argExprList )? ')' -> ^( INCLUDE_IND[$lp] expr ( argExprList )? ) | -> ^( TO_STR[$lp] expr ) ) // alt
                 {
 
-                if ( !(([conditional_stack size]==0)) ) {
-                    @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional size]==0" stream:input];
+                if ( !(([conditional_stack count]==0)) ) {
+                    @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional count]==0" stream:input];
                 }
                  
                 lp=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2582];  
@@ -7286,7 +7290,7 @@ static SymbolStack *conditional_stack;
                         if ( (LA36_0==ID||LA36_0==STRING||(LA36_0 >= T_FALSE && LA36_0 <= T_TRUE)||LA36_0==SUPER||LA36_0==LBRACK||LA36_0==LCURLY||LA36_0==AT) ) {
                             alt36=1;
                         }
-                        else if ( (LA36_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+                        else if ( (LA36_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
                             alt36=1;
                         }
                         switch (alt36) {
@@ -7501,7 +7505,7 @@ static SymbolStack *conditional_stack;
         else if ( (LA41_0==STRING||(LA41_0 >= T_FALSE && LA41_0 <= T_TRUE)||LA41_0==SUPER||LA41_0==LBRACK||LA41_0==LCURLY||LA41_0==AT) ) {
             alt41=1;
         }
-        else if ( (LA41_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+        else if ( (LA41_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             alt41=1;
         }
         else if ( (LA41_0==ELLIPSIS) ) {
@@ -8355,7 +8359,7 @@ static SymbolStack *conditional_stack;
         if ( (LA45_0==ID||LA45_0==STRING||(LA45_0 >= T_FALSE && LA45_0 <= T_TRUE)||LA45_0==SUPER||LA45_0==LBRACK||LA45_0==LCURLY||LA45_0==AT) ) {
             alt45=1;
         }
-        else if ( (LA45_0==LPAREN) && ((([conditional_stack size]>0)||([conditional_stack size]==0)))) {
+        else if ( (LA45_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             alt45=1;
         }
         else if ( ((LA45_0 >= RBRACK && LA45_0 <= COMMA)) ) {

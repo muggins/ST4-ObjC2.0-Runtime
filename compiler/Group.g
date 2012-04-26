@@ -69,7 +69,6 @@ tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; B
 #import "Misc.h"
 #import "GroupLexer.h"
 #import "FormalArgument.h"
-#import "ACNumber.h"
 }
 
 @lexer::header {
@@ -138,6 +137,7 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
 + (NSInteger) TID { return ID; }
 + (NSInteger) TTRUE { return T_TRUE; }
+
 - (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e
 {
     NSString *msg = [self getErrorMessage:e TokenNames:[self getTokenNames]];
@@ -152,7 +152,7 @@ STGroup *group;
     NSFileWrapper *f = [[NSFileWrapper alloc] initWithURL:fullFileName options:NSFileWrapperReadingImmediate error:outError]; // strip to simple name
     return [f filename];
 #endif
-    return [super getSourceName];
+    return [Misc getFileName:[group getFileName]];
 }
 
 - (void) error:(NSString *)msg
@@ -162,10 +162,12 @@ STGroup *group;
     [self recover:input Exception:nil];
 }
 
-- (NSString *) getErrorMessage:(NSException *)e TokenNames:(AMutableArray *)TokenNames
+/*
+- (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames
 {
     return [NSString stringWithFormat:@"\%@--\%@", e.name, e.reason];
 }
+*/
 
 }
 
@@ -201,7 +203,7 @@ STGroup *group;
 
 - (NSString *) getSourceName
 {
-    return [super getSourceName];
+    return [Misc getFileName:[group getFileName]];
 }
 
 }
@@ -335,12 +337,12 @@ dictDef
         }
     ;
 
-dict returns [AMutableDictionary *mapping]
-@init {mapping=[AMutableDictionary dictionaryWithCapacity:16];}
+dict returns [LinkedHashMap *mapping]
+@init {mapping=[LinkedHashMap newLinkedHashMap:16];}
     :   '[' dictPairs[mapping] ']'
     ;
 
-dictPairs[AMutableDictionary *mapping]
+dictPairs[LinkedHashMap *mapping]
     :   keyValuePair[mapping]
         (',' keyValuePair[mapping])* (',' defaultValuePair[mapping])?
     |   defaultValuePair[mapping]
@@ -349,12 +351,12 @@ dictPairs[AMutableDictionary *mapping]
         [self error:[NSString stringWithFormat:@"missing dictionary entry at '\%@'", [input LT:1].text]];
     }
 
-defaultValuePair[AMutableDictionary *mapping]
-    :   'default' ':' keyValue {[mapping setObject:$keyValue.value forKey:STGroup.DEFAULT_KEY];}
+defaultValuePair[LinkedHashMap *mapping]
+    :   'default' ':' keyValue {[mapping put:STGroup.DEFAULT_KEY value:$keyValue.value];}
     ;
 
-keyValuePair[AMutableDictionary *mapping]
-    :   STRING ':' keyValue {[mapping setObject:$keyValue.value forKey:[Misc replaceEscapes:[Misc strip:$STRING.text n:1]]];}
+keyValuePair[LinkedHashMap *mapping]
+    :   STRING ':' keyValue {[mapping put:[Misc replaceEscapes:[Misc strip:$STRING.text n:1]] value:$keyValue.value];}
     ;
 
 keyValue returns [id value]

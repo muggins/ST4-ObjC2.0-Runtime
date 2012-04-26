@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import "Bytecode.h"
 
 OperandType OperandTypeValueOf(NSString *text)
@@ -158,54 +158,54 @@ NSString *OperandTypeDescription(NSInteger value)
 @implementation Bytecode
 static NSInteger MAX_OPNDS                  = DEF_MAX_OPNDS;
 static NSInteger OPND_SIZE_IN_BYTES         = 2;
-static short const INSTR_LOAD_STR           = 1;
-static short const INSTR_LOAD_ATTR          = 2;
-static short const INSTR_LOAD_LOCAL         = 3; // load stuff like it, i, i0
-static short const INSTR_LOAD_PROP          = 4;
-static short const INSTR_LOAD_PROP_IND      = 5;
-static short const INSTR_STORE_OPTION       = 6;
-static short const INSTR_STORE_ARG          = 7;
-static short const INSTR_NEW                = 8;  // create new template instance
-static short const INSTR_NEW_IND            = 9;  // create new instance using value on stack
-static short const INSTR_NEW_BOX_ARGS       = 10; // create new instance using args in Map on stack
-static short const INSTR_SUPER_NEW          = 11; // create new instance using value on stack
-static short const INSTR_SUPER_NEW_BOX_ARGS = 12; // create new instance using args in Map on stack
-static short const INSTR_WRITE              = 13;
-static short const INSTR_WRITE_OPT          = 14;
-static short const INSTR_MAP                = 15; // <a:b()>, <a:b():c()>, <a:{...}>
-static short const INSTR_ROT_MAP            = 16; // <a:b(),c()>
-static short const INSTR_ZIP_MAP            = 17; // <names,phones:{n,p | ...}>
-static short const INSTR_BR                 = 18;
-static short const INSTR_BRF                = 19; // push options map
-static short const INSTR_OPTIONS            = 20; // push args map
-static short const INSTR_ARGS               = 21;
-static short const INSTR_PASSTHRU           = 22;
-static short const INSTR_PASSTHRU_IND       = 23;
-static short const INSTR_LIST               = 24;
-static short const INSTR_ADD                = 25;
-static short const INSTR_TOSTR              = 26;
+static const short INSTR_LOAD_STR           = 1;
+static const short INSTR_LOAD_ATTR          = 2;
+static const short INSTR_LOAD_LOCAL         = 3; // load stuff like it, i, i0
+static const short INSTR_LOAD_PROP          = 4;
+static const short INSTR_LOAD_PROP_IND      = 5;
+static const short INSTR_STORE_OPTION       = 6;
+static const short INSTR_STORE_ARG          = 7;
+static const short INSTR_NEW                = 8;  // create new template instance
+static const short INSTR_NEW_IND            = 9;  // create new instance using value on stack
+static const short INSTR_NEW_BOX_ARGS       = 10; // create new instance using args in Map on stack
+static const short INSTR_SUPER_NEW          = 11; // create new instance using value on stack
+static const short INSTR_SUPER_NEW_BOX_ARGS = 12; // create new instance using args in Map on stack
+static const short INSTR_WRITE              = 13;
+static const short INSTR_WRITE_OPT          = 14;
+static const short INSTR_MAP                = 15; // <a:b()>, <a:b():c()>, <a:{...}>
+static const short INSTR_ROT_MAP            = 16; // <a:b(),c()>
+static const short INSTR_ZIP_MAP            = 17; // <names,phones:{n,p | ...}>
+static const short INSTR_BR                 = 18;
+static const short INSTR_BRF                = 19; // push options map
+static const short INSTR_OPTIONS            = 20; // push args map
+static const short INSTR_ARGS               = 21;
+static const short INSTR_PASSTHRU           = 22;
+static const short INSTR_PASSTHRU_IND       = 23;
+static const short INSTR_LIST               = 24;
+static const short INSTR_ADD                = 25;
+static const short INSTR_TOSTR              = 26;
 
 // Predefined function
-static short const INSTR_FIRST              = 27;
-static short const INSTR_LAST               = 28;
-static short const INSTR_REST               = 29;
-static short const INSTR_TRUNC              = 30;
-static short const INSTR_STRIP              = 31;
-static short const INSTR_TRIM               = 32;
-static short const INSTR_LENGTH             = 33;
-static short const INSTR_STRLEN             = 34;
-static short const INSTR_REVERSE            = 35;
-static short const INSTR_NOT                = 36;
-static short const INSTR_OR                 = 37;
-static short const INSTR_AND                = 38;
-static short const INSTR_INDENT             = 39;
-static short const INSTR_DEDENT             = 40;
-static short const INSTR_NEWLINE            = 41;
-static short const INSTR_NOOP               = 42; // do nothing
-static short const INSTR_POP                = 43;
-static short const INSTR_NULL               = 44; // push null value
-static short const INSTR_TRUE               = 45; // push true value
-static short const INSTR_FALSE              = 46;
+static const short INSTR_FIRST              = 27;
+static const short INSTR_LAST               = 28;
+static const short INSTR_REST               = 29;
+static const short INSTR_TRUNC              = 30;
+static const short INSTR_STRIP              = 31;
+static const short INSTR_TRIM               = 32;
+static const short INSTR_LENGTH             = 33;
+static const short INSTR_STRLEN             = 34;
+static const short INSTR_REVERSE            = 35;
+static const short INSTR_NOT                = 36;
+static const short INSTR_OR                 = 37;
+static const short INSTR_AND                = 38;
+static const short INSTR_INDENT             = 39;
+static const short INSTR_DEDENT             = 40;
+static const short INSTR_NEWLINE            = 41;
+static const short INSTR_NOOP               = 42; // do nothing
+static const short INSTR_POP                = 43;
+static const short INSTR_NULL               = 44; // push null value
+static const short INSTR_TRUE               = 45; // push true value
+static const short INSTR_FALSE              = 46;
 
 // combined instructions
 
@@ -244,13 +244,11 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
     instructions[INSTR_BRF]                 = [[Instruction newInstruction:@"brf" a:T_ADDR] retain];
     instructions[INSTR_OPTIONS]             = [[Instruction newInstruction:@"options"] retain];
     instructions[INSTR_ARGS]                = [[Instruction newInstruction:@"args"] retain];
-    instructions[INSTR_PASSTHRU]            = [[Instruction newInstruction:@"passthru"] retain];
-    instructions[INSTR_PASSTHRU_IND]        = nil; //[[Instruction newInstruction:@"passthru_ind"] retain];
+    instructions[INSTR_PASSTHRU]            = [[Instruction newInstruction:@"passthru" a:T_ADDR] retain];
+    instructions[INSTR_PASSTHRU_IND]        = nil; //[[Instruction newInstruction:@"passthru_ind" a:T_INT] retain];
     instructions[INSTR_LIST]                = [[Instruction newInstruction:@"list"] retain];
     instructions[INSTR_ADD]                 = [[Instruction newInstruction:@"add"] retain];
     instructions[INSTR_TOSTR]               = [[Instruction newInstruction:@"tostr"] retain];
-    instructions[INSTR_PASSTHRU]            = [[Instruction newInstruction:@"passthru" a:T_STRING] retain];
-    instructions[INSTR_PASSTHRU_IND]        = nil;//[Instruction newInstruction:@"passthru_ind" a:T_INT] retain];
     
     // Predefined functions
     instructions[INSTR_FIRST]               = [[Instruction newInstruction:@"first"] retain];

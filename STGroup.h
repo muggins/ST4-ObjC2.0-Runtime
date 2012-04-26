@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import <ANTLR/CommonToken.h>
@@ -38,18 +38,18 @@
 @class CompiledST;
 
 @interface STGroup_Anon1 : NSObject {
-    AMutableDictionary *dict;
+    LinkedHashMap *dict;
 }
 
 + (id) newSTGroup_Anon1;
 
 - (id) init;
 - (id) getDict;
-- (id) objectForKey:(id)aKey;
-- (void) setObject:(id)anObject forKey:(id)aKey;
+- (id) get:(id)aKey;
+- (void) put:(id)aKey value:(id)anObject;
 - (NSInteger) count;
 
-@property (retain) AMutableDictionary *dict;
+@property (retain) LinkedHashMap *dict;
 @end
 
 /**
@@ -83,13 +83,13 @@
     /**
      * Maps template name to StringTemplate object. synchronized.
      */
-    __strong AMutableDictionary *templates;
+    __strong LinkedHashMap *templates;
     
     /**
      * Maps dict names to HashMap objects.  This is the list of dictionaries
      * defined by the user like typeInitMap ::= ["int":"0"]
      */
-    __strong AMutableDictionary *dictionaries;
+    __strong LinkedHashMap *dictionaries;
     
     /**
      * A dictionary that allows people to register a renderer for
@@ -111,7 +111,7 @@
      * 
      * This structure is synchronized.
      */
-    __strong AMutableDictionary *renderers;
+    __strong LinkedHashMap *renderers;
     
     /**
      * A dictionary that allows people to register a model adaptor for
@@ -121,15 +121,15 @@
      * ST initializes with model adaptors that know how to pull
      * properties out of Objects, Maps, and STs.
      */
-    __strong AMutableDictionary *adaptors;
+    __strong LinkedHashMap *adaptors;
     
     /**
      * Cache exact attribute type to adaptor object
      */
-    __strong AMutableDictionary *typeToAdaptorCache;
+    __strong LinkedHashMap *typeToAdaptorCache;
     
 	/** Cache exact attribute type to renderer object */
-	__strong AMutableDictionary *typeToRendererCache;
+	__strong LinkedHashMap *typeToRendererCache;
     /**
      * The errMgr for entire group; all compilations and executions.
      * This gets copied to parsers, walkers, and interpreters.
@@ -171,7 +171,7 @@
 - (void) load;
 - (CompiledST *) lookupImportedTemplate:(NSString *)name;
 - (CompiledST *) rawGetTemplate:(NSString *)name;
-- (AMutableDictionary *) rawGetDictionary:(NSString *)name;
+- (LinkedHashMap *) rawGetDictionary:(NSString *)name;
 - (BOOL) isDictionary:(NSString *)name;
 - (CompiledST *) defineTemplate:(NSString *)templateName template:(NSString *)template;
 
@@ -183,7 +183,7 @@
 - (void) rawDefineTemplate:(NSString *)name code:(CompiledST *)code defT:(CommonToken *)defT;
 - (void) undefineTemplate:(NSString *)name;
 - (CompiledST *) compile:(NSString *)srcName name:(NSString *)name args:(AMutableArray *)args template:(NSString *)template templateToken:(CommonToken *)templateToken;
-- (void) defineDictionary:(NSString *)name mapping:(AMutableDictionary *)mapping;
+- (void) defineDictionary:(NSString *)name mapping:(LinkedHashMap *)mapping;
 - (void) importTemplates:(STGroup *)g;
 - (void) importTemplatesWithFileName:(CommonToken *)fileNameToken;
 - (void) importTemplates:(STGroup *)g ClearOnUnload:(BOOL)clearOnUnload;
@@ -216,15 +216,16 @@
 
 @property (assign) NSStringEncoding encoding; 
 @property (retain) AMutableArray *imports;
+@property (retain) AMutableArray *importsToClearOnUnload;
 @property (assign) unichar delimiterStartChar;
 @property (assign) unichar delimiterStopChar;
-@property (retain) AMutableDictionary *templates;
-@property (retain) AMutableDictionary *dictionaries;
-@property (retain) AMutableDictionary *renderers;
-@property (retain) AMutableDictionary *adaptors;
+@property (retain) LinkedHashMap *templates;
+@property (retain) LinkedHashMap *dictionaries;
+@property (retain) LinkedHashMap *renderers;
+@property (retain) LinkedHashMap *adaptors;
+@property (retain) LinkedHashMap *typeToAdaptorCache;
+@property (retain) LinkedHashMap *typeToRendererCache;
 @property (retain) ErrorManager *errMgr;
-@property (retain) AMutableDictionary *typeToAdaptorCache;
-@property (retain) AMutableDictionary *typeToRendererCache;
 @property (assign) BOOL iterateAcrossValues;
 
 @end

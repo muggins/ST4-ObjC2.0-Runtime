@@ -26,7 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import <ANTLR/ANTLR.h>
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import "ErrorType.h"
 #import <ANTLR/CommonToken.h>
 
@@ -61,10 +61,8 @@
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause where:(CommonToken *)where  arg:(id)arg;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
-+ (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause argN:(NSInteger)arg arg2N:(NSInteger)arg2 arg3:(id)arg3;
 
 - (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
-- (id) init:(ErrorTypeEnum)anError who:(ST *)aWho cause:(NSException *)aCause argN:(NSInteger)arg arg2N:(NSInteger)arg2 arg3:(id)arg3;
 
 - (void) dealloc;
 - (NSString *) description;

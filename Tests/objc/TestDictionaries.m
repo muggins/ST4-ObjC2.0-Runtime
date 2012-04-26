@@ -12,7 +12,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"int x = 0;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -29,7 +29,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"int x = 0L;";
     NSString *result = [st render];
-    result = (result != nil) ? result : @"result = nil";
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -45,7 +45,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"int x = 0L;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -56,15 +56,15 @@
     [self writeFile:tmpdir fileName:@"test.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
     ST *st = [group getInstanceOf:@"foo"];
-    AMutableDictionary *m = [[AMutableDictionary dictionaryWithCapacity:5] autorelease];
-    [m setObject:[[[HashableUser alloc] init:99 name:@"parrt"] autorelease] forKey:@"first"];
-    [m setObject:[[[HashableUser alloc] init:172036 name:@"tombu"] autorelease] forKey:@"second"];
-    [m setObject:[[[HashableUser alloc] init:391 name:@"sriram"] autorelease] forKey:@"third"];
+    HashMap *m = [HashMap newHashMap:5];
+    [m put:[[HashableUser alloc] init:99 name:@"parrt"] value:@"first"];
+    [m put:[[HashableUser alloc] init:172036 name:@"tombu"] value:@"second"];
+    [m put:[[HashableUser alloc] init:391 name:@"sriram"] value:@"third"];
     [st add:@"m" value:m];
     [st add:@"k" value:[[HashableUser alloc] init:172036 name:@"tombu"]];
     NSString *expected = @"second";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -80,7 +80,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"double x = ;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -96,7 +96,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @" x = ;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -111,7 +111,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"int x = ;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -124,9 +124,10 @@
     ST *st = [group getInstanceOf:@"var"];
     [st add:@"type" value:@"float"];
     [st add:@"name" value:@"x"];
+    [st.impl dump];
     NSString *expected = @"float x = ;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -141,7 +142,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"UserRecord x = null;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -155,7 +156,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @" x = null;";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -170,6 +171,7 @@
     [group load];
     NSString *expected = @"[test.stg 1:33: missing value for key at ']']";
     NSString *result = [errors.errors description];
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -184,6 +186,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"UserRecord x = UserRecord;";
     NSString *result = [st render];
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -219,7 +222,7 @@
     ST *st = [group getInstanceOf:@"t"];
     NSString *expected = @" default ";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -234,6 +237,7 @@
     [st add:@"name" value:@"x"];
     NSString *expected = @"int x = 0;";
     NSString *result = [st render];
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -250,7 +254,7 @@
     [interm add:@"stuff" value:var];
     NSString *expected = @"int x = 0;";
     NSString *result = [interm render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -264,7 +268,7 @@
     ST *st = [group getInstanceOf:@"a"];
     NSString *expected = @"[foo]";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }
@@ -278,7 +282,7 @@
     ST *st = [group getInstanceOf:@"a"];
     NSString *expected = @"[foo]";
     NSString *result = [st render];
-    result = ((result != nil) ? result : @"result = nil");
+    result = ((result == nil) ? @"result = nil" : result );
     STAssertTrue([expected isEqualTo:result], @"Expected \"%@\" but had \"%@\"", expected, result );
     return;
 }

@@ -26,7 +26,7 @@
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #import "CompiledST.h"
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "ST.h"
@@ -38,7 +38,6 @@
 #import "BytecodeDisassembler.h"
 #import "GroupParser.h"
 #import "Bytecode.h"
-#import "ACNumber.h"
 
 @implementation CompiledST
 
@@ -137,12 +136,11 @@
 {
     if ( formalArguments == nil )
         return;
-//    for (NSString *s in [formalArguments allKeys]) {
     NSString *a;
-    ArrayIterator *it = (ArrayIterator *)[formalArguments keyEnumerator];
+    LHMKeyIterator *it = [formalArguments newKeyIterator];
     while ( [it hasNext] ) {
-        a = (NSString *)[it nextObject];
-        FormalArgument *fa = [formalArguments objectForKey:a];
+        a = (NSString *)[it next];
+        FormalArgument *fa = [formalArguments get:a];
         if (fa.defaultValueToken != nil) {
             numberOfArgsWithDefaultValues++;
             if ( fa.defaultValueToken.type == ANONYMOUS_TEMPLATE ) {
@@ -188,10 +186,10 @@
 - (void) addArg:(FormalArgument *)a
 {
     if (formalArguments == nil) {
-        formalArguments = [[AMutableDictionary dictionaryWithCapacity:16] retain];
+        formalArguments = [[LinkedHashMap newLinkedHashMap:16] retain];
     }
     a.index = [formalArguments count];
-    [formalArguments setObject:a forKey:a.name];
+    [formalArguments put:a.name value:a];
 }
 
 - (void) defineImplicitlyDefinedTemplates:(STGroup *)group
@@ -244,10 +242,10 @@
     NSString *tmp;
 
     BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:self];
-    NSLog( @"%@:%@", name, [dis disassemble] );
-    NSLog( @"Strings:%@", [dis strings] );
+    NSLog( @"%@:\n%@", name, [dis disassemble] );
+    NSLog( @"Strings:\n%@", [dis strings] );
     tmp = [dis sourceMap];
-    NSLog( @"Bytecode to template map:%@", ((tmp != nil)?tmp:@"[dis sourceMap] returned nil") );
+    NSLog( @"Bytecode to template map:\n%@", ((tmp != nil)?tmp:@"[dis sourceMap] returned nil") );
 }
 
 - (NSString *) disasm

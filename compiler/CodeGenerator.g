@@ -244,7 +244,8 @@ scope {
 @init {
  	$template::cstate = [[CompilationState newCompilationState:errMgr name:name stream:[input getTokenStream]] retain];
 	$impl = $template::cstate.impl;
- 	if ( [$template count] == 1 ) outermostImpl = $impl;
+ 	if ( [$template count] == 1 )
+        outermostImpl = $impl;
 	[$impl defineFormalArgs:$args]; // make sure args are defined prior to compilation
 	if ( name != nil && [name hasPrefix:Compiler.SUBTEMPLATE_PREFIX] ) {
 	    [$impl addArg:[FormalArgument newFormalArgument:@"i"]];
@@ -254,7 +255,8 @@ scope {
 }
 	:	chunk
 		{ // finish off the CompiledST result
-        if ( $template::cstate.stringtable != nil ) $impl.strings = [$template::cstate.stringtable toArray];
+        if ( $template::cstate.stringtable != nil )
+            $impl.strings = [[$template::cstate.stringtable values] toArray];
         $impl.codeSize = $template::cstate.ip;
 		}
 	;
@@ -460,8 +462,8 @@ mapTemplateRef[NSInteger num_exprs]
             [errMgr compileTimeError:ANON_ARGUMENT_MISMATCH
                        templateToken:templateToken
                                    t:$subtemplate.start.token
-                                argN:$subtemplate.nargs
-                               arg2N:$num_exprs];
+                                 arg:[ACNumber numberWithInteger:$subtemplate.nargs]
+                                arg2:[ACNumber numberWithInteger:$num_exprs]];
 		}
 		for (NSInteger i=1; i<=$num_exprs; i++) [self emit:$subtemplate.start opcode:Bytecode.INSTR_NULL];
         [self emit2:$subtemplate.start

@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import <ANTLR/RuntimeException.h>
 #import "STGroupFile.h"
@@ -208,7 +208,7 @@
         // beneath it.
     if ( STGroup.verbose ) NSLog(@"loading group file %@\n", [URL description]);
     [self loadGroupFile:@"/" fileName:fileName];
-    if ( STGroup.verbose ) NSLog(@"found %d templates in %@ = %@\n", [templates count], [URL description], [templates allKeys]);
+    if ( STGroup.verbose ) NSLog(@"found %d templates in %@ = %@\n", [templates count], [URL description], [[templates keySet] toArray]);
  }
 
 - (NSString *) show

@@ -93,10 +93,10 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
     NSMutableString *buf = [NSMutableString stringWithCapacity:100];
     [buf appendFormat:@"%@:", [self getTemplateDeclaratorString]];
     n++;
-    AMutableDictionary *attributes = [who getAttributes];
+    LinkedHashMap *attributes = [who getAttributes];
     if (attributes != nil) {
         AMutableArray *attrNames = [AMutableArray arrayWithCapacity:5];
-        [attrNames addObjectsFromArray:[attributes allKeys]];
+        [attrNames addObjectsFromArray:[[attributes newKeyIterator] toArray]];
         [attrNames sortUsingFunction:compare context:nil];
         NSString *longestName = [attrNames objectAtIndex:0];
         NSInteger w = [longestName length];
@@ -109,10 +109,10 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
         while ( [it hasNext] ) {
             attrName = [it nextObject];
             NSString *name = (NSString *)attrName;
-            [buf appendString:@"\n"];
+            [buf appendString:[Misc newline]];
             [self indent:buf n:n];
             [buf appendFormat:fmtStr, [name cStringUsingEncoding:NSASCIIStringEncoding]];
-            id value = [attributes objectForKey:name];
+            id value = [[attributes get:name].value;
             [buf appendString:[self getValueDebugString:value n:n]];
         }
         
@@ -156,11 +156,11 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
     NSMutableString *buf = [NSMutableString stringWithCapacity:150];
     [buf appendFormat:@"<%@(", [who getName]];
     if (((CompiledST *)who.impl).formalArguments != nil) {
-        ArrayIterator *it = [ArrayIterator newIteratorForDictKey:(NSDictionary *)who.impl.formalArguments];
+        LHMKeyIterator *it = [who.impl.formalArguments newKeyIterator];
         id obj;
         NSInteger na = 0;
         while ([it hasNext]) {
-            obj = [it nextObject];
+            obj = [it next];
             if ( na > 0 )
                 [buf appendString:@", "];
             [buf appendString:obj];

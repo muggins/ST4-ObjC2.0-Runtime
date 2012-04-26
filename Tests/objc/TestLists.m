@@ -2,128 +2,141 @@
 
 @implementation TestLists
 
-- (void) testJustCat {
-  ST * e = [[[ST alloc] init:@"<[names,phones]>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"TerTom12";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test01JustCat {
+    ST *st = [ST newSTWithTemplate:@"<[names,phones]>"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"TerTom12";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testListLiteralWithEmptyElements {
-  ST * e = [[[ST alloc] init:@"<[\"Ter\",,\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"] autorelease];
-  NSString * expecting = @"1:Ter, foo, 2:Jesse";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test02ListLiteralWithEmptyElements {
+    ST *st = [ST newSTWithTemplate:@"<[\"Ter\",,\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"];
+    [st.impl dump];
+    NSString *expected = @"1:Ter, foo, 2:Jesse";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testListLiteralWithEmptyFirstElement {
-  ST * e = [[[ST alloc] init:@"<[,\"Ter\",\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"] autorelease];
-  NSString * expecting = @"foo, 1:Ter, 2:Jesse";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test03ListLiteralWithEmptyFirstElement {
+    ST *st = [ST newSTWithTemplate:@"<[,\"Ter\",\"Jesse\"]:{n | <i>:<n>}; separator=\", \", null={foo}>"];
+    NSString *expected = @"foo, 1:Ter, 2:Jesse";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testLength {
-  ST * e = [[[ST alloc] init:@"<length([names,phones])>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"4";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test04Length {
+    ST *st = [ST newSTWithTemplate:@"<length([names,phones])>"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"4";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCat2Attributes {
-  ST * e = [[[ST alloc] init:@"<[names,phones]; separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"Ter, Tom, 1, 2";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test05Cat2Attributes {
+    ST *st = [ST newSTWithTemplate:@"<[names,phones]; separator=\", \">"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"Ter, Tom, 1, 2";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCat2AttributesWithApply {
-  ST * e = [[[ST alloc] init:@"<[names,phones]:{a|<a>.}>"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"Ter.Tom.1.2.";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test06Cat2AttributesWithApply {
+    ST *st = [ST newSTWithTemplate:@"<[names,phones]:{a|<a>.}>"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"Ter.Tom.1.2.";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCat3Attributes {
-  ST * e = [[[ST alloc] init:@"<[names,phones,salaries]; separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  [e add:@"salaries" arg1:@"big"];
-  [e add:@"salaries" arg1:@"huge"];
-  NSString * expecting = @"Ter, Tom, 1, 2, big, huge";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test07Cat3Attributes {
+    ST *st = [ST newSTWithTemplate:@"<[names,phones,salaries]; separator=\", \">"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    [st add:@"salaries" value:@"big"];
+    [st add:@"salaries" value:@"huge"];
+    NSString *expected = @"Ter, Tom, 1, 2, big, huge";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatWithTemplateApplicationAsElement {
-  ST * e = [[[ST alloc] init:@"<[names:{n|<n>!},phones]; separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"Ter!, Tom!, 1, 2";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test08CatWithTemplateApplicationAsElement {
+    ST *st = [ST newSTWithTemplate:@"<[names:{n|<n>!},phones]; separator=\", \">"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"Ter!, Tom!, 1, 2";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatWithIFAsElement {
-  ST * e = [[[ST alloc] init:@"<[{<if(names)>doh<endif>},phones]; separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"doh, 1, 2";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test09CatWithIFAsElement {
+    ST *st = [ST newSTWithTemplate:@"<[{<if(names)>doh<endif>},phones]; separator=\", \">"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"doh, 1, 2";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatNullValues {
-  ST * e = [[[ST alloc] init:@"<[no,go]; null=\"foo\", separator=\", \">"] autorelease];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"foo, foo";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test10CatNullValues {
+    ST *st = [ST newSTWithTemplate:@"<[no,go]; null=\"foo\", separator=\", \">"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"foo, foo";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatWithNullTemplateApplicationAsElement {
-  ST * e = [[[ST alloc] init:@"<[names:{n|<n>!},\"foo\"]:{a|x}; separator=\", \">"] autorelease];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"x";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test11CatWithNullTemplateApplicationAsElement {
+    ST *st = [ST newSTWithTemplate:@"<[names:{n|<n>!},\"foo\"]:{a|x}; separator=\", \">"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"x";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testCatWithNestedTemplateApplicationAsElement {
-  ST * e = [[[ST alloc] init:@"<[names, [\"foo\",\"bar\"]:{x | <x>!},phones]; separator=\", \">"] autorelease];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"Ter, Tom, foo!, bar!, 1, 2";
-  [self assertEquals:expecting arg1:[e render]];
+- (void) test12CatWithNestedTemplateApplicationAsElement {
+    ST *st = [ST newSTWithTemplate:@"<[names, [\"foo\",\"bar\"]:{x | <x>!},phones]; separator=\", \">"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"Ter, Tom, foo!, bar!, 1, 2";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
-- (void) testListAsTemplateArgument {
-  NSString * templates = [[@"test(names,phones) ::= \"<foo([names,phones])>\"" stringByAppendingString:newline] stringByAppendingString:@"foo(items) ::= \"<items:{a | *<a>*}>\""] + newline;
-  [self writeFile:tmpdir arg1:@"t.stg" arg2:templates];
-  STGroup * group = [[[STGroupFile alloc] init:[[tmpdir stringByAppendingString:@"/"] stringByAppendingString:@"t.stg"]] autorelease];
-  ST * e = [group getInstanceOf:@"test"];
-  [e add:@"names" arg1:@"Ter"];
-  [e add:@"names" arg1:@"Tom"];
-  [e add:@"phones" arg1:@"1"];
-  [e add:@"phones" arg1:@"2"];
-  NSString * expecting = @"*Ter**Tom**1**2*";
-  NSString * result = [e render];
-  [self assertEquals:expecting arg1:result];
+- (void) test13ListAsTemplateArgument {
+    NSString *templates = @"test(names,phones) ::= \"<foo([names,phones])>\"\nfoo(items) ::= \"<items:{a | *<a>*}>\"\n";
+    [self writeFile:tmpdir fileName:@"t.stg" content:templates];
+    STGroup *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingPathComponent:@"t.stg"]];
+    ST *st = [group getInstanceOf:@"test"];
+    [st add:@"names" value:@"Ter"];
+    [st add:@"names" value:@"Tom"];
+    [st add:@"phones" value:@"1"];
+    [st add:@"phones" value:@"2"];
+    NSString *expected = @"*Ter**Tom**1**2*";
+    NSString *result = [st render];
+    STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" but got \"%@\"", expected, result );
 }
 
 @end

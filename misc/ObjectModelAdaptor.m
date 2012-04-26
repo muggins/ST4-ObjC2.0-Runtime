@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "STErrorListener.h"
 #import "ObjectModelAdaptor.h"
@@ -195,7 +195,7 @@
  */
 static STNoSuchPropertyException *cachedException;
 
-+ (id) newObjectModelAdaptor
++ (id) newModelAdaptor
 {
     return [[ObjectModelAdaptor alloc] init];
 }
@@ -252,7 +252,9 @@ static STNoSuchPropertyException *cachedException;
                               [aPropertyName substringWithRange:NSMakeRange(1, [aPropertyName length]-1)]];
     SEL m = [Misc getMethod:aPropertyName];
     if ( m == nil || ![anObj respondsToSelector:m] ) {
-        m = [Misc getMethod:[NSString stringWithFormat:@"get%@", methodSuffix]];;
+        m = [Misc getMethod:[NSString stringWithFormat:@"get%@", methodSuffix]];
+        if ( m && [anObj respondsToSelector:m] )
+            return [anObj performSelector:m];
         if ( m == nil || ![anObj respondsToSelector:m] ) {
             m = [Misc getMethod:[NSString stringWithFormat:@"is%@", methodSuffix]];
             if ( m == nil || ![anObj respondsToSelector:m] ) {

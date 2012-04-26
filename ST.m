@@ -25,7 +25,7 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import <ANTLR/RuntimeException.h>
 #import "Interpreter.h"
@@ -181,9 +181,9 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 }
 
 /** Track construction-time add attribute "events"; used for ST user-level debugging */
-- (AMutableDictionary *)setAddAttrEvents
+- (LinkedHashMap *)setAddAttrEvents
 {
-    addAttrEvents = [AMutableDictionary dictionaryWithCapacity:25];
+    addAttrEvents = [LinkedHashMap newLinkedHashMap:25];
     return addAttrEvents;
 }
 
@@ -396,18 +396,18 @@ static DebugState *st_debugState = nil;
 #pragma mark fix this
     if ( STGroup.trackCreationEvents ) {
         if ( debugState==nil ) debugState = [DebugState newDebugState];
-        [debugState.addAttrEvents setObject:(id)[AddAttributeEvent newAddAttributeEvent:aName value:value] forKey:aName];
+        [debugState.addAttrEvents put:aName value:(id)[AddAttributeEvent newAddAttributeEvent:aName value:value]];
     }
     FormalArgument *arg = nil;
     if (impl.hasFormalArgs) {
-        if (impl.formalArguments != nil) arg = [impl.formalArguments objectForKey:aName];
+        if (impl.formalArguments != nil) arg = [impl.formalArguments get:aName];
         if (arg == nil) {
             @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", aName]];
         }
     }
     else {
         if (impl.formalArguments != nil) {
-            arg = [impl.formalArguments objectForKey:aName];
+            arg = [impl.formalArguments get:aName];
         }
         if (arg == nil) {
             arg = [FormalArgument newFormalArgument:aName];
@@ -430,24 +430,21 @@ static DebugState *st_debugState = nil;
     AttributeList *multi;
     curvalue = [locals objectAtIndex:arg.index];
     if (curvalue == EMPTY_ATTR) {
-        if ( [value isKindOfClass:[NSArray class]] ) {
-            multi = [ST convertToAttributeList:value];
-            [locals replaceObjectAtIndex:arg.index withObject:multi];
-        }
-        else {
-            [locals replaceObjectAtIndex:arg.index withObject:value];
-        }
+        [locals replaceObjectAtIndex:arg.index withObject:value];
         return self;
     }
     multi = [ST convertToAttributeList:curvalue];
     [locals replaceObjectAtIndex:arg.index withObject:multi];
-    if ( [value isKindOfClass:[NSDictionary class]] ) {
+    if ( value != nil && [value isKindOfClass:[HashMap class]] ) {
+        [multi addObjectsFromArray:[[value entrySet] toArray]];
+    }
+    else if ( [value isKindOfClass:[NSDictionary class]] ) {
         [multi addObjectsFromArray:(NSArray *)[value allValues]];
     }
     else if ( value != nil && [value isKindOfClass:[NSArray class]] ) {
         [multi addObjectsFromArray:(AMutableArray *)value];
     }
-    else {
+    else  {
         [multi addObject:value];
     }
     return self;
@@ -495,7 +492,7 @@ static DebugState *st_debugState = nil;
     Aggregate *aggr = [Aggregate newAggregate];
     for (NSString *p in propNames) {
         id v = [values objectAtIndex:i++];
-        [aggr.props setObject:v forKey:p];
+        [aggr.props put:p value:v];
     }
 
     [self add:aggrName value:aggr]; // now add as usual
@@ -513,7 +510,7 @@ static DebugState *st_debugState = nil;
         }
         return;
     }
-    FormalArgument *arg = [impl.formalArguments objectForKey:name];
+    FormalArgument *arg = [impl.formalArguments get:name];
     if ( arg == nil ) {
         @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
@@ -534,7 +531,7 @@ static DebugState *st_debugState = nil;
     if ( impl.formalArguments == nil ) {
         @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
-    FormalArgument *arg = [impl.formalArguments objectForKey:name];
+    FormalArgument *arg = [impl.formalArguments get:name];
     if ( arg == nil ) {
         @throw [IllegalArgumentException  newException:[NSString stringWithFormat:@"no such attribute: %@", name]];
     }
@@ -551,7 +548,7 @@ static DebugState *st_debugState = nil;
     ST *p = self;
     FormalArgument *localArg = nil;
     if ( p.impl.formalArguments != nil )
-        localArg = [p.impl.formalArguments objectForKey:name];
+        localArg = [p.impl.formalArguments get:name];
     if ( localArg != nil ) {
         id obj = [p.locals objectAtIndex:localArg.index];
         if ( obj == EMPTY_ATTR )
@@ -561,21 +558,19 @@ static DebugState *st_debugState = nil;
     return nil;
 }
 
-- (AMutableDictionary *) getAttributes
+- (LinkedHashMap *) getAttributes
 {
     if ( impl.formalArguments == nil )
         return nil;
-    AMutableDictionary *attributes = [AMutableDictionary dictionaryWithCapacity:16];
-    ArrayIterator *it = [ArrayIterator newIteratorForDictObj:impl.formalArguments];
-    FormalArgument *arg;
-//    for (FormalArgument *arg in [impl.formalArguments allValues]) {
+    LinkedHashMap *attributes = [LinkedHashMap newLinkedHashMap:16];
+    LHMValueIterator *it = [impl.formalArguments newValueIterator];
     while ( [it hasNext] ) {
-        arg = [it nextObject];
+        FormalArgument *arg = [it next];
         id  obj = [locals objectAtIndex:arg.index];
         if ( obj == ST.EMPTY_ATTR ) {
             continue;
         }
-        [attributes setObject:obj forKey:arg.name];
+        [attributes put:arg.name value:obj];
     }
     return attributes;
 }
@@ -589,6 +584,13 @@ static DebugState *st_debugState = nil;
     }
     else if ( [curvalue isKindOfClass:[AttributeList class]]) { // already a list made by ST
         multi = (AttributeList *)curvalue;
+    }
+    else if ( [curvalue isKindOfClass:[HashMap class]]) { // existing attribute is non-ST List
+        // must copy to an ST-managed list before adding new attribute
+        // (can't alter incoming attributes)
+        HashMap *hm = (HashMap *)curvalue;
+        multi = [AttributeList arrayWithCapacity:[hm count]];
+        [multi addObjectsFromArray:[[hm entrySet] toArray]];
     }
     else if ( [curvalue isKindOfClass:[AMutableArray class]]) { // existing attribute is non-ST List
         // must copy to an ST-managed list before adding new attribute
@@ -624,25 +626,25 @@ static DebugState *st_debugState = nil;
 
 - (NSInteger) write:(id<STWriter>)wr1
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr debug:NO];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:[NSLocale currentLocale] errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:impl.nativeGroup.errMgr debug:NO];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 listener:(id<STErrorListener>)listener
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance errMgr:impl.nativeGroup.errMgr debug:NO];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:[NSLocale currentLocale] errMgr:impl.nativeGroup.errMgr debug:NO];
     return [interp exec:wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale listener:(id<STErrorListener>)listener
 {
-    Interpreter *interp = [[Interpreter alloc] init:groupThatCreatedThisInstance locale:locale errMgr:[ErrorManager newErrorManagerWithListener:listener] debug:NO];
+    Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale errMgr:[ErrorManager newErrorManagerWithListener:listener] debug:NO];
     return [interp exec:wr1 who:self];
 }
 

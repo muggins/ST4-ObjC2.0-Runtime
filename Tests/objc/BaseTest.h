@@ -6,7 +6,7 @@
 //  Copyright 2011 Alan's MachineWorks. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 //#import <SenTestingKit/SenTestCase.h>
 #import <GHUnit/GHTestCase.h>
@@ -24,13 +24,13 @@ extern NSString *const tmpdir;
 extern NSString *const newline;
 
 @interface User : NSObject {
-    NSInteger num;
+    ACNumber *num;
     NSString *name;
     BOOL manager;
     BOOL parkingSpot;
 }
 
-@property (assign) NSInteger num;
+@property (retain, getter=getNum, setter=setNum:) ACNumber *num;
 @property (retain) NSString *name;
 @property (assign) BOOL manager;
 @property (assign) BOOL parkingSpot;
@@ -39,16 +39,18 @@ extern NSString *const newline;
 + (id) newUser:(NSInteger)aNum name:(NSString *)aName;
 
 - (id) init;
-- (id) init:(int)aNum name:(NSString *)aName;
+- (id) init:(NSInteger)aNum name:(NSString *)aName;
 - (void)dealloc;
+- (ACNumber *)getNum;
+- (void)setNum:(ACNumber *)aNum;
 - (BOOL) hasParkingSpot;
 @end
 
 @interface HashableUser : User {
 }
 
-- (id) init:(int)aNum name:(NSString *)name;
-- (int) hash;
+- (id) init:(NSInteger)aNum name:(NSString *)name;
+- (NSInteger) hash;
 - (BOOL) isEqualTo:(NSObject *)obj;
 @end
 

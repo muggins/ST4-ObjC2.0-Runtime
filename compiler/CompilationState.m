@@ -87,13 +87,13 @@
     if ( aTree == nil )
         @throw [STNoSuchAttributeException newException:@"nil tree in refAttr()"];
     NSString *name = aTree.text;
-    if ( (impl.formalArguments != nil) && ([impl.formalArguments objectForKey:name] != nil) ) {
-        FormalArgument *arg = [impl.formalArguments objectForKey:name];
+    if ( (impl.formalArguments != nil) && ([impl.formalArguments get:name] != nil) ) {
+        FormalArgument *arg = [impl.formalArguments get:name];
         NSInteger index = (([arg isKindOfClass:[FormalArgument class]])? arg.index:0);
         [self emit1:aTree opcode:Bytecode.INSTR_LOAD_LOCAL arg:index];
     }
     else {
-        if ( [[Interpreter predefinedAnonSubtemplateAttributes] objectForKey:name] != nil ) {
+        if ( [[Interpreter predefinedAnonSubtemplateAttributes] containsKey:name] ) {
             [errMgr compileTimeError:REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE templateToken:templateToken t:(CommonToken *)aTree.token];
             [self emit:aTree opcode:Bytecode.INSTR_NULL];
         }
@@ -106,13 +106,13 @@
 - (void) setOption:(CommonTree *)aTree
 {
     NSInteger Opt;
-    Opt = (NSInteger)[[[Compiler getSupportedOptions] objectForKey:aTree.text] intValue];
+    Opt = (NSInteger)[[[Compiler getSupportedOptions] get:aTree.text] intValue];
     [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:Opt];
 }
 
 - (void) func:(CommonToken *)templateToken tree:(CommonTree *)aTree
 {
-    NSString *funcBytecode = [[[Compiler funcs] getDict] objectForKey:aTree.text];
+    NSString *funcBytecode = [[[Compiler funcs] getDict] get:aTree.text];
     if (funcBytecode == nil) {
         [errMgr compileTimeError:NO_SUCH_FUNCTION templateToken:templateToken t:(CommonToken *)aTree.token];
         [self emit:aTree opcode:Bytecode.INSTR_POP];
@@ -129,16 +129,17 @@
 
 - (void) emit:(CommonTree *)opAST opcode:(short)opcode
 {
+    NSInteger i, j, lim, n, p, q;
     [self ensureCapacity:1];
     if (opAST != nil) {
-        NSInteger i = [opAST getTokenStartIndex];
-        NSInteger j = [opAST getTokenStopIndex];
-        NSInteger p = [((CommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
-        NSInteger q = [((CommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
-        if (!(p < 0 || q < 0)) {
-            j = [impl.sourceMap count];
-            if ( j <= ip ) {
-                for (NSInteger i = j; i <= ip; i++ )
+        i = [opAST getTokenStartIndex];
+        j = [opAST getTokenStopIndex];
+        p = [((CommonToken *)[[tokens getTokens] objectAtIndex:i]) getStart];
+        q = [((CommonToken *)[[tokens getTokens] objectAtIndex:j]) getStop];
+        if ( !(p < 0 || q < 0) ) {
+            lim = [impl.sourceMap count];
+            if ( lim <= ip ) {
+                for ( n = lim; n <= ip; n++ )
                     [impl.sourceMap addObject:[NSNull null]];
             }
             [impl.sourceMap replaceObjectAtIndex:ip withObject:[Interval newInterval:p b:q]];

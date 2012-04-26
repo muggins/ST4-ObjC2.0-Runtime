@@ -6,11 +6,11 @@
 //  Copyright 2011 Alan's MachineWorks. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
+#import <GHUnit/GHTestCase.h>
 
 
-@interface TestMisc : SenTestCase {
+@interface TestMisc : GHTestCase {
 
 }
 
