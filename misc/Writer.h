@@ -47,7 +47,7 @@
 
 - (id) init;
 - (id) initWithCapacity:(NSUInteger)aLen;
-- (id) initWithWriter:(Writer *)aWriter;  // just for initializing subclasses
+//- (id) initWithWriter:(Writer *)aWriter;  // just for initializing subclasses
 - (void) dealloc;
 - (id) copyWithZone:(NSZone *)aZone;
 - (NSUInteger) count;
@@ -63,7 +63,6 @@
 - (void) ensureCapacity:(NSInteger)len;
 - (void) close;
 - (NSString *) description;
-- (NSString *) toString;
 
 - (void) print:(id)msg;
 - (void) println:(id)msg;

@@ -90,7 +90,7 @@
 
 + (id) newWriter;
 + (id) newWriter:(Writer *)aWriter;
-+ (id) newWriter:(Writer *)aWriter newLine:(NSString *)aStr;
++ (id) newWriter:(Writer *)aWriter newline:(NSString *)aStr;
 
 - (id) initWithCapacity:(NSInteger)sz;
 - (id) init:(Writer *)aWriter newline:(NSString *)newline;

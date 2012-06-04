@@ -67,6 +67,7 @@ extern NSString *const newline;
 - (void) checkTokens:(NSString *)template expected:(NSString *)expected;
 - (void) checkTokens:(NSString *)template expected:(NSString *)expected delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (NSString *)getRandomDir;
+- (void) assertEquals:(NSString *)expected result:(NSString *)result;
 
 @property(retain) NSString *randomDir;
 
@@ -83,7 +84,6 @@ extern NSString *const newline;
 - (void) addObject:(id)anObject;
 - (id) objectAtIndex:(NSInteger)idx;
 - (NSString *)description;
-- (NSString *)toString;
 
 @property (retain) AMutableArray *thisArray;
 @end

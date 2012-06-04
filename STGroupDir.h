@@ -54,6 +54,7 @@
 
 - (id) init:(NSString *)dirName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar;
 - (id) initWithURL:(NSURL *)theRoot encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar;
+- (void) importTemplatesWithFileName:(CommonToken *)fileNameToken;
 - (CompiledST *) load:(NSString *)name;
 - (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)fileName;
 - (NSString *) getName;

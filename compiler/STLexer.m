@@ -32,6 +32,7 @@
 #import "STException.h"
 #import "STParser.h"
 #import "STToken.h"
+#import "ErrorManager.h"
 
 #ifndef ANTLR3TokenTypeAlreadyDefined
 #define ANTLR3TokenTypeAlreadyDefined
@@ -186,7 +187,7 @@ delimiterStopChar:(unichar)aStopChar
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
         tokens = [[AMutableArray arrayWithCapacity:16] retain];
-        errMgr = STGroup.DEFAULT_ERR_MGR;
+        errMgr = ErrorManager.DEFAULT_ERR_MGR;
         if ( errMgr ) [errMgr retain];
         input = anInput;
         if ( input ) [input retain];
@@ -268,7 +269,9 @@ delimiterStopChar:(unichar)aStopChar
 - (void) match:(unichar)x
 {
     if (c != x) {
-        @throw [NSException exceptionWithName:@"No Viable Alt Exception" reason:[NSString stringWithFormat:@"%@: expecting '%c' found '%@'", [input getSourceName], x, [STLexer str:c]] userInfo:nil];
+        NoViableAltException *e = [NoViableAltException newException:0 state:0 stream:input];
+        NSString *aMsg = [NSString stringWithFormat:@"expecting '%c', found '%@'", x, [STLexer str:c]];
+        [errMgr lexerError:[input getSourceName] msg:aMsg templateToken:templateToken e:e];
     }
     [self consume];
 }
@@ -286,8 +289,8 @@ delimiterStopChar:(unichar)aStopChar
 
 - (CommonToken *) _nextToken
 {
-    
-    while (YES) {
+		//System.out.println("nextToken: c="+(char)c+"@"+input.index());
+    while (YES) { // lets us avoid recursion when skipping stuff
         startCharIndex = input.index;
         startLine = [input getLine];
         startCharPositionInLine = [input getCharPositionInLine];
@@ -376,8 +379,8 @@ delimiterStopChar:(unichar)aStopChar
                 return [self newToken:AT];
             case '"':
                 return [self mSTRING];
-            case '&': [self consume]; [self match:'&']; return [self newToken:AND];
-            case '|': [self consume]; [self match:'|']; return [self newToken:OR];
+            case '&': [self consume]; [self match:'&']; return [self newToken:AND]; // &&
+            case '|': [self consume]; [self match:'|']; return [self newToken:OR];  // ||
             case '{': return [self subTemplate];
             default:
                 if (c == delimiterStopChar) {
@@ -407,8 +410,9 @@ delimiterStopChar:(unichar)aStopChar
                 NoViableAltException *re = [NoViableAltException newException:0 state:0 stream:input];
                 re.line = startLine;
                 re.charPositionInLine = startCharPositionInLine;
-                [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid character '%c'", c] templateToken:templateToken e:re];
-                if (c == (unichar)Token_EOF_CHAR) {
+                NSString *aMsg = (c == (unichar) EOF) ? @"invalid character '<EOF>'" : [NSString stringWithFormat:@"invalid character '%c'", c];
+                [errMgr lexerError:[input getSourceName] msg:aMsg templateToken:templateToken e:re];
+                if (c == (unichar) EOF) {
                     return [self newToken:EOF_TYPE_INT];
                 }
                 [self consume];
@@ -446,6 +450,7 @@ delimiterStopChar:(unichar)aStopChar
         ArrayIterator *it = [ArrayIterator newIterator:argTokens];
         while ( [it hasNext] )
            [self emit:[it nextObject]];
+        [it release];
 //        for (CommonToken *t in argTokens)
 //            [self emit:t];
         [input release:m];
@@ -480,7 +485,8 @@ delimiterStopChar:(unichar)aStopChar
         case ' ': text = @" "; break;
         default:
             e = [NoViableAltException newException:0 state:0 stream:input];
-            [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"invalid escaped char: '%c'", c] templateToken:templateToken e:e];
+            NSString *aMsg = (c == (unichar)EOF) ? @"invalid escaped char: '<EOF>'" : [NSString stringWithFormat:@"invalid escaped char: '%c'", c];
+            [errMgr lexerError:[input getSourceName] msg:aMsg templateToken:templateToken e:e];
             [self consume];
             [self match:delimiterStopChar];
             return SKIP_TOK;
@@ -542,7 +548,8 @@ delimiterStopChar:(unichar)aStopChar
                 modifiedText = YES;
                 continue;
             }
-            if ([input LA:2] == delimiterStartChar || [input LA:2] == '}') {
+            if ( [input LA:2] == delimiterStartChar ||
+                 [input LA:2] == '}') {
                 modifiedText = YES;
                 [self consume];
                 [buf appendFormat:@"%c", c];
@@ -570,6 +577,7 @@ delimiterStopChar:(unichar)aStopChar
  */
 - (CommonToken *) mID
 {
+    // called from subTemplate; so keep resetting position during speculation
     startCharIndex = input.index;
     startLine = [input getLine];
     startCharPositionInLine = [input getCharPositionInLine];
@@ -586,6 +594,7 @@ delimiterStopChar:(unichar)aStopChar
  */
 - (CommonToken *) mSTRING
 {
+    //{setText(getText().substring(1, getText().length()-1));}
     BOOL sawEscape = NO;
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     [buf appendFormat:@"%c", c];
@@ -612,6 +621,7 @@ delimiterStopChar:(unichar)aStopChar
             re.line = [input getLine];
             re.charPositionInLine = [input getCharPositionInLine];
             [errMgr lexerError:[input getSourceName] msg:@"EOF in string" templateToken:templateToken e:re];
+            break;
         }
     }
     [buf appendFormat:@"%c", c];
@@ -637,7 +647,7 @@ delimiterStopChar:(unichar)aStopChar
             re.line = [input getLine];
             re.charPositionInLine = [input getCharPositionInLine];
             [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"Nonterminated comment starting at %d:%d: '!%c' missing", startLine, startCharPositionInLine, delimiterStopChar] templateToken:templateToken e:re];
-        break;
+            break;
         }
         [self consume];
     }
@@ -659,7 +669,7 @@ delimiterStopChar:(unichar)aStopChar
 
 + (BOOL) isIDStartLetter:(unichar)c
 {
-    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_';
+    return [self isIDLetter:c];
 }
 
 + (BOOL) isIDLetter:(unichar)c

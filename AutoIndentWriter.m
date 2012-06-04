@@ -53,7 +53,7 @@
     return [[AutoIndentWriter alloc] init:aWriter newline:@"\n"];
 }
 
-+ (id) newWriter:(Writer *)aWriter newLine:(NSString *)aStr
++ (id) newWriter:(Writer *)aWriter newline:(NSString *)aStr
 {
     return [[AutoIndentWriter alloc] init:aWriter newline:aStr];
 }
@@ -73,7 +73,7 @@
     self=[super init];
     if ( self != nil ) {
         indents = [[AMutableArray arrayWithCapacity:5] retain];
-        anchors = [[IntArray newArrayWithLen:5] retain];
+        anchors = [[IntArray newArrayWithLen:10] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -111,7 +111,7 @@
     self=[super initWithCapacity:(NSUInteger)sz];
     if ( self != nil ) {
         indents = [[AMutableArray arrayWithCapacity:5] retain];
-        anchors = [[IntArray newArrayWithLen:5] retain];
+        anchors = [[IntArray newArrayWithLen:10] retain];
         anchors_sp = -1;
         atStartOfLine = YES;
         charPosition = 0;
@@ -197,35 +197,24 @@
 
 /**
  * Write out a string literal or attribute expression or expression element.
- * 
- * If doing line wrap, then check wrap before emitting this str.  If
- * at or beyond desired line width then emit a \n and any indentation
- * before spitting out this str.
- */
-- (NSInteger) write:(NSString *)str wrap:(NSString *)wrap
-{
-    NSInteger n = [self writeWrap:wrap];
-    return n + [self writeStr:str];
-}
-
-/**
- * Write out a string literal or attribute expression or expression element.
  */
 - (NSInteger) writeStr:(NSString *)str
 {
     NSInteger n = 0;
+    NSInteger nll = [newline length];
+    NSInteger sl = [str length];
     
-    for (NSInteger i = 0; i < [str length]; i++) {
+    for (NSInteger i = 0; i < sl; i++) {
         unichar c = [str characterAtIndex:i];
         if (c == '\r')
             continue;
         if (c == '\n') {
             atStartOfLine = YES;
-            charPosition = -1;
-            for (NSInteger j=0; j < [newline length]; j++ )
+            charPosition = -nll;
+            for (NSInteger j=0; j < nll; j++ )
                  [writer write:[newline characterAtIndex:j]];
-            n += [newline length];
-            charIndex += [newline length];
+            n += nll;
+            charIndex += nll;
             charPosition += n;
             continue;
         }
@@ -243,39 +232,58 @@
 
 - (NSInteger) writeSeparator:(NSString *)str
 {
-    NSInteger len = [str length];
-    [self writeStr:str];
-    return len;
+    return [self writeStr:str];
 }
 
+/**
+ * Write out a string literal or attribute expression or expression element.
+ * 
+ * If doing line wrap, then check wrap before emitting this str.  If
+ * at or beyond desired line width then emit a \n and any indentation
+ * before spitting out this str.
+ */
+- (NSInteger) write:(NSString *)str wrap:(NSString *)wrap
+{
+    NSInteger n = [self writeWrap:wrap];
+    return ( n + [self writeStr:str] );
+}
 
 - (NSInteger) writeWrap:(NSString *)wrap
 {
     NSInteger n = 0;
-    NSInteger nll = [newline length];
-    NSInteger sl = [self length];
-    for (NSInteger i = 0; i < sl; i++) {
-        unichar c = [wrap characterAtIndex:i];
-        if (c == '\n') {
-            atStartOfLine = YES;
-            n += [newline length];
-            charPosition = -nll;
-            [writer writeStr:newline];
-            n += nll;
-            charIndex += nll;
-            n += n;
-            continue;
+    NSInteger nll = 0;
+    NSInteger wl = 0;
+    // if want wrap and not already at start of line (last char was \n)
+    // and we have hit or exceeded the threshold
+    if ( lineWidth != ST.NO_WRAP && wrap != nil && !atStartOfLine &&
+        charPosition >= lineWidth )
+    {
+        nll = [newline length];
+        wl = [wrap length];
+        // ok to wrap
+        // Walk wrap string and look for A\nB.  Spit out A\n
+        // then spit indent or anchor, whichever is larger
+        // then spit out B.
+        for (NSInteger i = 0; i < wl; i++) {
+            unichar c = [wrap characterAtIndex:i];
+            if (c == '\r')
+                continue;
+            else if (c == '\n') {
+                [writer writeStr:newline];
+                n += nll;
+                charPosition = 0;
+                charIndex += nll;
+                n += [self indent];
+                continue;
+                // continue writing any chars out
+            }
+            else {  // write A or B part
+                n++;
+                [writer write:c];
+                charPosition++;
+                charIndex++;
+            }
         }
-        // normal character
-        // check to see if we are at the start of a line; need indent if so
-        if ( atStartOfLine ) {
-            n += [self indent];
-            [writer write:c];
-            atStartOfLine = NO;
-        }
-        n++;
-        charPosition++;
-        charIndex++;
     }
     return n;
 }
@@ -291,11 +299,13 @@
         ind = (NSString *)[it nextObject];
         if (ind != nil) {
             n += [ind length];
-            for ( int i = 0; i < [ind length]; i++ )
-                [writer write:[ind characterAtIndex:i]];
+            [writer writeStr:ind];
         }
     }
+    [it release];
     
+    // If current anchor is beyond current indent width, indent to anchor
+    // *after* doing indents (might tabs in there or whatever)
     NSInteger indentWidth = n;
     if (anchors_sp >= 0 && [anchors integerAtIndex:anchors_sp] > indentWidth) {
         NSInteger remainder = [anchors integerAtIndex:anchors_sp] - indentWidth;

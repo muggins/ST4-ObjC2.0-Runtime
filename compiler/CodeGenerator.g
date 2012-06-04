@@ -103,7 +103,7 @@ options {
                   token:(CommonToken *)aTemplateToken;
 
 - (void) dealloc;
-// convience funcs to hide offensive sending of emit messages to
+// convenience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
 - (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;
@@ -256,7 +256,7 @@ scope {
 	:	chunk
 		{ // finish off the CompiledST result
         if ( $template::cstate.stringtable != nil )
-            $impl.strings = [[$template::cstate.stringtable values] toArray];
+            $impl.strings = [[$template::cstate.stringtable keySet] toArray];
         $impl.codeSize = $template::cstate.ip;
 		}
 	;

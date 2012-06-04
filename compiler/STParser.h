@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g 2012-02-22 16:12:13
+// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g 2012-05-10 18:49:45
 
 /* =============================================================================
  * Standard antlr OBJC runtime definitions
@@ -14,7 +14,6 @@
  * This is what the grammar programmer asked us to put at the top of every file.
  */
 
-#import <ANTLR/ANTLR.h>
 #import "Compiler.h"
 #import "ErrorManager.h"
 #import "ErrorType.h"
@@ -101,7 +100,6 @@ typedef enum {
 #define TO_STR 60
 #define ZIP 61
 #endif
-
 #pragma mark Dynamic Global Scopes globalAttributeScopeInterface
 #pragma mark Dynamic Rule Scopes ruleAttributeScopeInterface
 /* start of ruleAttributeScopeInterface */
@@ -812,7 +810,7 @@ id<TreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 + (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
 - (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
-- (id) recoverFromMismatchedToken:(id<IntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow;
+- (id) recoverFromMismatchedToken:(id<IntStream>)anInput TokenType:(NSInteger)ttype Follow:(ANTLRBitSet *)follow;
 
 /* ObjC end of actions.(actionScope).methodsDecl */
 

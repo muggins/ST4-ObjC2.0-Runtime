@@ -54,16 +54,11 @@
         txt = @"<no text>";
     NSString *tokenName = nil;
     if (type == TokenTypeEOF)
-        tokenName = @"EOF";
+        tokenName = @"<EOF>";
     else
         tokenName = [[STParser getTokenNames] objectAtIndex:type];
     return [NSString stringWithFormat:@"[@%d,%d:%d='%@',<%@>%@,%d:%d]",
         [self getTokenIndex], startIndex, stopIndex, txt, tokenName, channelStr, line, charPositionInLine];
-}
-
-- (NSString *) toString
-{
-    return [self description];
 }
 
 @end

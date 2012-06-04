@@ -113,6 +113,9 @@
 @property (assign) NSInteger codeSize;
 @property (retain) AMutableArray *sourceMap;
 
+
++ (void)initialize;
++ (id) NOT_FOUND_ST;
 + (CompiledST *) newCompiledST;
 - (id) init;
 - (id) copyWithZone:(NSZone *)aZone;

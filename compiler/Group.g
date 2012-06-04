@@ -121,10 +121,9 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e;
+- (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
-- (NSString *) getErrorMessage:(NSException *)e TokenNames:(AMutableArray *)TokenNames;
 }
 
 @synthesize {
@@ -138,7 +137,7 @@ STGroup *group;
 + (NSInteger) TID { return ID; }
 + (NSInteger) TTRUE { return T_TRUE; }
 
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e
+- (void) displayRecognitionError:(AMutableArray *) tokenNames Exception:(RecognitionException *)e
 {
     NSString *msg = [self getErrorMessage:e TokenNames:[self getTokenNames]];
     [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
@@ -162,13 +161,6 @@ STGroup *group;
     [self recover:input Exception:nil];
 }
 
-/*
-- (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames
-{
-    return [NSString stringWithFormat:@"\%@--\%@", e.name, e.reason];
-}
-*/
-
 }
 
 @lexer::memVars {
@@ -190,9 +182,11 @@ STGroup *group;
     NSString *msg = nil;
     if ( [e isKindOfClass:[NoViableAltException class]] ) {
 #pragma error fix formatting
-        msg = [NSString stringWithFormat:@"invalid character '\%C'", [input LA:1]];
+        unichar c = [input LA:1];
+        msg = (c == (unichar) EOF) ? @"invalid character '<EOF>'" : [NSString stringWithFormat:@"invalid character '%C'", c];
     }
-    else if ( [e isKindOfClass:[MismatchedTokenException class]] && ((MismatchedTokenException *)e).expecting=='"' ) {
+    else if ( [e isKindOfClass:[MismatchedTokenException class]] &&
+              ((MismatchedTokenException *)e).expectingChar == '"' ) {
         msg = @"unterminated string";
     }
     else {

@@ -45,16 +45,17 @@ static NSString *newline = @"\n";
     newline = aNewLine;
 }
 
-+ (NSString *) join:(ArrayIterator *)iter separator:(NSString *)separator
++ (NSString *) join:(ArrayIterator *)it separator:(NSString *)separator
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     NSString *obj;
-    while ( (obj = [iter nextObject]) != nil ) {
-        [buf appendString:obj];
-        if ([iter hasNext]) {
+    while ( (obj = [it nextObject]) != nil ) {
+        [buf appendString:[obj description]];
+        if ([it hasNext]) {
             [buf appendString:separator];
         }
-    };
+    }
+    [it release];
     return [buf description];
 }
 
@@ -143,8 +144,10 @@ static NSString *newline = @"\n";
     NSString *parent = [Misc getParent:name];
     NSString *prefix = parent;
     len = [parent length];
-    if ( [parent characterAtIndex:len-1] != '/' )
-        prefix = [NSString stringWithFormat:@"%@/", prefix];
+//    if ( [parent characterAtIndex:len-1] != '/' )
+//        prefix = [NSString stringWithFormat:@"%@/", prefix];
+    if ( ![parent hasSuffix:@"/"] )
+        prefix = [prefix stringByAppendingString:@"/"];
     return prefix;
 }
 

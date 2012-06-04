@@ -41,6 +41,8 @@
 
 @implementation CompiledST
 
+static CompiledST *NOT_FOUND_ST = nil;
+
 @synthesize name;
 @synthesize prefix;
 @synthesize template;
@@ -59,6 +61,16 @@
 @synthesize instrs;
 @synthesize codeSize;
 @synthesize sourceMap;
+
++ (void)initialize
+{
+    NOT_FOUND_ST = [CompiledST newCompiledST];
+}
+
++ (id) NOT_FOUND_ST
+{
+    return (NOT_FOUND_ST);
+}
 
 + (CompiledST *) newCompiledST
 {
@@ -161,6 +173,7 @@
             }
         }
     }
+    [it release];
 }
 
 - (void) defineFormalArgs:(AMutableArray *)args
@@ -177,6 +190,7 @@
             a = [it nextObject];
             [self addArg:a];
         }
+        [it release];
     }
 }
 
@@ -203,7 +217,7 @@
             [group rawDefineTemplate:sub.name code:sub defT:sub.templateDefStartToken];
             [sub defineImplicitlyDefinedTemplates:group];
         }
-        
+        [it release];
     }
 }
 

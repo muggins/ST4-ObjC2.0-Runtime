@@ -53,7 +53,7 @@
         [msg retain];
         templateToken = aTemplateToken;
         if ( templateToken ) [templateToken retain];
-        srcName = aSrcName;
+        srcName = [Misc getFileName:aSrcName];
         if ( srcName ) [srcName retain];
     }
     return self;
@@ -85,14 +85,9 @@
     }
     NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
     if (srcName != nil) {
-        return [srcName stringByAppendingFormat:@" %d:%@", filepos, [NSString stringWithFormat:[ErrorType ErrorNum:error], msg]];
+        return [srcName stringByAppendingFormat:@" %@: %@", filepos, [NSString stringWithFormat:[ErrorType ErrorNum:error], msg]];
     }
     return [filepos stringByAppendingFormat:@": %@", [NSString stringWithFormat:[ErrorType ErrorNum:error], msg]];
-}
-
-- (NSString *) toString
-{
-    return [self description];
 }
 
 @end

@@ -207,7 +207,7 @@
         // no prefix since this group file is the entire group, nothing lives
         // beneath it.
     if ( STGroup.verbose ) NSLog(@"loading group file %@\n", [URL description]);
-    [self loadGroupFile:@"/" fileName:fileName];
+    [self loadGroupFile:@"/" fileName:[URL path]];
     if ( STGroup.verbose ) NSLog(@"found %d templates in %@ = %@\n", [templates count], [URL description], [[templates keySet] toArray]);
  }
 

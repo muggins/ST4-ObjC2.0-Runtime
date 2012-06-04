@@ -153,17 +153,16 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e;
+- (void) displayRecognitionError:(AMutableArray *) tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
-- (NSString *) getErrorMessage:(NSException *)e TokenNames:(AMutableArray *)TokenNames;
 
 /* ObjC end of actions.(actionScope).methodsDecl */
 
 /* ObjC start of methodsDecl */
 /* ObjC end of methodsDecl */
 
-- (void)group:(STGroup *)aGroup arg1:(NSString *)prefix ; 
+- (void)group:(STGroup *)aGroup prefix:(NSString *)prefix ; 
 - (void)oldStyleHeader; 
 - (NSString *)groupName; 
 - (void)delimiters; 

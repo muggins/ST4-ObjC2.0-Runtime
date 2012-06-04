@@ -57,7 +57,8 @@
     [super dealloc];
 }
 
-- (void) compileTimeError:(STMessage *)msg {
+- (void) compileTimeError:(STMessage *)msg
+{
     [errors addObject:msg];
 }
 
@@ -88,14 +89,10 @@
     while ( [it hasNext] ) {
         m = [it nextObject];
         [buf appendFormat:@"%@%@", [m description], Misc.newline];
-        //        return [m description];
     }
-    return (([buf length] > 0) ? buf : @"buf=<nil>");
-}
-
-- (NSString *) toString
-{
-    return [self description];
+    [it release];
+//    return (([buf length] > 0) ? buf : @"buf=<nil>");
+    return (([buf length] > 0) ? buf : @"");
 }
 
 @end

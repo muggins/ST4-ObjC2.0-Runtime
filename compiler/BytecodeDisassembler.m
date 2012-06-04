@@ -89,7 +89,8 @@
             ip += Bytecode.OPND_SIZE_IN_BYTES;
         }
     }
-    return (([buf length] > 0) ? buf : @"buf=<nil>");
+//    return (([buf length] > 0) ? buf : @"buf=<nil>");
+    return (([buf length] > 0) ? buf : @"");
 }
 
 - (NSString *) disassemble
@@ -100,7 +101,8 @@
         i = [self disassembleInstruction:buf ip:i];
         [buf appendString:@"\n"];
     }
-    return (([buf length] > 0) ? buf : @"buf=<nil>");
+//    return (([buf length] > 0) ? buf : @"buf=<nil>");
+    return (([buf length] > 0) ? buf : @"");
 }
 
 - (NSInteger) disassembleInstruction:(NSMutableString *)buf ip:(NSInteger)ip
@@ -189,6 +191,7 @@
             }
             addr++;
         }
+        [it release];
     }
     return (([buf length] > 0) ? buf : @"strings=<nil>");
 }
@@ -202,12 +205,13 @@
     ArrayIterator *it = [code.sourceMap objectEnumerator];
     while ( [it hasNext] ) {
         I = (Interval *)[it nextObject];
-        if ( !(I == nil || I == [NSNull null]) ) {
+        if ( !(I == nil || I == (Interval *)[NSNull null]) ) {
             NSString *chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];
             [buf appendString:[NSString stringWithFormat:@"%04d: %@\t\"%@\"\n", addr, I, chunk]];
         }
         addr++;
     }
+    [it release];
     return (([buf length] > 0) ? buf : @"sourceMap=<nil>");
 }
 

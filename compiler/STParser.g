@@ -44,7 +44,6 @@ tokens {
     }
 
 @header {
-#import <ANTLR/ANTLR.h>
 #import "Compiler.h"
 #import "ErrorManager.h"
 #import "ErrorType.h"
@@ -65,7 +64,7 @@ CommonToken *templateToken;
 @methodsDecl {
 + (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
 - (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
-- (id) recoverFromMismatchedToken:(id<IntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow;
+- (id) recoverFromMismatchedToken:(id<IntStream>)anInput TokenType:(NSInteger)ttype Follow:(ANTLRBitSet *)follow;
 }
 
 @synthesize {
@@ -96,7 +95,7 @@ CommonToken *templateToken;
     return self;
 }
 
-- (id) recoverFromMismatchedToken:(id<IntStream>)anInput type:(NSInteger)ttype follow:(ANTLRBitSet *)follow
+- (id) recoverFromMismatchedToken:(id<IntStream>)anInput TokenType:(NSInteger)ttype Follow:(ANTLRBitSet *)follow
 {
     @throw [MismatchedTokenException newException:ttype Stream:anInput];
 }
@@ -142,8 +141,8 @@ region
         template
         INDENT? LDELIM '@end' RDELIM
         // kill \n for <@end> on line by itself if multi-line embedded region
-        ({$region.start.line!= [input LT:1].line}?=> NEWLINE)?
-        -> {indent!=nil}?
+        ({$region.start.line != [input LT:1].line}? => NEWLINE)?
+        -> {indent != nil}?
            ^(INDENTED_EXPR $i ^(REGION[$x] ID template?))
         ->                    ^(REGION[$x] ID template?)
     ;

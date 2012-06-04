@@ -52,7 +52,7 @@
     self=[super init];
     if ( self != nil ) {
         impl = [[CompiledST newCompiledST] retain];
-        stringtable = [[[StringTable alloc] init] retain];
+        stringtable = [[LinkedHashMap newLinkedHashMap:8] retain];
         ip = 0;
         errMgr = anErrMgr;
         if ( errMgr ) [errMgr retain];
@@ -79,7 +79,13 @@
 
 - (NSInteger) defineString:(NSString *)s
 {
-    return [stringtable addObject:s];
+    ACNumber *I;
+    I = [stringtable get:s];
+    if ( I == nil ) {
+        I = [ACNumber numberWithInteger:[stringtable count]];
+        [stringtable put:s value:I];
+    }
+    return [I integerValue];
 }
 
 - (void) refAttr:(CommonToken *)templateToken tree:(CommonTree *)aTree
@@ -106,13 +112,13 @@
 - (void) setOption:(CommonTree *)aTree
 {
     NSInteger Opt;
-    Opt = (NSInteger)[[[Compiler getSupportedOptions] get:aTree.text] intValue];
+    Opt = (NSInteger)[[((Compiler_Anon1 *)[Compiler getSupportedOptions]) get:aTree.text] integerValue];
     [self emit1:aTree opcode:Bytecode.INSTR_STORE_OPTION arg:Opt];
 }
 
 - (void) func:(CommonToken *)templateToken tree:(CommonTree *)aTree
 {
-    NSString *funcBytecode = [[[Compiler funcs] getDict] get:aTree.text];
+    ACNumber *funcBytecode = [((LinkedHashMap *)[[Compiler funcs] getDict]) get:aTree.text];
     if (funcBytecode == nil) {
         [errMgr compileTimeError:NO_SUCH_FUNCTION templateToken:templateToken t:(CommonToken *)aTree.token];
         [self emit:aTree opcode:Bytecode.INSTR_POP];

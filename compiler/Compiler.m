@@ -165,15 +165,15 @@
 {
     if ( (self=[super init]) != nil ) {
         dict = [[LinkedHashMap newLinkedHashMap:16] retain];
-        [dict put:@"first"   value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_FIRST]];
-        [dict put:@"last"    value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_LAST]];
-        [dict put:@"rest"    value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_REST]];
-        [dict put:@"trunc"   value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_TRUNC]];
-        [dict put:@"strip"   value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_STRIP]];
-        [dict put:@"trim"    value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_TRIM]];
-        [dict put:@"length"  value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_LENGTH]];
-        [dict put:@"strlen"  value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_STRLEN]];
-        [dict put:@"reverse" value:[NSString stringWithFormat:@"%d", Bytecode.INSTR_REVERSE]];
+        [dict put:@"first"   value:[ACNumber numberWithInt:Bytecode.INSTR_FIRST]];
+        [dict put:@"last"    value:[ACNumber numberWithInt:Bytecode.INSTR_LAST]];
+        [dict put:@"rest"    value:[ACNumber numberWithInt:Bytecode.INSTR_REST]];
+        [dict put:@"trunc"   value:[ACNumber numberWithInt:Bytecode.INSTR_TRUNC]];
+        [dict put:@"strip"   value:[ACNumber numberWithInt:Bytecode.INSTR_STRIP]];
+        [dict put:@"trim"    value:[ACNumber numberWithInt:Bytecode.INSTR_TRIM]];
+        [dict put:@"length"  value:[ACNumber numberWithInt:Bytecode.INSTR_LENGTH]];
+        [dict put:@"strlen"  value:[ACNumber numberWithInt:Bytecode.INSTR_STRLEN]];
+        [dict put:@"reverse" value:[ACNumber numberWithInt:Bytecode.INSTR_REVERSE]];
     }
     return self;
 }
@@ -212,7 +212,7 @@
 
 - (void) put:(id)aKey setInstr:(short)anInstr
 {
-    [dict put:aKey value:[NSString stringWithFormat:@"%d", anInstr]];
+    [dict put:aKey value:[ACNumber numberWithInt:anInstr]];
 }
 
 - (NSInteger) count

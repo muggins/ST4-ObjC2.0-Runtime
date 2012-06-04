@@ -49,11 +49,6 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
     return [d description];
 }
 
-+ (NSString *) toString:(ST *)aWho
-{
-    return [STDump description:aWho];
-}
-
 - (id) initWithWho:(ST *)aWho
 {
     self=[super init];
@@ -76,16 +71,6 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
 - (NSString *) description
 {
     return [self description:0];
-}
-
-- (NSString *) toString
-{
-    return [self description:0];
-}
-
-- (NSString *) toString:(NSInteger)n
-{
-    return [self description:n];
 }
 
 - (NSString *) description:(NSInteger)n
@@ -115,7 +100,7 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
             id value = [[attributes get:name].value;
             [buf appendString:[self getValueDebugString:value n:n]];
         }
-        
+        [it release];
     }
     [buf appendString:[Misc newline]];
     n--;
@@ -144,6 +129,7 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
             [buf appendString:v];
             na++;
         }
+        [it release];
     }
     else {
         [buf appendString:value];
@@ -166,6 +152,7 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
             [buf appendString:obj];
             na++;
         }
+        [it release];
     }
     [buf appendString:@")@"];
     [buf appendFormat:@"%d", [self hash]];

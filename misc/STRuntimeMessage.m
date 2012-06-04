@@ -98,7 +98,7 @@
     if (ip < 0 || who.impl == nil)
         return nil;
     NSInteger i, j;
-    Interval *intv;
+    Interval *intv = nil;
     j = [((ST *)who).impl.sourceMap count];
     if ( ip < j ) {
         intv = [((ST *)who).impl.sourceMap objectAtIndex:ip];
@@ -131,11 +131,6 @@
     }
     [buf appendFormat:@" %@", [super description]];
     return [buf description];
-}
-
-- (NSString *) toString
-{
-    return [self description];
 }
 
 @end

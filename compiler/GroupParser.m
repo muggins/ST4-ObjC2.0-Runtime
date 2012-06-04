@@ -345,7 +345,7 @@ static formalArgs_Scope *formalArgs_scope;
 + (NSInteger) TID { return ID; }
 + (NSInteger) TTRUE { return T_TRUE; }
 
-- (void) displayRecognitionError:(AMutableArray *) tokenNames e:(RecognitionException *)e
+- (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e
 {
     NSString *msg = [self getErrorMessage:e TokenNames:[self getTokenNames]];
     [group.errMgr groupSyntaxError:SYNTAX_ERROR srcName:[self getSourceName] e:e msg:msg];
@@ -369,14 +369,6 @@ static formalArgs_Scope *formalArgs_scope;
     [self recover:input Exception:nil];
 }
 
-/*
-- (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames
-{
-    return [NSString stringWithFormat:@"%@--%@", e.name, e.reason];
-}
-*/
-
-
 /* ObjC end actions.(actionScope).methods */
 /* ObjC start methods() */
 /* ObjC end methods() */
@@ -385,7 +377,7 @@ static formalArgs_Scope *formalArgs_scope;
  * $ANTLR start group
  * /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:211:1: group[STGroup *aGroup, NSString *prefix] : ( oldStyleHeader )? ( delimiters )? ( 'import' STRING | 'import' ID ( '.' ID )* )* ( def[prefix] )+ ;
  */
-- (void) group:(STGroup *)aGroup arg1:(NSString *)prefix 
+- (void) group:(STGroup *)aGroup prefix:(NSString *)prefix 
 {
     /* ruleScopeSetUp */
 
@@ -1106,7 +1098,7 @@ static formalArgs_Scope *formalArgs_scope;
                         alt12=3;
                         }
                         break;
-                    case EOF: ;
+                    case 65535: ;
                     case ID: ;
                     case 22: ;
                         {
@@ -1269,8 +1261,7 @@ static formalArgs_Scope *formalArgs_scope;
 
                 /* ruleRef */
                 [self pushFollow:FOLLOW_formalArg_in_formalArgs660];
-                [self formalArg:args
-                 ];
+                [self formalArg:args];
 
                 [self popFollow];
 

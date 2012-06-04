@@ -70,7 +70,6 @@
 - (id) init:(NSString *)aDirName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
     BOOL fExists, isDir;
-    NSString *dir;
     self=[super init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
     if ( self != nil ) {
         groupDirName = aDirName;
@@ -134,6 +133,12 @@
     [super dealloc];
 }
 
+- (void) importTemplatesWithFileName:(CommonToken *)fileNameToken
+{
+    NSString *msg = [NSString stringWithFormat:@"import illegal in group files embedded in STGroupDirs; \nimport %@ in STGroupDir %@", fileNameToken.text, [self getName]];
+    @throw [UnsupportedOperationException newException:(NSString *) msg];
+}
+
 /**
  * Load a template from dir or group file.  Group file is given
  * precedence over dir with same name.
@@ -174,6 +179,10 @@
         return [self rawGetTemplate:aName];
     }
     else {
+        @try {
+            NSString *unqualifiedName = [Misc getFileName:aName];
+            return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
+        }
 #ifdef DONTUSENOMO
         @try {
             @throw [FileNotFoundException newException:[NSString stringWithFormat:@"fnfe error on %@", groupFileURL]];
@@ -182,10 +191,10 @@
             NSString *unqualifiedName = [Misc getFileName:aName];
             return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
         }
+#endif
         @catch (IOException *ioe) {
             [errMgr internalError:nil msg:[@"can't load template file " stringByAppendingString:aName] e:ioe];
         }
-#endif
         NSString *unqualifiedName = [Misc getFileName:aName];
         return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
     }
@@ -197,18 +206,17 @@
  */
 - (CompiledST *) loadTemplateFile:(NSString *)prefix fileName:(NSString *)unqualifiedFileName
 {
-    if ( STGroup.verbose ) NSLog(@"[STGroupDir loadTemplateFile:%@] in groupdir from %@ prefix=%@\n", unqualifiedFileName, root, prefix);
+    if ( STGroup.verbose )
+        NSLog(@"[STGroupDir loadTemplateFile:%@] in groupdir from %@ prefix=%@\n", unqualifiedFileName, root, prefix);
     NSURL *f = nil;
     @try {
-        //f = [NSURL fileURLWithPath:[root URLByAppendingPathComponent:aFileName]];
         f = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@%@", [root path], prefix, unqualifiedFileName]];
         if (![f isFileURL]) {
             @throw [MalformedURLException newException:@"Not a File URL"];
         }
     }
     @catch (MalformedURLException *me) {
-//        [self recover:me];
-        [errMgr runTimeError:nil who:nil ip:0 error:INVALID_TEMPLATE_NAME e:me arg:[f absoluteString]];
+        [errMgr runTimeError:nil who:nil ip:0 error:INVALID_TEMPLATE_NAME e:me arg:[f path]];
         return nil;
     }
     
@@ -222,6 +230,7 @@
         ais.name = unqualifiedFileName;
     }
     @catch (IOException *ioe) {
+        if ( STGroup.verbose ) NSLog( @"%@/%@ doesn't exist\n", root, unqualifiedFileName);
         return nil;
     }
     return [self loadTemplateFile:prefix fileName:unqualifiedFileName stream:ais];

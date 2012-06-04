@@ -142,13 +142,11 @@
     BOOL iterateAcrossValues;
 }
 
-+ (CompiledST *) NOT_FOUND_ST;
 + (NSString *) DEFAULT_KEY;
 + (NSString *) DICT_KEY;
 + (STGroup *) defaultGroup;
 + (void) resetDefaultGroup;
 
-+ (ErrorManager *) DEFAULT_ERR_MGR;
 + (BOOL) debug;
 + (void) setDebug;
 + (BOOL) verbose;
@@ -203,7 +201,6 @@
 - (NSURL *)getURL:(NSString *)fileName;
 - (NSURL *)getRootDirURL;
 - (NSString *) description;
-- (NSString *) toString;
 - (NSString *) show;
 
 // getters and setters
