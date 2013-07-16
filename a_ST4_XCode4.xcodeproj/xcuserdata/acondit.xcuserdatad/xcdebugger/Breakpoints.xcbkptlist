@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "1.0">
+   <FileBreakpoints>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestCompiler.m"
+         timestampString = "323458663.3191661"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "445"
+         endingLineNumber = "445">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestCompiler.m"
+         timestampString = "323458663.319222"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "13"
+         endingLineNumber = "13">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestFunctions.m"
+         timestampString = "323458663.319144"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "307"
+         endingLineNumber = "307">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestFunctions.m"
+         timestampString = "323458663.319196"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "330"
+         endingLineNumber = "330">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestFunctions.m"
+         timestampString = "323458663.319106"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "313"
+         endingLineNumber = "313">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestCompiler.m"
+         timestampString = "323458549.084091"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "150"
+         endingLineNumber = "150">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestCoreBasics.m"
+         timestampString = "323482339.268412"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "274"
+         endingLineNumber = "274">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Interpreter.m"
+         timestampString = "323458549.08416"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "446"
+         endingLineNumber = "446">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestWhitespace.m"
+         timestampString = "323466695.52215"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "14"
+         endingLineNumber = "14"
+         landmarkName = "-test01TrimmedSubtemplates"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "test/objc/TestWhitespace.m"
+         timestampString = "323492215.184473"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "16"
+         endingLineNumber = "16"
+         landmarkName = "-test01TrimmedSubtemplates"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Interpreter.m"
+         timestampString = "323497063.939243"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "410"
+         endingLineNumber = "410"
+         landmarkName = "-exec:who:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "TestCompiler/TestCompiler.m"
+         timestampString = "323583303.600743"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "30"
+         endingLineNumber = "30"
+         landmarkName = "-test01Attr"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "compiler/BytecodeDisassembler.m"
+         timestampString = "323584623.73479"
+         startingColumnNumber = "2147483647"
+         endingColumnNumber = "2147483647"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
+         landmarkName = "-disassemble"
+         landmarkType = "5">
+      </FileBreakpoint>
+   </FileBreakpoints>
+</Bucket>
