@@ -1,0 +1,15 @@
+ST4/ST4.xcodeproj
+compiler/output1
+test/java_tests
+test/output
+tests/java_tests
+tests/objc_notready
+tests/output
+*.sav
+*.sav.h
+*.sav.m
+ST4/ST4
+ST4/ST4Tests
+ST4Tests
+ST4/SenTestingKit.framework
+ST4/GHUnit.framework
