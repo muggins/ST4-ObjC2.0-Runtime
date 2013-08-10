@@ -37,14 +37,15 @@
   NSString *srcName;
 }
 
+@property (retain) CommonToken *token;
+@property (retain) NSString *srcName;
+
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause;
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg;
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg arg2:(id)anArg2;
 
 - (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName t:(CommonToken *)t cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
+- (void) dealloc;
 - (NSString *) description;
-
-@property (retain) CommonToken *token;
-@property (retain) NSString *srcName;
 
 @end

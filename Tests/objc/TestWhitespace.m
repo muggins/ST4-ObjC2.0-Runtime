@@ -14,9 +14,9 @@
 
 - (void) test01TrimmedSubtemplates
 {
-    STGroup *group = [[STGroup newSTGroup] retain];
+    STGroup *group = [STGroup newSTGroup];
     [group defineTemplate:@"test" argsS:@"names" template:@"<names:{n | <n>}>!"];
-    ST *st = [[group getInstanceOf:@"test"] retain];
+    ST *st = [group getInstanceOf:@"test"];
     [st add:@"names" value:@"Ter"];
     [st add:@"names" value:@"Tom"];
     [st add:@"names" value:@"Sumana"];
@@ -105,7 +105,7 @@
     NSString *expected = @"      Ter\n      Tom\n      Sumana\n!";
     NSString *result = [st render];
     [st.impl dump];
-    NSLog( @"expected string length =%d, result string length = %d\n", [expected length], [result length] );
+    NSLog( @"expected string length =%ld, result string length = %ld\n", [expected length], [result length] );
     [self assertEquals:expected result:result];
     return;
 }
@@ -214,7 +214,7 @@
 {
     ST *st = [ST newSTWithTemplate:@"Foo <\\\\>\n  \t  bar\n"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\n"]];
     NSString *result = [sw description];
     NSString *expected = @"Foo bar\n";
     [self assertEquals:expected result:result];
@@ -225,7 +225,7 @@
 {
     ST *st = [ST newSTWithTemplate:@"Foo <\\\\>       \n  \t  bar\n"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\n"]];
     NSString *result = [sw description];
     NSString *expected = @"Foo bar\n";
     [self assertEquals:expected result:result];
@@ -236,7 +236,7 @@
 {
     ST *st = [ST newSTWithTemplate:@"Foo <\\\\>\nbar\n"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\n"]];
     NSString *result = [sw description];
     NSString *expected = @"Foo bar\n";
     [self assertEquals:expected result:result];
@@ -247,7 +247,7 @@
 {
     ST *st = [ST newSTWithTemplate:@"Foo\r\nBar\n"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\n"]];
     NSString *expected = @"Foo\nBar\n";
     NSString *result = [sw description];
     [self assertEquals:expected result:result];
@@ -258,7 +258,7 @@
 {
     ST *st = [ST newSTWithTemplate:@"Foo\r\nBar\n"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\r\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\r\n"]];
     NSString *expected = @"Foo\r\nBar\r\n";
     NSString *result = [sw description];
     [self assertEquals:expected result:result];
@@ -270,7 +270,7 @@
     ST *st = [ST newSTWithTemplate:@"Foo\r\n<name>\n"];
     [st add:@"name" value:@"a\nb\r\nc"];
     StringWriter *sw = [StringWriter newWriter];
-    [st write:[AutoIndentWriter newWriter:sw newLine:@"\n"]];
+    [st write:[AutoIndentWriter newWriter:sw newline:@"\n"]];
     NSString *expected = @"Foo\na\nb\nc\n";
     NSString *result = [sw description];
     [self assertEquals:expected result:result];

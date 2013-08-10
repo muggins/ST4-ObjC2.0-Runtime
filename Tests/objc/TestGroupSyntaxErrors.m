@@ -7,7 +7,7 @@
     NSString *templates = @"import\nfoo() ::= <<>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 2:0: mismatched input 'foo' expecting STRING\nt.stg 2:3: required (...)+ loop did not match anything at input '('\n";
@@ -20,7 +20,7 @@
     NSString *templates = @"import Super.stg\nfoo() ::= <<>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:7: mismatched input 'Super' expecting STRING\n";
@@ -33,7 +33,7 @@
     NSString *templates = @"foo() ::= \n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 2:0: missing template at '<EOF>'\n";
@@ -46,7 +46,7 @@
     NSString *templates = @"foo() ::= {";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:11: missing final '}' in {...} anonymous template\nt.stg 1:10: no viable alternative at input '{'\n";
@@ -59,7 +59,7 @@
     NSString *templates = @"foo( ::= << >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:5: no viable alternative at input '::='\n";
@@ -72,7 +72,7 @@
     NSString *templates = @"foo() ::= \"\nfoo\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:11: \\n in string\n";
@@ -85,7 +85,7 @@
     NSString *templates = @"foo) ::= << >>\nbar() ::= <<bar>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:0: garbled template definition starting at 'foo'\n";
@@ -98,7 +98,7 @@
     NSString *templates = @"foo(a,) ::= << >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"t.stg 1:6: missing ID at ')'\n";
@@ -111,7 +111,7 @@
     NSString *templates = @"foo(a,,) ::= << >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:6: missing ID at ',', t.stg 1:7: missing ID at ')']";
@@ -124,7 +124,7 @@
     NSString *templates = @"foo(a b) ::= << >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:6: no viable alternative at input 'b']";
@@ -137,7 +137,7 @@
     NSString *templates = @"foo(a) ::= \"<a b>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:15: 'b' came as a complete surprise to me]";
@@ -150,7 +150,7 @@
     NSString *templates = @"d ::= []\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:7: missing dictionary entry at ']']";
@@ -163,7 +163,7 @@
     NSString *templates = @"d ::= [\"k\":]\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:11: missing value for key at ']']";
@@ -176,7 +176,7 @@
     NSString *templates = @"d ::= [\"k\":{dfkj}}]\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:17: invalid character '}']";
@@ -189,7 +189,7 @@
     NSString *templates = @"f() ::= \"";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[t.stg 1:9: unterminated string, t.stg 1:9: missing template at '<EOF>']";

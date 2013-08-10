@@ -56,6 +56,12 @@
     __strong CompiledST *compiledDefaultValue;
 }
 
+@property (retain) NSString *name;
+@property (assign) NSInteger index;
+@property (retain) CommonToken *defaultValueToken;
+@property (retain) id defaultValue;
+@property (retain) CompiledST *compiledDefaultValue;
+
 + (NSInteger) OPTIONAL;
 + (NSInteger) REQUIRED;
 + (NSInteger) ZERO_OR_MORE;
@@ -74,11 +80,5 @@
 - (NSInteger) hash;
 - (BOOL) isEqualTo:(NSString *)obj;
 - (NSString *) description;
-
-@property (retain) NSString *name;
-@property (assign) NSInteger index;
-@property (retain) CommonToken *defaultValueToken;
-@property (retain) id defaultValue;
-@property (retain) CompiledST *compiledDefaultValue;
 
 @end

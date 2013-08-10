@@ -46,7 +46,7 @@
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [[LinkedHashMap newLinkedHashMap:32] retain];
+        aDict = [LinkedHashMap newLinkedHashMap:32];
         [aDict put:@"short" value:[ACNumber numberWithInteger:NSDateFormatterShortStyle]];
         [aDict put:@"medium" value:[ACNumber numberWithInteger:NSDateFormatterMediumStyle]];
         [aDict put:@"long" value:[ACNumber numberWithInteger:NSDateFormatterLongStyle]];
@@ -67,7 +67,7 @@
 {
     self=[super init];
     if ( self != nil ) {
-        aDict = [[LinkedHashMap newLinkedHashMap:len] retain];
+        aDict = [LinkedHashMap newLinkedHashMap:len];
         [aDict put:@"short" value:[ACNumber numberWithInteger:NSDateFormatterShortStyle]];
         [aDict put:@"medium" value:[ACNumber numberWithInteger:NSDateFormatterMediumStyle]];
         [aDict put:@"long" value:[ACNumber numberWithInteger:NSDateFormatterLongStyle]];
@@ -89,13 +89,13 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in DateRenderer_Anon1" );
 #endif
-    if ( aDict ) [aDict release];
-    [super dealloc];
+    aDict = nil;
+    // [super dealloc];
 }
 
 - (void) put:(id)aKey value:(id)anObject
 {
-    [aDict put:[aKey retain] value:[anObject retain]];
+    [aDict put:aKey value:anObject];
 }
 
 - (id) get:(id)aKey
@@ -126,6 +126,12 @@ static DateRenderer_Anon1 *formatToInt;
         formatToInt = [DateRenderer_Anon1 newDateRenderer_Anon1];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    formatToInt = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description:(NSDate *)d formatString:(NSString *)formatString locale:(NSLocale *)locale

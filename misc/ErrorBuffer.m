@@ -43,7 +43,7 @@
 - (id) init {
     self=[super init];
     if ( self != nil ) {
-        errors = [[AMutableArray arrayWithCapacity:5] retain];
+        errors = [AMutableArray arrayWithCapacity:5];
     }
     return self;
 }
@@ -53,8 +53,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ErrorBuffer" );
 #endif
-    if ( errors ) [errors release];
-    [super dealloc];
+    errors = nil;
+    // [super dealloc];
 }
 
 - (void) compileTimeError:(STMessage *)msg
@@ -90,7 +90,8 @@
         m = [it nextObject];
         [buf appendFormat:@"%@%@", [m description], Misc.newline];
     }
-    [it release];
+    // [it release];
+    it = nil;
 //    return (([buf length] > 0) ? buf : @"buf=<nil>");
     return (([buf length] > 0) ? buf : @"");
 }

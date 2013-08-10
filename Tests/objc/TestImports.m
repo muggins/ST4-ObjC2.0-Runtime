@@ -95,7 +95,7 @@
     NSString *b = @"b() ::= <<dir2 b>>\n";
     [self writeFile:dir fileName:@"subdir/a.st" content:a];
     [self writeFile:dir fileName:@"subdir/b.st" content:b];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/g.stg", dir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/g.stg", dir]];
     ST *st = [group getInstanceOf:@"b"];
     NSString *expected = @"dir2 b";
     NSString *result = [st render];
@@ -109,7 +109,7 @@
     [self writeFile:dir fileName:@"group1.stg" content:groupFile];
     groupFile = @"c() ::= \"g2 c\"\n";
     [self writeFile:dir fileName:@"group2.stg" content:groupFile];
-    STGroup *group1 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]];
     ST *st = [group1 getInstanceOf:@"c"];
     NSString *expected = @"g2 c";
     NSString *result = [st render];
@@ -123,7 +123,7 @@
     [self writeFile:dir fileName:@"group1.stg" content:groupFile];
     groupFile = @"c() ::= \"g2 c\"\n";
     [self writeFile:dir fileName:@"subdir/group2.stg" content:groupFile];
-    STGroup *group1 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]];
     ST *st = [group1 getInstanceOf:@"c"];
     NSString *expected = @"g2 c";
     NSString *result = [st render];
@@ -137,7 +137,7 @@
     [self writeFile:dir fileName:@"group1.stg" content:groupFile];
     groupFile = @"c() ::= \"c\"\n";
     [self writeFile:dir fileName:@"c.st" content:groupFile];
-    STGroup *group1 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]];
     ST *st = [group1 getInstanceOf:@"c"];
     NSString *expected = @"c";
     NSString *result = [st render];
@@ -151,7 +151,7 @@
     [self writeFile:dir fileName:@"group1.stg" content:groupFile];
     NSString *stFile = @"c() ::= \"c\"\n";
     [self writeFile:dir fileName:@"subdir/c.st" content:stFile];
-    STGroup *group1 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/group1.stg", dir]];
     ST *st = [group1 getInstanceOf:@"c"];
     NSString *expected = @"c";
     NSString *result = [st render];
@@ -168,8 +168,8 @@
     NSString *dir2 = [self getRandomDir];
     a = @"a() ::= << <b()> >>\n";
     [self writeFile:dir2 fileName:@"a.st" content:a];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:dir1] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:dir2] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:dir1];
+    STGroup *group2 = [STGroupDir newSTGroupDir:dir2];
     [group2 importTemplates:group1];
     ST *st = [group2 getInstanceOf:@"b"];
     NSString *expected = @"dir1 b";
@@ -188,8 +188,8 @@
     [self writeFile:dir fileName:@"x/a.st" content:a];
     NSString *groupFile = @"b() ::= \"group file b\"\nc() ::= \"group file c\"\n";
     [self writeFile:dir fileName:@"y/group.stg" content:groupFile];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]] autorelease];
-    STGroup *group2 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/y/group.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]];
+    STGroup *group2 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/y/group.stg", dir]];
     [group1 importTemplates:group2];
     ST *st = [group1 getInstanceOf:@"a"];
     [st.impl dump];
@@ -205,8 +205,8 @@
     [self writeFile:dir fileName:@"x/group.stg" content:groupFile];
     groupFile = @"b() ::= \"g2 b\"\nc() ::= \"g2 c\"\n";
     [self writeFile:dir fileName:@"y/group.stg" content:groupFile];
-    STGroup *group1 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/x/group.stg", dir]] autorelease];
-    STGroup *group2 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/y/group.stg", dir]] autorelease];
+    STGroup *group1 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/x/group.stg", dir]];
+    STGroup *group2 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/y/group.stg", dir]];
     [group1 importTemplates:group2];
     ST *st = [group1 getInstanceOf:@"b"];
     NSString *expected = @"g2 c";
@@ -221,8 +221,8 @@
     NSString *b = @"b() ::= <<x's subdir/b>>\n";
     [self writeFile:dir fileName:@"x/subdir/a.st" content:a];
     [self writeFile:dir fileName:@"y/subdir/b.st" content:b];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/y", dir]] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]];
+    STGroup *group2 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/y", dir]];
     [group1 importTemplates:group2];
     ST *st = [group1 getInstanceOf:@"/subdir/a"];
     NSString *expected = @" x's subdir/b ";
@@ -237,8 +237,8 @@
     [self writeFile:dir fileName:@"x/subdir/a.st" content:a];
     NSString *groupFile = @"a() ::= \"group file: a\"\nb() ::= \"group file: b\"\n";
     [self writeFile:dir fileName:@"y/subdir.stg" content:groupFile];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/y", dir]] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]];
+    STGroup *group2 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/y", dir]];
     [group1 importTemplates:group2];
     ST *st = [group1 getInstanceOf:@"subdir/a"];
     NSString *expected = @" group file: b ";
@@ -256,8 +256,8 @@
     b = @"b() ::= <<dir2 b>>\n";
     [self writeFile:dir2 fileName:@"a.st" content:a];
     [self writeFile:dir2 fileName:@"b.st" content:b];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:dir1] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:dir2] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:dir1];
+    STGroup *group2 = [STGroupDir newSTGroupDir:dir2];
     [group1 importTemplates:group2];
     ST *st = [group2 getInstanceOf:@"a"];
     NSString *expected = @" dir2 b ";
@@ -279,8 +279,8 @@
     NSString *dir2 = [self getRandomDir];
     a = @"a() ::= << [<super.a()>] >>\n";
     [self writeFile:dir2 fileName:@"a.st" content:a];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:dir1] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:dir2] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:dir1];
+    STGroup *group2 = [STGroupDir newSTGroupDir:dir2];
     [group2 importTemplates:group1];
     ST *st = [group2 getInstanceOf:@"a"];
     NSString *expected = @" [dir1 a] ";
@@ -298,8 +298,8 @@
     NSString *dir2 = [self getRandomDir];
     a = @"a() ::= << <b()> >>\n";
     [self writeFile:dir2 fileName:@"a.st" content:a];
-    STGroup *group1 = [[STGroupDir newSTGroupDir:dir1] autorelease];
-    STGroup *group2 = [[STGroupDir newSTGroupDir:dir2] autorelease];
+    STGroup *group1 = [STGroupDir newSTGroupDir:dir1];
+    STGroup *group2 = [STGroupDir newSTGroupDir:dir2];
     [group2 importTemplates:group1];
     ST *st = [group2 getInstanceOf:@"a"];
     ST *st2 = [group2 getInstanceOf:@"b"];

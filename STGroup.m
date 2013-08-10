@@ -77,7 +77,7 @@
 {
     self=[super init];
     if ( self != nil ) {
-        dict = [[LinkedHashMap newLinkedHashMap:16] retain];
+        dict = [LinkedHashMap newLinkedHashMap:16];
         [dict put:[NSObject className] value:[ObjectModelAdaptor newModelAdaptor]];
         [dict put:[ST className] value:[STModelAdaptor newModelAdaptor]];
         [dict put:[HashMap className] value:[MapModelAdaptor newModelAdaptor]];
@@ -92,8 +92,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroup_Anon1" );
 #endif
-    if ( dict ) [dict release];
-    [super dealloc];
+    dict = nil;
+    // [super dealloc];
 }
 
 - (id) getDict
@@ -159,7 +159,7 @@ static BOOL trackCreationEvents = NO;
 
 + (void) initialize
 {
-    aDefaultGroup = [[STGroup newSTGroup] retain];
+    aDefaultGroup = [STGroup newSTGroup];
 }
 /*
 + (CompiledST *) NOT_FOUND_ST
@@ -170,12 +170,12 @@ static BOOL trackCreationEvents = NO;
 }
 */
 
-+ (NSString *) DEFAULT_KEY
++ (const NSString *) DEFAULT_KEY
 {
     return DEFAULT_KEY;
 }
 
-+ (NSString *) DICT_KEY
++ (const NSString *) DICT_KEY
 {
     return DICT_KEY;
 }
@@ -183,13 +183,12 @@ static BOOL trackCreationEvents = NO;
 + (STGroup *) defaultGroup
 {
     if (aDefaultGroup == nil)
-        aDefaultGroup = [[STGroup newSTGroup] retain];
+        aDefaultGroup = [STGroup newSTGroup];
     return aDefaultGroup;
 }
 
 + (void) resetDefaultGroup
 {
-    if ( aDefaultGroup ) [aDefaultGroup release];
     aDefaultGroup = nil;
 }
 
@@ -235,15 +234,16 @@ static BOOL trackCreationEvents = NO;
         encoding = NSUTF8StringEncoding;
         delimiterStartChar = aDelimiterStartChar;
         delimiterStopChar = aDelimiterStopChar;
-        imports = [[AMutableArray arrayWithCapacity:16] retain];
-        importsToClearOnUnload = [[AMutableArray arrayWithCapacity:16] retain];
-        templates = [[LinkedHashMap newLinkedHashMap:16] retain];
-        dictionaries = [[LinkedHashMap newLinkedHashMap:16] retain];
-        adaptors = [[[STGroup_Anon1 newSTGroup_Anon1] getDict] retain];
-        typeToAdaptorCache = [[LinkedHashMap newLinkedHashMap:16] retain];
+        imports = [AMutableArray arrayWithCapacity:16];
+        importsToClearOnUnload = [AMutableArray arrayWithCapacity:16];
+        templates = [LinkedHashMap newLinkedHashMap:16];
+        dictionaries = [LinkedHashMap newLinkedHashMap:16];
+        renderers = [LinkedHashMap newLinkedHashMap:5];
+        adaptors = [[STGroup_Anon1 newSTGroup_Anon1] getDict];
+        typeToAdaptorCache = [LinkedHashMap newLinkedHashMap:16];
+        typeToRendererCache = [LinkedHashMap newLinkedHashMap:16];
         iterateAcrossValues = NO;
         errMgr = ErrorManager.DEFAULT_ERR_MGR;
-        [errMgr retain];
     }
     return self;
 }
@@ -253,16 +253,16 @@ static BOOL trackCreationEvents = NO;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroup" );
 #endif
-    if ( imports ) [imports release];
-    if ( importsToClearOnUnload ) [importsToClearOnUnload release];
-    if ( templates ) [templates release];
-    if ( dictionaries ) [dictionaries release];
-    if ( renderers ) [renderers release];
-    if ( adaptors ) [adaptors release];
-    if ( typeToAdaptorCache ) [typeToAdaptorCache release];
-    if ( typeToRendererCache ) [typeToRendererCache release];
-    if ( errMgr ) [errMgr release];
-    [super dealloc];
+    imports = nil;
+    importsToClearOnUnload = nil;
+    templates = nil;
+    dictionaries = nil;
+    renderers = nil;
+    adaptors = nil;
+    typeToAdaptorCache = nil;
+    typeToRendererCache = nil;
+    errMgr = nil;
+    // [super dealloc];
     if (self == aDefaultGroup) aDefaultGroup = nil;
 }
 
@@ -316,7 +316,7 @@ static BOOL trackCreationEvents = NO;
     }
     // this is only called internally. whack any debug ST create events
     if ( trackCreationEvents ) {
-        st.debugState.newSTEvent = nil; // toss it out
+        st.debugState.aSTEvent = nil; // toss it out
     }
     return st;
 }
@@ -331,7 +331,7 @@ static BOOL trackCreationEvents = NO;
     else {
         template = [Misc strip:templateToken.text n:1];
     }
-    CompiledST *impl = [[self compile:[self getFileName] name:nil args:nil template:template templateToken:templateToken] retain];
+    CompiledST *impl = [self compile:[self getFileName] name:nil args:nil template:template templateToken:templateToken];
     ST *st = [self createStringTemplateInternally:impl];
     st.groupThatCreatedThisInstance = self;
     st.impl.hasFormalArgs = NO;
@@ -461,8 +461,8 @@ static BOOL trackCreationEvents = NO;
 - (CompiledST *) defineTemplate:(NSString *)aName argsS:(NSString *)argsS template:(NSString *)template
 {
     if ( [aName characterAtIndex:0] != '/' ) aName = [NSString stringWithFormat:@"/%@", aName];
-    __strong NSArray *args = [[argsS componentsSeparatedByString:@","] retain];
-    __strong AMutableArray *a = [[AMutableArray arrayWithCapacity:5] retain];
+    __strong NSArray *args = [argsS componentsSeparatedByString:@","];
+    __strong AMutableArray *a = [AMutableArray arrayWithCapacity:5];
 
     NSString *arg;
     for ( arg in args ) {
@@ -495,8 +495,8 @@ static BOOL trackCreationEvents = NO;
     }
     template = [Misc trimOneStartingNewline:template];
     template = [Misc trimOneTrailingNewline:template];
-    CompiledST *code = [[self compile:[self getFileName] name:fullyQualifiedTemplateName args:args template:template templateToken:templateToken] retain];
-    code.name = [fullyQualifiedTemplateName retain];
+    CompiledST *code = [self compile:[self getFileName] name:fullyQualifiedTemplateName args:args template:template templateToken:templateToken];
+    code.name = fullyQualifiedTemplateName;
     [self rawDefineTemplate:fullyQualifiedTemplateName code:code defT:nameT];
     [code defineArgDefaultValueTemplates:self];
     [code defineImplicitlyDefinedTemplates:self]; // define any anonymous subtemplates
@@ -605,7 +605,6 @@ static BOOL trackCreationEvents = NO;
     // if ( verbose ) NSLog(@"STGroup.compile: %@\n", enclosingTemplateName);
     Compiler *c = [Compiler newCompiler:self];
     CompiledST *code = [c compile:srcName name:aName args:args template:aTemplate templateToken:aTemplateToken];
-    if ( code ) [code retain];
     return code;
 }
 
@@ -877,7 +876,6 @@ static BOOL trackCreationEvents = NO;
             a = [adaptors get:t];
         }
     }
-    [it release];
     [typeToAdaptorCache put:NSStringFromClass(attributeType) value:a];
     return a;
 }
@@ -904,7 +902,7 @@ static BOOL trackCreationEvents = NO;
      [typeToAdaptorCache clear]; // be safe, not clever; whack all values
      */
     if (renderers == nil) {
-        renderers = [[LinkedHashMap newLinkedHashMap:5] retain];
+        renderers = [LinkedHashMap newLinkedHashMap:5];
     }
     [renderers put:[attributeType className] value:r];
     if ( recursive ) {
@@ -943,13 +941,12 @@ static BOOL trackCreationEvents = NO;
         if ( [[attributeType class] isSubclassOfClass:rendererClass] ) {
             r = [renderers get:key];
             if ( typeToRendererCache == nil ) {
-                typeToRendererCache = [[LinkedHashMap newLinkedHashMap:16] retain];
+                typeToRendererCache = [LinkedHashMap newLinkedHashMap:16];
             }
             [typeToRendererCache put:[attributeType className] value:r];
             return r;
         }
     }
-    [it release];
     return nil;
 }
 
@@ -957,11 +954,11 @@ static BOOL trackCreationEvents = NO;
 - (ST *) createStringTemplate:(CompiledST *)anImpl
 {
     ST *st = [ST newST];
-    st.impl = [anImpl retain];
+    st.impl = anImpl;
     st.groupThatCreatedThisInstance = self;
     if ( anImpl.formalArguments != nil ) {
         NSInteger cnt = [anImpl.formalArguments count];
-        st.locals = [[AMutableArray arrayWithCapacity:cnt] retain];
+        st.locals = [AMutableArray arrayWithCapacity:cnt];
         for ( NSInteger i = 0; i < cnt; i++ ) {
             [st.locals addObject:ST.EMPTY_ATTR];
         }
@@ -976,7 +973,7 @@ static BOOL trackCreationEvents = NO;
 {
     ST *st = [self createStringTemplate:anImpl];
     if ( trackCreationEvents && st.debugState!=nil ) {
-        st.debugState.newSTEvent = nil; // toss it out
+        st.debugState.aSTEvent = nil; // toss it out
     }
     return st;
 }
@@ -1046,7 +1043,6 @@ static BOOL trackCreationEvents = NO;
             [buf appendString:[Misc join:[[[c.formalArguments values] toArray] objectEnumerator] separator:@","]];
         [buf appendFormat:@") ::= <<%@%@%@>>%@", Misc.newline, c.template, Misc.newline, Misc.newline];
     }
-    [it release];
     return [buf description];
 }
 
@@ -1057,7 +1053,7 @@ static BOOL trackCreationEvents = NO;
 
 - (void) setListener:(id<STErrorListener>)listener
 {
-    errMgr = [[ErrorManager newErrorManagerWithListener:listener] retain];
+    errMgr = [ErrorManager newErrorManagerWithListener:listener];
 }
 
 - (AMutableArray *) getTemplateNames
@@ -1072,7 +1068,6 @@ static BOOL trackCreationEvents = NO;
             [result addObject:e.key];
         }
     }
-    [it release];
     return result;
 }
 

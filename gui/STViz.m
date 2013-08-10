@@ -1,4 +1,5 @@
 #import "STViz.h"
+#import <ANTLR/AMutableArray.h>
 
 @implementation STViz_Anon1
 
@@ -35,7 +36,7 @@
         currentScope = tmodel.root.event.scope;
     else
         currentScope = de.scope;
-    NSMutableArray *stack = [Interpreter getEvalTemplateEventStack:currentScope param1:YES];
+    AMutableArray *stack = [Interpreter getEvalTemplateEventStack:currentScope param1:YES];
     NSArray *path = [NSArray array];
     int j = 0;
     
@@ -105,7 +106,7 @@
     viewFrame = [[STViewFrame alloc] init];
     [self updateStack:currentScope m:viewFrame];
     [self updateAttributes:currentScope m:viewFrame];
-    NSMutableArray * events = currentScope.events;
+    AMutableArray * events = currentScope.events;
     tmodel = [[JTreeSTModel alloc] init:interp param1:(EvalTemplateEvent *)[events objectAtIndex:[events count] - 1]];
     [viewFrame.tree setModel:tmodel];
     [viewFrame.tree addTreeSelectionListener:[[STViz_Anon1 alloc] init]];
@@ -159,7 +160,7 @@
     [m.template setText:currentScope.st.impl.template];
     JTreeASTModel * astModel = [[JTreeASTModel alloc] init:[[CommonTreeAdaptor alloc] init] param1:currentScope.st.impl.ast];
     [viewFrame.ast setModel:astModel];
-    NSMutableArray * events = currentScope.events;
+    AMutableArray * events = currentScope.events;
     EvalTemplateEvent * e = (EvalTemplateEvent *)[events objectAtIndex:[events count] - 1];
     [self highlight:m.output i:e.outputStartChar j:e.outputStopChar];
     
@@ -195,11 +196,11 @@
 }
 
 - (void) updateStack:(InstanceScope *)scope m:(STViewFrame *)m {
-    NSMutableArray * stack = [Interpreter getEnclosingInstanceStack:scope param1:YES];
+    AMutableArray * stack = [Interpreter getEnclosingInstanceStack:scope param1:YES];
     [m setTitle:[[@"STViz - [" stringByAppendingString:[Misc join:[stack objectEnumerator] param1:@" "]] stringByAppendingString:@"]"]];
 }
 
-- (InterpEvent *) findEventAtOutputLocation:(NSMutableArray *)events charIndex:(int)charIndex {
+- (InterpEvent *) findEventAtOutputLocation:(AMutableArray *)events charIndex:(int)charIndex {
     
     for (InterpEvent * e in events) {
         if (charIndex >= e.outputStartChar && charIndex <= e.outputStopChar)
@@ -296,7 +297,8 @@
     }
 }
 
-- (void) dealloc {
+- (void) dealloc
+{
     [root release];
     [currentScope release];
     [allEvents release];

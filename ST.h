@@ -32,9 +32,6 @@
 #import "STErrorListener.h"
 #import "ConstructionEvent.h"
 
-#ifndef DEBUG_DEALLOC
-#define DEBUG_DEALLOC
-#endif
 /**
  * <@r()>, <@r>...<@end>, and @t.r() ::= "..." defined manually by coder
  */
@@ -80,12 +77,12 @@ typedef enum {
 @interface DebugState : NSObject {
 
     /** Record who made us? ConstructionEvent creates Exception to grab stack */
-    __strong ConstructionEvent *newSTEvent;
+    __strong ConstructionEvent *aSTEvent;
     /** Track construction-time add attribute "events"; used for ST user-level debugging */
     __strong LinkedHashMap *addAttrEvents;
 }
 
-@property (retain) ConstructionEvent *newSTEvent;
+@property (retain) ConstructionEvent *aSTEvent;
 @property (retain) LinkedHashMap *addAttrEvents;
 
 + (id) newDebugState;
@@ -154,6 +151,12 @@ typedef enum {
     __strong STGroup *groupThatCreatedThisInstance;
 }
 
+@property (retain) CompiledST *impl;
+@property (retain) AMutableArray *locals;
+@property (retain) ST *enclosingInstance;
+@property (retain) STGroup *groupThatCreatedThisInstance;
+@property (retain, getter=debugState, setter = setDebugState:) DebugState *debugState;
+
 + (void) initialize;
 
 + (STNoSuchAttributeException *) cachedNoSuchAttrException;
@@ -207,11 +210,5 @@ typedef enum {
 - (BOOL) getIsAnonSubtemplate;
 
 // getters and setters
-
-@property (retain) CompiledST *impl;
-@property (retain) AMutableArray *locals;
-@property (retain) ST *enclosingInstance;
-@property (retain) STGroup *groupThatCreatedThisInstance;
-@property (retain, getter=debugState, setter = setDebugState:) DebugState *debugState;
 
 @end

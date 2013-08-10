@@ -29,9 +29,9 @@
 #import "STMessage.h"
 
 @interface STLexerMessage : STMessage {
-  NSString *msg;
-  CommonToken *templateToken;
-  NSString *srcName;
+  __strong NSString *msg;
+  __strong CommonToken *templateToken;
+  __strong NSString *srcName;
 }
 
 + (id) newMessage:(NSString *)aSrcName msg:(NSString *)aMsg templateToken:(CommonToken *)aTemplateToken cause:(NSException *)aCause;

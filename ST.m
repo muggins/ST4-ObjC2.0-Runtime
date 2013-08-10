@@ -75,12 +75,12 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 
 + (id) newAttributeList
 {
-    return [[[AttributeList alloc] init] retain];
+    return [[AttributeList alloc] init];
 }
 
 + (id) arrayWithCapacity:(NSInteger)size
 {
-    return [[[AttributeList alloc] initWithCapacity:size] retain];
+    return [[AttributeList alloc] initWithCapacity:size];
 }
 
 - (id) init
@@ -140,7 +140,7 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 
 @implementation DebugState
 
-@synthesize newSTEvent;
+@synthesize aSTEvent;
 @synthesize addAttrEvents;
 
 + (id) newDebugState
@@ -165,9 +165,9 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in DebugState" );
 #endif
-    if ( newSTEvent ) [newSTEvent release];
-    if ( addAttrEvents ) [addAttrEvents release];
-    [super dealloc];
+    aSTEvent = nil;
+    addAttrEvents = nil;
+    // [super dealloc];
 }
 
 /** Track construction-time add attribute "events"; used for ST user-level debugging */
@@ -188,7 +188,8 @@ NSString *RegionTypeDescription(RegionTypeEnum value)
 static STNoSuchAttributeException *cachedNoSuchAttrException;
 
 static NSInteger NO_WRAP = 80;
-NSString * const VERSION = @"@version@";
+const
+NSString * VERSION = @"@version@";
 static NSString *UNKNOWN_NAME = @"anonymous";
 static NSString *EMPTY_ATTR = @"";
 static DebugState *st_debugState = nil;
@@ -307,13 +308,13 @@ static DebugState *st_debugState = nil;
     if ( self != nil ) {
         if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
-            [EMPTY_ATTR retain];
+            // [EMPTY_ATTR retain];
         }
         if ( STGroup.trackCreationEvents ) {
             if ( st_debugState==nil )
-                st_debugState = [[DebugState newDebugState] retain];
+                st_debugState = [DebugState newDebugState];
             debugState = st_debugState;
-            st_debugState.newSTEvent = [[ConstructionEvent newEvent] retain];
+            st_debugState.aSTEvent = [ConstructionEvent newEvent];
         }
         groupThatCreatedThisInstance = aGroup;
 		impl = [aGroup compile:[aGroup getFileName] name:nil args:nil template:template templateToken:nil];
@@ -335,17 +336,18 @@ static DebugState *st_debugState = nil;
     if ( self != nil ) {
         if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
-            [EMPTY_ATTR retain];
+            // [EMPTY_ATTR retain];
         }
         impl = proto.impl;
-        [impl retain];
         enclosingInstance = proto.enclosingInstance;
-        if ( enclosingInstance ) [enclosingInstance retain];
         if (proto.locals != nil) {
-            locals = [[AMutableArray arrayWithArray:proto.locals] retain];
+            NSLog( @"%@", [proto.locals description]);
+            locals = [AMutableArray arrayWithArray:proto.locals];
+            //            locals = [AMutableArray arrayWithCapacity:proto.locals.count];
+            //            [locals addObjectsFromArray:proto.locals];
+            NSLog( @"%@", [locals description]);
         }
         groupThatCreatedThisInstance = proto.groupThatCreatedThisInstance;
-        if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance retain];
     }
     return self;
 }
@@ -355,12 +357,12 @@ static DebugState *st_debugState = nil;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ST" );
 #endif
-    if ( impl ) [impl release];
-    if ( locals ) [locals release];
-    if ( enclosingInstance ) [enclosingInstance release];
-    if ( debugState ) [debugState release];
-    if ( groupThatCreatedThisInstance ) [groupThatCreatedThisInstance release];
-    [super dealloc];
+    impl = nil;
+    locals = nil;
+    enclosingInstance = nil;
+    debugState = nil;
+    groupThatCreatedThisInstance = nil;
+    // [super dealloc];
 }
 
 /**
@@ -402,7 +404,7 @@ static DebugState *st_debugState = nil;
         if (arg == nil) {
             arg = [FormalArgument newFormalArgument:aName];
             [impl addArg:arg];
-            if (locals == nil) locals = [[AMutableArray arrayWithCapacity:5] retain];
+            if (locals == nil) locals = [AMutableArray arrayWithCapacity:5];
             else {
                 AMutableArray *copy = [AMutableArray arrayWithCapacity:[impl.formalArguments count]];
                 [copy addObjectsFromArray:locals];
@@ -442,7 +444,7 @@ static DebugState *st_debugState = nil;
 
 - (ST *) addInt:(NSString *)aName value:(NSInteger)value
 {
-    return [self add:aName value:[NSString stringWithFormat:@"%d", value]];
+    return [self add:aName value:[NSString stringWithFormat:@"%ld", value]];
 }
 
 #pragma mark fix this
@@ -562,7 +564,6 @@ static DebugState *st_debugState = nil;
         }
         [attributes put:arg.name value:obj];
     }
-    [it release];
     return attributes;
 }
 
@@ -618,7 +619,7 @@ static DebugState *st_debugState = nil;
 - (NSInteger) write:(id<STWriter>)wr1
 {
     Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:[NSLocale currentLocale] errMgr:impl.nativeGroup.errMgr debug:NO];
-    return [interp exec:wr1 who:self];
+    return [interp exec:(Writer *)wr1 who:self];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale
@@ -818,7 +819,7 @@ static DebugState *st_debugState = nil;
     do {
         aRange = [aTemplate rangeOfString:@"\%([0-9]+)"];
         if (aRange.location != NSNotFound) {
-            [aTemplate stringByReplacingCharactersInRange:aRange withString:[NSString stringWithFormat:@"arg%d", idx++]];
+            [aTemplate stringByReplacingCharactersInRange:aRange withString:[NSString stringWithFormat:@"arg%ld", idx++]];
         }
     } while (aRange.location != NSNotFound );
     //NSLog( @"Template = %@", aTemplate );
@@ -830,10 +831,9 @@ static DebugState *st_debugState = nil;
 //    for (id a in theAttributes) {
     while ( [it hasNext] ) {
         a = [it nextObject];
-        [st add:[NSString stringWithFormat:@"arg%d", i] value:a];
+        [st add:[NSString stringWithFormat:@"arg%ld", i] value:a];
         i++;
     }
-    [it release];
     return [st renderWithLineWidth:lineWidth];
 }
 

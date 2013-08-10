@@ -58,7 +58,6 @@
     self=[super init];
     if ( self ) {
         code = aCode;
-        if ( code ) [code retain];
     }
     return self;
 }
@@ -68,8 +67,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Instruction" );
 #endif
-    if ( code ) [code release];
-    [super dealloc];
+    code = nil;
+    // [super dealloc];
 }
 
 - (NSString *) instrs
@@ -109,14 +108,14 @@
 {
     NSInteger opcode = [code.instrs charAtIndex:ip];
     if (ip >= code.codeSize) {
-        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"ip out of range: %d", ip]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"ip out of range: %ld", ip]];
     }
     Instruction *I = Bytecode.instructions[opcode];
     if (I == nil) {
-        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %d at address %d", opcode, ip]];
+        @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"no such instruction %ld at address %ld", opcode, ip]];
     }
     NSString *instrName = I.name;
-    [buf appendFormat:@"%04d:\t%-14s", ip, [instrName cStringUsingEncoding:NSASCIIStringEncoding]];
+    [buf appendFormat:@"%04ld:\t%-14s", ip, [instrName cStringUsingEncoding:NSASCIIStringEncoding]];
     ip++;
     if ( I.nopnds == 0 ) {
         [buf appendString:@"  "];
@@ -132,10 +131,10 @@
             break;
         case T_ADDR:
         case T_INT:
-            [operands addObject:[NSString stringWithFormat:@"%d", opnd]];
+            [operands addObject:[NSString stringWithFormat:@"%ld", opnd]];
             break;
         default:
-            [operands addObject:[NSString stringWithFormat:@"%d", opnd]];
+            [operands addObject:[NSString stringWithFormat:@"%ld", opnd]];
             break;
         }
     }
@@ -151,7 +150,7 @@
 - (NSString *) showConstPoolOperand:(NSInteger)poolIndex
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:100];
-    [buf appendFormat:@"#%d", poolIndex];
+    [buf appendFormat:@"#%ld", poolIndex];
     NSString *s = @"<bad string index>";
     if (poolIndex < [code.strings count]) {
         s = [code.strings objectAtIndex:poolIndex];
@@ -184,14 +183,15 @@
             if ([obj isKindOfClass:[NSString class]]) {
                 NSString *s = (NSString *)obj;
                 s = [Misc replaceEscapes:s];
-                [buf appendString:[NSString stringWithFormat:@"%04d: \"%@\"\n", addr, s]];
+                [buf appendString:[NSString stringWithFormat:@"%04ld: \"%@\"\n", addr, s]];
             }
              else {
-                [buf appendString:[NSString stringWithFormat:@"%04d: %@\n", addr, obj]];
+                [buf appendString:[NSString stringWithFormat:@"%04ld: %@\n", addr, obj]];
             }
             addr++;
         }
-        [it release];
+        // [it release];
+        it = nil;
     }
     return (([buf length] > 0) ? buf : @"strings=<nil>");
 }
@@ -207,11 +207,12 @@
         I = (Interval *)[it nextObject];
         if ( !(I == nil || I == (Interval *)[NSNull null]) ) {
             NSString *chunk = [code.template substringWithRange:NSMakeRange(I.a, (I.b + 1)-I.a)];
-            [buf appendString:[NSString stringWithFormat:@"%04d: %@\t\"%@\"\n", addr, I, chunk]];
+            [buf appendString:[NSString stringWithFormat:@"%04ld: %@\t\"%@\"\n", addr, I, chunk]];
         }
         addr++;
     }
-    [it release];
+    // [it release];
+    it = nil;
     return (([buf length] > 0) ? buf : @"sourceMap=<nil>");
 }
 

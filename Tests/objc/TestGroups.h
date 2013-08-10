@@ -4,7 +4,7 @@
 #import "ErrorBuffer.h"
 
 @interface Field_anon1 : NSObject {
-  NSString *name;
+  __strong NSString *name;
   NSInteger n;
 }
 
@@ -16,7 +16,7 @@
 @end
 
 @interface Field_anon2 : NSObject {
-  NSString *name;
+  __strong NSString *name;
   NSInteger n;
 }
 
@@ -28,7 +28,7 @@
 @end
 
 @interface Field_anon3 : NSObject {
-  NSString *name;
+  __strong NSString *name;
   NSInteger n;
 }
 
@@ -40,7 +40,7 @@
 @end
 
 @interface Counter : NSObject {
-  int n;
+  NSInteger n;
 }
 
 - (id) init;

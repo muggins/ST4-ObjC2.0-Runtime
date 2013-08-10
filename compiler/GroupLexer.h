@@ -1,7 +1,7 @@
 // $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2012-04-20 15:20:55
 
 /* =============================================================================
- * Standard antlr OBJC runtime definitions
+ * Standard antlr3 OBJC runtime definitions
  */
 #import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
@@ -100,18 +100,21 @@
 #endif
 /* interface lexer class */
 @interface GroupLexer : Lexer { // line 283
-DFA8 *dfa8;
+    __strong DFA8 *dfa8;
 /* ObjC start of actions.lexer.memVars */
 
-STGroup *group;
+    __strong STGroup *group;
 
 /* ObjC end of actions.lexer.memVars */
 }
-+ (void) initialize;
-+ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput;
-/* ObjC start actions.lexer.methodsDecl */
 
 @property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
+
++ (void) initialize;
++ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput;
+- (id) initWithCharStream:(id<CharStream>)anInput;
+- (void) dealloc;
+/* ObjC start actions.lexer.methodsDecl */
 
 - (void) reportError:(RecognitionException *)e;
 - (NSString *) getSourceName;

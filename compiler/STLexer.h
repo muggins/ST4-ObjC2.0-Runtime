@@ -72,9 +72,9 @@
      * outside mode.
      */
     NSInteger subtemplateDepth;
-    ErrorManager *errMgr;
-    CommonToken *templateToken;
-    id<CharStream> input;
+    __strong ErrorManager *errMgr;
+    __strong CommonToken *templateToken;
+    __strong id<CharStream> input;
     unichar c;
     
     /**
@@ -89,8 +89,24 @@
      * Our lexer routines might have to emit more than a single token. We
      * buffer everything through this list.
      */
-    AMutableArray *tokens;
+    __strong AMutableArray *tokens;
 }
+
+@property (assign) unichar delimiterStartChar;
+@property (assign) unichar delimiterStopChar;
+@property (assign) BOOL scanningInsideExpr;
+@property (assign) NSInteger subtemplateDepth;
+@property (retain) ErrorManager *errMgr;
+@property (retain) CommonToken *templateToken;
+@property (retain) id<CharStream> input;
+@property (assign) unichar c;
+@property (assign) NSInteger startCharIndex;
+@property (assign) NSInteger startLine;
+@property (assign) NSInteger startCharPositionInLine;
+@property (retain) AMutableArray *tokens;
+
+//@property (nonatomic, retain, readonly) NSString *errorHeader;
+//@property (nonatomic, retain, readonly) NSString *sourceName;
 
 + (NSInteger) RCURLY;
 + (NSInteger) LDELIM;
@@ -114,6 +130,7 @@ delimiterStopChar:(unichar)delimiterStopChar;
 - (id) init:(ErrorManager *)errMgr
       input:(id<CharStream>)input templateToken:(CommonToken *)templateToken
 delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
+- (void) dealloc;
 
 - (CommonToken *) nextToken;
 - (void) match:(unichar)x;
@@ -141,22 +158,6 @@ delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimi
 - (CommonToken *) newToken:(NSInteger)ttype text:(NSString *)text pos:(NSInteger)pos;
 - (id) copyWithZone:(NSZone *)aZone;
 - (NSString *) getSourceName;
-
-@property (assign) unichar delimiterStartChar;
-@property (assign) unichar delimiterStopChar;
-@property (assign) BOOL scanningInsideExpr;
-@property (assign) NSInteger subtemplateDepth;
-@property (retain) ErrorManager *errMgr;
-@property (retain) CommonToken *templateToken;
-@property (retain) id<CharStream> input;
-@property (assign) unichar c;
-@property (assign) NSInteger startCharIndex;
-@property (assign) NSInteger startLine;
-@property (assign) NSInteger startCharPositionInLine;
-@property (retain) AMutableArray *tokens;
-
-//@property (nonatomic, retain, readonly) NSString *errorHeader;
-//@property (nonatomic, retain, readonly) NSString *sourceName;
 
 @end
 

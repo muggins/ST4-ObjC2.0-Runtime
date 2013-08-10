@@ -24,7 +24,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test02RendererWithFormat {
+- (void) test02RendererWithFormat
+{
     NSString *templates = @"dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -45,7 +46,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test03RendererWithPredefinedFormat {
+- (void) test03RendererWithPredefinedFormat
+{
     NSString *templates = @"dateThing(created) ::= << datetime: <created; format=\"short\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -66,7 +68,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test04RendererWithPredefinedFormat2 {
+- (void) test04RendererWithPredefinedFormat2
+{
     NSString *templates = @"dateThing(created) ::= << datetime: <created; format=\"full\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -82,12 +85,13 @@
     [comps setSecond:0];
     NSDate *aDate = [gregorian dateFromComponents:comps];
     [st add:@"created" value:aDate];
-    NSString *expecting = @" datetime: Tuesday, July 5, 2005 12:00:00 AM PT ";
+    NSString *expecting = @" datetime: Tuesday, July 5, 2005 12:00:00 AM Pacific Daylight Time ";
     NSString *result = [st render];
     [self assertEquals:expecting result:result];
 }
 
-- (void) test05RendererWithPredefinedFormat3 {
+- (void) test05RendererWithPredefinedFormat3
+{
     NSString *templates = @"dateThing(created) ::= << date: <created; format=\"date:medium\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -108,7 +112,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test06RendererWithPredefinedFormat4 {
+- (void) test06RendererWithPredefinedFormat4
+{
     NSString *templates = @"dateThing(created) ::= << time: <created; format=\"time:medium\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -129,7 +134,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test07StringRendererWithPrintfFormat {
+- (void) test07StringRendererWithPrintfFormat
+{
     NSString *templates = @"foo(x) ::= << <x; format=\"%6s\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -141,7 +147,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test08NumberRendererWithPrintfFormat {
+- (void) test08NumberRendererWithPrintfFormat
+{
     NSString *templates = @"foo(x,y) ::= << <x; format=\"%d\"> <y; format=\"%2.3f\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -154,7 +161,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test09InstanceofRenderer {
+- (void) test09InstanceofRenderer
+{
     NSString *templates = @"numberThing(x,y,z) ::= \"numbers: <x>, <y>; <z>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -166,9 +174,11 @@
     NSString *expecting = @"numbers: -2100, 3.14159; hi";
     NSString *result = [st render];
     [self assertEquals:expecting result:result];
+    return;
 }
 
-- (void) test10LocaleWithNumberRenderer {
+- (void) test10LocaleWithNumberRenderer
+{
     NSString *templates = @"foo(x,y) ::= << <x; format=\"%,d\"> <y; format=\"%,2.3f\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
@@ -182,7 +192,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test11RendererWithFormatAndList {
+- (void) test11RendererWithFormatAndList
+{
     NSString *template = @"The names: <names; format=\"upper\">";
     STGroup *group = [STGroup newSTGroup];
     [group registerRenderer:[NSString class] r:[StringRenderer newRenderer]];
@@ -196,7 +207,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test12RendererWithFormatAndSeparator {
+- (void) test12RendererWithFormatAndSeparator
+{
     NSString *template = @"The names: <names; separator=\" and \", format=\"upper\">";
     STGroup *group = [STGroup newSTGroup];
     [group registerRenderer:[NSString class] r:[StringRenderer newRenderer]];
@@ -210,7 +222,8 @@
     [self assertEquals:expecting result:result];
 }
 
-- (void) test13RendererWithFormatAndSeparatorAndNull {
+- (void) test13RendererWithFormatAndSeparatorAndNull
+{
     NSString *template = @"The names: <names; separator=\" and \", null=\"n/a\", format=\"upper\">";
     STGroup *group = [STGroup newSTGroup];
     [group registerRenderer:[NSString class] r:[StringRenderer newRenderer]];

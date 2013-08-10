@@ -43,20 +43,20 @@
   BOOL alreadyLoaded;
 }
 
+@property (copy) NSString *sourceName;
+@property (copy) NSString *text;
+@property (assign) BOOL alreadyLoaded;
+
 + (id) newSTGroupString:(NSString *)aTemplate;
 + (id) newSTGroupString:(NSString *)aSourceName text:(NSString *)aTemplate;
 + (id) newSTGroupString:(NSString *)aSourceName text:(NSString *)aTemplate delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar;
 
 - (id) init:(NSString *)sourceName text:(NSString *)text delimiterStartChar:(unichar)aStartChar delimiterStopChar:(unichar)aStopChar;
-
+- (void) dealloc;
 - (BOOL) isDictionary:(NSString *)name;
 - (BOOL) isDefined:(NSString *)name;
 - (CompiledST *) load:(NSString *)name;
 - (void) load;
 - (NSString *) getFileName;
-
-@property (retain) NSString *sourceName;
-@property (retain) NSString *text;
-@property (assign) BOOL alreadyLoaded;
 
 @end

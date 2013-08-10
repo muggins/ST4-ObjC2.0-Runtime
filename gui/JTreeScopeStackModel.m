@@ -1,4 +1,5 @@
 #import "JTreeScopeStackModel.h"
+#import <ANTLR/AMutableArray.h>
 
 @implementation StringTree
 
@@ -65,7 +66,7 @@
     for (NSString *a in [[attrs keySet] toArray]) {
         NSString *descr = nil;
         if (st.debugState != nil && st.debugState.addAttrEvents != nil) {
-            NSMutableArray *events = [st.debugState.addAttrEvents get:a];
+            AMutableArray *events = [st.debugState.addAttrEvents get:a];
             NSMutableString *locations = [[NSMutableString stringWithCapacity:16] autorelease];
             int i = 0;
             if ( events != nil ) {

@@ -7,7 +7,7 @@
     NSString *templates = @"t(x,y) ::= \"<u()>\"\nu() ::= \"<x><y>\"";
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st add:@"x" value:@"x"];
@@ -25,7 +25,7 @@
     NSString *templates = @"t() ::= \"<u()>\"\nu(z) ::= \"\"";
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     NSString *renderResult = [st render];
@@ -39,7 +39,7 @@
     NSString *templates = @"t() ::= \"<x>\"\n";
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     NSString *renderResult = [st render];
@@ -53,7 +53,7 @@
     NSString *templates = @"t(x,y) ::= \"<u(x)>\"\nu(y) ::= \"<x><y>\"";
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st add:@"x" value:@"x"];
@@ -72,7 +72,7 @@
     NSString *templates = @"t(names) ::= \"<names:{n | <u(n)>}>\"\nu(x) ::= \"<i>:<x>\"";
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st add:@"names" value:@"Ter"];

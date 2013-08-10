@@ -50,7 +50,7 @@
 - (id) init
 {
     if ( (self=[super init]) != nil ) {
-        dict = [[LinkedHashMap newLinkedHashMap:16] retain];
+        dict = [LinkedHashMap newLinkedHashMap:16];
         [dict put:@"anchor"    value:[ACNumber numberWithInteger:ANCHOR]];
         [dict put:@"format"    value:[ACNumber numberWithInteger:FORMAT]];
         [dict put:@"null"      value:[ACNumber numberWithInteger:_NULL]];
@@ -65,8 +65,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Compiler_Anon1" );
 #endif
-    if ( dict ) [dict release];
-    [super dealloc];
+    dict = nil;
+    // [super dealloc];
 }
 
 - (id) getDict
@@ -102,7 +102,7 @@
 - (id) init
 {
     if ( (self=[super init]) != nil ) {
-        dict = [[LinkedHashMap newLinkedHashMap:16] retain];
+        dict = [LinkedHashMap newLinkedHashMap:16];
         [dict put:@"anchor" value:@"\"true\""];
         [dict put:@"wrap" value:@"\"\n\""];
     }
@@ -114,8 +114,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Compiler_Anon2" );
 #endif
-    if ( dict ) [dict release];
-    [super dealloc];
+    dict = nil;
+    // [super dealloc];
 }
 
 - (id) copyWithZone:(NSZone *)aZone
@@ -124,9 +124,7 @@
     
     copy = [[[self class] allocWithZone:aZone] init];
     if ( dict ) {
-        if ( copy.dict ) [copy.dict release];
         copy.dict = [dict copyWithZone:aZone];
-        [copy.dict retain];
     }
     return copy;
 }
@@ -164,7 +162,7 @@
 - (id) init
 {
     if ( (self=[super init]) != nil ) {
-        dict = [[LinkedHashMap newLinkedHashMap:16] retain];
+        dict = [LinkedHashMap newLinkedHashMap:16];
         [dict put:@"first"   value:[ACNumber numberWithInt:Bytecode.INSTR_FIRST]];
         [dict put:@"last"    value:[ACNumber numberWithInt:Bytecode.INSTR_LAST]];
         [dict put:@"rest"    value:[ACNumber numberWithInt:Bytecode.INSTR_REST]];
@@ -183,8 +181,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Compiler_Anon3" );
 #endif
-    if ( dict ) [dict release];
-    [super dealloc];
+    dict = nil;
+    // [super dealloc];
 }
 
 - (id) copyWithZone:(NSZone *)aZone
@@ -193,9 +191,7 @@
     
     copy = [[[self class] allocWithZone:aZone] init];
     if ( dict ) {
-        if ( copy.dict ) [copy.dict release];
         copy.dict = [dict copyWithZone:aZone];
-        if ( copy.dict ) [copy.dict retain];
     }
     return copy;
 }
@@ -296,7 +292,6 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     self=[super init];
     if ( self != nil ) {
         group = STGroup.defaultGroup;
-        if ( group ) [group retain];
         subtemplateCount = 0;
     }
     return self;
@@ -307,7 +302,6 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     self=[super init];
     if ( self != nil ) {
         group = aSTGroup;
-        if ( group ) [group retain];
         subtemplateCount = 0;
     }
     return self;
@@ -318,8 +312,8 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Compiler" );
 #endif
-    if ( group ) [group release];
-    [super dealloc];
+    group = nil;
+    // [super dealloc];
 }
 
 /**
@@ -354,17 +348,15 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
     BOOL mustRelease = NO;
     __strong FormalArgument *a;
     if ( args != nil ) {
-            [args retain];
         if ( [args count] > 0 ) {
             a = [args objectAtIndex:0];
-            [a retain];
             mustRelease = YES;
         }
     }
     if ( args == nil ) {
         NSLog( @"args is nil" );
     }
-    ANTLRStringStream *is = [[ANTLRStringStream newANTLRStringStream:template] retain];
+    ANTLRStringStream *is = [ANTLRStringStream newANTLRStringStream:template];
     is.name = (srcName != nil) ? srcName : name;
     STLexer *lexer = nil;
 	if ( aTemplateToken != nil &&
@@ -375,7 +367,7 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         lexer = [STLexer newSTLexer:group.errMgr input:is templateToken:aTemplateToken delimiterStartChar:group.delimiterStartChar delimiterStopChar:group.delimiterStopChar];
 	}
 
-    CommonTokenStream *tokens = [[CommonTokenStream newCommonTokenStreamWithTokenSource:lexer] retain];
+    CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
     STParser *p = [STParser newSTParser:tokens error:group.errMgr token:aTemplateToken];
     STParser_templateAndEOF_return *r = nil;
     
@@ -391,24 +383,22 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
         [impl defineFormalArgs:args];
         return impl;
     }
-    CommonTreeNodeStream *nodes = [[CommonTreeNodeStream newCommonTreeNodeStream:r.tree] retain];
+    CommonTreeNodeStream *nodes = [CommonTreeNodeStream newCommonTreeNodeStream:r.tree];
     [nodes setTokenStream:tokens];
     CodeGenerator *gen = [CodeGenerator newCodeGenerator:nodes errMgr:group.errMgr name:name template:template token:aTemplateToken];
 
     @try {
-        impl = [[gen template:name arg1:args] retain];
+        impl = [gen template:name arg1:args];
 		impl.nativeGroup = group;
-        if ( impl.nativeGroup ) [impl.nativeGroup retain];
 		impl.template = template;
-        if ( template ) [template retain];
-        impl.ast = [(CommonTree *)r.tree retain];
+        impl.ast = (CommonTree *)r.tree;
         [impl.ast setUnknownTokenBoundaries];
-        impl.tokens = [tokens retain];
+        impl.tokens = tokens;
     }
     @catch (RecognitionException *re) {
         [group.errMgr internalError:nil msg:@"bad tree structure" e:re];
     }
-    if ( mustRelease ) [a release];
+    if ( mustRelease ) a = nil;
     return impl;
 }
 
@@ -427,7 +417,7 @@ static NSString *SUBTEMPLATE_PREFIX = @"_sub";
 
 + (NSString *) getNewSubtemplateName
 {
-    return [NSString stringWithFormat:@"%@%d", SUBTEMPLATE_PREFIX, ++subtemplateCount];
+    return [NSString stringWithFormat:@"%@%ld", SUBTEMPLATE_PREFIX, (long)++subtemplateCount];
 }
 
 - (void) reportMessageAndThrowSTException:(CommonTokenStream *)tokens

@@ -81,12 +81,12 @@ options {
 }
 
 @properties {
-	@property(retain) template_Scope *template_scope;
-	@property(retain) NSString *outermostTemplateName; // name of overall template
-	@property(retain) CompiledST *outermostImpl;
-	@property(retain) CommonToken *templateToken;// overall template token
-	@property(retain) NSString *template;    // overall template text
-	@property(retain) ErrorManager *errMgr;
+	@property (retain) template_Scope *template_scope;
+	@property (retain) NSString *outermostTemplateName; // name of overall template
+	@property (retain) CompiledST *outermostImpl;
+	@property (retain) CommonToken *templateToken;// overall template token
+	@property (retain) NSString *template;    // overall template text
+	@property (retain) ErrorManager *errMgr;
 }
 
 @methodsDecl {
@@ -137,11 +137,11 @@ options {
                template:(NSString *)aTemplate
                   token:(CommonToken *)aTemplateToken
 {
-    return [[[CodeGenerator alloc] init:anInput
+    return [[CodeGenerator alloc] init:anInput
                                 errMgr:anErrMgr
                                   name:aName
                               template:aTemplate
-                                 token:aTemplateToken] retain];
+                                 token:aTemplateToken];
 }
 
 - (id) init:(id<TreeNodeStream>)anInput
@@ -153,16 +153,12 @@ options {
     self=[super initWithStream:anInput State:[RecognizerSharedState newRecognizerSharedState]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
-        template_scope = [[template_Scope newtemplate_Scope] retain];
-        template_stack = [[SymbolStack newSymbolStackWithLen:30] retain];
+        template_scope = [template_Scope newtemplate_Scope];
+        template_stack = [SymbolStack newSymbolStackWithLen:30];
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr retain];
         outermostTemplateName = aName;
-        if ( outermostTemplateName ) [outermostTemplateName retain];
         template = aTemplate;
-        if ( template ) [template retain];
         templateToken = aTemplateToken;
-        if ( templateToken ) [templateToken retain];
     }
     return self;
 }
@@ -172,13 +168,13 @@ options {
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CodeGenerator" );
 #endif
-    if ( template_scope ) [template_scope release];
-    if ( outermostTemplateName ) [outermostTemplateName release];
-    if ( outermostImpl ) [outermostImpl release];
-    if ( templateToken ) [templateToken release];
-    if ( template ) [template release];
-    if ( errMgr ) [errMgr release];
-    [super dealloc];
+    template_scope = nil;
+    outermostTemplateName = nil;
+    outermostImpl = nil;
+    templateToken = nil;
+    template = nil;
+    errMgr = nil;
+    // [super dealloc];
 }
 
 // convience funcs to hide offensive sending of emit messages to
@@ -242,7 +238,7 @@ scope {
     CompilationState *cstate; // automatically get a new cstate pointer per invocation
 }
 @init {
- 	$template::cstate = [[CompilationState newCompilationState:errMgr name:name stream:[input getTokenStream]] retain];
+ 	$template::cstate = [CompilationState newCompilationState:errMgr name:name stream:[input getTokenStream]];
 	$impl = $template::cstate.impl;
  	if ( [$template count] == 1 )
         outermostImpl = $impl;
@@ -363,7 +359,7 @@ ifstat[CommonTree *indent]
     /** Branch instruction operands that are forward refs to end of IF.
      *  We need to update them once we see the endif.
      */
-    IntArray *endRefs = [[IntArray newArrayWithLen:16] retain];
+    IntArray *endRefs = [IntArray newArrayWithLen:16];
     if ( indent!=nil ) [$template::cstate indent:indent];
 }
 @after {

@@ -30,6 +30,10 @@
 
 @implementation InterpEvent
 
+@synthesize scope;
+@synthesize outputStartChar;
+@synthesize outputStopChar;
+
 + (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop
 {
     return [[InterpEvent alloc] init:aScope start:(NSInteger)theStart stop:(NSInteger)theStop];
@@ -56,17 +60,14 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat:@"{who=%@, start=%d, stop=%d}",
+    return [NSString stringWithFormat:@"{who=%@, start=%ld, stop=%ld}",
             [self className], outputStartChar, outputStopChar];
 }
 
 - (void) dealloc
 {
-    if ( scope ) [scope release];
-    [super dealloc];
+    scope = nil;
+    // [super dealloc];
 }
 
-@synthesize scope;
-@synthesize outputStartChar;
-@synthesize outputStopChar;
 @end

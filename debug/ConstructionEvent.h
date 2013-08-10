@@ -30,33 +30,29 @@
  */
 
 @interface StackTraceElement : NSObject {
-    NSString *msg;
+    __strong NSString *msg;
 }
 
 + (id) newStackTraceElement;
 + (id) newStackTraceElement:(NSString *)aMsg;
 - (id) init;
 - (id) initWithMessage:(NSString *)aMsg;
+- (void)dealloc;
 - (NSString *) description;
+
 @property (retain) NSString *msg;
 
 @end
 
 
 @interface ConstructionEvent : NSObject {
-    NSString *fileName;
+    __strong NSString *fileName;
     NSInteger line;
-    NSException *stack;
-    StackTraceElement *sTEntryPoint;
-    NSArray *addrs;
-    NSArray *trace;
+    __strong NSException *stack;
+    __strong StackTraceElement *sTEntryPoint;
+    __strong NSArray *addrs;
+    __strong NSArray *trace;
 }
-
-+ (id) newEvent;
-- (id) init;
-- (NSString *) fileName;
-- (NSInteger) line;
-- (id) sTEntryPoint;
 
 @property (retain, readonly, getter=fileName) NSString *fileName;
 @property (assign, readonly, getter=line) NSInteger line;
@@ -64,5 +60,12 @@
 @property (retain, readonly, getter = sTEntryPoint) StackTraceElement *sTEntryPoint;
 @property (retain) NSArray *addrs;
 @property (retain) NSArray *trace;
+
++ (id) newEvent;
+- (id) init;
+- (void)dealloc;
+- (NSString *) fileName;
+- (NSInteger) line;
+- (id) sTEntryPoint;
 
 @end

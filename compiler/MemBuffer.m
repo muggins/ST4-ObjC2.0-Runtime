@@ -63,7 +63,7 @@
 	if ( self != nil) {
         BuffSize  = BUFFSIZE;
         ptr = 0;
-        buffer = [[NSMutableData dataWithLength:(NSUInteger)BuffSize] retain];
+        buffer = [NSMutableData dataWithLength:(NSUInteger)BuffSize];
         ptrBuffer = (char *)[buffer mutableBytes];
         for( idx = 0; idx < BuffSize; idx++ ) {
             ptrBuffer[idx] = 0;
@@ -80,7 +80,7 @@
 	if ( self != nil) {
         BuffSize  = cnt;
         ptr = 0;
-        buffer = [[NSMutableData dataWithLength:(NSUInteger)BuffSize] retain];
+        buffer = [NSMutableData dataWithLength:(NSUInteger)BuffSize];
         ptrBuffer = (char *)[buffer mutableBytes];
         for( idx = 0; idx < BuffSize; idx++ ) {
             ptrBuffer[idx] = 0;
@@ -94,8 +94,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in MemBuffer" );
 #endif
-    if ( buffer ) [buffer release];
-	[super dealloc];
+    buffer = nil;
+	// [super dealloc];
 }
 
 - (id) copyWithZone:(NSZone *)aZone

@@ -35,6 +35,13 @@
 
 @implementation STMessage
 
+@synthesize who;
+@synthesize error;
+@synthesize arg;
+@synthesize arg2;
+@synthesize arg3;
+@synthesize cause;
+
 + (id) newMessage:(ErrorTypeEnum)anError;
 {
     return [[STMessage alloc] init:anError who:nil cause:nil arg:@"" arg2:@"" arg3:@""];
@@ -76,9 +83,7 @@
     if ( self != nil ) {
         error = anError;
         who = aWho;
-        if ( who ) [who retain];
         cause = aCause;
-        if ( cause ) [cause retain];
         arg = anArg;
         arg2 = anArg2;
         arg3 = anArg3;
@@ -91,9 +96,9 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STMessage" );
 #endif
-    if ( who ) [who release];
-    if ( cause ) [cause release];
-    [super dealloc];
+    who = nil;
+    cause = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -113,12 +118,5 @@
     }
     return [sw description];
 }
-
-@synthesize who;
-@synthesize error;
-@synthesize arg;
-@synthesize arg2;
-@synthesize arg3;
-@synthesize cause;
 
 @end

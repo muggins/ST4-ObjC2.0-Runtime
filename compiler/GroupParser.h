@@ -1,7 +1,7 @@
 // $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2012-04-20 15:20:55
 
 /* =============================================================================
- * Standard antlr OBJC runtime definitions
+ * Standard antlr3 OBJC runtime definitions
  */
 #import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
@@ -128,7 +128,7 @@ BOOL hasOptionalParameter;
 
 /* ObjC start of actions.(actionScope).memVars */
 
-STGroup *group;
+    __strong STGroup *group;
 
 /* ObjC end of actions.(actionScope).memVars */
 /* ObjC start of memVars */
@@ -153,9 +153,14 @@ STGroup *group;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
-- (void) displayRecognitionError:(AMutableArray *) tokenNames Exception:(RecognitionException *)e;
+
+- (id) initWithTokenStream:(id<TokenStream>)aStream;
+- (void) dealloc;
+
+- (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
+// - (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames;
 
 /* ObjC end of actions.(actionScope).methodsDecl */
 

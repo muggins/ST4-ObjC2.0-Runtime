@@ -50,11 +50,8 @@
         if (msg == nil) {
             msg = @"nil";
         }
-        [msg retain];
         templateToken = aTemplateToken;
-        if ( templateToken ) [templateToken retain];
         srcName = [Misc getFileName:aSrcName];
-        if ( srcName ) [srcName retain];
     }
     return self;
 }
@@ -64,10 +61,10 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STLexerMessage" );
 #endif
-    if ( msg ) [msg release];
-    if ( templateToken ) [templateToken release];
-    if ( srcName ) [srcName release];
-    [super dealloc];
+    msg = nil;
+    templateToken = nil;
+    srcName = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -83,7 +80,7 @@
         line += templateToken.line - 1;
         charPos += templateToken.charPositionInLine + templateDelimiterSize;
     }
-    NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
+    NSString *filepos = [NSString stringWithFormat:@"%ld:%ld", line, charPos];
     if (srcName != nil) {
         return [srcName stringByAppendingFormat:@" %@: %@", filepos, [NSString stringWithFormat:[ErrorType ErrorNum:error], msg]];
     }

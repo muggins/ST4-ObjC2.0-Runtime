@@ -186,11 +186,9 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = '>';
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [[AMutableArray arrayWithCapacity:16] retain];
+        tokens = [AMutableArray arrayWithCapacity:16];
         errMgr = ErrorManager.DEFAULT_ERR_MGR;
-        if ( errMgr ) [errMgr retain];
         input = anInput;
-        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = nil;
     }
@@ -205,11 +203,9 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = '>';
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [[AMutableArray arrayWithCapacity:16] retain];
+        tokens = [AMutableArray arrayWithCapacity:16];
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr retain];
         input = anInput;
-        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = aTemplateToken;
     }
@@ -224,14 +220,11 @@ delimiterStopChar:(unichar)aStopChar
         delimiterStopChar = aStopChar;
         scanningInsideExpr = NO;
         subtemplateDepth = 0;
-        tokens = [[AMutableArray arrayWithCapacity:16] retain];
+        tokens = [AMutableArray arrayWithCapacity:16];
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr retain];
         input = anInput;
-        if ( input ) [input retain];
         c = (unichar)[input LA:1];
         templateToken = aTemplateToken;
-        if ( templateToken ) [templateToken retain];
     }
     return self;
 }
@@ -242,11 +235,11 @@ delimiterStopChar:(unichar)aStopChar
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STLexer" );
 #endif
-    if ( errMgr ) [errMgr release];
-    if ( input ) [input release];
-    if ( tokens ) [tokens release];
-    if ( templateToken ) [templateToken release];
-    [super dealloc];
+    errMgr = nil;
+    templateToken = nil;
+    input = nil;
+    tokens = nil;
+    // [super dealloc];
 }
 
 - (CommonToken *) nextToken
@@ -450,7 +443,6 @@ delimiterStopChar:(unichar)aStopChar
         ArrayIterator *it = [ArrayIterator newIterator:argTokens];
         while ( [it hasNext] )
            [self emit:[it nextObject]];
-        [it release];
 //        for (CommonToken *t in argTokens)
 //            [self emit:t];
         [input release:m];
@@ -527,7 +519,7 @@ delimiterStopChar:(unichar)aStopChar
     chars[4] = '\0';
         // ESCAPE kills >
         //NSString *utext = [NSString stringWithCString:chars encoding:NSASCIIStringEncoding];
-    unichar uc = (unichar)[[NSString stringWithCString:chars encoding:NSASCIIStringEncoding] intValue];
+    unichar uc = (unichar)[(NSString *)[NSString stringWithCString:chars encoding:NSASCIIStringEncoding] intValue];
     CommonToken *t = [self newToken:TEXT text:[NSString stringWithFormat:@"%4x", uc] pos:[input getCharPositionInLine]-6];
     [self consume];
     [self match:delimiterStopChar];
@@ -646,7 +638,7 @@ delimiterStopChar:(unichar)aStopChar
             RecognitionException *re = [MismatchedTokenException newException:(NSInteger)'!' Stream:input];
             re.line = [input getLine];
             re.charPositionInLine = [input getCharPositionInLine];
-            [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"Nonterminated comment starting at %d:%d: '!%c' missing", startLine, startCharPositionInLine, delimiterStopChar] templateToken:templateToken e:re];
+            [errMgr lexerError:[input getSourceName] msg:[NSString stringWithFormat:@"Nonterminated comment starting at %ld:%ld: '!%c' missing", startLine, startCharPositionInLine, delimiterStopChar] templateToken:templateToken e:re];
             break;
         }
         [self consume];
@@ -674,7 +666,7 @@ delimiterStopChar:(unichar)aStopChar
 
 + (BOOL) isIDLetter:(unichar)c
 {
-    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '_' || c == '/';
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_' || c == '/';
 }
 
 + (BOOL) isWS:(unichar)c
@@ -684,7 +676,7 @@ delimiterStopChar:(unichar)aStopChar
 
 + (BOOL) isUnicodeLetter:(unichar)c
 {
-    return c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F' || c >= '0' && c <= '9';
+    return ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9'));
 }
 
 - (CommonToken *) newToken:(NSInteger)ttype
@@ -725,7 +717,7 @@ delimiterStopChar:(unichar)aStopChar
 
 - (NSString *) errorHeader
 {
-    return [NSString stringWithFormat:@"%d:%d", startLine, startCharPositionInLine];
+    return [NSString stringWithFormat:@"%ld:%ld", startLine, startCharPositionInLine];
 }
 
 - (NSString *) getSourceName

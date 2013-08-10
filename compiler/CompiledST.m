@@ -83,11 +83,10 @@ static CompiledST *NOT_FOUND_ST = nil;
     if ( self != nil ) {
         prefix = @"/";
         nativeGroup = STGroup.defaultGroup;
-        instrs = [[MemBuffer newMemBufferWithLen:30] retain];
-        sourceMap = [[AMutableArray arrayWithCapacity:6] retain];
-        strings = [[AMutableArray arrayWithCapacity:5] retain];
+        instrs = [MemBuffer newMemBufferWithLen:30];
+        sourceMap = [AMutableArray arrayWithCapacity:6];
+        strings = [AMutableArray arrayWithCapacity:5];
         template = @"";
-        [template retain];
     }
     return self;
 }
@@ -97,19 +96,18 @@ static CompiledST *NOT_FOUND_ST = nil;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CompiledST" );
 #endif
-    if ( prefix ) [prefix release];
-    if ( name ) [name release];
-    if ( template ) [template release];
-    if ( templateDefStartToken ) [templateDefStartToken release];
-    if ( tokens ) [tokens release];
-    if ( ast ) [ast release];
-    if ( formalArguments ) [formalArguments release];
-    if ( implicitlyDefinedTemplates ) [implicitlyDefinedTemplates release];
+    name = nil;
+    prefix = nil;
+    template = nil;
+    templateDefStartToken = nil;
+    tokens = nil;
+    ast = nil;
+    formalArguments = nil;
+    implicitlyDefinedTemplates = nil;
     nativeGroup = nil;
-    if ( strings ) [strings release];
-    if ( instrs ) [instrs release];
-    if ( sourceMap ) [sourceMap release];
-    [super dealloc];
+    strings = nil;
+    instrs = nil;
+    sourceMap = nil;
 }
 
 - (id) copyWithZone:(NSZone *)aZone
@@ -118,15 +116,15 @@ static CompiledST *NOT_FOUND_ST = nil;
     
     copy = [[[self class] allocWithZone:aZone] init];
     if ( instrs ) {
-        [copy.instrs release];
+        // [copy.instrs release];
         copy.instrs = [instrs copyWithZone:aZone];
     }
     if ( sourceMap ) {
-        [copy.sourceMap release];
+        // [copy.sourceMap release];
         copy.sourceMap = [sourceMap copyWithZone:aZone];
     }
     if ( strings ) {
-        [copy.strings release];
+        // [copy.strings release];
         copy.strings = [strings copyWithZone:aZone];
     }
     return copy;
@@ -139,7 +137,7 @@ static CompiledST *NOT_FOUND_ST = nil;
         sub.name = [NSString stringWithFormat:@"%@%@", sub.prefix, sub.name];
     }
     if ( implicitlyDefinedTemplates == nil ) {
-        implicitlyDefinedTemplates = [[AMutableArray arrayWithCapacity:5] retain];
+        implicitlyDefinedTemplates = [AMutableArray arrayWithCapacity:5];
     }
     [implicitlyDefinedTemplates addObject:sub];
 }
@@ -173,7 +171,7 @@ static CompiledST *NOT_FOUND_ST = nil;
             }
         }
     }
-    [it release];
+    // [it release];
 }
 
 - (void) defineFormalArgs:(AMutableArray *)args
@@ -190,7 +188,8 @@ static CompiledST *NOT_FOUND_ST = nil;
             a = [it nextObject];
             [self addArg:a];
         }
-        [it release];
+        // [it release];
+        it = nil;
     }
 }
 
@@ -200,7 +199,7 @@ static CompiledST *NOT_FOUND_ST = nil;
 - (void) addArg:(FormalArgument *)a
 {
     if (formalArguments == nil) {
-        formalArguments = [[LinkedHashMap newLinkedHashMap:16] retain];
+        formalArguments = [LinkedHashMap newLinkedHashMap:16];
     }
     a.index = [formalArguments count];
     [formalArguments put:a.name value:a];
@@ -217,7 +216,8 @@ static CompiledST *NOT_FOUND_ST = nil;
             [group rawDefineTemplate:sub.name code:sub defT:sub.templateDefStartToken];
             [sub defineImplicitlyDefinedTemplates:group];
         }
-        [it release];
+        // [it release];
+        it = nil;
     }
 }
 
@@ -269,13 +269,12 @@ static CompiledST *NOT_FOUND_ST = nil;
 //    BytecodeDisassembler *dis = [[BytecodeDisassembler alloc] initWithCode:self];
     BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:self];
     StringWriter *sw = [StringWriter newWriter];
-    PrintWriter *pw = [[PrintWriter newWriter:sw] retain];
+    PrintWriter *pw = [PrintWriter newWriter:sw];
     [pw println:[dis disassemble]];
     [pw println:[NSString stringWithFormat:@"Strings:%@", [dis strings]]];
     tmp = [dis sourceMap];
     [pw println:[NSString stringWithFormat:@"Bytecode to template map:%@", (tmp!=nil?tmp:@"[dis sourceMap] returned nil")]];
     [pw close];
-    [pw release];
     return [sw description];
 }
 
@@ -288,10 +287,6 @@ static CompiledST *NOT_FOUND_ST = nil;
 
 - (void) setNativeGroup:(STGroup *)aNativeGroup
 {
-    if ( nativeGroup != aNativeGroup ) {
-        if ( nativeGroup && nativeGroup != STGroup.defaultGroup ) [nativeGroup release];
-        if ( aNativeGroup ) [aNativeGroup retain];
-    }
     nativeGroup = aNativeGroup;
 }
    

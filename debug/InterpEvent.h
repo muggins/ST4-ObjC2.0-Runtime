@@ -36,12 +36,14 @@
     NSInteger outputStopChar;
 }
 
-+ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
-
-- (id) init:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
-- (NSString *) description;
-
 @property (retain) InstanceScope *scope;
 @property NSInteger outputStartChar;
 @property NSInteger outputStopChar;
+
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
+
+- (id) init:(InstanceScope *)aScope start:(NSInteger)theStart stop:(NSInteger)theStop;
+- (void) dealloc;
+- (NSString *) description;
+
 @end

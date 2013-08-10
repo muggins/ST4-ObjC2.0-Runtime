@@ -68,9 +68,12 @@ typedef enum {
 // extern static NSString *ErrorType_Data[NUM_OF_ERRORENUMS];
 
 @interface ErrorType : NSObject {
-    NSString *message;
-    AMutableDictionary *msgs;
+    __strong NSString *message;
+    __strong AMutableDictionary *msgs;
 }
+
+@property (retain) NSString *message;
+@property (retain) AMutableDictionary *msgs;
 
 + (NSString *) NO_SUCH_TEMPLATE;
 + (NSString *) NO_IMPORTED_TEMPLATE;
@@ -120,8 +123,5 @@ typedef enum {
 - (NSString *) description:(NSInteger) value;
 
 // getters and setters
-
-@property (retain) NSString *message;
-@property (retain) AMutableDictionary *msgs;
 
 @end

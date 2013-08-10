@@ -166,7 +166,7 @@
     NSString *templates = @"typeInit ::= [\"int\":\"0\", default:] \nvar(type,name) ::= \"<type> <name> = <typeInit.(type)>;\"\n";
     [self writeFile:tmpdir fileName:@"test.stg" content:templates];
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroupFile *group = [STGroupFile newSTGroupFile:[tmpdir stringByAppendingString:@"/test.stg"]];
+    STGroupFile *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/test.stg", tmpdir]];
     [group setListener:errors];
     [group load];
     NSString *expected = @"[test.stg 1:33: missing value for key at ']']";

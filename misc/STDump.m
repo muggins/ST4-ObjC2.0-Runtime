@@ -54,7 +54,6 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
     self=[super init];
     if ( self != nil ) {
         who = aWho;
-        if ( who ) [who retain];
     }
     return self;
 }
@@ -64,8 +63,8 @@ NSInteger compare(NSString *s1, NSString *s2, void *context);
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STDump" );
 #endif
-    if ( who ) [who release];
-    [super dealloc];
+    who = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description

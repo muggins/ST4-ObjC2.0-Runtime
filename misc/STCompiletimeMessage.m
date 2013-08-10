@@ -35,6 +35,10 @@
 
 @implementation STCompiletimeMessage
 
+@synthesize templateToken;
+@synthesize token;
+@synthesize srcName;
+
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(CommonToken *)aTemplateToken t:(CommonToken *)t
 {
     return [[STCompiletimeMessage alloc] init:anError srcName:aSrcName templateToken:aTemplateToken t:t cause:nil arg:nil arg2:nil];
@@ -60,11 +64,8 @@
     self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         templateToken = aTemplateToken;
-        if ( templateToken ) [templateToken retain];
         token = t;
-        if ( token ) [token retain];
         srcName = aSrcName;
-        if ( srcName ) [srcName retain];
     }
     return self;
 }
@@ -74,10 +75,10 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in PrintWriter" );
 #endif
-    if ( templateToken ) [templateToken release];
-    if ( token ) [token release];
-    if ( srcName ) [srcName release];
-    [super dealloc];
+    templateToken = nil;
+    token = nil;
+    srcName = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -96,7 +97,7 @@
             charPos += templateToken.charPositionInLine + templateDelimiterSize;
         }
     }
-    NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
+    NSString *filepos = [NSString stringWithFormat:@"%ld:%ld", line, charPos];
     NSString *fmtMsg = [ErrorType ErrorNum:error];
     NSString *result = [NSString stringWithFormat:fmtMsg, arg, arg2];
     if (srcName != nil) {
@@ -105,7 +106,4 @@
     return [NSString stringWithFormat:@"%@: %@", filepos, result ];
 }
 
-@synthesize templateToken;
-@synthesize token;
-@synthesize srcName;
 @end

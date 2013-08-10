@@ -54,7 +54,6 @@
     self=[super init];
     if ( self != nil ) {
         msg = (aMsg != nil) ? aMsg : @"msg=<nil>";
-        if ( msg ) [msg retain];
     }
     return self;
 }
@@ -64,8 +63,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in StackTraceElement" );
 #endif
-    if ( msg ) [msg release];
-    [super dealloc];
+    msg = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -88,8 +87,8 @@
 {
     self=[super init];
     if ( self != nil ) {
-        stack = [[[NSException alloc] init] retain];
-        sTEntryPoint = [[StackTraceElement newStackTraceElement] retain];
+        stack = [[NSException alloc] init];
+        sTEntryPoint = [StackTraceElement newStackTraceElement];
     }
     return self;
 }
@@ -99,12 +98,12 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ConstructionEvent" );
 #endif
-    if ( addrs ) [addrs release];
-    if ( fileName ) [fileName release];
-    if ( stack ) [stack release];
-    if ( sTEntryPoint ) [sTEntryPoint release];
-    if ( trace ) [trace release];
-    [super dealloc];
+    fileName = nil;
+    stack = nil;
+    sTEntryPoint = nil;
+    addrs = nil;
+    trace = nil;
+    // [super dealloc];
 }
 
 - (NSString *) fileName
@@ -119,8 +118,8 @@
 
 - (id) sTEntryPoint
 {
-    addrs = [[stack callStackReturnAddresses] retain];
-    trace = [[stack callStackSymbols] retain];
+    addrs = [stack callStackReturnAddresses];
+    trace = [stack callStackSymbols];
 
 //    for (NSString *traceStr in trace) {
     NSString *traceStr;
@@ -136,14 +135,15 @@
             return traceStr;
         }
     }
-    [it release];
+    // [it release];
+    it = nil;
     return trace;
 }
 
-//@synthesize fileName;
-//@synthesize line;
+@synthesize fileName;
+@synthesize line;
 @synthesize stack;
-//@synthesize sTEntryPoint;
+@synthesize sTEntryPoint;
 @synthesize addrs;
 @synthesize trace;
 

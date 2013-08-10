@@ -41,5 +41,6 @@
 + (MapModelAdaptor *) newModelAdaptor;
 
 - (id) init;
+- (void) dealloc;
 - (id) getProperty:(Interpreter *)interp who:(ST *)who obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

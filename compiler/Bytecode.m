@@ -117,8 +117,8 @@ NSString *OperandTypeDescription(NSInteger value)
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Instruction" );
 #endif
-    if ( name ) [name release];
-    [super dealloc];
+    name = nil;
+    // [super dealloc];
 }
 
 // getters and setters
@@ -222,59 +222,59 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
 
 + (void) initialize
 {
-    instructions[0]                         = [[Instruction newInstruction:@"nil"] retain];
-    instructions[INSTR_LOAD_STR]            = [[Instruction newInstruction:@"load_str" a:T_STRING] retain];
-    instructions[INSTR_LOAD_ATTR]           = [[Instruction newInstruction:@"load_attr" a:T_STRING] retain];
-    instructions[INSTR_LOAD_LOCAL]          = [[Instruction newInstruction:@"load_local" a:T_INT] retain];
-    instructions[INSTR_LOAD_PROP]           = [[Instruction newInstruction:@"load_prop" a:T_STRING] retain];
-    instructions[INSTR_LOAD_PROP_IND]       = [[Instruction newInstruction:@"load_prop_ind"] retain];
-    instructions[INSTR_STORE_OPTION]        = [[Instruction newInstruction:@"store_option" a:T_INT] retain];
-    instructions[INSTR_STORE_ARG]           = [[Instruction newInstruction:@"store_arg" a:T_STRING] retain];
-    instructions[INSTR_NEW]                 = [[Instruction newInstruction:@"new" a:T_STRING b:T_INT] retain];
-    instructions[INSTR_NEW_IND]             = [[Instruction newInstruction:@"new_ind" a:T_INT] retain];
-    instructions[INSTR_NEW_BOX_ARGS]        = [[Instruction newInstruction:@"new_box_args" a:T_STRING] retain];
-    instructions[INSTR_SUPER_NEW]           = [[Instruction newInstruction:@"super_new" a:T_STRING b:T_INT] retain];
-    instructions[INSTR_SUPER_NEW_BOX_ARGS]  = [[Instruction newInstruction:@"super_new_box_args" a:T_STRING] retain];
-    instructions[INSTR_WRITE]               = [[Instruction newInstruction:@"write"] retain];
-    instructions[INSTR_WRITE_OPT]           = [[Instruction newInstruction:@"write_opt"] retain];
-    instructions[INSTR_MAP]                 = [[Instruction newInstruction:@"map"] retain];
-    instructions[INSTR_ROT_MAP]             = [[Instruction newInstruction:@"rot_map" a:T_INT] retain];
-    instructions[INSTR_ZIP_MAP]             = [[Instruction newInstruction:@"zip_map" a:T_INT] retain];
-    instructions[INSTR_BR]                  = [[Instruction newInstruction:@"br" a:T_ADDR] retain];
-    instructions[INSTR_BRF]                 = [[Instruction newInstruction:@"brf" a:T_ADDR] retain];
-    instructions[INSTR_OPTIONS]             = [[Instruction newInstruction:@"options"] retain];
-    instructions[INSTR_ARGS]                = [[Instruction newInstruction:@"args"] retain];
-    instructions[INSTR_PASSTHRU]            = [[Instruction newInstruction:@"passthru" a:T_ADDR] retain];
-    instructions[INSTR_PASSTHRU_IND]        = nil; //[[Instruction newInstruction:@"passthru_ind" a:T_INT] retain];
-    instructions[INSTR_LIST]                = [[Instruction newInstruction:@"list"] retain];
-    instructions[INSTR_ADD]                 = [[Instruction newInstruction:@"add"] retain];
-    instructions[INSTR_TOSTR]               = [[Instruction newInstruction:@"tostr"] retain];
+    instructions[0]                         = [Instruction newInstruction:@"nil"];
+    instructions[INSTR_LOAD_STR]            = [Instruction newInstruction:@"load_str" a:T_STRING];
+    instructions[INSTR_LOAD_ATTR]           = [Instruction newInstruction:@"load_attr" a:T_STRING];
+    instructions[INSTR_LOAD_LOCAL]          = [Instruction newInstruction:@"load_local" a:T_INT];
+    instructions[INSTR_LOAD_PROP]           = [Instruction newInstruction:@"load_prop" a:T_STRING];
+    instructions[INSTR_LOAD_PROP_IND]       = [Instruction newInstruction:@"load_prop_ind"];
+    instructions[INSTR_STORE_OPTION]        = [Instruction newInstruction:@"store_option" a:T_INT];
+    instructions[INSTR_STORE_ARG]           = [Instruction newInstruction:@"store_arg" a:T_STRING];
+    instructions[INSTR_NEW]                 = [Instruction newInstruction:@"new" a:T_STRING b:T_INT];
+    instructions[INSTR_NEW_IND]             = [Instruction newInstruction:@"new_ind" a:T_INT];
+    instructions[INSTR_NEW_BOX_ARGS]        = [Instruction newInstruction:@"new_box_args" a:T_STRING];
+    instructions[INSTR_SUPER_NEW]           = [Instruction newInstruction:@"super_new" a:T_STRING b:T_INT];
+    instructions[INSTR_SUPER_NEW_BOX_ARGS]  = [Instruction newInstruction:@"super_new_box_args" a:T_STRING];
+    instructions[INSTR_WRITE]               = [Instruction newInstruction:@"write"];
+    instructions[INSTR_WRITE_OPT]           = [Instruction newInstruction:@"write_opt"];
+    instructions[INSTR_MAP]                 = [Instruction newInstruction:@"map"];
+    instructions[INSTR_ROT_MAP]             = [Instruction newInstruction:@"rot_map" a:T_INT];
+    instructions[INSTR_ZIP_MAP]             = [Instruction newInstruction:@"zip_map" a:T_INT];
+    instructions[INSTR_BR]                  = [Instruction newInstruction:@"br" a:T_ADDR];
+    instructions[INSTR_BRF]                 = [Instruction newInstruction:@"brf" a:T_ADDR];
+    instructions[INSTR_OPTIONS]             = [Instruction newInstruction:@"options"];
+    instructions[INSTR_ARGS]                = [Instruction newInstruction:@"args"];
+    instructions[INSTR_PASSTHRU]            = [Instruction newInstruction:@"passthru" a:T_ADDR];
+    instructions[INSTR_PASSTHRU_IND]        = nil; //[Instruction newInstruction:@"passthru_ind" a:T_INT];
+    instructions[INSTR_LIST]                = [Instruction newInstruction:@"list"];
+    instructions[INSTR_ADD]                 = [Instruction newInstruction:@"add"];
+    instructions[INSTR_TOSTR]               = [Instruction newInstruction:@"tostr"];
     
     // Predefined functions
-    instructions[INSTR_FIRST]               = [[Instruction newInstruction:@"first"] retain];
-    instructions[INSTR_LAST]                = [[Instruction newInstruction:@"last"] retain];
-    instructions[INSTR_REST]                = [[Instruction newInstruction:@"rest"] retain];
-    instructions[INSTR_TRUNC]               = [[Instruction newInstruction:@"trunc"] retain];
-    instructions[INSTR_STRIP]               = [[Instruction newInstruction:@"strip"] retain];
-    instructions[INSTR_TRIM]                = [[Instruction newInstruction:@"trim"] retain];
-    instructions[INSTR_LENGTH]              = [[Instruction newInstruction:@"length"] retain];
-    instructions[INSTR_STRLEN]              = [[Instruction newInstruction:@"strlen"] retain];
-    instructions[INSTR_REVERSE]             = [[Instruction newInstruction:@"reverse"] retain];
-    instructions[INSTR_NOT]                 = [[Instruction newInstruction:@"not"] retain];
-    instructions[INSTR_OR]                  = [[Instruction newInstruction:@"or"] retain];
-    instructions[INSTR_AND]                 = [[Instruction newInstruction:@"and"] retain];
-    instructions[INSTR_INDENT]              = [[Instruction newInstruction:@"indent" a:T_STRING] retain];
-    instructions[INSTR_DEDENT]              = [[Instruction newInstruction:@"dedent"] retain];
-    instructions[INSTR_NEWLINE]             = [[Instruction newInstruction:@"newline"] retain];
-    instructions[INSTR_NOOP]                = [[Instruction newInstruction:@"noop"] retain];
-    instructions[INSTR_POP]                 = [[Instruction newInstruction:@"pop"] retain];
-    instructions[INSTR_NULL]                = [[Instruction newInstruction:@"null"] retain];
-    instructions[INSTR_POP]                 = [[Instruction newInstruction:@"true"] retain];
-    instructions[INSTR_FALSE]               = [[Instruction newInstruction:@"false"] retain];
+    instructions[INSTR_FIRST]               = [Instruction newInstruction:@"first"];
+    instructions[INSTR_LAST]                = [Instruction newInstruction:@"last"];
+    instructions[INSTR_REST]                = [Instruction newInstruction:@"rest"];
+    instructions[INSTR_TRUNC]               = [Instruction newInstruction:@"trunc"];
+    instructions[INSTR_STRIP]               = [Instruction newInstruction:@"strip"];
+    instructions[INSTR_TRIM]                = [Instruction newInstruction:@"trim"];
+    instructions[INSTR_LENGTH]              = [Instruction newInstruction:@"length"];
+    instructions[INSTR_STRLEN]              = [Instruction newInstruction:@"strlen"];
+    instructions[INSTR_REVERSE]             = [Instruction newInstruction:@"reverse"];
+    instructions[INSTR_NOT]                 = [Instruction newInstruction:@"not"];
+    instructions[INSTR_OR]                  = [Instruction newInstruction:@"or"];
+    instructions[INSTR_AND]                 = [Instruction newInstruction:@"and"];
+    instructions[INSTR_INDENT]              = [Instruction newInstruction:@"indent" a:T_STRING];
+    instructions[INSTR_DEDENT]              = [Instruction newInstruction:@"dedent"];
+    instructions[INSTR_NEWLINE]             = [Instruction newInstruction:@"newline"];
+    instructions[INSTR_NOOP]                = [Instruction newInstruction:@"noop"];
+    instructions[INSTR_POP]                 = [Instruction newInstruction:@"pop"];
+    instructions[INSTR_NULL]                = [Instruction newInstruction:@"null"];
+    instructions[INSTR_POP]                 = [Instruction newInstruction:@"true"];
+    instructions[INSTR_FALSE]               = [Instruction newInstruction:@"false"];
 
 	// combined instructions
-    instructions[INSTR_WRITE_STR]           = [[Instruction newInstruction:@"write_str" a:T_STRING] retain];
-    instructions[INSTR_WRITE_LOCAL]         = [[Instruction newInstruction:@"write_local" a:T_INT] retain];
+    instructions[INSTR_WRITE_STR]           = [Instruction newInstruction:@"write_str" a:T_STRING];
+    instructions[INSTR_WRITE_LOCAL]         = [Instruction newInstruction:@"write_local" a:T_INT];
     instructions[MAX_BYTECODE+1]            = nil;
     
 }
@@ -534,7 +534,7 @@ static Instruction *instructions[INSTR_ARRAY_SIZE];
     return OPND_SIZE_IN_BYTES;
 }
 
-+ (Instruction **)instructions
++ (__strong Instruction **)instructions
 {
     return instructions;
 }

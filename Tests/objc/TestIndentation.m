@@ -6,7 +6,7 @@
 {
   NSString *templates = @"list(a,b) ::= <<  <a><b>\n>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"list"];
   [st.impl dump];
   [st add:@"a" value:@"Terence"];
@@ -20,7 +20,7 @@
 {
   NSString *templates = @"list(names) ::= <<  <names; separator=\"\\n\">\n>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"list"];
   [st add:@"names" value:@"Terence"];
   [st add:@"names" value:@"Jim"];
@@ -34,7 +34,7 @@
 {
   NSString *templates = @"list(names) ::= <<  <names; separator=\"\n\">\n>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"list"];
   [st add:@"names" value:@"Terence\nis\na\nmaniac"];
   [st add:@"names" value:@"Jim"];
@@ -48,7 +48,7 @@
 {
   NSString *templates = @"list(names) ::= <<  <names>\n>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"list"];
   [st add:@"names" value:@"Terence\n\nis a maniac"];
   NSString *expecting = @"  Terence\n\n  is a maniac";
@@ -60,7 +60,7 @@
 {
   NSString *templates = @"list(names) ::= <<Before:\n  <names; separator=\"\\n\">\nafter\n>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"list"];
   [st add:@"names" value:@"Terence"];
   [st add:@"names" value:@"Jim"];
@@ -74,7 +74,7 @@
 {
   NSString *templates = @"method(name,stats) ::= <<void <name>() {\n\t<stats; separator=\"\\n\">\n}\n>>\nifstat(expr,stats) ::= <<\nif (<expr>) {\n  <stats; separator=\"\\n\">\n}>>\nassign(lhs,expr) ::= <<<lhs>=<expr>;>>\n";
   [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-  STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+  STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
   ST *st = [group getInstanceOf:@"method"];
   [st add:@"name" value:@"foo"];
   ST *s1 = [group getInstanceOf:@"assign"];
@@ -99,7 +99,7 @@
 
 - (void) test07IndentedIFWithValueExpr
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n    <if(x)>foo<endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n    <if(x)>foo<endif>\nend\n"];
   [st add:@"x" value:@"x"];
   NSString *expecting = @"begin\n    foo\nend\n";
   NSString *result = [st render];
@@ -108,7 +108,7 @@
 
 - (void) test08IndentedIFWithElse
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n    <if(x)>foo<else>bar<endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n    <if(x)>foo<else>bar<endif>\nend\n"];
   [st add:@"x" value:@"x"];
   NSString *expecting = @"begin\n    foo\nend\n";
   NSString *result = [st render];
@@ -117,7 +117,7 @@
 
 - (void) test09IndentedIFWithElse2
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n    <if(x)>foo<else>bar<endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n    <if(x)>foo<else>bar<endif>\nend\n"];
   [st add:@"x" value:NO];
   NSString *expecting = @"begin\n    bar\nend\n";
   NSString *result = [st render];
@@ -126,7 +126,7 @@
 
 - (void) test10IndentedIFWithNewlineBeforeText
 {
-  STGroup *group = [[STGroup newSTGroup] autorelease];
+  STGroup *group = [STGroup newSTGroup];
   [group defineTemplate:@"t" argsS:@"x" template:@"begin\n    <if(x)>\nfoo\n    <endif>\nend\n"];
   ST *st = [group getInstanceOf:@"t"];
   [st add:@"x" value:@"x"];
@@ -137,7 +137,7 @@
 
 - (void) test11IndentedIFWithEndifNextLine
 {
-  STGroup *group = [[STGroup newSTGroup] autorelease];
+  STGroup *group = [STGroup newSTGroup];
   [group defineTemplate:@"t" argsS:@"x" template:@"begin\n    <if(x)>foo\n    <endif>\nend\n"];
   ST *st = [group getInstanceOf:@"t"];
   [st add:@"x" value:@"x"];
@@ -148,7 +148,7 @@
 
 - (void) test12IFWithIndentOnMultipleLines
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n   <if(x)>\n   foo\n   <else>\n   bar\n   <endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n   <if(x)>\n   foo\n   <else>\n   bar\n   <endif>\nend\n"];
   NSString *expecting = @"begin\n   bar\nend\n";
   NSString *result = [st render];
   [self assertEquals:expecting result:result];
@@ -156,7 +156,7 @@
 
 - (void) test13IFWithIndentAndExprOnMultipleLines
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n   <if(x)>\n   <x>\n   <else>\n   <y>\n   <endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n   <if(x)>\n   <x>\n   <else>\n   <y>\n   <endif>\nend\n"];
   [st add:@"y" value:@"y"];
   NSString *expecting = @"begin\n   y\nend\n";
   NSString *result = [st render];
@@ -165,7 +165,7 @@
 
 - (void) test14IFWithIndentAndExprWithIndentOnMultipleLines
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n   <if(x)>\n     <x>\n   <else>\n     <y>\n   <endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n   <if(x)>\n     <x>\n   <else>\n     <y>\n   <endif>\nend\n"];
   [st add:@"y" value:@"y"];
   NSString *expecting = @"begin\n     y\nend\n";
   NSString *result = [st render];
@@ -174,7 +174,7 @@
 
 - (void) test15NestedIFWithIndentOnMultipleLines
 {
-  ST *st = [[ST newSTWithTemplate:@"begin\n   <if(x)>\n      <if(y)>\n      foo\n      <endif>\n   <else>\n      <if(z)>\n      foo\n      <endif>\n   <endif>\nend\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"begin\n   <if(x)>\n      <if(y)>\n      foo\n      <endif>\n   <else>\n      <if(z)>\n      foo\n      <endif>\n   <endif>\nend\n"];
   [st add:@"x" value:@"x"];
   [st add:@"y" value:@"y"];
   NSString *expecting = @"begin\n      foo\nend\n";
@@ -184,7 +184,7 @@
 
 - (void) test16IFInSubtemplate
 {
-  ST *st = [[ST newSTWithTemplate:@"<names:{n |\n   <if(x)>\n   <x>\n   <else>\n   <y>\n   <endif>\n}>\n"] autorelease];
+  ST *st = [ST newSTWithTemplate:@"<names:{n |\n   <if(x)>\n   <x>\n   <else>\n   <y>\n   <endif>\n}>\n"];
   [st add:@"names" value:@"Ter"];
   [st add:@"y" value:@"y"];
   NSString *expecting = @"   y\n\n";

@@ -268,7 +268,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
         NSInteger idx = 0;
         msgs = [AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
-            [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%d", idx]];
+            [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%ld", idx]];
         }
     }
     return self;
@@ -282,7 +282,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
         NSInteger idx = 0;
         msgs = [AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
-            [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%d", idx]];
+            [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithFormat:@"%ld", idx]];
         }
         message = [NSString stringWithString:[msgs objectForKey:[self description:aNum]]];
     }
@@ -294,9 +294,8 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
     self=[super init];
     if (self != nil ) {
         message = [NSString stringWithString:aMsg];
-        if ( message ) [message retain];
         NSInteger idx = 0;
-        msgs = [[AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS] retain];
+        msgs = [AMutableDictionary dictionaryWithCapacity:NUM_OF_ERRORENUMS];
         for (idx = 0; idx < NUM_OF_ERRORENUMS; idx++ ) {
             [msgs setObject:ErrorType_Data[idx] forKey:[NSString stringWithString:[self description:idx]]];
         }
@@ -309,9 +308,9 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ErrorType" );
 #endif
-    if ( message ) [message release];
-    if ( msgs ) [msgs release];
-    [super dealloc];
+    message = nil;
+    msgs = nil;
+    // [super dealloc];
 }
 
 - (NSInteger) ErrorTypeValueOf:(NSString *)text

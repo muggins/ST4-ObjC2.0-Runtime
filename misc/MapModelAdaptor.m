@@ -80,8 +80,8 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in MapModelAdaptor" );
 #endif
-    if ( classAndPropertyToMemberCache ) [classAndPropertyToMemberCache release];
-    [super dealloc];
+    classAndPropertyToMemberCache = nil;
+    // [super dealloc];
 }
 
 @end

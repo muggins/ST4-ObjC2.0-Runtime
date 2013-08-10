@@ -36,6 +36,7 @@
 
 - (id) init;
 - (id) initWithCapacity:(NSInteger)len;
+- (void)dealloc;
 - (void) put:(id)aKey value:(id)anObject;
 - (id) get:(id)aKey;
 

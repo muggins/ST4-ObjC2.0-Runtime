@@ -57,6 +57,16 @@ NSString *const newline = @"\n"/* Misc.newline */;
     return self;
 }
 
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in User" );
+#endif
+    num = nil;
+    name = nil;
+    // [super dealloc];
+}
+
 - (ACNumber *)getNum
 {
     return num;
@@ -72,15 +82,6 @@ NSString *const newline = @"\n"/* Misc.newline */;
     return YES;
 }
 
-- (void) dealloc
-{
-#ifdef DEBUG_DEALLOC
-    NSLog( @"called dealloc in User" );
-#endif
-    if ( name ) [name release];
-    [super dealloc];
-}
-
 @end
 
 @implementation HashableUser
@@ -91,6 +92,11 @@ NSString *const newline = @"\n"/* Misc.newline */;
     if ( self ) {
     }
     return self;
+}
+
+- (void)dealloc
+{
+    // [super dealloc];
 }
 
 - (NSInteger) hash
@@ -112,18 +118,31 @@ NSString *const newline = @"\n"/* Misc.newline */;
 @implementation BaseTest
 
 @synthesize randomDir;
+@synthesize tmpdir;
 
 - (void)setUp
 {
 //     [super setUp];
     // Set-up code here.
+    [STGroup resetDefaultGroup];
+    tmpdir = @"/tmp";
+    randomDir = @"";
 }
 
 - (void)tearDown
 {
     // Tear-down code here.
-    [STGroup resetDefaultGroup];
 //    [super tearDown];
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in BaseTest" );
+#endif
+    randomDir = nil;
+    tmpdir = nil;
+    // [super dealloc];
 }
 
 - (void) writeFile:(NSString *)dir fileName:(NSString *)fileName content:(NSString *)content
@@ -160,8 +179,8 @@ NSString *const newline = @"\n"/* Misc.newline */;
         if (![[f parentFile] exists])
             [[f parentFile] mkdirs];
 #endif
-        FileWriter *fw = [[FileWriter newWriterWithFH:fh] retain];
-        BufferedWriter *bw = [[BufferedWriter newWriter:fw] retain];
+        FileWriter *fw = [FileWriter newWriterWithFH:fh];
+        BufferedWriter *bw = [BufferedWriter newWriter:fw];
         [bw writeStr:content];
 //        [fw writeStr:content];
         [bw close];
@@ -172,7 +191,7 @@ NSString *const newline = @"\n"/* Misc.newline */;
         //NSLog( @"can't write file" );
         //[ioe printStackTrace:System.err];
         cs = [ioe callStackSymbols];
-        for (int i=0; i < [cs count]; i++ ) {
+        for (NSInteger i=0; i < [cs count]; i++ ) {
             str = [cs objectAtIndex:i];
             //NSLog( @"CallStack = %@\n", str );
         }
@@ -186,11 +205,11 @@ NSString *const newline = @"\n"/* Misc.newline */;
 
 - (void) checkTokens:(NSString *)template expected:(NSString *)expected delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar
 {
-    STLexer *lexer = [[STLexer newSTLexer:ErrorManager.DEFAULT_ERR_MGR input:[ANTLRStringStream newANTLRStringStream:template] templateToken:nil delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar] retain];
-    CommonTokenStream *tokens = [[CommonTokenStream newCommonTokenStreamWithTokenSource:lexer] retain];
-    NSMutableString *buf = [[NSMutableString stringWithCapacity:30] retain];
+    STLexer *lexer = [STLexer newSTLexer:ErrorManager.DEFAULT_ERR_MGR input:[ANTLRStringStream newANTLRStringStream:template] templateToken:nil delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
+    CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:30];
     [buf appendString:@"["];
-    int i = 1;
+    NSInteger i = 1;
     CommonToken *t = [tokens LT:i];
     while (t.type != TokenTypeEOF) {
         if (i > 1)
@@ -202,7 +221,8 @@ NSString *const newline = @"\n"/* Misc.newline */;
     
     [buf appendString:@"]"];
     NSString *result = [NSString stringWithString:buf];
-    STAssertTrue( [expected isEqualToString:result], @"Expected %@, but got \"%@\"", expected, result );
+    //    STAssertTrue( [expected isEqualToString:result], @"Expected %@, but got \"%@\"", expected, result );
+    [self assertEquals:expected result:result];
 }
 
 - (NSString *) getRandomDir
@@ -230,9 +250,11 @@ NSString *const newline = @"\n"/* Misc.newline */;
 
 @implementation Strings
 
+@synthesize thisArray;
+
 + (id) newStringsWithArray:(AMutableArray *)anArray
 {
-    return [[[Strings alloc] initWithArray:(AMutableArray *)anArray] retain];
+    return [[Strings alloc] initWithArray:(AMutableArray *)anArray];
 }
 
 - (id) initWithArray:(AMutableArray *)anArray
@@ -240,7 +262,7 @@ NSString *const newline = @"\n"/* Misc.newline */;
     self=[super init];
     if ( self != nil ) {
         if ( [anArray isKindOfClass:[NSArray class]] ) {
-            thisArray = [anArray retain];
+            thisArray = anArray;
         }
     }
     return self;
@@ -251,8 +273,8 @@ NSString *const newline = @"\n"/* Misc.newline */;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Strings" );
 #endif
-    if ( thisArray ) [thisArray release];
-    [super dealloc];
+    thisArray = nil;
+    // [super dealloc];
 }
 
 - (void) addObject:(id)anObject
@@ -297,6 +319,10 @@ NSString *const newline = @"\n"/* Misc.newline */;
     return [NSString stringWithString:str];
 }
 
-@synthesize thisArray;
+- (NSString *) toString
+{
+    return [self description];
+}
+
 @end
 

@@ -40,42 +40,42 @@
 
 + (id) newSTGroupFile
 {
-    return [[[STGroupFile alloc] init] retain];
+    return [[STGroupFile alloc] init];
 }
 
 + (id) newSTGroupFile:(NSString *)aFileName
 {
-    return [[[STGroupFile alloc] initWithFileName:aFileName encoding:NSASCIIStringEncoding delimiterStartChar:'<' delimiterStopChar:'>'] retain];
+    return [[STGroupFile alloc] initWithFileName:aFileName encoding:NSASCIIStringEncoding delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
 + (id) newSTGroupFile:(NSString *)aFileName encoding:(NSStringEncoding)theEncoding
 {
-    return [[[STGroupFile alloc] initWithFileName:aFileName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'] retain];
+    return [[STGroupFile alloc] initWithFileName:aFileName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
 + (id) newSTGroupFile:(NSString *)aFileName delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupFile alloc] initWithFileName:aFileName encoding:NSASCIIStringEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupFile alloc] initWithFileName:aFileName encoding:NSASCIIStringEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 + (id) newSTGroupFile:(NSString *)aFileName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupFile alloc] initWithFileName:aFileName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupFile alloc] initWithFileName:aFileName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 + (id) newSTGroupFileWithFQFN:(NSString *)aFileName encoding:(NSStringEncoding)theEncoding;
 {
-    return [[[STGroupFile alloc] initWithFQFN:aFileName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'] retain];
+    return [[STGroupFile alloc] initWithFQFN:aFileName encoding:theEncoding delimiterStartChar:'<' delimiterStopChar:'>'];
 }
 
 + (id) newSTGroupFileWithFQFN:(NSString *)aFileName encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar;
 {
-    return [[[STGroupFile alloc] initWithFQFN:aFileName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupFile alloc] initWithFQFN:aFileName encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 + (id) newSTGroupFileWithURL:(NSURL *)aURL encoding:(NSStringEncoding)theEncoding delimiterStartChar:(unichar)aDelimiterStartChar delimiterStopChar:(unichar)aDelimiterStopChar
 {
-    return [[[STGroupFile alloc] initWithURL:aURL encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar] retain];
+    return [[STGroupFile alloc] initWithURL:aURL encoding:theEncoding delimiterStartChar:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
 }
 
 - (id) init
@@ -99,7 +99,6 @@
         }
         @try {
             fileName = aFileName;
-            if ( fileName ) [fileName retain];
             if ((aFileName != nil) && ([aFileName characterAtIndex:0] == '~'))
                 fileName = [aFileName stringByExpandingTildeInPath];
             alreadyLoaded = NO;
@@ -110,7 +109,6 @@
             if (fExists && isDir) {
                 @try {
                    URL = [NSURL fileURLWithPath:fileName];
-                   if ( URL ) [URL retain];
                 }
                 @catch (MalformedURLException *e) {
                     @throw [MalformedURLException newException:fileName];
@@ -146,7 +144,6 @@
     if ( self != nil ) {
         alreadyLoaded = NO;
         URL = [NSURL fileURLWithPath:fullyQualifiedFileName];
-        if ( URL ) [URL retain];
         encoding = theEncoding;
     }
     return self;
@@ -158,19 +155,19 @@
     if ( self != nil ) {
         alreadyLoaded = NO;
         URL = aURL;
-        if ( URL ) [URL retain];
         encoding = theEncoding;
     }
     return self;
 }
 
-- (void) dealloc {
+- (void) dealloc
+{
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroupDir" );
 #endif
-    if ( fileName ) [fileName release];
-    if ( URL ) [URL release];
-    [super dealloc];
+    fileName = nil;
+    URL = nil;
+    // [super dealloc];
 }
 
 - (BOOL) isDictionary:(NSString *)name
@@ -208,7 +205,7 @@
         // beneath it.
     if ( STGroup.verbose ) NSLog(@"loading group file %@\n", [URL description]);
     [self loadGroupFile:@"/" fileName:[URL path]];
-    if ( STGroup.verbose ) NSLog(@"found %d templates in %@ = %@\n", [templates count], [URL description], [[templates keySet] toArray]);
+    if ( STGroup.verbose ) NSLog(@"found %ld templates in %@ = %@\n", [templates count], [URL description], [[templates keySet] toArray]);
  }
 
 - (NSString *) show

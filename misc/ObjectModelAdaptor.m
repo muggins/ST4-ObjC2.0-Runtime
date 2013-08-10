@@ -38,6 +38,9 @@
 @synthesize name;
 @synthesize type;
 @synthesize typeName;
+@synthesize attr;
+@synthesize tChar;
+@synthesize pChar;
 @synthesize obj;
 
 + (id) newField:(NSString *)aName obj:(id)instObj
@@ -104,6 +107,20 @@
     return self;
 }
 
+- (void) dealloc
+{
+    [name release];
+    [typeName release];
+    [attr release];
+    [obj release];
+    [super dealloc];
+    // name = nil;
+    // typeName = nil;
+    // attr = nil;
+    // obj = nil;
+    // [super dealloc];
+}
+
 - (Class) getClass
 {
     return [obj class];
@@ -123,9 +140,6 @@
     return class_getProperty(c, property);
 }
 
-@synthesize attr;
-@synthesize tChar;
-@synthesize pChar;
 @end
 
 @implementation OBJCMethod
@@ -149,8 +163,11 @@
     self=[super init];
     if ( self != nil ) {
         name = methodName;
+        [name retain];
         selString = aSelString;
+        [selString retain];
         obj = anObj;
+        [obj retain];
     }
     return self;
 }
@@ -160,9 +177,12 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in OBJCMethod" );
 #endif
-    if ( name ) [name release];
-    if ( selString ) [selString release];
-    if ( obj ) [obj release];
+    // name = nil;
+    // selString = nil;
+    // obj = nil;
+    [name release];
+    [selString release];
+    [obj release];
     [super dealloc];
 }
 
@@ -205,6 +225,7 @@ static STNoSuchPropertyException *cachedException;
     self=[super init];
     if ( self != nil ) {
         classAndPropertyToMemberCache = [[DoubleKeyMap alloc] init];
+        [classAndPropertyToMemberCache retain];
     }
     return self;
 }
@@ -214,7 +235,8 @@ static STNoSuchPropertyException *cachedException;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ObjectModelAdaptor" );
 #endif
-    if ( classAndPropertyToMemberCache ) [classAndPropertyToMemberCache release];
+    // classAndPropertyToMemberCache = nil;
+    [classAndPropertyToMemberCache release];
     [super dealloc];
 }
 

@@ -38,6 +38,10 @@
   __strong NSString *srcName;
 }
 
+@property (retain) CommonToken *templateToken;
+@property (retain) CommonToken *token;
+@property (retain) NSString *srcName;
+
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(CommonToken *)aTemplateToken t:(CommonToken *)t;
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(CommonToken *)aTemplateToken t:(CommonToken *)t cause:(NSException *)aCause;
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName templateToken:(CommonToken *)aTemplateToken t:(CommonToken *)t cause:(NSException *)aCause arg:(id)anArg;
@@ -46,7 +50,4 @@
 - (id) init:(ErrorTypeEnum)error srcName:(NSString *)srcName templateToken:(CommonToken *)templateToken t:(CommonToken *)t cause:(NSException *)aCause arg:(id)arg arg2:(id)arg2;
 - (NSString *) description;
 
-@property (retain) CommonToken *templateToken;
-@property (retain) CommonToken *token;
-@property (retain) NSString *srcName;
 @end

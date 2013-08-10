@@ -55,7 +55,6 @@ static NSString *newline = @"\n";
             [buf appendString:separator];
         }
     }
-    [it release];
     return [buf description];
 }
 
@@ -129,7 +128,7 @@ static NSString *newline = @"\n";
 {
     //System.out.println("getParent("+name+")="+p);
     if (name == nil) return nil;
-    int lastSlash = [Misc lastIndexOf:'/' inString:name];
+    NSInteger lastSlash = [Misc lastIndexOf:'/' inString:name];
     if (lastSlash > 0) return [name substringWithRange:NSMakeRange(0, lastSlash)];
     if (lastSlash==0) return @"/";
     //System.out.println("getParent("+name+")="+p);
@@ -254,7 +253,7 @@ static NSString *newline = @"\n";
 
 + (NSInteger) lastIndexOf:(char)aChar inString:(NSString *)aString
 {
-    int len;
+    NSInteger len;
     for (len = [aString length]; len > 0; len-- ) {
         if ([aString characterAtIndex:len-1] == aChar) {
             len--;

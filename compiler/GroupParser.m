@@ -154,13 +154,13 @@ static const unsigned long long FOLLOW_defaultValuePair_in_dictPairs881_data[] =
 static ANTLRBitSet *FOLLOW_25_in_defaultValuePair911;
 static const unsigned long long FOLLOW_25_in_defaultValuePair911_data[] = { 0x0000000000040000LL};
 static ANTLRBitSet *FOLLOW_18_in_defaultValuePair913;
-static const unsigned long long FOLLOW_18_in_defaultValuePair913_data[] = { 0x0000000000003CD0LL};
+static const unsigned long long FOLLOW_18_in_defaultValuePair913_data[] = { 0x0000000000803CD0LL};
 static ANTLRBitSet *FOLLOW_keyValue_in_defaultValuePair915;
 static const unsigned long long FOLLOW_keyValue_in_defaultValuePair915_data[] = { 0x0000000000000002LL};
 static ANTLRBitSet *FOLLOW_STRING_in_keyValuePair937;
 static const unsigned long long FOLLOW_STRING_in_keyValuePair937_data[] = { 0x0000000000040000LL};
 static ANTLRBitSet *FOLLOW_18_in_keyValuePair939;
-static const unsigned long long FOLLOW_18_in_keyValuePair939_data[] = { 0x0000000000003CD0LL};
+static const unsigned long long FOLLOW_18_in_keyValuePair939_data[] = { 0x0000000000803CD0LL};
 static ANTLRBitSet *FOLLOW_keyValue_in_keyValuePair941;
 static const unsigned long long FOLLOW_keyValue_in_keyValuePair941_data[] = { 0x0000000000000002LL};
 static ANTLRBitSet *FOLLOW_BIGSTRING_in_keyValue966;
@@ -175,8 +175,12 @@ static ANTLRBitSet *FOLLOW_T_TRUE_in_keyValue1042;
 static const unsigned long long FOLLOW_T_TRUE_in_keyValue1042_data[] = { 0x0000000000000002LL};
 static ANTLRBitSet *FOLLOW_T_FALSE_in_keyValue1067;
 static const unsigned long long FOLLOW_T_FALSE_in_keyValue1067_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_keyValue1094;
-static const unsigned long long FOLLOW_ID_in_keyValue1094_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_23_in_keyValue1091;
+static const unsigned long long FOLLOW_23_in_keyValue1091_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_24_in_keyValue1093;
+static const unsigned long long FOLLOW_24_in_keyValue1093_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_keyValue1141;
+static const unsigned long long FOLLOW_ID_in_keyValue1141_data[] = { 0x0000000000000002LL};
 
 
 #pragma mark Dynamic Global globalAttributeScopeImplementation
@@ -228,87 +232,89 @@ static formalArgs_Scope *formalArgs_scope;
 + (void) initialize
 {
     #pragma mark Bitsets
-    FOLLOW_oldStyleHeader_in_group166 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_oldStyleHeader_in_group166_data Count:(NSUInteger)1] retain];
-    FOLLOW_delimiters_in_group171 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_delimiters_in_group171_data Count:(NSUInteger)1] retain];
-    FOLLOW_29_in_group182 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_29_in_group182_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_group184 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_group184_data Count:(NSUInteger)1] retain];
-    FOLLOW_29_in_group196 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_29_in_group196_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_group225 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_group225_data Count:(NSUInteger)1] retain];
-    FOLLOW_17_in_group228 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_group228_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_group230 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_group230_data Count:(NSUInteger)1] retain];
-    FOLLOW_def_in_group254 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_def_in_group254_data Count:(NSUInteger)1] retain];
-    FOLLOW_27_in_oldStyleHeader276 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_27_in_oldStyleHeader276_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_oldStyleHeader278 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader278_data Count:(NSUInteger)1] retain];
-    FOLLOW_18_in_oldStyleHeader282 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_oldStyleHeader282_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_oldStyleHeader284 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader284_data Count:(NSUInteger)1] retain];
-    FOLLOW_28_in_oldStyleHeader299 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_28_in_oldStyleHeader299_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_oldStyleHeader301 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader301_data Count:(NSUInteger)1] retain];
-    FOLLOW_16_in_oldStyleHeader304 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_oldStyleHeader304_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_oldStyleHeader306 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader306_data Count:(NSUInteger)1] retain];
-    FOLLOW_20_in_oldStyleHeader321 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_20_in_oldStyleHeader321_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_groupName351 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_groupName351_data Count:(NSUInteger)1] retain];
-    FOLLOW_17_in_groupName356 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_groupName356_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_groupName360 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_groupName360_data Count:(NSUInteger)1] retain];
-    FOLLOW_26_in_delimiters381 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_26_in_delimiters381_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_delimiters385 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_delimiters385_data Count:(NSUInteger)1] retain];
-    FOLLOW_16_in_delimiters387 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_delimiters387_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_delimiters391 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_delimiters391_data Count:(NSUInteger)1] retain];
-    FOLLOW_templateDef_in_def415 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_templateDef_in_def415_data Count:(NSUInteger)1] retain];
-    FOLLOW_dictDef_in_def420 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dictDef_in_def420_data Count:(NSUInteger)1] retain];
-    FOLLOW_22_in_templateDef454 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_22_in_templateDef454_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_templateDef458 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef458_data Count:(NSUInteger)1] retain];
-    FOLLOW_17_in_templateDef460 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_templateDef460_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_templateDef464 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef464_data Count:(NSUInteger)1] retain];
-    FOLLOW_14_in_templateDef466 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_14_in_templateDef466_data Count:(NSUInteger)1] retain];
-    FOLLOW_15_in_templateDef468 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_15_in_templateDef468_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_templateDef484 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef484_data Count:(NSUInteger)1] retain];
-    FOLLOW_14_in_templateDef486 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_14_in_templateDef486_data Count:(NSUInteger)1] retain];
-    FOLLOW_formalArgs_in_templateDef488 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArgs_in_templateDef488_data Count:(NSUInteger)1] retain];
-    FOLLOW_15_in_templateDef490 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_15_in_templateDef490_data Count:(NSUInteger)1] retain];
-    FOLLOW_19_in_templateDef510 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_templateDef510_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_templateDef534 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_templateDef534_data Count:(NSUInteger)1] retain];
-    FOLLOW_BIGSTRING_in_templateDef554 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_in_templateDef554_data Count:(NSUInteger)1] retain];
-    FOLLOW_BIGSTRING_NO_NL_in_templateDef571 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_NO_NL_in_templateDef571_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_templateDef620 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef620_data Count:(NSUInteger)1] retain];
-    FOLLOW_19_in_templateDef622 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_templateDef622_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_templateDef626 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef626_data Count:(NSUInteger)1] retain];
-    FOLLOW_formalArg_in_formalArgs660 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArg_in_formalArgs660_data Count:(NSUInteger)1] retain];
-    FOLLOW_16_in_formalArgs664 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_formalArgs664_data Count:(NSUInteger)1] retain];
-    FOLLOW_formalArg_in_formalArgs666 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArg_in_formalArgs666_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_formalArg695 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_formalArg695_data Count:(NSUInteger)1] retain];
-    FOLLOW_21_in_formalArg709 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_21_in_formalArg709_data Count:(NSUInteger)1] retain];
-    FOLLOW_set_in_formalArg713 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_set_in_formalArg713_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_dictDef779 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_dictDef779_data Count:(NSUInteger)1] retain];
-    FOLLOW_19_in_dictDef781 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_dictDef781_data Count:(NSUInteger)1] retain];
-    FOLLOW_dict_in_dictDef783 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dict_in_dictDef783_data Count:(NSUInteger)1] retain];
-    FOLLOW_23_in_dict821 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_23_in_dict821_data Count:(NSUInteger)1] retain];
-    FOLLOW_dictPairs_in_dict823 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dictPairs_in_dict823_data Count:(NSUInteger)1] retain];
-    FOLLOW_24_in_dict826 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_24_in_dict826_data Count:(NSUInteger)1] retain];
-    FOLLOW_keyValuePair_in_dictPairs846 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValuePair_in_dictPairs846_data Count:(NSUInteger)1] retain];
-    FOLLOW_16_in_dictPairs858 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_dictPairs858_data Count:(NSUInteger)1] retain];
-    FOLLOW_keyValuePair_in_dictPairs860 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValuePair_in_dictPairs860_data Count:(NSUInteger)1] retain];
-    FOLLOW_16_in_dictPairs866 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_dictPairs866_data Count:(NSUInteger)1] retain];
-    FOLLOW_defaultValuePair_in_dictPairs868 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_defaultValuePair_in_dictPairs868_data Count:(NSUInteger)1] retain];
-    FOLLOW_defaultValuePair_in_dictPairs881 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_defaultValuePair_in_dictPairs881_data Count:(NSUInteger)1] retain];
-    FOLLOW_25_in_defaultValuePair911 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_25_in_defaultValuePair911_data Count:(NSUInteger)1] retain];
-    FOLLOW_18_in_defaultValuePair913 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_defaultValuePair913_data Count:(NSUInteger)1] retain];
-    FOLLOW_keyValue_in_defaultValuePair915 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValue_in_defaultValuePair915_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_keyValuePair937 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_keyValuePair937_data Count:(NSUInteger)1] retain];
-    FOLLOW_18_in_keyValuePair939 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_keyValuePair939_data Count:(NSUInteger)1] retain];
-    FOLLOW_keyValue_in_keyValuePair941 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValue_in_keyValuePair941_data Count:(NSUInteger)1] retain];
-    FOLLOW_BIGSTRING_in_keyValue966 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_in_keyValue966_data Count:(NSUInteger)1] retain];
-    FOLLOW_BIGSTRING_NO_NL_in_keyValue988 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_NO_NL_in_keyValue988_data Count:(NSUInteger)1] retain];
-    FOLLOW_ANONYMOUS_TEMPLATE_in_keyValue1004 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ANONYMOUS_TEMPLATE_in_keyValue1004_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_keyValue1017 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_keyValue1017_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_TRUE_in_keyValue1042 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_keyValue1042_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_FALSE_in_keyValue1067 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_keyValue1067_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_keyValue1094 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_keyValue1094_data Count:(NSUInteger)1] retain];
+    FOLLOW_oldStyleHeader_in_group166 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_oldStyleHeader_in_group166_data Count:(NSUInteger)1];
+    FOLLOW_delimiters_in_group171 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_delimiters_in_group171_data Count:(NSUInteger)1];
+    FOLLOW_29_in_group182 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_29_in_group182_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_group184 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_group184_data Count:(NSUInteger)1];
+    FOLLOW_29_in_group196 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_29_in_group196_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_group225 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_group225_data Count:(NSUInteger)1];
+    FOLLOW_17_in_group228 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_group228_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_group230 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_group230_data Count:(NSUInteger)1];
+    FOLLOW_def_in_group254 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_def_in_group254_data Count:(NSUInteger)1];
+    FOLLOW_27_in_oldStyleHeader276 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_27_in_oldStyleHeader276_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_oldStyleHeader278 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader278_data Count:(NSUInteger)1];
+    FOLLOW_18_in_oldStyleHeader282 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_oldStyleHeader282_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_oldStyleHeader284 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader284_data Count:(NSUInteger)1];
+    FOLLOW_28_in_oldStyleHeader299 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_28_in_oldStyleHeader299_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_oldStyleHeader301 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader301_data Count:(NSUInteger)1];
+    FOLLOW_16_in_oldStyleHeader304 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_oldStyleHeader304_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_oldStyleHeader306 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_oldStyleHeader306_data Count:(NSUInteger)1];
+    FOLLOW_20_in_oldStyleHeader321 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_20_in_oldStyleHeader321_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_groupName351 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_groupName351_data Count:(NSUInteger)1];
+    FOLLOW_17_in_groupName356 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_groupName356_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_groupName360 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_groupName360_data Count:(NSUInteger)1];
+    FOLLOW_26_in_delimiters381 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_26_in_delimiters381_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_delimiters385 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_delimiters385_data Count:(NSUInteger)1];
+    FOLLOW_16_in_delimiters387 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_delimiters387_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_delimiters391 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_delimiters391_data Count:(NSUInteger)1];
+    FOLLOW_templateDef_in_def415 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_templateDef_in_def415_data Count:(NSUInteger)1];
+    FOLLOW_dictDef_in_def420 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dictDef_in_def420_data Count:(NSUInteger)1];
+    FOLLOW_22_in_templateDef454 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_22_in_templateDef454_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_templateDef458 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef458_data Count:(NSUInteger)1];
+    FOLLOW_17_in_templateDef460 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_17_in_templateDef460_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_templateDef464 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef464_data Count:(NSUInteger)1];
+    FOLLOW_14_in_templateDef466 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_14_in_templateDef466_data Count:(NSUInteger)1];
+    FOLLOW_15_in_templateDef468 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_15_in_templateDef468_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_templateDef484 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef484_data Count:(NSUInteger)1];
+    FOLLOW_14_in_templateDef486 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_14_in_templateDef486_data Count:(NSUInteger)1];
+    FOLLOW_formalArgs_in_templateDef488 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArgs_in_templateDef488_data Count:(NSUInteger)1];
+    FOLLOW_15_in_templateDef490 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_15_in_templateDef490_data Count:(NSUInteger)1];
+    FOLLOW_19_in_templateDef510 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_templateDef510_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_templateDef534 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_templateDef534_data Count:(NSUInteger)1];
+    FOLLOW_BIGSTRING_in_templateDef554 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_in_templateDef554_data Count:(NSUInteger)1];
+    FOLLOW_BIGSTRING_NO_NL_in_templateDef571 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_NO_NL_in_templateDef571_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_templateDef620 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef620_data Count:(NSUInteger)1];
+    FOLLOW_19_in_templateDef622 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_templateDef622_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_templateDef626 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_templateDef626_data Count:(NSUInteger)1];
+    FOLLOW_formalArg_in_formalArgs660 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArg_in_formalArgs660_data Count:(NSUInteger)1];
+    FOLLOW_16_in_formalArgs664 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_formalArgs664_data Count:(NSUInteger)1];
+    FOLLOW_formalArg_in_formalArgs666 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_formalArg_in_formalArgs666_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_formalArg695 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_formalArg695_data Count:(NSUInteger)1];
+    FOLLOW_21_in_formalArg709 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_21_in_formalArg709_data Count:(NSUInteger)1];
+    FOLLOW_set_in_formalArg713 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_set_in_formalArg713_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_dictDef779 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_dictDef779_data Count:(NSUInteger)1];
+    FOLLOW_19_in_dictDef781 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_19_in_dictDef781_data Count:(NSUInteger)1];
+    FOLLOW_dict_in_dictDef783 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dict_in_dictDef783_data Count:(NSUInteger)1];
+    FOLLOW_23_in_dict821 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_23_in_dict821_data Count:(NSUInteger)1];
+    FOLLOW_dictPairs_in_dict823 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_dictPairs_in_dict823_data Count:(NSUInteger)1];
+    FOLLOW_24_in_dict826 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_24_in_dict826_data Count:(NSUInteger)1];
+    FOLLOW_keyValuePair_in_dictPairs846 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValuePair_in_dictPairs846_data Count:(NSUInteger)1];
+    FOLLOW_16_in_dictPairs858 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_dictPairs858_data Count:(NSUInteger)1];
+    FOLLOW_keyValuePair_in_dictPairs860 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValuePair_in_dictPairs860_data Count:(NSUInteger)1];
+    FOLLOW_16_in_dictPairs866 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_16_in_dictPairs866_data Count:(NSUInteger)1];
+    FOLLOW_defaultValuePair_in_dictPairs868 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_defaultValuePair_in_dictPairs868_data Count:(NSUInteger)1];
+    FOLLOW_defaultValuePair_in_dictPairs881 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_defaultValuePair_in_dictPairs881_data Count:(NSUInteger)1];
+    FOLLOW_25_in_defaultValuePair911 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_25_in_defaultValuePair911_data Count:(NSUInteger)1];
+    FOLLOW_18_in_defaultValuePair913 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_defaultValuePair913_data Count:(NSUInteger)1];
+    FOLLOW_keyValue_in_defaultValuePair915 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValue_in_defaultValuePair915_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_keyValuePair937 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_keyValuePair937_data Count:(NSUInteger)1];
+    FOLLOW_18_in_keyValuePair939 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_18_in_keyValuePair939_data Count:(NSUInteger)1];
+    FOLLOW_keyValue_in_keyValuePair941 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_keyValue_in_keyValuePair941_data Count:(NSUInteger)1];
+    FOLLOW_BIGSTRING_in_keyValue966 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_in_keyValue966_data Count:(NSUInteger)1];
+    FOLLOW_BIGSTRING_NO_NL_in_keyValue988 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BIGSTRING_NO_NL_in_keyValue988_data Count:(NSUInteger)1];
+    FOLLOW_ANONYMOUS_TEMPLATE_in_keyValue1004 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ANONYMOUS_TEMPLATE_in_keyValue1004_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_keyValue1017 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_keyValue1017_data Count:(NSUInteger)1];
+    FOLLOW_T_TRUE_in_keyValue1042 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_keyValue1042_data Count:(NSUInteger)1];
+    FOLLOW_T_FALSE_in_keyValue1067 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_keyValue1067_data Count:(NSUInteger)1];
+    FOLLOW_23_in_keyValue1091 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_23_in_keyValue1091_data Count:(NSUInteger)1];
+    FOLLOW_24_in_keyValue1093 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_24_in_keyValue1093_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_keyValue1141 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_keyValue1141_data Count:(NSUInteger)1];
 
-    [BaseRecognizer setTokenNames:[[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
+    [BaseRecognizer setTokenNames:[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
  @"ID", @"WS", @"STRING", @"ANONYMOUS_TEMPLATE", @"COMMENT", @"LINE_COMMENT", 
  @"BIGSTRING", @"BIGSTRING_NO_NL", @"T_FALSE", @"T_TRUE", @"'('", @"')'", 
- @"','", @"'.'", @"':'", @"'::='", @"';'", @"'='", @"'@'", @"'['", @"']'", 
- @"'default'", @"'delimiters'", @"'group'", @"'implements'", @"'import'", nil] retain]];
+ @"','", @"'.'", @"':'", @"'::='", @"';'", @"'='", @"'@'", @"'['", @"']'",
+ @"'default'", @"'delimiters'", @"'group'", @"'implements'", @"'import'", nil]];
     [BaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g"];
 }
 
@@ -319,7 +325,7 @@ static formalArgs_Scope *formalArgs_scope;
 
 - (id) initWithTokenStream:(id<TokenStream>)aStream
 {
-    self = [super initWithTokenStream:aStream State:[[RecognizerSharedState newRecognizerSharedStateWithRuleLen:14+1] retain]];
+    self = [super initWithTokenStream:aStream State:[RecognizerSharedState newRecognizerSharedStateWithRuleLen:14+1]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
         formalArgs_scope = [formalArgs_Scope newformalArgs_Scope];
@@ -333,8 +339,8 @@ static formalArgs_Scope *formalArgs_scope;
 
 - (void) dealloc
 {
-    if ( group ) [group release];
-    [super dealloc];
+    group = nil;
+    // [super dealloc];
 }
 
 /* ObjC start actions.(actionScope).methods */
@@ -369,6 +375,13 @@ static formalArgs_Scope *formalArgs_scope;
     [self recover:input Exception:nil];
 }
 
+/*
+- (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames
+{
+    return [NSString stringWithFormat:@"%@--%@", e.name, e.reason];
+}
+*/
+
 /* ObjC end actions.(actionScope).methods */
 /* ObjC start methods() */
 /* ObjC end methods() */
@@ -402,7 +415,7 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt1=2;
         NSInteger LA1_0 = [input LA:1];
 
-        if ( (LA1_0==27) ) {
+        if ( LA1_0==27 ) {
             alt1=1;
         }
         switch (alt1) {
@@ -428,7 +441,7 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt2=2;
         NSInteger LA2_0 = [input LA:1];
 
-        if ( (LA2_0==26) ) {
+        if ( LA2_0==26 ) {
             alt2=1;
         }
         switch (alt2) {
@@ -454,12 +467,12 @@ static formalArgs_Scope *formalArgs_scope;
         do {
             NSInteger alt4=3;
             NSInteger LA4_0 = [input LA:1];
-            if ( (LA4_0==29) ) {
+            if ( LA4_0==29 ) {
                 NSInteger LA4_2 = [input LA:2];
-                if ( (LA4_2==STRING) ) {
+                if ( LA4_2==STRING ) {
                     alt4=1;
                 }
-                else if ( (LA4_2==ID) ) {
+                else if ( LA4_2==ID ) {
                     alt4=2;
                 }
 
@@ -501,7 +514,7 @@ static formalArgs_Scope *formalArgs_scope;
                     do {
                         NSInteger alt3=2;
                         NSInteger LA3_0 = [input LA:1];
-                        if ( (LA3_0==17) ) {
+                        if ( LA3_0==17 ) {
                             alt3=1;
                         }
 
@@ -540,7 +553,7 @@ static formalArgs_Scope *formalArgs_scope;
         do {
             NSInteger alt5 = 2;
             NSInteger LA5_0 = [input LA:1];
-            if ( (LA5_0==ID||LA5_0==22) ) {
+            if ( LA5_0==ID||LA5_0==22 ) {
                 alt5=1;
             }
 
@@ -620,7 +633,7 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt6=2;
         NSInteger LA6_0 = [input LA:1];
 
-        if ( (LA6_0==18) ) {
+        if ( LA6_0==18 ) {
             alt6=1;
         }
         switch (alt6) {
@@ -642,7 +655,7 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt8=2;
         NSInteger LA8_0 = [input LA:1];
 
-        if ( (LA8_0==28) ) {
+        if ( LA8_0==28 ) {
             alt8=1;
         }
         switch (alt8) {
@@ -658,7 +671,7 @@ static formalArgs_Scope *formalArgs_scope;
                 do {
                     NSInteger alt7=2;
                     NSInteger LA7_0 = [input LA:1];
-                    if ( (LA7_0==16) ) {
+                    if ( LA7_0==16 ) {
                         alt7=1;
                     }
 
@@ -742,7 +755,7 @@ static formalArgs_Scope *formalArgs_scope;
         do {
             NSInteger alt9=2;
             NSInteger LA9_0 = [input LA:1];
-            if ( (LA9_0==17) ) {
+            if ( LA9_0==17 ) {
                 alt9=1;
             }
 
@@ -864,22 +877,22 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt10=2;
         NSInteger LA10_0 = [input LA:1];
 
-        if ( (LA10_0==22) ) {
+        if ( LA10_0==22 ) {
             alt10=1;
         }
-        else if ( (LA10_0==ID) ) {
+        else if ( LA10_0==ID ) {
             NSInteger LA10_2 = [input LA:2];
 
-            if ( (LA10_2==14) ) {
+            if ( LA10_2==14 ) {
                 alt10=1;
             }
-            else if ( (LA10_2==19) ) {
+            else if ( LA10_2==19 ) {
                 NSInteger LA10_3 = [input LA:3];
 
-                if ( (LA10_3==ID) ) {
+                if ( LA10_3==ID ) {
                     alt10=1;
                 }
-                else if ( (LA10_3==23) ) {
+                else if ( LA10_3==23 ) {
                     alt10=2;
                 }
                 else {
@@ -984,16 +997,16 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt13=2;
         NSInteger LA13_0 = [input LA:1];
 
-        if ( (LA13_0==22) ) {
+        if ( LA13_0==22 ) {
             alt13=1;
         }
-        else if ( (LA13_0==ID) ) {
+        else if ( LA13_0==ID ) {
             NSInteger LA13_2 = [input LA:2];
 
-            if ( (LA13_2==14) ) {
+            if ( LA13_2==14 ) {
                 alt13=1;
             }
-            else if ( (LA13_2==19) ) {
+            else if ( LA13_2==19 ) {
                 alt13=2;
             }
             else {
@@ -1018,10 +1031,10 @@ static formalArgs_Scope *formalArgs_scope;
                 NSInteger alt11=2;
                 NSInteger LA11_0 = [input LA:1];
 
-                if ( (LA11_0==22) ) {
+                if ( LA11_0==22 ) {
                     alt11=1;
                 }
-                else if ( (LA11_0==ID) ) {
+                else if ( LA11_0==ID ) {
                     alt11=2;
                 }
                 else {
@@ -1242,10 +1255,10 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt15=2;
         NSInteger LA15_0 = [input LA:1];
 
-        if ( (LA15_0==ID) ) {
+        if ( LA15_0==ID ) {
             alt15=1;
         }
-        else if ( (LA15_0==15) ) {
+        else if ( LA15_0==15 ) {
             alt15=2;
         }
         else {
@@ -1271,7 +1284,7 @@ static formalArgs_Scope *formalArgs_scope;
                 do {
                     NSInteger alt14=2;
                     NSInteger LA14_0 = [input LA:1];
-                    if ( (LA14_0==16) ) {
+                    if ( LA14_0==16 ) {
                         alt14=1;
                     }
 
@@ -1285,8 +1298,7 @@ static formalArgs_Scope *formalArgs_scope;
                              
                             /* ruleRef */
                             [self pushFollow:FOLLOW_formalArg_in_formalArgs666];
-                            [self formalArg:args
-                             ];
+                            [self formalArg:args];
 
                             [self popFollow];
 
@@ -1355,10 +1367,10 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt16=2;
         NSInteger LA16_0 = [input LA:1];
 
-        if ( (LA16_0==21) ) {
+        if ( LA16_0==21 ) {
             alt16=1;
         }
-        else if ( ((LA16_0 >= 15 && LA16_0 <= 16)) ) {
+        else if ( LA16_0 >= 15 && LA16_0 <= 16 ) {
             alt16=2;
         }
         else {
@@ -1411,7 +1423,7 @@ static formalArgs_Scope *formalArgs_scope;
 
          
 
-        [args addObject:[[FormalArgument newFormalArgument:(ID6!=nil?ID6.text:nil) token:a] retain]];
+        [args addObject:[FormalArgument newFormalArgument:(ID6!=nil?ID6.text:nil) token:a]];
 
          
         }
@@ -1475,9 +1487,7 @@ static formalArgs_Scope *formalArgs_scope;
                     [group.errMgr compileTimeError:TEMPLATE_REDEFINITION_AS_MAP templateToken:nil t:ID7];
                 }
                 else {
-                    [group defineDictionary:(ID7!=nil?ID7.text:nil) mapping:
-        dict8
-        ];
+                    [group defineDictionary:(ID7!=nil?ID7.text:nil) mapping:dict8];
                 }
                 
 
@@ -1575,10 +1585,10 @@ static formalArgs_Scope *formalArgs_scope;
         NSInteger alt19=2;
         NSInteger LA19_0 = [input LA:1];
 
-        if ( (LA19_0==STRING) ) {
+        if ( LA19_0==STRING ) {
             alt19=1;
         }
-        else if ( (LA19_0==25) ) {
+        else if ( LA19_0==25 ) {
             alt19=2;
         }
         else {
@@ -1604,9 +1614,9 @@ static formalArgs_Scope *formalArgs_scope;
                 do {
                     NSInteger alt17=2;
                     NSInteger LA17_0 = [input LA:1];
-                    if ( (LA17_0==16) ) {
+                    if ( LA17_0==16 ) {
                         NSInteger LA17_1 = [input LA:2];
-                        if ( (LA17_1==STRING) ) {
+                        if ( LA17_1==STRING ) {
                             alt17=1;
                         }
 
@@ -1643,7 +1653,7 @@ static formalArgs_Scope *formalArgs_scope;
                 NSInteger alt18=2;
                 NSInteger LA18_0 = [input LA:1];
 
-                if ( (LA18_0==16) ) {
+                if ( LA18_0==16 ) {
                     alt18=1;
                 }
                 switch (alt18) {
@@ -1737,8 +1747,7 @@ static formalArgs_Scope *formalArgs_scope;
 
          
 
-        [mapping put:STGroup.DEFAULT_KEY value:keyValue9
-        ];
+        [mapping put:STGroup.DEFAULT_KEY value:keyValue9];
 
          
         }
@@ -1794,9 +1803,7 @@ static formalArgs_Scope *formalArgs_scope;
 
          
 
-        [mapping put:[Misc replaceEscapes:[Misc strip:(STRING10!=nil?STRING10.text:nil) n:1]] value:
-        keyValue11
-        ];
+        [mapping put:[Misc replaceEscapes:[Misc strip:(STRING10!=nil?STRING10.text:nil) n:1]] value:keyValue11];
 
          
         }
@@ -1839,30 +1846,33 @@ static formalArgs_Scope *formalArgs_scope;
 
 
 
-        // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:363:5: ( BIGSTRING | BIGSTRING_NO_NL | ANONYMOUS_TEMPLATE | STRING | T_TRUE | T_FALSE |{...}? => ID ) //ruleblock
-        NSInteger alt20=7;
+        // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:357:5: ( BIGSTRING | BIGSTRING_NO_NL | ANONYMOUS_TEMPLATE | STRING | T_TRUE | T_FALSE | '[' ']' |{...}? => ID ) //ruleblock
+        NSInteger alt20=8;
         NSInteger LA20_0 = [input LA:1];
 
-        if ( (LA20_0==BIGSTRING) ) {
+        if ( LA20_0==BIGSTRING ) {
             alt20=1;
         }
-        else if ( (LA20_0==BIGSTRING_NO_NL) ) {
+        else if ( LA20_0==BIGSTRING_NO_NL ) {
             alt20=2;
         }
-        else if ( (LA20_0==ANONYMOUS_TEMPLATE) ) {
+        else if ( LA20_0==ANONYMOUS_TEMPLATE ) {
             alt20=3;
         }
-        else if ( (LA20_0==STRING) ) {
+        else if ( LA20_0==STRING ) {
             alt20=4;
         }
-        else if ( (LA20_0==T_TRUE) ) {
+        else if ( LA20_0==T_TRUE ) {
             alt20=5;
         }
-        else if ( (LA20_0==T_FALSE) ) {
+        else if ( LA20_0==T_FALSE ) {
             alt20=6;
         }
-        else if ( (LA20_0==ID) && (([[[input LT:1] text] isEqualToString:@"key"]))) {
+        else if ( LA20_0==23 ) {
             alt20=7;
+        }
+        else if ( (LA20_0==ID) && (([[[input LT:1] text] isEqualToString:@"key"]))) {
+            alt20=8;
         }
         else {
             NoViableAltException *nvae = [NoViableAltException newException:20 state:0 stream:input];
@@ -1950,14 +1960,29 @@ static formalArgs_Scope *formalArgs_scope;
                 }
                 break;
             case 7 : ;
-                // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:369:9: {...}? => ID // alt
+                // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:363:9: '[' ']' // alt
+                {
+
+                [self match:input TokenType:23 Follow:FOLLOW_23_in_keyValue1091]; 
+                 
+                [self match:input TokenType:24 Follow:FOLLOW_24_in_keyValue1093]; 
+                 
+
+                value =  [[AMutableDictionary alloc] init];
+
+
+                 
+                }
+                break;
+            case 8 : ;
+                // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g:363:72: {...}? => ID // alt
                 {
 
                 if ( !(([[[input LT:1] text] isEqualToString:@"key"])) ) {
                     @throw [FailedPredicateException newException:@"keyValue" predicate:@"[[[input LT:1] text] isEqualToString:@\"key\"]" stream:input];
                 }
                  
-                [self match:input TokenType:ID Follow:FOLLOW_ID_in_keyValue1094]; 
+                [self match:input TokenType:ID Follow:FOLLOW_ID_in_keyValue1141]; 
                  
 
                 value =  STGroup.DICT_KEY;

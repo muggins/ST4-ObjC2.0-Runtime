@@ -41,6 +41,10 @@
   BOOL alreadyLoaded;
 }
 
+@property (assign) BOOL alreadyLoaded;
+@property (retain) NSString *fileName;
+@property (retain) NSURL *URL;
+
 + (id) newSTGroupFile;
 + (id) newSTGroupFile:(NSString *)aFileName;
 + (id) newSTGroupFile:(NSString *)aFileName encoding:(NSStringEncoding)theEncoding;
@@ -54,6 +58,7 @@
 - (id) initWithFileName:(NSString *)fileName encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) initWithFQFN:(NSString *)fullyQualifiedFileName encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (id) initWithURL:(NSURL *)aURL encoding:(NSStringEncoding)encoding delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
+- (void) dealloc;
 - (BOOL) isDictionary:(NSString *)name;
 - (BOOL) isDefined:(NSString *)name;
 - (void) unload;
@@ -63,9 +68,5 @@
 - (NSString *) getName;
 - (NSString *) getFileName;
 - (NSURL *) getRootDirURL;
-
-@property (assign) BOOL alreadyLoaded;
-@property (retain) NSString *fileName;
-@property (retain) NSURL *URL;
 
 @end

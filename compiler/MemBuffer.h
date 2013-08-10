@@ -39,7 +39,7 @@
 	//MemBuffer *fNext;
     NSInteger BuffSize;
     __strong NSMutableData *buffer;
-    __strong char *ptrBuffer;
+    char *ptrBuffer;
     NSInteger count;
     NSInteger ptr;
 }

@@ -27,7 +27,7 @@
                       delimiterStartChar:(unichar)aDelimiterStartChar
                        delimiterStopChar:(unichar)aDelimiterStopChar;
 
-- (id) initWithURL:(NSString *)dirName
+- (id) initWithURL:(NSURL *)dirName
           encoding:(NSStringEncoding)theEncoding
 delimiterStartChar:(unichar)aDelimiterStartChar
  delimiterStopChar:(unichar)aDelimiterStopChar;

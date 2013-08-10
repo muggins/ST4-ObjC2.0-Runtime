@@ -59,6 +59,8 @@
   id<STErrorListener> listener;
 }
 
+@property (retain) id<STErrorListener> listener;
+
 + (void) initialize;
 + (id<STErrorListener>) DEFAULT_ERROR_LISTENER;
 + (id) DEFAULT_ERR_MGR;
@@ -84,7 +86,5 @@
 - (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e;
 - (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
 - (void) internalError:(ST *)who msg:(NSString *)msg e:(NSException *)e;
-
-@property (retain) id<STErrorListener> listener;
 
 @end

@@ -30,14 +30,16 @@
 @interface EvalExprEvent : InterpEvent {
   NSInteger exprStartChar;
   NSInteger exprStopChar;
-  NSString *expr;
+  __strong NSString *expr;
 }
-
-+ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
-- (id) init:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
-- (NSString *) description;
 
 @property (assign) NSInteger exprStartChar;
 @property (assign) NSInteger exprStopChar;
 @property (retain) NSString *expr;
+
++ (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
+- (id) init:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop;
+- (void) dealloc;
+- (NSString *) description;
+
 @end

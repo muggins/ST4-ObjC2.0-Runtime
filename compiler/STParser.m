@@ -90,306 +90,306 @@ static ANTLRBitSet *FOLLOW_END_in_region472;
 static const unsigned long long FOLLOW_END_in_region472_data[] = { 0x0000000400000000LL};
 static ANTLRBitSet *FOLLOW_RDELIM_in_region474;
 static const unsigned long long FOLLOW_RDELIM_in_region474_data[] = { 0x0000008000000002LL};
-static ANTLRBitSet *FOLLOW_NEWLINE_in_region497;
-static const unsigned long long FOLLOW_NEWLINE_in_region497_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LCURLY_in_subtemplate599;
-static const unsigned long long FOLLOW_LCURLY_in_subtemplate599_data[] = { 0x000000C380000110LL};
-static ANTLRBitSet *FOLLOW_ID_in_subtemplate605;
-static const unsigned long long FOLLOW_ID_in_subtemplate605_data[] = { 0x0000000810000000LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_subtemplate609;
-static const unsigned long long FOLLOW_COMMA_in_subtemplate609_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_subtemplate614;
-static const unsigned long long FOLLOW_ID_in_subtemplate614_data[] = { 0x0000000810000000LL};
-static ANTLRBitSet *FOLLOW_PIPE_in_subtemplate619;
-static const unsigned long long FOLLOW_PIPE_in_subtemplate619_data[] = { 0x000000C380000100LL};
-static ANTLRBitSet *FOLLOW_template_in_subtemplate624;
-static const unsigned long long FOLLOW_template_in_subtemplate624_data[] = { 0x0000004080000000LL};
-static ANTLRBitSet *FOLLOW_INDENT_in_subtemplate626;
-static const unsigned long long FOLLOW_INDENT_in_subtemplate626_data[] = { 0x0000000080000000LL};
-static ANTLRBitSet *FOLLOW_RCURLY_in_subtemplate629;
-static const unsigned long long FOLLOW_RCURLY_in_subtemplate629_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_INDENT_in_ifstat690;
-static const unsigned long long FOLLOW_INDENT_in_ifstat690_data[] = { 0x0000000200000000LL};
-static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat693;
-static const unsigned long long FOLLOW_LDELIM_in_ifstat693_data[] = { 0x0000000000004000LL};
-static ANTLRBitSet *FOLLOW_IF_in_ifstat695;
-static const unsigned long long FOLLOW_IF_in_ifstat695_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_ifstat697;
-static const unsigned long long FOLLOW_LPAREN_in_ifstat697_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_conditional_in_ifstat701;
-static const unsigned long long FOLLOW_conditional_in_ifstat701_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_ifstat703;
-static const unsigned long long FOLLOW_RPAREN_in_ifstat703_data[] = { 0x0000000400000000LL};
-static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat705;
-static const unsigned long long FOLLOW_RDELIM_in_ifstat705_data[] = { 0x000000C300000100LL};
-static ANTLRBitSet *FOLLOW_template_in_ifstat723;
-static const unsigned long long FOLLOW_template_in_ifstat723_data[] = { 0x0000004200000000LL};
-static ANTLRBitSet *FOLLOW_INDENT_in_ifstat739;
-static const unsigned long long FOLLOW_INDENT_in_ifstat739_data[] = { 0x0000000200000000LL};
-static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat742;
-static const unsigned long long FOLLOW_LDELIM_in_ifstat742_data[] = { 0x0000000000010000LL};
-static ANTLRBitSet *FOLLOW_ELSEIF_in_ifstat744;
-static const unsigned long long FOLLOW_ELSEIF_in_ifstat744_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_ifstat746;
-static const unsigned long long FOLLOW_LPAREN_in_ifstat746_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_conditional_in_ifstat750;
-static const unsigned long long FOLLOW_conditional_in_ifstat750_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_ifstat752;
-static const unsigned long long FOLLOW_RPAREN_in_ifstat752_data[] = { 0x0000000400000000LL};
-static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat754;
-static const unsigned long long FOLLOW_RDELIM_in_ifstat754_data[] = { 0x000000C300000100LL};
-static ANTLRBitSet *FOLLOW_template_in_ifstat758;
-static const unsigned long long FOLLOW_template_in_ifstat758_data[] = { 0x0000004200000000LL};
-static ANTLRBitSet *FOLLOW_INDENT_in_ifstat777;
-static const unsigned long long FOLLOW_INDENT_in_ifstat777_data[] = { 0x0000000200000000LL};
-static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat780;
-static const unsigned long long FOLLOW_LDELIM_in_ifstat780_data[] = { 0x0000000000008000LL};
-static ANTLRBitSet *FOLLOW_ELSE_in_ifstat782;
-static const unsigned long long FOLLOW_ELSE_in_ifstat782_data[] = { 0x0000000400000000LL};
-static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat784;
-static const unsigned long long FOLLOW_RDELIM_in_ifstat784_data[] = { 0x000000C300000100LL};
-static ANTLRBitSet *FOLLOW_template_in_ifstat788;
-static const unsigned long long FOLLOW_template_in_ifstat788_data[] = { 0x0000004200000000LL};
-static ANTLRBitSet *FOLLOW_INDENT_in_ifstat805;
-static const unsigned long long FOLLOW_INDENT_in_ifstat805_data[] = { 0x0000000200000000LL};
-static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat811;
-static const unsigned long long FOLLOW_LDELIM_in_ifstat811_data[] = { 0x0000000000020000LL};
-static ANTLRBitSet *FOLLOW_ENDIF_in_ifstat813;
-static const unsigned long long FOLLOW_ENDIF_in_ifstat813_data[] = { 0x0000000400000000LL};
-static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat823;
-static const unsigned long long FOLLOW_RDELIM_in_ifstat823_data[] = { 0x0000008000000002LL};
-static ANTLRBitSet *FOLLOW_NEWLINE_in_ifstat846;
-static const unsigned long long FOLLOW_NEWLINE_in_ifstat846_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_andConditional_in_conditional990;
-static const unsigned long long FOLLOW_andConditional_in_conditional990_data[] = { 0x0000001000000002LL};
-static ANTLRBitSet *FOLLOW_OR_in_conditional994;
-static const unsigned long long FOLLOW_OR_in_conditional994_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_andConditional_in_conditional997;
-static const unsigned long long FOLLOW_andConditional_in_conditional997_data[] = { 0x0000001000000002LL};
-static ANTLRBitSet *FOLLOW_notConditional_in_andConditional1013;
-static const unsigned long long FOLLOW_notConditional_in_andConditional1013_data[] = { 0x0000002000000002LL};
-static ANTLRBitSet *FOLLOW_AND_in_andConditional1017;
-static const unsigned long long FOLLOW_AND_in_andConditional1017_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_notConditional_in_andConditional1020;
-static const unsigned long long FOLLOW_notConditional_in_andConditional1020_data[] = { 0x0000002000000002LL};
-static ANTLRBitSet *FOLLOW_BANG_in_notConditional1038;
-static const unsigned long long FOLLOW_BANG_in_notConditional1038_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_notConditional_in_notConditional1041;
-static const unsigned long long FOLLOW_notConditional_in_notConditional1041_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_memberExpr_in_notConditional1051;
-static const unsigned long long FOLLOW_memberExpr_in_notConditional1051_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_notConditionalExpr1071;
-static const unsigned long long FOLLOW_ID_in_notConditionalExpr1071_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_DOT_in_notConditionalExpr1090;
-static const unsigned long long FOLLOW_DOT_in_notConditionalExpr1090_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_notConditionalExpr1094;
-static const unsigned long long FOLLOW_ID_in_notConditionalExpr1094_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_DOT_in_notConditionalExpr1145;
-static const unsigned long long FOLLOW_DOT_in_notConditionalExpr1145_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_notConditionalExpr1147;
-static const unsigned long long FOLLOW_LPAREN_in_notConditionalExpr1147_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_mapExpr_in_notConditionalExpr1149;
-static const unsigned long long FOLLOW_mapExpr_in_notConditionalExpr1149_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_notConditionalExpr1151;
-static const unsigned long long FOLLOW_RPAREN_in_notConditionalExpr1151_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_option_in_exprOptions1201;
-static const unsigned long long FOLLOW_option_in_exprOptions1201_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_exprOptions1205;
-static const unsigned long long FOLLOW_COMMA_in_exprOptions1205_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_option_in_exprOptions1207;
-static const unsigned long long FOLLOW_option_in_exprOptions1207_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_option1239;
-static const unsigned long long FOLLOW_ID_in_option1239_data[] = { 0x0000000000400002LL};
-static ANTLRBitSet *FOLLOW_EQUALS_in_option1263;
-static const unsigned long long FOLLOW_EQUALS_in_option1263_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_exprNoComma_in_option1265;
-static const unsigned long long FOLLOW_exprNoComma_in_option1265_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_memberExpr_in_exprNoComma1553;
-static const unsigned long long FOLLOW_memberExpr_in_exprNoComma1553_data[] = { 0x0000000000800002LL};
-static ANTLRBitSet *FOLLOW_COLON_in_exprNoComma1565;
-static const unsigned long long FOLLOW_COLON_in_exprNoComma1565_data[] = { 0x0000000041000010LL};
-static ANTLRBitSet *FOLLOW_mapTemplateRef_in_exprNoComma1567;
-static const unsigned long long FOLLOW_mapTemplateRef_in_exprNoComma1567_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_mapExpr_in_expr1671;
-static const unsigned long long FOLLOW_mapExpr_in_expr1671_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_memberExpr_in_mapExpr1688;
-static const unsigned long long FOLLOW_memberExpr_in_mapExpr1688_data[] = { 0x0000000010800002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_mapExpr1703;
-static const unsigned long long FOLLOW_COMMA_in_mapExpr1703_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_memberExpr_in_mapExpr1705;
-static const unsigned long long FOLLOW_memberExpr_in_mapExpr1705_data[] = { 0x0000000010800000LL};
-static ANTLRBitSet *FOLLOW_COLON_in_mapExpr1711;
-static const unsigned long long FOLLOW_COLON_in_mapExpr1711_data[] = { 0x0000000041000010LL};
-static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1713;
-static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1713_data[] = { 0x0000000000800002LL};
-static ANTLRBitSet *FOLLOW_COLON_in_mapExpr1870;
-static const unsigned long long FOLLOW_COLON_in_mapExpr1870_data[] = { 0x0000000041000010LL};
-static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1874;
-static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1874_data[] = { 0x0000000010800002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_mapExpr1880;
-static const unsigned long long FOLLOW_COMMA_in_mapExpr1880_data[] = { 0x0000000041000010LL};
-static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1884;
-static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1884_data[] = { 0x0000000010800002LL};
-static ANTLRBitSet *FOLLOW_ID_in_mapTemplateRef1981;
-static const unsigned long long FOLLOW_ID_in_mapTemplateRef1981_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef1983;
-static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef1983_data[] = { 0x0000010047243050LL};
-static ANTLRBitSet *FOLLOW_args_in_mapTemplateRef1985;
-static const unsigned long long FOLLOW_args_in_mapTemplateRef1985_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef1987;
-static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef1987_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_subtemplate_in_mapTemplateRef2032;
-static const unsigned long long FOLLOW_subtemplate_in_mapTemplateRef2032_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef2044;
-static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef2044_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_mapExpr_in_mapTemplateRef2046;
-static const unsigned long long FOLLOW_mapExpr_in_mapTemplateRef2046_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef2050;
-static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef2050_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef2052;
-static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef2052_data[] = { 0x0000010047043050LL};
-static ANTLRBitSet *FOLLOW_argExprList_in_mapTemplateRef2054;
-static const unsigned long long FOLLOW_argExprList_in_mapTemplateRef2054_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef2057;
-static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef2057_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_includeExpr_in_memberExpr2088;
-static const unsigned long long FOLLOW_includeExpr_in_memberExpr2088_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_DOT_in_memberExpr2107;
-static const unsigned long long FOLLOW_DOT_in_memberExpr2107_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_memberExpr2109;
-static const unsigned long long FOLLOW_ID_in_memberExpr2109_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_DOT_in_memberExpr2164;
-static const unsigned long long FOLLOW_DOT_in_memberExpr2164_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_memberExpr2166;
-static const unsigned long long FOLLOW_LPAREN_in_memberExpr2166_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_mapExpr_in_memberExpr2168;
-static const unsigned long long FOLLOW_mapExpr_in_memberExpr2168_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_memberExpr2170;
-static const unsigned long long FOLLOW_RPAREN_in_memberExpr2170_data[] = { 0x0000000020000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_includeExpr2245;
-static const unsigned long long FOLLOW_ID_in_includeExpr2245_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2247;
-static const unsigned long long FOLLOW_LPAREN_in_includeExpr2247_data[] = { 0x0000010047043050LL};
-static ANTLRBitSet *FOLLOW_expr_in_includeExpr2249;
-static const unsigned long long FOLLOW_expr_in_includeExpr2249_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2252;
-static const unsigned long long FOLLOW_RPAREN_in_includeExpr2252_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_SUPER_in_includeExpr2296;
-static const unsigned long long FOLLOW_SUPER_in_includeExpr2296_data[] = { 0x0000000020000000LL};
-static ANTLRBitSet *FOLLOW_DOT_in_includeExpr2298;
-static const unsigned long long FOLLOW_DOT_in_includeExpr2298_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_includeExpr2300;
-static const unsigned long long FOLLOW_ID_in_includeExpr2300_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2302;
-static const unsigned long long FOLLOW_LPAREN_in_includeExpr2302_data[] = { 0x0000010047243050LL};
-static ANTLRBitSet *FOLLOW_args_in_includeExpr2304;
-static const unsigned long long FOLLOW_args_in_includeExpr2304_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2306;
-static const unsigned long long FOLLOW_RPAREN_in_includeExpr2306_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_includeExpr2339;
-static const unsigned long long FOLLOW_ID_in_includeExpr2339_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2341;
-static const unsigned long long FOLLOW_LPAREN_in_includeExpr2341_data[] = { 0x0000010047243050LL};
-static ANTLRBitSet *FOLLOW_args_in_includeExpr2343;
-static const unsigned long long FOLLOW_args_in_includeExpr2343_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2345;
-static const unsigned long long FOLLOW_RPAREN_in_includeExpr2345_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_AT_in_includeExpr2390;
-static const unsigned long long FOLLOW_AT_in_includeExpr2390_data[] = { 0x0000000000040000LL};
-static ANTLRBitSet *FOLLOW_SUPER_in_includeExpr2392;
-static const unsigned long long FOLLOW_SUPER_in_includeExpr2392_data[] = { 0x0000000020000000LL};
-static ANTLRBitSet *FOLLOW_DOT_in_includeExpr2394;
-static const unsigned long long FOLLOW_DOT_in_includeExpr2394_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_includeExpr2396;
-static const unsigned long long FOLLOW_ID_in_includeExpr2396_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2398;
-static const unsigned long long FOLLOW_LPAREN_in_includeExpr2398_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2402;
-static const unsigned long long FOLLOW_RPAREN_in_includeExpr2402_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_AT_in_includeExpr2430;
-static const unsigned long long FOLLOW_AT_in_includeExpr2430_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_ID_in_includeExpr2432;
-static const unsigned long long FOLLOW_ID_in_includeExpr2432_data[] = { 0x0000000001000000LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2434;
-static const unsigned long long FOLLOW_LPAREN_in_includeExpr2434_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2438;
-static const unsigned long long FOLLOW_RPAREN_in_includeExpr2438_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_primary_in_includeExpr2478;
-static const unsigned long long FOLLOW_primary_in_includeExpr2478_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_primary2497;
-static const unsigned long long FOLLOW_ID_in_primary2497_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_STRING_in_primary2507;
-static const unsigned long long FOLLOW_STRING_in_primary2507_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_T_TRUE_in_primary2517;
-static const unsigned long long FOLLOW_T_TRUE_in_primary2517_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_T_FALSE_in_primary2527;
-static const unsigned long long FOLLOW_T_FALSE_in_primary2527_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_subtemplate_in_primary2537;
-static const unsigned long long FOLLOW_subtemplate_in_primary2537_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_list_in_primary2547;
-static const unsigned long long FOLLOW_list_in_primary2547_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_primary2561;
-static const unsigned long long FOLLOW_LPAREN_in_primary2561_data[] = { 0x0000010045143050LL};
-static ANTLRBitSet *FOLLOW_conditional_in_primary2564;
-static const unsigned long long FOLLOW_conditional_in_primary2564_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_primary2566;
-static const unsigned long long FOLLOW_RPAREN_in_primary2566_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_primary2582;
-static const unsigned long long FOLLOW_LPAREN_in_primary2582_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_expr_in_primary2584;
-static const unsigned long long FOLLOW_expr_in_primary2584_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_primary2586;
-static const unsigned long long FOLLOW_RPAREN_in_primary2586_data[] = { 0x0000000001000002LL};
-static ANTLRBitSet *FOLLOW_LPAREN_in_primary2600;
-static const unsigned long long FOLLOW_LPAREN_in_primary2600_data[] = { 0x0000010047043050LL};
-static ANTLRBitSet *FOLLOW_argExprList_in_primary2602;
-static const unsigned long long FOLLOW_argExprList_in_primary2602_data[] = { 0x0000000002000000LL};
-static ANTLRBitSet *FOLLOW_RPAREN_in_primary2605;
-static const unsigned long long FOLLOW_RPAREN_in_primary2605_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_argExprList_in_args2713;
-static const unsigned long long FOLLOW_argExprList_in_args2713_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_namedArg_in_args2723;
-static const unsigned long long FOLLOW_namedArg_in_args2723_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_args2727;
-static const unsigned long long FOLLOW_COMMA_in_args2727_data[] = { 0x0000000000000010LL};
-static ANTLRBitSet *FOLLOW_namedArg_in_args2729;
-static const unsigned long long FOLLOW_namedArg_in_args2729_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_args2735;
-static const unsigned long long FOLLOW_COMMA_in_args2735_data[] = { 0x0000000000200000LL};
-static ANTLRBitSet *FOLLOW_ELLIPSIS_in_args2737;
-static const unsigned long long FOLLOW_ELLIPSIS_in_args2737_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ELLIPSIS_in_args2757;
-static const unsigned long long FOLLOW_ELLIPSIS_in_args2757_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_arg_in_argExprList2776;
-static const unsigned long long FOLLOW_arg_in_argExprList2776_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_argExprList2780;
-static const unsigned long long FOLLOW_COMMA_in_argExprList2780_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_arg_in_argExprList2782;
-static const unsigned long long FOLLOW_arg_in_argExprList2782_data[] = { 0x0000000010000002LL};
-static ANTLRBitSet *FOLLOW_exprNoComma_in_arg2799;
-static const unsigned long long FOLLOW_exprNoComma_in_arg2799_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_ID_in_namedArg2808;
-static const unsigned long long FOLLOW_ID_in_namedArg2808_data[] = { 0x0000000000400000LL};
-static ANTLRBitSet *FOLLOW_EQUALS_in_namedArg2810;
-static const unsigned long long FOLLOW_EQUALS_in_namedArg2810_data[] = { 0x0000010045043050LL};
-static ANTLRBitSet *FOLLOW_arg_in_namedArg2812;
-static const unsigned long long FOLLOW_arg_in_namedArg2812_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LBRACK_in_list2845;
-static const unsigned long long FOLLOW_LBRACK_in_list2845_data[] = { 0x0000000008000000LL};
-static ANTLRBitSet *FOLLOW_RBRACK_in_list2847;
-static const unsigned long long FOLLOW_RBRACK_in_list2847_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_LBRACK_in_list2864;
-static const unsigned long long FOLLOW_LBRACK_in_list2864_data[] = { 0x000001005D043050LL};
-static ANTLRBitSet *FOLLOW_listElement_in_list2866;
-static const unsigned long long FOLLOW_listElement_in_list2866_data[] = { 0x0000000018000000LL};
-static ANTLRBitSet *FOLLOW_COMMA_in_list2870;
-static const unsigned long long FOLLOW_COMMA_in_list2870_data[] = { 0x000001005D043050LL};
-static ANTLRBitSet *FOLLOW_listElement_in_list2872;
-static const unsigned long long FOLLOW_listElement_in_list2872_data[] = { 0x0000000018000000LL};
-static ANTLRBitSet *FOLLOW_RBRACK_in_list2877;
-static const unsigned long long FOLLOW_RBRACK_in_list2877_data[] = { 0x0000000000000002LL};
-static ANTLRBitSet *FOLLOW_exprNoComma_in_listElement2900;
-static const unsigned long long FOLLOW_exprNoComma_in_listElement2900_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_NEWLINE_in_region498;
+static const unsigned long long FOLLOW_NEWLINE_in_region498_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LCURLY_in_subtemplate600;
+static const unsigned long long FOLLOW_LCURLY_in_subtemplate600_data[] = { 0x000000C380000110LL};
+static ANTLRBitSet *FOLLOW_ID_in_subtemplate606;
+static const unsigned long long FOLLOW_ID_in_subtemplate606_data[] = { 0x0000000810000000LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_subtemplate610;
+static const unsigned long long FOLLOW_COMMA_in_subtemplate610_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_subtemplate615;
+static const unsigned long long FOLLOW_ID_in_subtemplate615_data[] = { 0x0000000810000000LL};
+static ANTLRBitSet *FOLLOW_PIPE_in_subtemplate620;
+static const unsigned long long FOLLOW_PIPE_in_subtemplate620_data[] = { 0x000000C380000100LL};
+static ANTLRBitSet *FOLLOW_template_in_subtemplate625;
+static const unsigned long long FOLLOW_template_in_subtemplate625_data[] = { 0x0000004080000000LL};
+static ANTLRBitSet *FOLLOW_INDENT_in_subtemplate627;
+static const unsigned long long FOLLOW_INDENT_in_subtemplate627_data[] = { 0x0000000080000000LL};
+static ANTLRBitSet *FOLLOW_RCURLY_in_subtemplate630;
+static const unsigned long long FOLLOW_RCURLY_in_subtemplate630_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_INDENT_in_ifstat691;
+static const unsigned long long FOLLOW_INDENT_in_ifstat691_data[] = { 0x0000000200000000LL};
+static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat694;
+static const unsigned long long FOLLOW_LDELIM_in_ifstat694_data[] = { 0x0000000000004000LL};
+static ANTLRBitSet *FOLLOW_IF_in_ifstat696;
+static const unsigned long long FOLLOW_IF_in_ifstat696_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_ifstat698;
+static const unsigned long long FOLLOW_LPAREN_in_ifstat698_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_conditional_in_ifstat702;
+static const unsigned long long FOLLOW_conditional_in_ifstat702_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_ifstat704;
+static const unsigned long long FOLLOW_RPAREN_in_ifstat704_data[] = { 0x0000000400000000LL};
+static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat706;
+static const unsigned long long FOLLOW_RDELIM_in_ifstat706_data[] = { 0x000000C300000100LL};
+static ANTLRBitSet *FOLLOW_template_in_ifstat724;
+static const unsigned long long FOLLOW_template_in_ifstat724_data[] = { 0x0000004200000000LL};
+static ANTLRBitSet *FOLLOW_INDENT_in_ifstat740;
+static const unsigned long long FOLLOW_INDENT_in_ifstat740_data[] = { 0x0000000200000000LL};
+static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat743;
+static const unsigned long long FOLLOW_LDELIM_in_ifstat743_data[] = { 0x0000000000010000LL};
+static ANTLRBitSet *FOLLOW_ELSEIF_in_ifstat745;
+static const unsigned long long FOLLOW_ELSEIF_in_ifstat745_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_ifstat747;
+static const unsigned long long FOLLOW_LPAREN_in_ifstat747_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_conditional_in_ifstat751;
+static const unsigned long long FOLLOW_conditional_in_ifstat751_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_ifstat753;
+static const unsigned long long FOLLOW_RPAREN_in_ifstat753_data[] = { 0x0000000400000000LL};
+static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat755;
+static const unsigned long long FOLLOW_RDELIM_in_ifstat755_data[] = { 0x000000C300000100LL};
+static ANTLRBitSet *FOLLOW_template_in_ifstat759;
+static const unsigned long long FOLLOW_template_in_ifstat759_data[] = { 0x0000004200000000LL};
+static ANTLRBitSet *FOLLOW_INDENT_in_ifstat778;
+static const unsigned long long FOLLOW_INDENT_in_ifstat778_data[] = { 0x0000000200000000LL};
+static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat781;
+static const unsigned long long FOLLOW_LDELIM_in_ifstat781_data[] = { 0x0000000000008000LL};
+static ANTLRBitSet *FOLLOW_ELSE_in_ifstat783;
+static const unsigned long long FOLLOW_ELSE_in_ifstat783_data[] = { 0x0000000400000000LL};
+static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat785;
+static const unsigned long long FOLLOW_RDELIM_in_ifstat785_data[] = { 0x000000C300000100LL};
+static ANTLRBitSet *FOLLOW_template_in_ifstat789;
+static const unsigned long long FOLLOW_template_in_ifstat789_data[] = { 0x0000004200000000LL};
+static ANTLRBitSet *FOLLOW_INDENT_in_ifstat806;
+static const unsigned long long FOLLOW_INDENT_in_ifstat806_data[] = { 0x0000000200000000LL};
+static ANTLRBitSet *FOLLOW_LDELIM_in_ifstat812;
+static const unsigned long long FOLLOW_LDELIM_in_ifstat812_data[] = { 0x0000000000020000LL};
+static ANTLRBitSet *FOLLOW_ENDIF_in_ifstat814;
+static const unsigned long long FOLLOW_ENDIF_in_ifstat814_data[] = { 0x0000000400000000LL};
+static ANTLRBitSet *FOLLOW_RDELIM_in_ifstat824;
+static const unsigned long long FOLLOW_RDELIM_in_ifstat824_data[] = { 0x0000008000000002LL};
+static ANTLRBitSet *FOLLOW_NEWLINE_in_ifstat847;
+static const unsigned long long FOLLOW_NEWLINE_in_ifstat847_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_andConditional_in_conditional991;
+static const unsigned long long FOLLOW_andConditional_in_conditional991_data[] = { 0x0000001000000002LL};
+static ANTLRBitSet *FOLLOW_OR_in_conditional995;
+static const unsigned long long FOLLOW_OR_in_conditional995_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_andConditional_in_conditional998;
+static const unsigned long long FOLLOW_andConditional_in_conditional998_data[] = { 0x0000001000000002LL};
+static ANTLRBitSet *FOLLOW_notConditional_in_andConditional1014;
+static const unsigned long long FOLLOW_notConditional_in_andConditional1014_data[] = { 0x0000002000000002LL};
+static ANTLRBitSet *FOLLOW_AND_in_andConditional1018;
+static const unsigned long long FOLLOW_AND_in_andConditional1018_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_notConditional_in_andConditional1021;
+static const unsigned long long FOLLOW_notConditional_in_andConditional1021_data[] = { 0x0000002000000002LL};
+static ANTLRBitSet *FOLLOW_BANG_in_notConditional1039;
+static const unsigned long long FOLLOW_BANG_in_notConditional1039_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_notConditional_in_notConditional1042;
+static const unsigned long long FOLLOW_notConditional_in_notConditional1042_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_memberExpr_in_notConditional1052;
+static const unsigned long long FOLLOW_memberExpr_in_notConditional1052_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_notConditionalExpr1072;
+static const unsigned long long FOLLOW_ID_in_notConditionalExpr1072_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_DOT_in_notConditionalExpr1091;
+static const unsigned long long FOLLOW_DOT_in_notConditionalExpr1091_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_notConditionalExpr1095;
+static const unsigned long long FOLLOW_ID_in_notConditionalExpr1095_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_DOT_in_notConditionalExpr1146;
+static const unsigned long long FOLLOW_DOT_in_notConditionalExpr1146_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_notConditionalExpr1148;
+static const unsigned long long FOLLOW_LPAREN_in_notConditionalExpr1148_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_mapExpr_in_notConditionalExpr1150;
+static const unsigned long long FOLLOW_mapExpr_in_notConditionalExpr1150_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_notConditionalExpr1152;
+static const unsigned long long FOLLOW_RPAREN_in_notConditionalExpr1152_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_option_in_exprOptions1202;
+static const unsigned long long FOLLOW_option_in_exprOptions1202_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_exprOptions1206;
+static const unsigned long long FOLLOW_COMMA_in_exprOptions1206_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_option_in_exprOptions1208;
+static const unsigned long long FOLLOW_option_in_exprOptions1208_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_option1240;
+static const unsigned long long FOLLOW_ID_in_option1240_data[] = { 0x0000000000400002LL};
+static ANTLRBitSet *FOLLOW_EQUALS_in_option1264;
+static const unsigned long long FOLLOW_EQUALS_in_option1264_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_exprNoComma_in_option1266;
+static const unsigned long long FOLLOW_exprNoComma_in_option1266_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_memberExpr_in_exprNoComma1554;
+static const unsigned long long FOLLOW_memberExpr_in_exprNoComma1554_data[] = { 0x0000000000800002LL};
+static ANTLRBitSet *FOLLOW_COLON_in_exprNoComma1566;
+static const unsigned long long FOLLOW_COLON_in_exprNoComma1566_data[] = { 0x0000000041000010LL};
+static ANTLRBitSet *FOLLOW_mapTemplateRef_in_exprNoComma1568;
+static const unsigned long long FOLLOW_mapTemplateRef_in_exprNoComma1568_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_mapExpr_in_expr1672;
+static const unsigned long long FOLLOW_mapExpr_in_expr1672_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_memberExpr_in_mapExpr1689;
+static const unsigned long long FOLLOW_memberExpr_in_mapExpr1689_data[] = { 0x0000000010800002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_mapExpr1704;
+static const unsigned long long FOLLOW_COMMA_in_mapExpr1704_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_memberExpr_in_mapExpr1706;
+static const unsigned long long FOLLOW_memberExpr_in_mapExpr1706_data[] = { 0x0000000010800000LL};
+static ANTLRBitSet *FOLLOW_COLON_in_mapExpr1712;
+static const unsigned long long FOLLOW_COLON_in_mapExpr1712_data[] = { 0x0000000041000010LL};
+static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1714;
+static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1714_data[] = { 0x0000000000800002LL};
+static ANTLRBitSet *FOLLOW_COLON_in_mapExpr1871;
+static const unsigned long long FOLLOW_COLON_in_mapExpr1871_data[] = { 0x0000000041000010LL};
+static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1875;
+static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1875_data[] = { 0x0000000010800002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_mapExpr1881;
+static const unsigned long long FOLLOW_COMMA_in_mapExpr1881_data[] = { 0x0000000041000010LL};
+static ANTLRBitSet *FOLLOW_mapTemplateRef_in_mapExpr1885;
+static const unsigned long long FOLLOW_mapTemplateRef_in_mapExpr1885_data[] = { 0x0000000010800002LL};
+static ANTLRBitSet *FOLLOW_ID_in_mapTemplateRef1982;
+static const unsigned long long FOLLOW_ID_in_mapTemplateRef1982_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef1984;
+static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef1984_data[] = { 0x0000010047243050LL};
+static ANTLRBitSet *FOLLOW_args_in_mapTemplateRef1986;
+static const unsigned long long FOLLOW_args_in_mapTemplateRef1986_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef1988;
+static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef1988_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_subtemplate_in_mapTemplateRef2033;
+static const unsigned long long FOLLOW_subtemplate_in_mapTemplateRef2033_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef2045;
+static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef2045_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_mapExpr_in_mapTemplateRef2047;
+static const unsigned long long FOLLOW_mapExpr_in_mapTemplateRef2047_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef2051;
+static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef2051_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_mapTemplateRef2053;
+static const unsigned long long FOLLOW_LPAREN_in_mapTemplateRef2053_data[] = { 0x0000010047043050LL};
+static ANTLRBitSet *FOLLOW_argExprList_in_mapTemplateRef2055;
+static const unsigned long long FOLLOW_argExprList_in_mapTemplateRef2055_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_mapTemplateRef2058;
+static const unsigned long long FOLLOW_RPAREN_in_mapTemplateRef2058_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_includeExpr_in_memberExpr2089;
+static const unsigned long long FOLLOW_includeExpr_in_memberExpr2089_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_DOT_in_memberExpr2108;
+static const unsigned long long FOLLOW_DOT_in_memberExpr2108_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_memberExpr2110;
+static const unsigned long long FOLLOW_ID_in_memberExpr2110_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_DOT_in_memberExpr2165;
+static const unsigned long long FOLLOW_DOT_in_memberExpr2165_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_memberExpr2167;
+static const unsigned long long FOLLOW_LPAREN_in_memberExpr2167_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_mapExpr_in_memberExpr2169;
+static const unsigned long long FOLLOW_mapExpr_in_memberExpr2169_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_memberExpr2171;
+static const unsigned long long FOLLOW_RPAREN_in_memberExpr2171_data[] = { 0x0000000020000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_includeExpr2246;
+static const unsigned long long FOLLOW_ID_in_includeExpr2246_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2248;
+static const unsigned long long FOLLOW_LPAREN_in_includeExpr2248_data[] = { 0x0000010047043050LL};
+static ANTLRBitSet *FOLLOW_expr_in_includeExpr2250;
+static const unsigned long long FOLLOW_expr_in_includeExpr2250_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2253;
+static const unsigned long long FOLLOW_RPAREN_in_includeExpr2253_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_SUPER_in_includeExpr2297;
+static const unsigned long long FOLLOW_SUPER_in_includeExpr2297_data[] = { 0x0000000020000000LL};
+static ANTLRBitSet *FOLLOW_DOT_in_includeExpr2299;
+static const unsigned long long FOLLOW_DOT_in_includeExpr2299_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_includeExpr2301;
+static const unsigned long long FOLLOW_ID_in_includeExpr2301_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2303;
+static const unsigned long long FOLLOW_LPAREN_in_includeExpr2303_data[] = { 0x0000010047243050LL};
+static ANTLRBitSet *FOLLOW_args_in_includeExpr2305;
+static const unsigned long long FOLLOW_args_in_includeExpr2305_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2307;
+static const unsigned long long FOLLOW_RPAREN_in_includeExpr2307_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_includeExpr2340;
+static const unsigned long long FOLLOW_ID_in_includeExpr2340_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2342;
+static const unsigned long long FOLLOW_LPAREN_in_includeExpr2342_data[] = { 0x0000010047243050LL};
+static ANTLRBitSet *FOLLOW_args_in_includeExpr2344;
+static const unsigned long long FOLLOW_args_in_includeExpr2344_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2346;
+static const unsigned long long FOLLOW_RPAREN_in_includeExpr2346_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_AT_in_includeExpr2391;
+static const unsigned long long FOLLOW_AT_in_includeExpr2391_data[] = { 0x0000000000040000LL};
+static ANTLRBitSet *FOLLOW_SUPER_in_includeExpr2393;
+static const unsigned long long FOLLOW_SUPER_in_includeExpr2393_data[] = { 0x0000000020000000LL};
+static ANTLRBitSet *FOLLOW_DOT_in_includeExpr2395;
+static const unsigned long long FOLLOW_DOT_in_includeExpr2395_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_includeExpr2397;
+static const unsigned long long FOLLOW_ID_in_includeExpr2397_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2399;
+static const unsigned long long FOLLOW_LPAREN_in_includeExpr2399_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2403;
+static const unsigned long long FOLLOW_RPAREN_in_includeExpr2403_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_AT_in_includeExpr2431;
+static const unsigned long long FOLLOW_AT_in_includeExpr2431_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_ID_in_includeExpr2433;
+static const unsigned long long FOLLOW_ID_in_includeExpr2433_data[] = { 0x0000000001000000LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_includeExpr2435;
+static const unsigned long long FOLLOW_LPAREN_in_includeExpr2435_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_includeExpr2439;
+static const unsigned long long FOLLOW_RPAREN_in_includeExpr2439_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_primary_in_includeExpr2479;
+static const unsigned long long FOLLOW_primary_in_includeExpr2479_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_primary2498;
+static const unsigned long long FOLLOW_ID_in_primary2498_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_STRING_in_primary2508;
+static const unsigned long long FOLLOW_STRING_in_primary2508_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_T_TRUE_in_primary2518;
+static const unsigned long long FOLLOW_T_TRUE_in_primary2518_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_T_FALSE_in_primary2528;
+static const unsigned long long FOLLOW_T_FALSE_in_primary2528_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_subtemplate_in_primary2538;
+static const unsigned long long FOLLOW_subtemplate_in_primary2538_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_list_in_primary2548;
+static const unsigned long long FOLLOW_list_in_primary2548_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_primary2562;
+static const unsigned long long FOLLOW_LPAREN_in_primary2562_data[] = { 0x0000010045143050LL};
+static ANTLRBitSet *FOLLOW_conditional_in_primary2565;
+static const unsigned long long FOLLOW_conditional_in_primary2565_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_primary2567;
+static const unsigned long long FOLLOW_RPAREN_in_primary2567_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_primary2583;
+static const unsigned long long FOLLOW_LPAREN_in_primary2583_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_expr_in_primary2585;
+static const unsigned long long FOLLOW_expr_in_primary2585_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_primary2587;
+static const unsigned long long FOLLOW_RPAREN_in_primary2587_data[] = { 0x0000000001000002LL};
+static ANTLRBitSet *FOLLOW_LPAREN_in_primary2601;
+static const unsigned long long FOLLOW_LPAREN_in_primary2601_data[] = { 0x0000010047043050LL};
+static ANTLRBitSet *FOLLOW_argExprList_in_primary2603;
+static const unsigned long long FOLLOW_argExprList_in_primary2603_data[] = { 0x0000000002000000LL};
+static ANTLRBitSet *FOLLOW_RPAREN_in_primary2606;
+static const unsigned long long FOLLOW_RPAREN_in_primary2606_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_argExprList_in_args2714;
+static const unsigned long long FOLLOW_argExprList_in_args2714_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_namedArg_in_args2724;
+static const unsigned long long FOLLOW_namedArg_in_args2724_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_args2728;
+static const unsigned long long FOLLOW_COMMA_in_args2728_data[] = { 0x0000000000000010LL};
+static ANTLRBitSet *FOLLOW_namedArg_in_args2730;
+static const unsigned long long FOLLOW_namedArg_in_args2730_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_args2736;
+static const unsigned long long FOLLOW_COMMA_in_args2736_data[] = { 0x0000000000200000LL};
+static ANTLRBitSet *FOLLOW_ELLIPSIS_in_args2738;
+static const unsigned long long FOLLOW_ELLIPSIS_in_args2738_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ELLIPSIS_in_args2758;
+static const unsigned long long FOLLOW_ELLIPSIS_in_args2758_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_arg_in_argExprList2777;
+static const unsigned long long FOLLOW_arg_in_argExprList2777_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_argExprList2781;
+static const unsigned long long FOLLOW_COMMA_in_argExprList2781_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_arg_in_argExprList2783;
+static const unsigned long long FOLLOW_arg_in_argExprList2783_data[] = { 0x0000000010000002LL};
+static ANTLRBitSet *FOLLOW_exprNoComma_in_arg2800;
+static const unsigned long long FOLLOW_exprNoComma_in_arg2800_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_ID_in_namedArg2809;
+static const unsigned long long FOLLOW_ID_in_namedArg2809_data[] = { 0x0000000000400000LL};
+static ANTLRBitSet *FOLLOW_EQUALS_in_namedArg2811;
+static const unsigned long long FOLLOW_EQUALS_in_namedArg2811_data[] = { 0x0000010045043050LL};
+static ANTLRBitSet *FOLLOW_arg_in_namedArg2813;
+static const unsigned long long FOLLOW_arg_in_namedArg2813_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LBRACK_in_list2846;
+static const unsigned long long FOLLOW_LBRACK_in_list2846_data[] = { 0x0000000008000000LL};
+static ANTLRBitSet *FOLLOW_RBRACK_in_list2848;
+static const unsigned long long FOLLOW_RBRACK_in_list2848_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_LBRACK_in_list2865;
+static const unsigned long long FOLLOW_LBRACK_in_list2865_data[] = { 0x000001005D043050LL};
+static ANTLRBitSet *FOLLOW_listElement_in_list2867;
+static const unsigned long long FOLLOW_listElement_in_list2867_data[] = { 0x0000000018000000LL};
+static ANTLRBitSet *FOLLOW_COMMA_in_list2871;
+static const unsigned long long FOLLOW_COMMA_in_list2871_data[] = { 0x000001005D043050LL};
+static ANTLRBitSet *FOLLOW_listElement_in_list2873;
+static const unsigned long long FOLLOW_listElement_in_list2873_data[] = { 0x0000000018000000LL};
+static ANTLRBitSet *FOLLOW_RBRACK_in_list2878;
+static const unsigned long long FOLLOW_RBRACK_in_list2878_data[] = { 0x0000000000000002LL};
+static ANTLRBitSet *FOLLOW_exprNoComma_in_listElement2901;
+static const unsigned long long FOLLOW_exprNoComma_in_listElement2901_data[] = { 0x0000000000000002LL};
 
 
 #pragma mark Dynamic Global globalAttributeScopeImplementation
@@ -400,13 +400,13 @@ static const unsigned long long FOLLOW_exprNoComma_in_listElement2900_data[] = {
 
 + (conditional_Scope *)newconditional_Scope
 {
-return [[conditional_Scope alloc] init];
+    return [[conditional_Scope alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* start of conditional_Scope get and set functions */
@@ -424,13 +424,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_templateAndEOF_return *)newSTParser_templateAndEOF_return
 {
-return [[[STParser_templateAndEOF_return alloc] init] retain];
+    return [[STParser_templateAndEOF_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -441,17 +441,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -462,13 +458,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_template_return *)newSTParser_template_return
 {
-return [[[STParser_template_return alloc] init] retain];
+    return [[STParser_template_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -479,17 +475,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -500,13 +492,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_element_return *)newSTParser_element_return
 {
-return [[[STParser_element_return alloc] init] retain];
+    return [[STParser_element_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -517,17 +509,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -538,13 +526,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_singleElement_return *)newSTParser_singleElement_return
 {
-return [[[STParser_singleElement_return alloc] init] retain];
+    return [[STParser_singleElement_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -555,17 +543,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -576,13 +560,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_compoundElement_return *)newSTParser_compoundElement_return
 {
-return [[[STParser_compoundElement_return alloc] init] retain];
+    return [[STParser_compoundElement_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -593,17 +577,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -614,13 +594,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_exprTag_return *)newSTParser_exprTag_return
 {
-return [[[STParser_exprTag_return alloc] init] retain];
+    return [[STParser_exprTag_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -631,17 +611,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -652,13 +628,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_region_return *)newSTParser_region_return
 {
-return [[[STParser_region_return alloc] init] retain];
+    return [[STParser_region_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -669,17 +645,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -690,13 +662,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_subtemplate_return *)newSTParser_subtemplate_return
 {
-return [[[STParser_subtemplate_return alloc] init] retain];
+    return [[STParser_subtemplate_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -707,17 +679,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -728,13 +696,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_ifstat_return *)newSTParser_ifstat_return
 {
-return [[[STParser_ifstat_return alloc] init] retain];
+    return [[STParser_ifstat_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -745,17 +713,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -766,13 +730,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_conditional_return *)newSTParser_conditional_return
 {
-return [[[STParser_conditional_return alloc] init] retain];
+    return [[STParser_conditional_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -783,17 +747,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -804,13 +764,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_andConditional_return *)newSTParser_andConditional_return
 {
-return [[[STParser_andConditional_return alloc] init] retain];
+    return [[STParser_andConditional_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -821,17 +781,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -842,13 +798,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_notConditional_return *)newSTParser_notConditional_return
 {
-return [[[STParser_notConditional_return alloc] init] retain];
+    return [[STParser_notConditional_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -859,17 +815,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -880,13 +832,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_notConditionalExpr_return *)newSTParser_notConditionalExpr_return
 {
-return [[[STParser_notConditionalExpr_return alloc] init] retain];
+    return [[STParser_notConditionalExpr_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -897,17 +849,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -918,13 +866,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_exprOptions_return *)newSTParser_exprOptions_return
 {
-return [[[STParser_exprOptions_return alloc] init] retain];
+    return [[STParser_exprOptions_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -935,17 +883,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -956,13 +900,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_option_return *)newSTParser_option_return
 {
-return [[[STParser_option_return alloc] init] retain];
+    return [[STParser_option_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -973,17 +917,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -994,13 +934,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_exprNoComma_return *)newSTParser_exprNoComma_return
 {
-return [[[STParser_exprNoComma_return alloc] init] retain];
+    return [[STParser_exprNoComma_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1011,17 +951,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1032,13 +968,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_expr_return *)newSTParser_expr_return
 {
-return [[[STParser_expr_return alloc] init] retain];
+    return [[STParser_expr_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1049,17 +985,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1070,13 +1002,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_mapExpr_return *)newSTParser_mapExpr_return
 {
-return [[[STParser_mapExpr_return alloc] init] retain];
+    return [[STParser_mapExpr_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1087,17 +1019,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1108,13 +1036,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_mapTemplateRef_return *)newSTParser_mapTemplateRef_return
 {
-return [[[STParser_mapTemplateRef_return alloc] init] retain];
+    return [[STParser_mapTemplateRef_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1125,17 +1053,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1146,13 +1070,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_memberExpr_return *)newSTParser_memberExpr_return
 {
-return [[[STParser_memberExpr_return alloc] init] retain];
+    return [[STParser_memberExpr_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1163,17 +1087,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1184,13 +1104,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_includeExpr_return *)newSTParser_includeExpr_return
 {
-return [[[STParser_includeExpr_return alloc] init] retain];
+    return [[STParser_includeExpr_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1201,17 +1121,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1222,13 +1138,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_primary_return *)newSTParser_primary_return
 {
-return [[[STParser_primary_return alloc] init] retain];
+    return [[STParser_primary_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1239,17 +1155,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1260,13 +1172,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_args_return *)newSTParser_args_return
 {
-return [[[STParser_args_return alloc] init] retain];
+    return [[STParser_args_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1277,17 +1189,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1298,13 +1206,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_argExprList_return *)newSTParser_argExprList_return
 {
-return [[[STParser_argExprList_return alloc] init] retain];
+    return [[STParser_argExprList_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1315,17 +1223,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1336,13 +1240,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_arg_return *)newSTParser_arg_return
 {
-return [[[STParser_arg_return alloc] init] retain];
+    return [[STParser_arg_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1353,17 +1257,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1374,13 +1274,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_namedArg_return *)newSTParser_namedArg_return
 {
-return [[[STParser_namedArg_return alloc] init] retain];
+    return [[STParser_namedArg_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1391,17 +1291,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1412,13 +1308,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_list_return *)newSTParser_list_return
 {
-return [[[STParser_list_return alloc] init] retain];
+    return [[STParser_list_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1429,17 +1325,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1450,13 +1342,13 @@ return self;
 @synthesize tree; /* start of synthesize -- OBJC-Line 1837 */
 + (STParser_listElement_return *)newSTParser_listElement_return
 {
-return [[[STParser_listElement_return alloc] init] retain];
+    return [[STParser_listElement_return alloc] init];
 }
 
 - (id) init
 {
-self = [super init];
-return self;
+    self = [super init];
+    return self;
 }
 
 /* AST returnScope.methods */
@@ -1467,17 +1359,13 @@ return self;
 
 - (void) setTree:(CommonTree *)aTree
 {
-    if (tree != aTree) {
-        if (tree != nil) [tree release];
-        if (aTree != nil) [aTree retain];
-        tree = aTree;
-    }
+    tree = aTree;
 }
 
 - (void) dealloc
 {
-    self.tree = nil;
-    [super dealloc];
+    tree = nil;
+    // [super dealloc];
 }
 
 
@@ -1510,189 +1398,189 @@ static conditional_Scope *conditional_scope;
 + (void) initialize
 {
     #pragma mark Bitsets
-    FOLLOW_template_in_templateAndEOF190 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_templateAndEOF190_data Count:(NSUInteger)1] retain];
-    FOLLOW_EOF_in_templateAndEOF192 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EOF_in_templateAndEOF192_data Count:(NSUInteger)1] retain];
-    FOLLOW_element_in_template206 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_element_in_template206_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_element224 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element224_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMENT_in_element227 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMENT_in_element227_data Count:(NSUInteger)1] retain];
-    FOLLOW_NEWLINE_in_element229 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_element229_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_element242 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element242_data Count:(NSUInteger)1] retain];
-    FOLLOW_singleElement_in_element244 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element244_data Count:(NSUInteger)1] retain];
-    FOLLOW_singleElement_in_element266 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element266_data Count:(NSUInteger)1] retain];
-    FOLLOW_compoundElement_in_element276 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element276_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprTag_in_singleElement295 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprTag_in_singleElement295_data Count:(NSUInteger)1] retain];
-    FOLLOW_TEXT_in_singleElement305 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_TEXT_in_singleElement305_data Count:(NSUInteger)1] retain];
-    FOLLOW_NEWLINE_in_singleElement315 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_singleElement315_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMENT_in_singleElement325 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMENT_in_singleElement325_data Count:(NSUInteger)1] retain];
-    FOLLOW_ifstat_in_compoundElement346 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ifstat_in_compoundElement346_data Count:(NSUInteger)1] retain];
-    FOLLOW_region_in_compoundElement356 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_region_in_compoundElement356_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_exprTag375 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_exprTag375_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_exprTag377 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_exprTag377_data Count:(NSUInteger)1] retain];
-    FOLLOW_SEMI_in_exprTag381 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SEMI_in_exprTag381_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprOptions_in_exprTag383 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprOptions_in_exprTag383_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_exprTag388 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_exprTag388_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_region434 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_region434_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_region439 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_region439_data Count:(NSUInteger)1] retain];
-    FOLLOW_AT_in_region441 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_region441_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_region443 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_region443_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_region445 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_region445_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_region457 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_region457_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_region467 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_region467_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_region470 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_region470_data Count:(NSUInteger)1] retain];
-    FOLLOW_END_in_region472 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_END_in_region472_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_region474 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_region474_data Count:(NSUInteger)1] retain];
-    FOLLOW_NEWLINE_in_region497 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_region497_data Count:(NSUInteger)1] retain];
-    FOLLOW_LCURLY_in_subtemplate599 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LCURLY_in_subtemplate599_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_subtemplate605 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate605_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_subtemplate609 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_subtemplate609_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_subtemplate614 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate614_data Count:(NSUInteger)1] retain];
-    FOLLOW_PIPE_in_subtemplate619 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_PIPE_in_subtemplate619_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_subtemplate624 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_subtemplate624_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_subtemplate626 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_subtemplate626_data Count:(NSUInteger)1] retain];
-    FOLLOW_RCURLY_in_subtemplate629 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RCURLY_in_subtemplate629_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_ifstat690 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat690_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_ifstat693 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat693_data Count:(NSUInteger)1] retain];
-    FOLLOW_IF_in_ifstat695 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_IF_in_ifstat695_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_ifstat697 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_ifstat697_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_ifstat701 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat701_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_ifstat703 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_ifstat703_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_ifstat705 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat705_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_ifstat723 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat723_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_ifstat739 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat739_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_ifstat742 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat742_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELSEIF_in_ifstat744 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSEIF_in_ifstat744_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_ifstat746 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_ifstat746_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_ifstat750 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat750_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_ifstat752 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_ifstat752_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_ifstat754 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat754_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_ifstat758 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat758_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_ifstat777 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat777_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_ifstat780 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat780_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELSE_in_ifstat782 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSE_in_ifstat782_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_ifstat784 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat784_data Count:(NSUInteger)1] retain];
-    FOLLOW_template_in_ifstat788 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat788_data Count:(NSUInteger)1] retain];
-    FOLLOW_INDENT_in_ifstat805 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat805_data Count:(NSUInteger)1] retain];
-    FOLLOW_LDELIM_in_ifstat811 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat811_data Count:(NSUInteger)1] retain];
-    FOLLOW_ENDIF_in_ifstat813 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ENDIF_in_ifstat813_data Count:(NSUInteger)1] retain];
-    FOLLOW_RDELIM_in_ifstat823 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat823_data Count:(NSUInteger)1] retain];
-    FOLLOW_NEWLINE_in_ifstat846 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_ifstat846_data Count:(NSUInteger)1] retain];
-    FOLLOW_andConditional_in_conditional990 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_andConditional_in_conditional990_data Count:(NSUInteger)1] retain];
-    FOLLOW_OR_in_conditional994 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_OR_in_conditional994_data Count:(NSUInteger)1] retain];
-    FOLLOW_andConditional_in_conditional997 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_andConditional_in_conditional997_data Count:(NSUInteger)1] retain];
-    FOLLOW_notConditional_in_andConditional1013 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_andConditional1013_data Count:(NSUInteger)1] retain];
-    FOLLOW_AND_in_andConditional1017 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AND_in_andConditional1017_data Count:(NSUInteger)1] retain];
-    FOLLOW_notConditional_in_andConditional1020 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_andConditional1020_data Count:(NSUInteger)1] retain];
-    FOLLOW_BANG_in_notConditional1038 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BANG_in_notConditional1038_data Count:(NSUInteger)1] retain];
-    FOLLOW_notConditional_in_notConditional1041 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_notConditional1041_data Count:(NSUInteger)1] retain];
-    FOLLOW_memberExpr_in_notConditional1051 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_notConditional1051_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_notConditionalExpr1071 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_notConditionalExpr1071_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_notConditionalExpr1090 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_notConditionalExpr1090_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_notConditionalExpr1094 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_notConditionalExpr1094_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_notConditionalExpr1145 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_notConditionalExpr1145_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_notConditionalExpr1147 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_notConditionalExpr1147_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapExpr_in_notConditionalExpr1149 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_notConditionalExpr1149_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_notConditionalExpr1151 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_notConditionalExpr1151_data Count:(NSUInteger)1] retain];
-    FOLLOW_option_in_exprOptions1201 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions1201_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_exprOptions1205 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_exprOptions1205_data Count:(NSUInteger)1] retain];
-    FOLLOW_option_in_exprOptions1207 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions1207_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_option1239 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_option1239_data Count:(NSUInteger)1] retain];
-    FOLLOW_EQUALS_in_option1263 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_option1263_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprNoComma_in_option1265 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_option1265_data Count:(NSUInteger)1] retain];
-    FOLLOW_memberExpr_in_exprNoComma1553 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_exprNoComma1553_data Count:(NSUInteger)1] retain];
-    FOLLOW_COLON_in_exprNoComma1565 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_exprNoComma1565_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_exprNoComma1567 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_exprNoComma1567_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapExpr_in_expr1671 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_expr1671_data Count:(NSUInteger)1] retain];
-    FOLLOW_memberExpr_in_mapExpr1688 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_mapExpr1688_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_mapExpr1703 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_mapExpr1703_data Count:(NSUInteger)1] retain];
-    FOLLOW_memberExpr_in_mapExpr1705 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_mapExpr1705_data Count:(NSUInteger)1] retain];
-    FOLLOW_COLON_in_mapExpr1711 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_mapExpr1711_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_mapExpr1713 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1713_data Count:(NSUInteger)1] retain];
-    FOLLOW_COLON_in_mapExpr1870 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_mapExpr1870_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_mapExpr1874 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1874_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_mapExpr1880 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_mapExpr1880_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapTemplateRef_in_mapExpr1884 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1884_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_mapTemplateRef1981 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_mapTemplateRef1981_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_mapTemplateRef1983 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef1983_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_mapTemplateRef1985 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef1985_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_mapTemplateRef1987 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef1987_data Count:(NSUInteger)1] retain];
-    FOLLOW_subtemplate_in_mapTemplateRef2032 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_mapTemplateRef2032_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_mapTemplateRef2044 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef2044_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapExpr_in_mapTemplateRef2046 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_mapTemplateRef2046_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_mapTemplateRef2050 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef2050_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_mapTemplateRef2052 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef2052_data Count:(NSUInteger)1] retain];
-    FOLLOW_argExprList_in_mapTemplateRef2054 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_mapTemplateRef2054_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_mapTemplateRef2057 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef2057_data Count:(NSUInteger)1] retain];
-    FOLLOW_includeExpr_in_memberExpr2088 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_includeExpr_in_memberExpr2088_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_memberExpr2107 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_memberExpr2107_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_memberExpr2109 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_memberExpr2109_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_memberExpr2164 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_memberExpr2164_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_memberExpr2166 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_memberExpr2166_data Count:(NSUInteger)1] retain];
-    FOLLOW_mapExpr_in_memberExpr2168 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_memberExpr2168_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_memberExpr2170 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_memberExpr2170_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr2245 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2245_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_includeExpr2247 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2247_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_includeExpr2249 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_includeExpr2249_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_includeExpr2252 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2252_data Count:(NSUInteger)1] retain];
-    FOLLOW_SUPER_in_includeExpr2296 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SUPER_in_includeExpr2296_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_includeExpr2298 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_includeExpr2298_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr2300 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2300_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_includeExpr2302 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2302_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_includeExpr2304 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr2304_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_includeExpr2306 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2306_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr2339 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2339_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_includeExpr2341 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2341_data Count:(NSUInteger)1] retain];
-    FOLLOW_args_in_includeExpr2343 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr2343_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_includeExpr2345 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2345_data Count:(NSUInteger)1] retain];
-    FOLLOW_AT_in_includeExpr2390 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_includeExpr2390_data Count:(NSUInteger)1] retain];
-    FOLLOW_SUPER_in_includeExpr2392 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SUPER_in_includeExpr2392_data Count:(NSUInteger)1] retain];
-    FOLLOW_DOT_in_includeExpr2394 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_includeExpr2394_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr2396 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2396_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_includeExpr2398 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2398_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_includeExpr2402 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2402_data Count:(NSUInteger)1] retain];
-    FOLLOW_AT_in_includeExpr2430 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_includeExpr2430_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_includeExpr2432 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2432_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_includeExpr2434 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2434_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_includeExpr2438 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2438_data Count:(NSUInteger)1] retain];
-    FOLLOW_primary_in_includeExpr2478 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_primary_in_includeExpr2478_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_primary2497 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_primary2497_data Count:(NSUInteger)1] retain];
-    FOLLOW_STRING_in_primary2507 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_primary2507_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_TRUE_in_primary2517 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_primary2517_data Count:(NSUInteger)1] retain];
-    FOLLOW_T_FALSE_in_primary2527 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_primary2527_data Count:(NSUInteger)1] retain];
-    FOLLOW_subtemplate_in_primary2537 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_primary2537_data Count:(NSUInteger)1] retain];
-    FOLLOW_list_in_primary2547 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_list_in_primary2547_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_primary2561 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2561_data Count:(NSUInteger)1] retain];
-    FOLLOW_conditional_in_primary2564 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_primary2564_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_primary2566 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2566_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_primary2582 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2582_data Count:(NSUInteger)1] retain];
-    FOLLOW_expr_in_primary2584 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary2584_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_primary2586 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2586_data Count:(NSUInteger)1] retain];
-    FOLLOW_LPAREN_in_primary2600 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2600_data Count:(NSUInteger)1] retain];
-    FOLLOW_argExprList_in_primary2602 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_primary2602_data Count:(NSUInteger)1] retain];
-    FOLLOW_RPAREN_in_primary2605 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2605_data Count:(NSUInteger)1] retain];
-    FOLLOW_argExprList_in_args2713 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_args2713_data Count:(NSUInteger)1] retain];
-    FOLLOW_namedArg_in_args2723 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_namedArg_in_args2723_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_args2727 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_args2727_data Count:(NSUInteger)1] retain];
-    FOLLOW_namedArg_in_args2729 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_namedArg_in_args2729_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_args2735 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_args2735_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELLIPSIS_in_args2737 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args2737_data Count:(NSUInteger)1] retain];
-    FOLLOW_ELLIPSIS_in_args2757 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args2757_data Count:(NSUInteger)1] retain];
-    FOLLOW_arg_in_argExprList2776 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_argExprList2776_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_argExprList2780 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_argExprList2780_data Count:(NSUInteger)1] retain];
-    FOLLOW_arg_in_argExprList2782 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_argExprList2782_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprNoComma_in_arg2799 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_arg2799_data Count:(NSUInteger)1] retain];
-    FOLLOW_ID_in_namedArg2808 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_namedArg2808_data Count:(NSUInteger)1] retain];
-    FOLLOW_EQUALS_in_namedArg2810 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_namedArg2810_data Count:(NSUInteger)1] retain];
-    FOLLOW_arg_in_namedArg2812 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_namedArg2812_data Count:(NSUInteger)1] retain];
-    FOLLOW_LBRACK_in_list2845 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LBRACK_in_list2845_data Count:(NSUInteger)1] retain];
-    FOLLOW_RBRACK_in_list2847 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RBRACK_in_list2847_data Count:(NSUInteger)1] retain];
-    FOLLOW_LBRACK_in_list2864 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LBRACK_in_list2864_data Count:(NSUInteger)1] retain];
-    FOLLOW_listElement_in_list2866 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list2866_data Count:(NSUInteger)1] retain];
-    FOLLOW_COMMA_in_list2870 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_list2870_data Count:(NSUInteger)1] retain];
-    FOLLOW_listElement_in_list2872 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list2872_data Count:(NSUInteger)1] retain];
-    FOLLOW_RBRACK_in_list2877 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RBRACK_in_list2877_data Count:(NSUInteger)1] retain];
-    FOLLOW_exprNoComma_in_listElement2900 = [[ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_listElement2900_data Count:(NSUInteger)1] retain];
+    FOLLOW_template_in_templateAndEOF190 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_templateAndEOF190_data Count:(NSUInteger)1];
+    FOLLOW_EOF_in_templateAndEOF192 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EOF_in_templateAndEOF192_data Count:(NSUInteger)1];
+    FOLLOW_element_in_template206 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_element_in_template206_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_element224 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element224_data Count:(NSUInteger)1];
+    FOLLOW_COMMENT_in_element227 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMENT_in_element227_data Count:(NSUInteger)1];
+    FOLLOW_NEWLINE_in_element229 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_element229_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_element242 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_element242_data Count:(NSUInteger)1];
+    FOLLOW_singleElement_in_element244 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element244_data Count:(NSUInteger)1];
+    FOLLOW_singleElement_in_element266 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_singleElement_in_element266_data Count:(NSUInteger)1];
+    FOLLOW_compoundElement_in_element276 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_compoundElement_in_element276_data Count:(NSUInteger)1];
+    FOLLOW_exprTag_in_singleElement295 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprTag_in_singleElement295_data Count:(NSUInteger)1];
+    FOLLOW_TEXT_in_singleElement305 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_TEXT_in_singleElement305_data Count:(NSUInteger)1];
+    FOLLOW_NEWLINE_in_singleElement315 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_singleElement315_data Count:(NSUInteger)1];
+    FOLLOW_COMMENT_in_singleElement325 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMENT_in_singleElement325_data Count:(NSUInteger)1];
+    FOLLOW_ifstat_in_compoundElement346 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ifstat_in_compoundElement346_data Count:(NSUInteger)1];
+    FOLLOW_region_in_compoundElement356 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_region_in_compoundElement356_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_exprTag375 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_exprTag375_data Count:(NSUInteger)1];
+    FOLLOW_expr_in_exprTag377 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_exprTag377_data Count:(NSUInteger)1];
+    FOLLOW_SEMI_in_exprTag381 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SEMI_in_exprTag381_data Count:(NSUInteger)1];
+    FOLLOW_exprOptions_in_exprTag383 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprOptions_in_exprTag383_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_exprTag388 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_exprTag388_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_region434 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_region434_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_region439 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_region439_data Count:(NSUInteger)1];
+    FOLLOW_AT_in_region441 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_region441_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_region443 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_region443_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_region445 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_region445_data Count:(NSUInteger)1];
+    FOLLOW_template_in_region457 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_region457_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_region467 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_region467_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_region470 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_region470_data Count:(NSUInteger)1];
+    FOLLOW_END_in_region472 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_END_in_region472_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_region474 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_region474_data Count:(NSUInteger)1];
+    FOLLOW_NEWLINE_in_region498 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_region498_data Count:(NSUInteger)1];
+    FOLLOW_LCURLY_in_subtemplate600 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LCURLY_in_subtemplate600_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_subtemplate606 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate606_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_subtemplate610 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_subtemplate610_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_subtemplate615 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_subtemplate615_data Count:(NSUInteger)1];
+    FOLLOW_PIPE_in_subtemplate620 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_PIPE_in_subtemplate620_data Count:(NSUInteger)1];
+    FOLLOW_template_in_subtemplate625 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_subtemplate625_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_subtemplate627 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_subtemplate627_data Count:(NSUInteger)1];
+    FOLLOW_RCURLY_in_subtemplate630 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RCURLY_in_subtemplate630_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_ifstat691 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat691_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_ifstat694 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat694_data Count:(NSUInteger)1];
+    FOLLOW_IF_in_ifstat696 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_IF_in_ifstat696_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_ifstat698 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_ifstat698_data Count:(NSUInteger)1];
+    FOLLOW_conditional_in_ifstat702 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat702_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_ifstat704 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_ifstat704_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_ifstat706 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat706_data Count:(NSUInteger)1];
+    FOLLOW_template_in_ifstat724 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat724_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_ifstat740 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat740_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_ifstat743 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat743_data Count:(NSUInteger)1];
+    FOLLOW_ELSEIF_in_ifstat745 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSEIF_in_ifstat745_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_ifstat747 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_ifstat747_data Count:(NSUInteger)1];
+    FOLLOW_conditional_in_ifstat751 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_ifstat751_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_ifstat753 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_ifstat753_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_ifstat755 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat755_data Count:(NSUInteger)1];
+    FOLLOW_template_in_ifstat759 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat759_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_ifstat778 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat778_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_ifstat781 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat781_data Count:(NSUInteger)1];
+    FOLLOW_ELSE_in_ifstat783 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELSE_in_ifstat783_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_ifstat785 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat785_data Count:(NSUInteger)1];
+    FOLLOW_template_in_ifstat789 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_template_in_ifstat789_data Count:(NSUInteger)1];
+    FOLLOW_INDENT_in_ifstat806 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_INDENT_in_ifstat806_data Count:(NSUInteger)1];
+    FOLLOW_LDELIM_in_ifstat812 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LDELIM_in_ifstat812_data Count:(NSUInteger)1];
+    FOLLOW_ENDIF_in_ifstat814 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ENDIF_in_ifstat814_data Count:(NSUInteger)1];
+    FOLLOW_RDELIM_in_ifstat824 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RDELIM_in_ifstat824_data Count:(NSUInteger)1];
+    FOLLOW_NEWLINE_in_ifstat847 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_NEWLINE_in_ifstat847_data Count:(NSUInteger)1];
+    FOLLOW_andConditional_in_conditional991 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_andConditional_in_conditional991_data Count:(NSUInteger)1];
+    FOLLOW_OR_in_conditional995 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_OR_in_conditional995_data Count:(NSUInteger)1];
+    FOLLOW_andConditional_in_conditional998 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_andConditional_in_conditional998_data Count:(NSUInteger)1];
+    FOLLOW_notConditional_in_andConditional1014 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_andConditional1014_data Count:(NSUInteger)1];
+    FOLLOW_AND_in_andConditional1018 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AND_in_andConditional1018_data Count:(NSUInteger)1];
+    FOLLOW_notConditional_in_andConditional1021 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_andConditional1021_data Count:(NSUInteger)1];
+    FOLLOW_BANG_in_notConditional1039 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_BANG_in_notConditional1039_data Count:(NSUInteger)1];
+    FOLLOW_notConditional_in_notConditional1042 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_notConditional_in_notConditional1042_data Count:(NSUInteger)1];
+    FOLLOW_memberExpr_in_notConditional1052 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_notConditional1052_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_notConditionalExpr1072 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_notConditionalExpr1072_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_notConditionalExpr1091 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_notConditionalExpr1091_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_notConditionalExpr1095 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_notConditionalExpr1095_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_notConditionalExpr1146 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_notConditionalExpr1146_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_notConditionalExpr1148 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_notConditionalExpr1148_data Count:(NSUInteger)1];
+    FOLLOW_mapExpr_in_notConditionalExpr1150 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_notConditionalExpr1150_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_notConditionalExpr1152 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_notConditionalExpr1152_data Count:(NSUInteger)1];
+    FOLLOW_option_in_exprOptions1202 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions1202_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_exprOptions1206 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_exprOptions1206_data Count:(NSUInteger)1];
+    FOLLOW_option_in_exprOptions1208 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_option_in_exprOptions1208_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_option1240 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_option1240_data Count:(NSUInteger)1];
+    FOLLOW_EQUALS_in_option1264 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_option1264_data Count:(NSUInteger)1];
+    FOLLOW_exprNoComma_in_option1266 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_option1266_data Count:(NSUInteger)1];
+    FOLLOW_memberExpr_in_exprNoComma1554 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_exprNoComma1554_data Count:(NSUInteger)1];
+    FOLLOW_COLON_in_exprNoComma1566 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_exprNoComma1566_data Count:(NSUInteger)1];
+    FOLLOW_mapTemplateRef_in_exprNoComma1568 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_exprNoComma1568_data Count:(NSUInteger)1];
+    FOLLOW_mapExpr_in_expr1672 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_expr1672_data Count:(NSUInteger)1];
+    FOLLOW_memberExpr_in_mapExpr1689 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_mapExpr1689_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_mapExpr1704 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_mapExpr1704_data Count:(NSUInteger)1];
+    FOLLOW_memberExpr_in_mapExpr1706 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_memberExpr_in_mapExpr1706_data Count:(NSUInteger)1];
+    FOLLOW_COLON_in_mapExpr1712 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_mapExpr1712_data Count:(NSUInteger)1];
+    FOLLOW_mapTemplateRef_in_mapExpr1714 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1714_data Count:(NSUInteger)1];
+    FOLLOW_COLON_in_mapExpr1871 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COLON_in_mapExpr1871_data Count:(NSUInteger)1];
+    FOLLOW_mapTemplateRef_in_mapExpr1875 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1875_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_mapExpr1881 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_mapExpr1881_data Count:(NSUInteger)1];
+    FOLLOW_mapTemplateRef_in_mapExpr1885 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapTemplateRef_in_mapExpr1885_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_mapTemplateRef1982 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_mapTemplateRef1982_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_mapTemplateRef1984 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef1984_data Count:(NSUInteger)1];
+    FOLLOW_args_in_mapTemplateRef1986 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_mapTemplateRef1986_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_mapTemplateRef1988 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef1988_data Count:(NSUInteger)1];
+    FOLLOW_subtemplate_in_mapTemplateRef2033 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_mapTemplateRef2033_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_mapTemplateRef2045 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef2045_data Count:(NSUInteger)1];
+    FOLLOW_mapExpr_in_mapTemplateRef2047 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_mapTemplateRef2047_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_mapTemplateRef2051 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef2051_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_mapTemplateRef2053 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_mapTemplateRef2053_data Count:(NSUInteger)1];
+    FOLLOW_argExprList_in_mapTemplateRef2055 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_mapTemplateRef2055_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_mapTemplateRef2058 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_mapTemplateRef2058_data Count:(NSUInteger)1];
+    FOLLOW_includeExpr_in_memberExpr2089 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_includeExpr_in_memberExpr2089_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_memberExpr2108 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_memberExpr2108_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_memberExpr2110 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_memberExpr2110_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_memberExpr2165 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_memberExpr2165_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_memberExpr2167 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_memberExpr2167_data Count:(NSUInteger)1];
+    FOLLOW_mapExpr_in_memberExpr2169 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_mapExpr_in_memberExpr2169_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_memberExpr2171 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_memberExpr2171_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_includeExpr2246 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2246_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_includeExpr2248 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2248_data Count:(NSUInteger)1];
+    FOLLOW_expr_in_includeExpr2250 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_includeExpr2250_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_includeExpr2253 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2253_data Count:(NSUInteger)1];
+    FOLLOW_SUPER_in_includeExpr2297 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SUPER_in_includeExpr2297_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_includeExpr2299 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_includeExpr2299_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_includeExpr2301 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2301_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_includeExpr2303 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2303_data Count:(NSUInteger)1];
+    FOLLOW_args_in_includeExpr2305 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr2305_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_includeExpr2307 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2307_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_includeExpr2340 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2340_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_includeExpr2342 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2342_data Count:(NSUInteger)1];
+    FOLLOW_args_in_includeExpr2344 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_args_in_includeExpr2344_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_includeExpr2346 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2346_data Count:(NSUInteger)1];
+    FOLLOW_AT_in_includeExpr2391 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_includeExpr2391_data Count:(NSUInteger)1];
+    FOLLOW_SUPER_in_includeExpr2393 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_SUPER_in_includeExpr2393_data Count:(NSUInteger)1];
+    FOLLOW_DOT_in_includeExpr2395 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_DOT_in_includeExpr2395_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_includeExpr2397 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2397_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_includeExpr2399 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2399_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_includeExpr2403 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2403_data Count:(NSUInteger)1];
+    FOLLOW_AT_in_includeExpr2431 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_AT_in_includeExpr2431_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_includeExpr2433 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_includeExpr2433_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_includeExpr2435 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_includeExpr2435_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_includeExpr2439 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_includeExpr2439_data Count:(NSUInteger)1];
+    FOLLOW_primary_in_includeExpr2479 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_primary_in_includeExpr2479_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_primary2498 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_primary2498_data Count:(NSUInteger)1];
+    FOLLOW_STRING_in_primary2508 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_STRING_in_primary2508_data Count:(NSUInteger)1];
+    FOLLOW_T_TRUE_in_primary2518 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_TRUE_in_primary2518_data Count:(NSUInteger)1];
+    FOLLOW_T_FALSE_in_primary2528 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_T_FALSE_in_primary2528_data Count:(NSUInteger)1];
+    FOLLOW_subtemplate_in_primary2538 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_subtemplate_in_primary2538_data Count:(NSUInteger)1];
+    FOLLOW_list_in_primary2548 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_list_in_primary2548_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_primary2562 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2562_data Count:(NSUInteger)1];
+    FOLLOW_conditional_in_primary2565 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_conditional_in_primary2565_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_primary2567 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2567_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_primary2583 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2583_data Count:(NSUInteger)1];
+    FOLLOW_expr_in_primary2585 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_expr_in_primary2585_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_primary2587 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2587_data Count:(NSUInteger)1];
+    FOLLOW_LPAREN_in_primary2601 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LPAREN_in_primary2601_data Count:(NSUInteger)1];
+    FOLLOW_argExprList_in_primary2603 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_primary2603_data Count:(NSUInteger)1];
+    FOLLOW_RPAREN_in_primary2606 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RPAREN_in_primary2606_data Count:(NSUInteger)1];
+    FOLLOW_argExprList_in_args2714 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_argExprList_in_args2714_data Count:(NSUInteger)1];
+    FOLLOW_namedArg_in_args2724 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_namedArg_in_args2724_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_args2728 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_args2728_data Count:(NSUInteger)1];
+    FOLLOW_namedArg_in_args2730 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_namedArg_in_args2730_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_args2736 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_args2736_data Count:(NSUInteger)1];
+    FOLLOW_ELLIPSIS_in_args2738 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args2738_data Count:(NSUInteger)1];
+    FOLLOW_ELLIPSIS_in_args2758 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ELLIPSIS_in_args2758_data Count:(NSUInteger)1];
+    FOLLOW_arg_in_argExprList2777 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_argExprList2777_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_argExprList2781 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_argExprList2781_data Count:(NSUInteger)1];
+    FOLLOW_arg_in_argExprList2783 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_argExprList2783_data Count:(NSUInteger)1];
+    FOLLOW_exprNoComma_in_arg2800 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_arg2800_data Count:(NSUInteger)1];
+    FOLLOW_ID_in_namedArg2809 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_ID_in_namedArg2809_data Count:(NSUInteger)1];
+    FOLLOW_EQUALS_in_namedArg2811 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_EQUALS_in_namedArg2811_data Count:(NSUInteger)1];
+    FOLLOW_arg_in_namedArg2813 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_arg_in_namedArg2813_data Count:(NSUInteger)1];
+    FOLLOW_LBRACK_in_list2846 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LBRACK_in_list2846_data Count:(NSUInteger)1];
+    FOLLOW_RBRACK_in_list2848 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RBRACK_in_list2848_data Count:(NSUInteger)1];
+    FOLLOW_LBRACK_in_list2865 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_LBRACK_in_list2865_data Count:(NSUInteger)1];
+    FOLLOW_listElement_in_list2867 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list2867_data Count:(NSUInteger)1];
+    FOLLOW_COMMA_in_list2871 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_COMMA_in_list2871_data Count:(NSUInteger)1];
+    FOLLOW_listElement_in_list2873 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_listElement_in_list2873_data Count:(NSUInteger)1];
+    FOLLOW_RBRACK_in_list2878 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_RBRACK_in_list2878_data Count:(NSUInteger)1];
+    FOLLOW_exprNoComma_in_listElement2901 = [ANTLRBitSet newBitSetWithBits:(const unsigned long long *)FOLLOW_exprNoComma_in_listElement2901_data Count:(NSUInteger)1];
 
-    [BaseRecognizer setTokenNames:[[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
+    [BaseRecognizer setTokenNames:[AMutableArray arrayWithObjects:@"<invalid>", @"<EOR>", @"<DOWN>", @"<UP>", 
  @"ID", @"WS", @"STRING", @"ANONYMOUS_TEMPLATE", @"COMMENT", @"LINE_COMMENT", 
  @"BIGSTRING", @"BIGSTRING_NO_NL", @"T_FALSE", @"T_TRUE", @"IF", @"ELSE", 
  @"ELSEIF", @"ENDIF", @"SUPER", @"SEMI", @"BANG", @"ELLIPSIS", @"EQUALS", 
@@ -1701,7 +1589,7 @@ static conditional_Scope *conditional_scope;
  @"INDENT", @"NEWLINE", @"AT", @"END", @"ARGS", @"ELEMENTS", @"EXEC_FUNC", 
  @"EXPR", @"INCLUDE", @"INCLUDE_IND", @"INCLUDE_REGION", @"INCLUDE_SUPER", 
  @"INCLUDE_SUPER_REGION", @"INDENTED_EXPR", @"LIST", @"MAP", @"OPTIONS", 
- @"PROP", @"PROP_IND", @"REGION", @"SUBTEMPLATE", @"TNULL", @"TO_STR", @"ZIP", nil] retain]];
+ @"PROP", @"PROP_IND", @"REGION", @"SUBTEMPLATE", @"TNULL", @"TO_STR", @"ZIP", nil]];
     [BaseRecognizer setGrammarFileName:@"/Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g"];
 }
 
@@ -1712,7 +1600,7 @@ static conditional_Scope *conditional_scope;
 
 - (id) initWithTokenStream:(id<TokenStream>)aStream
 {
-    self = [super initWithTokenStream:aStream State:[[RecognizerSharedState newRecognizerSharedStateWithRuleLen:28+1] retain]];
+    self = [super initWithTokenStream:aStream State:[RecognizerSharedState newRecognizerSharedStateWithRuleLen:28+1]];
     if ( self != nil ) {
         /* ruleAttributeScopeInit */
         conditional_scope = [conditional_Scope newconditional_Scope];
@@ -1721,7 +1609,7 @@ static conditional_Scope *conditional_scope;
         /* start of actions-actionScope-init */
         /* start of init */
         /* AST genericParser.init */
-        [self setTreeAdaptor:[[CommonTreeAdaptor newTreeAdaptor] retain]];
+        [self setTreeAdaptor:[CommonTreeAdaptor newTreeAdaptor]];
     }
     return self;
 }
@@ -1729,16 +1617,15 @@ static conditional_Scope *conditional_scope;
 - (void) dealloc
 {
     /* AST genericParser.dealloc */
-    [self setTreeAdaptor:nil];
-
-    [super dealloc];
+    treeAdaptor = nil;
+    // [super dealloc];
 }
 
 /* ObjC start actions.(actionScope).methods */
 
 + (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken
 {
-    return [[[STParser alloc] init:anInput error:anErrMgr token:aTemplateToken] retain];
+    return [[STParser alloc] init:anInput error:anErrMgr token:aTemplateToken];
 }
 
 - (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken
@@ -1748,11 +1635,9 @@ static conditional_Scope *conditional_scope;
         /* ruleAttributeScopeInit */
         conditional_scope = [conditional_Scope newconditional_Scope];
         conditional_stack = [SymbolStack newSymbolStackWithLen:30];
-        [self setTreeAdaptor:[[CommonTreeAdaptor newTreeAdaptor] retain]];
+        [self setTreeAdaptor:[CommonTreeAdaptor newTreeAdaptor]];
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr retain];
         templateToken = aTemplateToken;
-        if ( templateToken ) [templateToken retain];
     }
     return self;
 }
@@ -1806,11 +1691,11 @@ static conditional_Scope *conditional_scope;
 
         CommonTree *EOF2_tree=nil;
         RewriteRuleTokenStream *stream_EOF =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token EOF"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token EOF"];
         RewriteRuleSubtreeStream *stream_template =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule template"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule template"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:110:16: ( template EOF -> ( template )? ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:110:18: template EOF // alt
         {
@@ -1838,10 +1723,10 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 110:31: -> ( template )?
         {
@@ -1866,8 +1751,8 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_EOF release];
-        [stream_template release];
+        stream_EOF = nil;
+        stream_template = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -1915,7 +1800,7 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:112:10: ( ( element )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:112:12: ( element )* // alt
         {
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -1926,7 +1811,7 @@ static conditional_Scope *conditional_scope;
                 case INDENT: ;
                     {
                     NSInteger LA1_2 = [input LA:2];
-                    if ( (LA1_2==LDELIM) ) {
+                    if ( LA1_2==LDELIM ) {
                         NSInteger LA1_5 = [input LA:3];
                         if ( (LA1_5==ID||LA1_5==STRING||(LA1_5 >= T_FALSE && LA1_5 <= IF)||LA1_5==SUPER||LA1_5==LPAREN||LA1_5==LBRACK||LA1_5==LCURLY||LA1_5==AT) ) {
                             alt1=1;
@@ -1934,7 +1819,7 @@ static conditional_Scope *conditional_scope;
 
 
                     }
-                    else if ( (LA1_2==COMMENT||LA1_2==TEXT||LA1_2==NEWLINE) ) {
+                    else if ( LA1_2==COMMENT||LA1_2==TEXT||LA1_2==NEWLINE ) {
                         alt1=1;
                     }
 
@@ -1944,7 +1829,7 @@ static conditional_Scope *conditional_scope;
                 case LDELIM: ;
                     {
                     NSInteger LA1_3 = [input LA:2];
-                    if ( (LA1_3==ID||LA1_3==STRING||(LA1_3 >= T_FALSE && LA1_3 <= IF)||LA1_3==SUPER||LA1_3==LPAREN||LA1_3==LBRACK||LA1_3==LCURLY||LA1_3==AT) ) {
+                    if ( LA1_3==ID||LA1_3==STRING||(LA1_3 >= T_FALSE && LA1_3 <= IF)||LA1_3==SUPER||LA1_3==LPAREN||LA1_3==LBRACK||LA1_3==LCURLY||LA1_3==AT ) {
                         alt1=1;
                     }
 
@@ -2049,17 +1934,17 @@ static conditional_Scope *conditional_scope;
         CommonTree *NEWLINE6_tree=nil;
         CommonTree *INDENT7_tree=nil;
         RewriteRuleTokenStream *stream_NEWLINE =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token NEWLINE"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token NEWLINE"];
         RewriteRuleTokenStream *stream_COMMENT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMENT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMENT"];
         RewriteRuleTokenStream *stream_INDENT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token INDENT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token INDENT"];
         RewriteRuleSubtreeStream *stream_singleElement =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule singleElement"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule singleElement"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:115:5: ({...}? ( INDENT )? COMMENT NEWLINE ->| INDENT singleElement -> ^( INDENTED_EXPR INDENT ( singleElement )? ) | singleElement | compoundElement ) //ruleblock
         NSInteger alt3=4;
         unichar charLA3 = [input LA:1];
@@ -2072,10 +1957,10 @@ static conditional_Scope *conditional_scope;
                         {
                         NSInteger LA3_5 = [input LA:3];
 
-                        if ( (LA3_5==NEWLINE) ) {
+                        if ( LA3_5==NEWLINE ) {
                             NSInteger LA3_11 = [input LA:4];
 
-                            if ( (([input LT:1].charPositionInLine == 0 )) ) {
+                            if ( [input LT:1].charPositionInLine == 0 ) {
                                 alt3=1;
                             }
                             else if ( (YES) ) {
@@ -2088,7 +1973,7 @@ static conditional_Scope *conditional_scope;
 
                             }
                         }
-                        else if ( (LA3_5==EOF||LA3_5==COMMENT||(LA3_5 >= RCURLY && LA3_5 <= LDELIM)||LA3_5==INDENT) ) {
+                        else if ( LA3_5==EOF||LA3_5==COMMENT||(LA3_5 >= RCURLY && LA3_5 <= LDELIM)||LA3_5==INDENT ) {
                             alt3=2;
                         }
                         else {
@@ -2112,13 +1997,13 @@ static conditional_Scope *conditional_scope;
                                 {
                                 NSInteger LA3_12 = [input LA:4];
 
-                                if ( (LA3_12==ID) ) {
+                                if ( LA3_12==ID ) {
                                     NSInteger LA3_15 = [input LA:5];
 
-                                    if ( (LA3_15==RDELIM) ) {
+                                    if ( LA3_15==RDELIM ) {
                                         alt3=4;
                                     }
-                                    else if ( (LA3_15==LPAREN) ) {
+                                    else if ( LA3_15==LPAREN ) {
                                         alt3=2;
                                     }
                                     else {
@@ -2128,7 +2013,7 @@ static conditional_Scope *conditional_scope;
 
                                     }
                                 }
-                                else if ( (LA3_12==SUPER) ) {
+                                else if ( LA3_12==SUPER ) {
                                     alt3=2;
                                 }
                                 else {
@@ -2181,7 +2066,7 @@ static conditional_Scope *conditional_scope;
                 {
                 NSInteger LA3_2 = [input LA:2];
 
-                if ( (LA3_2==NEWLINE) ) {
+                if ( LA3_2==NEWLINE ) {
                     NSInteger LA3_8 = [input LA:3];
 
                     if ( (([input LT:1].charPositionInLine == 0 )) ) {
@@ -2197,7 +2082,7 @@ static conditional_Scope *conditional_scope;
 
                     }
                 }
-                else if ( (LA3_2==EOF||LA3_2==COMMENT||(LA3_2 >= RCURLY && LA3_2 <= LDELIM)||LA3_2==INDENT) ) {
+                else if ( LA3_2==EOF||LA3_2==COMMENT||(LA3_2 >= RCURLY && LA3_2 <= LDELIM)||LA3_2==INDENT ) {
                     alt3=3;
                 }
                 else {
@@ -2221,13 +2106,13 @@ static conditional_Scope *conditional_scope;
                         {
                         NSInteger LA3_10 = [input LA:3];
 
-                        if ( (LA3_10==ID) ) {
+                        if ( LA3_10==ID ) {
                             NSInteger LA3_14 = [input LA:4];
 
-                            if ( (LA3_14==RDELIM) ) {
+                            if ( LA3_14==RDELIM ) {
                                 alt3=4;
                             }
-                            else if ( (LA3_14==LPAREN) ) {
+                            else if ( LA3_14==LPAREN ) {
                                 alt3=3;
                             }
                             else {
@@ -2237,7 +2122,7 @@ static conditional_Scope *conditional_scope;
 
                             }
                         }
-                        else if ( (LA3_10==SUPER) ) {
+                        else if ( LA3_10==SUPER ) {
                             alt3=3;
                         }
                         else {
@@ -2297,7 +2182,7 @@ static conditional_Scope *conditional_scope;
                 NSInteger alt2=2;
                 NSInteger LA2_0 = [input LA:1];
 
-                if ( (LA2_0==INDENT) ) {
+                if ( LA2_0==INDENT ) {
                     alt2=1;
                 }
                 switch (alt2) {
@@ -2333,10 +2218,10 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 115:74: ->
                 {
@@ -2376,24 +2261,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 116:30: -> ^( INDENTED_EXPR INDENT ( singleElement )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:116:33: ^( INDENTED_EXPR INDENT ( singleElement )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_INDENT nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_INDENT nextNode] toTree:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:116:56: ( singleElement )?
                         if ( [stream_singleElement hasNext] ) {
@@ -2416,7 +2297,7 @@ static conditional_Scope *conditional_scope;
             case 3 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:117:9: singleElement // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2435,7 +2316,7 @@ static conditional_Scope *conditional_scope;
             case 4 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:118:9: compoundElement // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2459,10 +2340,10 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_NEWLINE release];
-        [stream_COMMENT release];
-        [stream_INDENT release];
-        [stream_singleElement release];
+        stream_NEWLINE = nil;
+        stream_COMMENT = nil;
+        stream_INDENT = nil;
+        stream_singleElement = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -2548,7 +2429,7 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:122:9: exprTag // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2567,14 +2448,14 @@ static conditional_Scope *conditional_scope;
             case 2 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:123:9: TEXT // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
                 TEXT12=(CommonToken *)[self match:input TokenType:TEXT Follow:FOLLOW_TEXT_in_singleElement305]; 
                 TEXT12_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:TEXT12] retain]
+                (CommonTree *)[treeAdaptor create:TEXT12]
                 ;
                 [treeAdaptor addChild:TEXT12_tree  toTree:root_0];
 
@@ -2584,14 +2465,14 @@ static conditional_Scope *conditional_scope;
             case 3 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:124:9: NEWLINE // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
                 NEWLINE13=(CommonToken *)[self match:input TokenType:NEWLINE Follow:FOLLOW_NEWLINE_in_singleElement315]; 
                 NEWLINE13_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:NEWLINE13] retain]
+                (CommonTree *)[treeAdaptor create:NEWLINE13]
                 ;
                 [treeAdaptor addChild:NEWLINE13_tree  toTree:root_0];
 
@@ -2601,7 +2482,7 @@ static conditional_Scope *conditional_scope;
             case 4 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:125:9: COMMENT ! // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2667,16 +2548,16 @@ static conditional_Scope *conditional_scope;
         NSInteger alt5=2;
         NSInteger LA5_0 = [input LA:1];
 
-        if ( (LA5_0==INDENT) ) {
+        if ( LA5_0==INDENT ) {
             NSInteger LA5_1 = [input LA:2];
 
-            if ( (LA5_1==LDELIM) ) {
+            if ( LA5_1==LDELIM ) {
                 NSInteger LA5_2 = [input LA:3];
 
-                if ( (LA5_2==IF) ) {
+                if ( LA5_2==IF ) {
                     alt5=1;
                 }
-                else if ( (LA5_2==AT) ) {
+                else if ( LA5_2==AT ) {
                     alt5=2;
                 }
                 else {
@@ -2693,13 +2574,13 @@ static conditional_Scope *conditional_scope;
 
             }
         }
-        else if ( (LA5_0==LDELIM) ) {
+        else if ( LA5_0==LDELIM ) {
             NSInteger LA5_2 = [input LA:2];
 
-            if ( (LA5_2==IF) ) {
+            if ( LA5_2==IF ) {
                 alt5=1;
             }
-            else if ( (LA5_2==AT) ) {
+            else if ( LA5_2==AT ) {
                 alt5=2;
             }
             else {
@@ -2719,7 +2600,7 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:129:9: ifstat // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2738,7 +2619,7 @@ static conditional_Scope *conditional_scope;
             case 2 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:130:9: region // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -2813,20 +2694,20 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal19_tree=nil;
         CommonTree *RDELIM21_tree=nil;
         RewriteRuleTokenStream *stream_RDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RDELIM"];
         RewriteRuleTokenStream *stream_LDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LDELIM"];
         RewriteRuleTokenStream *stream_SEMI =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token SEMI"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token SEMI"];
         RewriteRuleSubtreeStream *stream_exprOptions =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule exprOptions"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule exprOptions"];
         RewriteRuleSubtreeStream *stream_expr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule expr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule expr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:134:5: ( LDELIM expr ( ';' exprOptions )? RDELIM -> ^( EXPR[$LDELIM,@\"EXPR\"] expr ( exprOptions )? ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:134:9: LDELIM expr ( ';' exprOptions )? RDELIM // alt
         {
@@ -2848,7 +2729,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt6=2;
         NSInteger LA6_0 = [input LA:1];
 
-        if ( (LA6_0==SEMI) ) {
+        if ( LA6_0==SEMI ) {
             alt6=1;
         }
         switch (alt6) {
@@ -2889,19 +2770,17 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 135:9: -> ^( EXPR[$LDELIM,@\"EXPR\"] expr ( exprOptions )? )
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:135:12: ^( EXPR[$LDELIM,@\"EXPR\"] expr ( exprOptions )? )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:EXPR FromToken:LDELIM17 Text:@"EXPR"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:EXPR FromToken:LDELIM17 Text:@"EXPR"] old:root_1];
 
                 [treeAdaptor addChild:[stream_expr nextTree] toTree:root_1];
 
@@ -2929,11 +2808,11 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RDELIM release];
-        [stream_LDELIM release];
-        [stream_SEMI release];
-        [stream_exprOptions release];
-        [stream_expr release];
+        stream_RDELIM = nil;
+        stream_LDELIM = nil;
+        stream_SEMI = nil;
+        stream_exprOptions = nil;
+        stream_expr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -2998,30 +2877,30 @@ static conditional_Scope *conditional_scope;
         CommonTree *RDELIM29_tree=nil;
         CommonTree *NEWLINE30_tree=nil;
         RewriteRuleTokenStream *stream_AT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token AT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token AT"];
         RewriteRuleTokenStream *stream_RDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RDELIM"];
         RewriteRuleTokenStream *stream_NEWLINE =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token NEWLINE"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token NEWLINE"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_END =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token END"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token END"];
         RewriteRuleTokenStream *stream_LDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LDELIM"];
         RewriteRuleTokenStream *stream_INDENT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token INDENT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token INDENT"];
         RewriteRuleSubtreeStream *stream_template =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule template"] retain];
-        // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:140:5: ( (i= INDENT )? x= LDELIM '@' ID RDELIM template ( INDENT )? LDELIM '@end' RDELIM ({...}? => NEWLINE )? -> {indent!=nil}? ^( INDENTED_EXPR $i ^( REGION[$x] ID ( template )? ) ) -> ^( REGION[$x] ID ( template )? ) ) // ruleBlockSingleAlt
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule template"];
+        // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:140:5: ( (i= INDENT )? x= LDELIM '@' ID RDELIM template ( INDENT )? LDELIM '@end' RDELIM ({...}? => NEWLINE )? -> {indent != nil}? ^( INDENTED_EXPR $i ^( REGION[$x] ID ( template )? ) ) -> ^( REGION[$x] ID ( template )? ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:140:9: (i= INDENT )? x= LDELIM '@' ID RDELIM template ( INDENT )? LDELIM '@end' RDELIM ({...}? => NEWLINE )? // alt
         {
 
@@ -3029,7 +2908,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt7=2;
         NSInteger LA7_0 = [input LA:1];
 
-        if ( (LA7_0==INDENT) ) {
+        if ( LA7_0==INDENT ) {
             alt7=1;
         }
         switch (alt7) {
@@ -3080,7 +2959,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt8=2;
         NSInteger LA8_0 = [input LA:1];
 
-        if ( (LA8_0==INDENT) ) {
+        if ( LA8_0==INDENT ) {
             alt8=1;
         }
         switch (alt8) {
@@ -3114,10 +2993,10 @@ static conditional_Scope *conditional_scope;
         NSInteger alt9=2;
         NSInteger LA9_0 = [input LA:1];
 
-        if ( (LA9_0==NEWLINE) ) {
+        if ( LA9_0==NEWLINE ) {
             NSInteger LA9_1 = [input LA:2];
 
-            if ( ((((CommonToken *)retval.start).line!= [input LT:1].line)) ) {
+            if ( ((((CommonToken *)retval.start).line != [input LT:1].line)) ) {
                 alt9=1;
             }
         }
@@ -3126,11 +3005,11 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:144:10: {...}? => NEWLINE // alt
                 {
 
-                if ( !((((CommonToken *)retval.start).line!= [input LT:1].line)) ) {
-                    @throw [FailedPredicateException newException:@"region" predicate:@"$region.start.line!= [input LT:1].line" stream:input];
+                if ( !((((CommonToken *)retval.start).line != [input LT:1].line)) ) {
+                    @throw [FailedPredicateException newException:@"region" predicate:@"$region.start.line != [input LT:1].line" stream:input];
                 }
                  
-                NEWLINE30=(CommonToken *)[self match:input TokenType:NEWLINE Follow:FOLLOW_NEWLINE_in_region497];  
+                NEWLINE30=(CommonToken *)[self match:input TokenType:NEWLINE Follow:FOLLOW_NEWLINE_in_region498];  
                     [stream_NEWLINE addElement:NEWLINE30];
 
                  
@@ -3141,7 +3020,7 @@ static conditional_Scope *conditional_scope;
 
          
         // AST REWRITE
-        // elements: template, i, ID, ID, template
+        // elements: ID, i, ID, template, template
         // token labels: i
         // rule labels: retval
         // token list labels: 
@@ -3150,35 +3029,29 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleTokenStream *stream_i =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token i" element:i] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token i" element:i];
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
-        // 145:9: -> {indent!=nil}? ^( INDENTED_EXPR $i ^( REGION[$x] ID ( template )? ) )
-        if (indent!=nil) {
+        // 145:9: -> {indent != nil}? ^( INDENTED_EXPR $i ^( REGION[$x] ID ( template )? ) )
+        if (indent != nil) {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:146:12: ^( INDENTED_EXPR $i ^( REGION[$x] ID ( template )? ) )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] old:root_1];
 
                 [treeAdaptor addChild:[stream_i nextNode] toTree:root_1];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:146:31: ^( REGION[$x] ID ( template )? )
                 {
-                    CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                    root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                            [[treeAdaptor createTree:REGION FromToken:x Text:@"REGION"] retain]
-                     old:root_2];
+                    CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                    root_2 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:REGION FromToken:x Text:@"REGION"] old:root_2];
 
                      // TODO: args: 
-                    [treeAdaptor addChild:
-                                [stream_ID nextNode]
-                     toTree:root_2];
+                    [treeAdaptor addChild:[stream_ID nextNode] toTree:root_2];
 
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:146:47: ( template )?
                     if ( [stream_template hasNext] ) {
@@ -3199,15 +3072,11 @@ static conditional_Scope *conditional_scope;
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:147:31: ^( REGION[$x] ID ( template )? )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:REGION FromToken:x Text:@"REGION"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:REGION FromToken:x Text:@"REGION"] old:root_1];
 
                  // TODO: args: 
-                [treeAdaptor addChild:
-                            [stream_ID nextNode]
-                 toTree:root_1];
+                [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:147:47: ( template )?
                 if ( [stream_template hasNext] ) {
@@ -3233,14 +3102,14 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_AT release];
-        [stream_RDELIM release];
-        [stream_NEWLINE release];
-        [stream_ID release];
-        [stream_END release];
-        [stream_LDELIM release];
-        [stream_INDENT release];
-        [stream_template release];
+        stream_AT = nil;
+        stream_RDELIM = nil;
+        stream_NEWLINE = nil;
+        stream_ID = nil;
+        stream_END = nil;
+        stream_LDELIM = nil;
+        stream_INDENT = nil;
+        stream_template = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -3296,31 +3165,31 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal35_tree=nil;
         CommonTree *ids_tree = nil;
         RewriteRuleTokenStream *stream_LCURLY =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LCURLY"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LCURLY"];
         RewriteRuleTokenStream *stream_PIPE =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token PIPE"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token PIPE"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleTokenStream *stream_INDENT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token INDENT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token INDENT"];
         RewriteRuleTokenStream *stream_RCURLY =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RCURLY"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RCURLY"];
         RewriteRuleSubtreeStream *stream_template =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule template"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule template"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:151:5: (lc= '{' (ids+= ID ( ',' ids+= ID )* '|' )? template ( INDENT )? '}' -> ^( SUBTEMPLATE[$lc,@\"SUBTEMPLATE\"] ( ^( ARGS $ids) )* ( template )? ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:151:9: lc= '{' (ids+= ID ( ',' ids+= ID )* '|' )? template ( INDENT )? '}' // alt
         {
 
-        lc=(CommonToken *)[self match:input TokenType:LCURLY Follow:FOLLOW_LCURLY_in_subtemplate599];  
+        lc=(CommonToken *)[self match:input TokenType:LCURLY Follow:FOLLOW_LCURLY_in_subtemplate600];  
             [stream_LCURLY addElement:lc];
 
          
@@ -3328,7 +3197,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt11=2;
         NSInteger LA11_0 = [input LA:1];
 
-        if ( (LA11_0==ID) ) {
+        if ( LA11_0==ID ) {
             alt11=1;
         }
         switch (alt11) {
@@ -3336,10 +3205,10 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:151:17: ids+= ID ( ',' ids+= ID )* '|' // alt
                 {
 
-                ids=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate605];  
+                ids=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate606];  
                     [stream_ID addElement:ids];
 
-                if (list_ids == nil) list_ids = [[AMutableArray arrayWithCapacity:5] retain];
+                if (list_ids == nil) list_ids = [AMutableArray arrayWithCapacity:5];
                 [list_ids addObject:ids];
 
                  
@@ -3347,7 +3216,7 @@ static conditional_Scope *conditional_scope;
                 do {
                     NSInteger alt10=2;
                     NSInteger LA10_0 = [input LA:1];
-                    if ( (LA10_0==COMMA) ) {
+                    if ( LA10_0==COMMA ) {
                         alt10=1;
                     }
 
@@ -3357,14 +3226,14 @@ static conditional_Scope *conditional_scope;
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:151:28: ',' ids+= ID // alt
                             {
 
-                            char_literal31=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_subtemplate609];  
+                            char_literal31=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_subtemplate610];  
                                 [stream_COMMA addElement:char_literal31];
 
                              
-                            ids=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate614];  
+                            ids=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_subtemplate615];  
                                 [stream_ID addElement:ids];
 
-                            if (list_ids == nil) list_ids = [[AMutableArray arrayWithCapacity:5] retain];
+                            if (list_ids == nil) list_ids = [AMutableArray arrayWithCapacity:5];
                             [list_ids addObject:ids];
 
                              
@@ -3378,7 +3247,7 @@ static conditional_Scope *conditional_scope;
                 loop10: ;
 
                  
-                char_literal32=(CommonToken *)[self match:input TokenType:PIPE Follow:FOLLOW_PIPE_in_subtemplate619];  
+                char_literal32=(CommonToken *)[self match:input TokenType:PIPE Follow:FOLLOW_PIPE_in_subtemplate620];  
                     [stream_PIPE addElement:char_literal32];
 
                  
@@ -3389,7 +3258,7 @@ static conditional_Scope *conditional_scope;
 
          
         /* ruleRef */
-        [self pushFollow:FOLLOW_template_in_subtemplate624];
+        [self pushFollow:FOLLOW_template_in_subtemplate625];
         template33 = [self template];
 
         [self popFollow];
@@ -3401,7 +3270,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt12=2;
         NSInteger LA12_0 = [input LA:1];
 
-        if ( (LA12_0==INDENT) ) {
+        if ( LA12_0==INDENT ) {
             alt12=1;
         }
         switch (alt12) {
@@ -3409,7 +3278,7 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:151:60: INDENT // alt
                 {
 
-                INDENT34=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_subtemplate626];  
+                INDENT34=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_subtemplate627];  
                     [stream_INDENT addElement:INDENT34];
 
                  
@@ -3419,12 +3288,12 @@ static conditional_Scope *conditional_scope;
         }
 
          
-        char_literal35=(CommonToken *)[self match:input TokenType:RCURLY Follow:FOLLOW_RCURLY_in_subtemplate629];  
+        char_literal35=(CommonToken *)[self match:input TokenType:RCURLY Follow:FOLLOW_RCURLY_in_subtemplate630];  
             [stream_RCURLY addElement:char_literal35];
 
          
         // AST REWRITE
-        // elements: template, ids
+        // elements: ids, template
         // token labels: 
         // rule labels: retval
         // token list labels: ids
@@ -3433,31 +3302,27 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleTokenStream *stream_ids =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                description:@"token ids" elements:list_ids] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                description:@"token ids" elements:list_ids];
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 153:9: -> ^( SUBTEMPLATE[$lc,@\"SUBTEMPLATE\"] ( ^( ARGS $ids) )* ( template )? )
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:153:12: ^( SUBTEMPLATE[$lc,@\"SUBTEMPLATE\"] ( ^( ARGS $ids) )* ( template )? )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:SUBTEMPLATE FromToken:lc Text:@"SUBTEMPLATE"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:SUBTEMPLATE FromToken:lc Text:@"SUBTEMPLATE"] old:root_1];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:153:46: ( ^( ARGS $ids) )*
                 while ( [stream_ids hasNext] ) {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:153:46: ^( ARGS $ids)
                     {
-                        CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:ARGS Text:@"ARGS"] retain]
-                         old:root_2];
+                        CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_2 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:ARGS Text:@"ARGS"] old:root_2];
 
                         [treeAdaptor addChild:[stream_ids nextNode] toTree:root_2];
 
@@ -3488,17 +3353,17 @@ static conditional_Scope *conditional_scope;
         /* ASTParser ruleCleanUp */
         /* AST ruleCleanUp */
         /* token+rule list labels */
-        [list_ids release];
+        list_ids = nil;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_LCURLY release];
-        [stream_PIPE release];
-        [stream_ID release];
-        [stream_COMMA release];
-        [stream_INDENT release];
-        [stream_RCURLY release];
-        [stream_template release];
+        stream_LCURLY = nil;
+        stream_PIPE = nil;
+        stream_ID = nil;
+        stream_COMMA = nil;
+        stream_INDENT = nil;
+        stream_RCURLY = nil;
+        stream_template = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -3591,41 +3456,41 @@ static conditional_Scope *conditional_scope;
         CommonTree *RDELIM53_tree=nil;
         CommonTree *NEWLINE54_tree=nil;
         RewriteRuleTokenStream *stream_ENDIF =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ENDIF"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ENDIF"];
         RewriteRuleTokenStream *stream_RDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RDELIM"];
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_NEWLINE =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token NEWLINE"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token NEWLINE"];
         RewriteRuleTokenStream *stream_LDELIM =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LDELIM"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LDELIM"];
         RewriteRuleTokenStream *stream_INDENT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token INDENT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token INDENT"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleTokenStream *stream_IF =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token IF"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token IF"];
         RewriteRuleTokenStream *stream_ELSE =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ELSE"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ELSE"];
         RewriteRuleTokenStream *stream_ELSEIF =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ELSEIF"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ELSEIF"];
         RewriteRuleSubtreeStream *stream_template =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule template"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule template"];
         RewriteRuleSubtreeStream *stream_conditional =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule conditional"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule conditional"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:158:5: ( (i= INDENT )? LDELIM 'if' '(' c1= conditional ')' RDELIM t1= template ( ( INDENT )? LDELIM 'elseif' '(' c2+= conditional ')' RDELIM t2+= template )* ( ( INDENT )? LDELIM 'else' RDELIM t3= template )? ( INDENT )? endif= LDELIM 'endif' RDELIM ({...}? => NEWLINE )? -> {indent!=nil}? ^( INDENTED_EXPR $i ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? ) ) -> ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:158:9: (i= INDENT )? LDELIM 'if' '(' c1= conditional ')' RDELIM t1= template ( ( INDENT )? LDELIM 'elseif' '(' c2+= conditional ')' RDELIM t2+= template )* ( ( INDENT )? LDELIM 'else' RDELIM t3= template )? ( INDENT )? endif= LDELIM 'endif' RDELIM ({...}? => NEWLINE )? // alt
         {
@@ -3634,7 +3499,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt13=2;
         NSInteger LA13_0 = [input LA:1];
 
-        if ( (LA13_0==INDENT) ) {
+        if ( LA13_0==INDENT ) {
             alt13=1;
         }
         switch (alt13) {
@@ -3642,7 +3507,7 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:158:10: i= INDENT // alt
                 {
 
-                i=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat690];  
+                i=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat691];  
                     [stream_INDENT addElement:i];
 
                  
@@ -3652,20 +3517,20 @@ static conditional_Scope *conditional_scope;
         }
 
          
-        LDELIM36=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat693];  
+        LDELIM36=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat694];  
             [stream_LDELIM addElement:LDELIM36];
 
          
-        string_literal37=(CommonToken *)[self match:input TokenType:IF Follow:FOLLOW_IF_in_ifstat695];  
+        string_literal37=(CommonToken *)[self match:input TokenType:IF Follow:FOLLOW_IF_in_ifstat696];  
             [stream_IF addElement:string_literal37];
 
          
-        char_literal38=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_ifstat697];  
+        char_literal38=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_ifstat698];  
             [stream_LPAREN addElement:char_literal38];
 
          
         /* ruleRef */
-        [self pushFollow:FOLLOW_conditional_in_ifstat701];
+        [self pushFollow:FOLLOW_conditional_in_ifstat702];
         c1 = [self conditional];
 
         [self popFollow];
@@ -3673,11 +3538,11 @@ static conditional_Scope *conditional_scope;
 
         [stream_conditional addElement:[c1 getTree]];
          
-        char_literal39=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_ifstat703];  
+        char_literal39=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_ifstat704];  
             [stream_RPAREN addElement:char_literal39];
 
          
-        RDELIM40=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat705];  
+        RDELIM40=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat706];  
             [stream_RDELIM addElement:RDELIM40];
 
          
@@ -3686,7 +3551,7 @@ static conditional_Scope *conditional_scope;
 
          
         /* ruleRef */
-        [self pushFollow:FOLLOW_template_in_ifstat723];
+        [self pushFollow:FOLLOW_template_in_ifstat724];
         t1 = [self template];
 
         [self popFollow];
@@ -3698,11 +3563,11 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt15=2;
             NSInteger LA15_0 = [input LA:1];
-            if ( (LA15_0==INDENT) ) {
+            if ( LA15_0==INDENT ) {
                 NSInteger LA15_1 = [input LA:2];
-                if ( (LA15_1==LDELIM) ) {
+                if ( LA15_1==LDELIM ) {
                     NSInteger LA15_2 = [input LA:3];
-                    if ( (LA15_2==ELSEIF) ) {
+                    if ( LA15_2==ELSEIF ) {
                         alt15=1;
                     }
 
@@ -3711,9 +3576,9 @@ static conditional_Scope *conditional_scope;
 
 
             }
-            else if ( (LA15_0==LDELIM) ) {
+            else if ( LA15_0==LDELIM ) {
                 NSInteger LA15_2 = [input LA:2];
-                if ( (LA15_2==ELSEIF) ) {
+                if ( LA15_2==ELSEIF ) {
                     alt15=1;
                 }
 
@@ -3730,7 +3595,7 @@ static conditional_Scope *conditional_scope;
                     NSInteger alt14=2;
                     NSInteger LA14_0 = [input LA:1];
 
-                    if ( (LA14_0==INDENT) ) {
+                    if ( LA14_0==INDENT ) {
                         alt14=1;
                     }
                     switch (alt14) {
@@ -3738,7 +3603,7 @@ static conditional_Scope *conditional_scope;
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:160:15: INDENT // alt
                             {
 
-                            INDENT41=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat739];  
+                            INDENT41=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat740];  
                                 [stream_INDENT addElement:INDENT41];
 
                              
@@ -3748,47 +3613,47 @@ static conditional_Scope *conditional_scope;
                     }
 
                      
-                    LDELIM42=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat742];  
+                    LDELIM42=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat743];  
                         [stream_LDELIM addElement:LDELIM42];
 
                      
-                    string_literal43=(CommonToken *)[self match:input TokenType:ELSEIF Follow:FOLLOW_ELSEIF_in_ifstat744];  
+                    string_literal43=(CommonToken *)[self match:input TokenType:ELSEIF Follow:FOLLOW_ELSEIF_in_ifstat745];  
                         [stream_ELSEIF addElement:string_literal43];
 
                      
-                    char_literal44=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_ifstat746];  
+                    char_literal44=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_ifstat747];  
                         [stream_LPAREN addElement:char_literal44];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_conditional_in_ifstat750];
+                    [self pushFollow:FOLLOW_conditional_in_ifstat751];
                     c2 = [self conditional];
 
                     [self popFollow];
 
 
                     [stream_conditional addElement:[c2 getTree]];
-                    if (list_c2 == nil) list_c2 = [[AMutableArray arrayWithCapacity:5] retain];
+                    if (list_c2 == nil) list_c2 = [AMutableArray arrayWithCapacity:5];
                     [list_c2 addObject:[c2 getTree]];
 
                      
-                    char_literal45=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_ifstat752];  
+                    char_literal45=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_ifstat753];  
                         [stream_RPAREN addElement:char_literal45];
 
                      
-                    RDELIM46=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat754];  
+                    RDELIM46=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat755];  
                         [stream_RDELIM addElement:RDELIM46];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_template_in_ifstat758];
+                    [self pushFollow:FOLLOW_template_in_ifstat759];
                     t2 = [self template];
 
                     [self popFollow];
 
 
                     [stream_template addElement:[t2 getTree]];
-                    if (list_t2 == nil) list_t2 = [[AMutableArray arrayWithCapacity:5] retain];
+                    if (list_t2 == nil) list_t2 = [AMutableArray arrayWithCapacity:5];
                     [list_t2 addObject:[t2 getTree]];
 
                      
@@ -3806,21 +3671,21 @@ static conditional_Scope *conditional_scope;
         NSInteger alt17=2;
         NSInteger LA17_0 = [input LA:1];
 
-        if ( (LA17_0==INDENT) ) {
+        if ( LA17_0==INDENT ) {
             NSInteger LA17_1 = [input LA:2];
 
-            if ( (LA17_1==LDELIM) ) {
+            if ( LA17_1==LDELIM ) {
                 NSInteger LA17_2 = [input LA:3];
 
-                if ( (LA17_2==ELSE) ) {
+                if ( LA17_2==ELSE ) {
                     alt17=1;
                 }
             }
         }
-        else if ( (LA17_0==LDELIM) ) {
+        else if ( LA17_0==LDELIM ) {
             NSInteger LA17_2 = [input LA:2];
 
-            if ( (LA17_2==ELSE) ) {
+            if ( LA17_2==ELSE ) {
                 alt17=1;
             }
         }
@@ -3833,7 +3698,7 @@ static conditional_Scope *conditional_scope;
                 NSInteger alt16=2;
                 NSInteger LA16_0 = [input LA:1];
 
-                if ( (LA16_0==INDENT) ) {
+                if ( LA16_0==INDENT ) {
                     alt16=1;
                 }
                 switch (alt16) {
@@ -3841,7 +3706,7 @@ static conditional_Scope *conditional_scope;
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:161:15: INDENT // alt
                         {
 
-                        INDENT47=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat777];  
+                        INDENT47=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat778];  
                             [stream_INDENT addElement:INDENT47];
 
                          
@@ -3851,20 +3716,20 @@ static conditional_Scope *conditional_scope;
                 }
 
                  
-                LDELIM48=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat780];  
+                LDELIM48=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat781];  
                     [stream_LDELIM addElement:LDELIM48];
 
                  
-                string_literal49=(CommonToken *)[self match:input TokenType:ELSE Follow:FOLLOW_ELSE_in_ifstat782];  
+                string_literal49=(CommonToken *)[self match:input TokenType:ELSE Follow:FOLLOW_ELSE_in_ifstat783];  
                     [stream_ELSE addElement:string_literal49];
 
                  
-                RDELIM50=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat784];  
+                RDELIM50=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat785];  
                     [stream_RDELIM addElement:RDELIM50];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_template_in_ifstat788];
+                [self pushFollow:FOLLOW_template_in_ifstat789];
                 t3 = [self template];
 
                 [self popFollow];
@@ -3882,7 +3747,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt18=2;
         NSInteger LA18_0 = [input LA:1];
 
-        if ( (LA18_0==INDENT) ) {
+        if ( LA18_0==INDENT ) {
             alt18=1;
         }
         switch (alt18) {
@@ -3890,7 +3755,7 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:162:13: INDENT // alt
                 {
 
-                INDENT51=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat805];  
+                INDENT51=(CommonToken *)[self match:input TokenType:INDENT Follow:FOLLOW_INDENT_in_ifstat806];  
                     [stream_INDENT addElement:INDENT51];
 
                  
@@ -3900,15 +3765,15 @@ static conditional_Scope *conditional_scope;
         }
 
          
-        endif=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat811];  
+        endif=(CommonToken *)[self match:input TokenType:LDELIM Follow:FOLLOW_LDELIM_in_ifstat812];  
             [stream_LDELIM addElement:endif];
 
          
-        string_literal52=(CommonToken *)[self match:input TokenType:ENDIF Follow:FOLLOW_ENDIF_in_ifstat813];  
+        string_literal52=(CommonToken *)[self match:input TokenType:ENDIF Follow:FOLLOW_ENDIF_in_ifstat814];  
             [stream_ENDIF addElement:string_literal52];
 
          
-        RDELIM53=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat823];  
+        RDELIM53=(CommonToken *)[self match:input TokenType:RDELIM Follow:FOLLOW_RDELIM_in_ifstat824];  
             [stream_RDELIM addElement:RDELIM53];
 
          
@@ -3916,7 +3781,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt19=2;
         NSInteger LA19_0 = [input LA:1];
 
-        if ( (LA19_0==NEWLINE) ) {
+        if ( LA19_0==NEWLINE ) {
             NSInteger LA19_1 = [input LA:2];
 
             if ( (( ((CommonToken *)retval.start).line != [input LT:1].line )) ) {
@@ -3932,7 +3797,7 @@ static conditional_Scope *conditional_scope;
                     @throw [FailedPredicateException newException:@"ifstat" predicate:@" $ifstat.start.line != [input LT:1].line " stream:input];
                 }
                  
-                NEWLINE54=(CommonToken *)[self match:input TokenType:NEWLINE Follow:FOLLOW_NEWLINE_in_ifstat846];  
+                NEWLINE54=(CommonToken *)[self match:input TokenType:NEWLINE Follow:FOLLOW_NEWLINE_in_ifstat847];  
                     [stream_NEWLINE addElement:NEWLINE54];
 
                  
@@ -3943,7 +3808,7 @@ static conditional_Scope *conditional_scope;
 
          
         // AST REWRITE
-        // elements: ELSE, t2, IF, ELSE, IF, c1, t1, t2, t3, c1, t3, ELSEIF, t1, c2, c2, ELSEIF, i
+        // elements: IF, t3, t3, t1, ELSE, ELSE, IF, t2, c1, c2, ELSEIF, c2, ELSEIF, t1, t2, c1, i
         // token labels: i
         // rule labels: t3, retval, t1, c1
         // token list labels: 
@@ -3952,44 +3817,40 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleTokenStream *stream_i =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token i" element:i] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token i" element:i];
         RewriteRuleSubtreeStream *stream_t3 =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token t3" element:t3!=nil?[t3 getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token t3" element:t3!=nil?[t3 getTree]:nil];
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
         RewriteRuleSubtreeStream *stream_t1 =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token t1" element:t1!=nil?[t1 getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token t1" element:t1!=nil?[t1 getTree]:nil];
         RewriteRuleSubtreeStream *stream_c1 =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token c1" element:c1!=nil?[c1 getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token c1" element:c1!=nil?[c1 getTree]:nil];
         RewriteRuleSubtreeStream *stream_t2 =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token t2" elements:list_t2] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token t2" elements:list_t2];
         RewriteRuleSubtreeStream *stream_c2 =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token c2" elements:list_c2] retain];
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token c2" elements:list_c2];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 166:9: -> {indent!=nil}? ^( INDENTED_EXPR $i ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? ) )
         if (indent!=nil) {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:12: ^( INDENTED_EXPR $i ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? ) )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INDENTED_EXPR Text:@"INDENTED_EXPR"] old:root_1];
 
                 [treeAdaptor addChild:[stream_i nextNode] toTree:root_1];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:31: ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? )
                 {
-                    CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                    root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [stream_IF nextNode]
-                     old:root_2];
+                    CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                    root_2 = (CommonTree *)[treeAdaptor becomeRoot:[stream_IF nextNode] old:root_2];
 
                     [treeAdaptor addChild:[stream_c1 nextTree] toTree:root_2];
 
@@ -4001,13 +3862,11 @@ static conditional_Scope *conditional_scope;
                     [stream_t1 reset];
 
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:47: ( ^( 'elseif' $c2 $t2) )*
-                    while ( [stream_t2 hasNext]||[stream_c2 hasNext]||[stream_ELSEIF hasNext] ) {
+                    while ( [stream_c2 hasNext]||[stream_ELSEIF hasNext]||[stream_t2 hasNext] ) {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:47: ^( 'elseif' $c2 $t2)
                         {
-                            CommonTree *root_3 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_3 = (CommonTree *)[treeAdaptor becomeRoot:
-                                        [stream_ELSEIF nextNode]
-                             old:root_3];
+                            CommonTree *root_3 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_3 = (CommonTree *)[treeAdaptor becomeRoot:[stream_ELSEIF nextNode] old:root_3];
 
                             [treeAdaptor addChild:[stream_c2 nextTree] toTree:root_3];
 
@@ -4017,18 +3876,16 @@ static conditional_Scope *conditional_scope;
                         }
 
                     }
-                    [stream_t2 reset];
                     [stream_c2 reset];
                     [stream_ELSEIF reset];
+                    [stream_t2 reset];
 
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:68: ( ^( 'else' ( $t3)? ) )?
                     if ( [stream_t3 hasNext]||[stream_ELSE hasNext] ) {
                     	// /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:68: ^( 'else' ( $t3)? )
                     	{
-                    	    CommonTree *root_3 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                    	    root_3 = (CommonTree *)[treeAdaptor becomeRoot:
-                    	                [stream_ELSE nextNode]
-                    	     old:root_3];
+                    	    CommonTree *root_3 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                    	    root_3 = (CommonTree *)[treeAdaptor becomeRoot:[stream_ELSE nextNode] old:root_3];
 
                     	    // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:167:78: ( $t3)?
                     	    if ( [stream_t3 hasNext] ) {
@@ -4056,10 +3913,8 @@ static conditional_Scope *conditional_scope;
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:31: ^( 'if' $c1 ( $t1)? ( ^( 'elseif' $c2 $t2) )* ( ^( 'else' ( $t3)? ) )? )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                            [stream_IF nextNode]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[stream_IF nextNode] old:root_1];
 
                 [treeAdaptor addChild:[stream_c1 nextTree] toTree:root_1];
 
@@ -4071,13 +3926,11 @@ static conditional_Scope *conditional_scope;
                 [stream_t1 reset];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:47: ( ^( 'elseif' $c2 $t2) )*
-                while ( [stream_t2 hasNext]||[stream_ELSEIF hasNext]||[stream_c2 hasNext] ) {
+                while ( [stream_t2 hasNext]||[stream_c2 hasNext]||[stream_ELSEIF hasNext] ) {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:47: ^( 'elseif' $c2 $t2)
                     {
-                        CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [stream_ELSEIF nextNode]
-                         old:root_2];
+                        CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_2 = (CommonTree *)[treeAdaptor becomeRoot:[stream_ELSEIF nextNode] old:root_2];
 
                         [treeAdaptor addChild:[stream_c2 nextTree] toTree:root_2];
 
@@ -4088,17 +3941,15 @@ static conditional_Scope *conditional_scope;
 
                 }
                 [stream_t2 reset];
-                [stream_ELSEIF reset];
                 [stream_c2 reset];
+                [stream_ELSEIF reset];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:68: ( ^( 'else' ( $t3)? ) )?
                 if ( [stream_ELSE hasNext]||[stream_t3 hasNext] ) {
                 	// /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:68: ^( 'else' ( $t3)? )
                 	{
-                	    CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                	    root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                	                [stream_ELSE nextNode]
-                	     old:root_2];
+                	    CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                	    root_2 = (CommonTree *)[treeAdaptor becomeRoot:[stream_ELSE nextNode] old:root_2];
 
                 	    // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:168:78: ( $t3)?
                 	    if ( [stream_t3 hasNext] ) {
@@ -4128,23 +3979,23 @@ static conditional_Scope *conditional_scope;
         /* ASTParser ruleCleanUp */
         /* AST ruleCleanUp */
         /* token+rule list labels */
-        [list_c2 release];
-        [list_t2 release];
+        list_c2 = nil;
+        list_t2 = nil;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_ENDIF release];
-        [stream_RDELIM release];
-        [stream_RPAREN release];
-        [stream_NEWLINE release];
-        [stream_LDELIM release];
-        [stream_INDENT release];
-        [stream_LPAREN release];
-        [stream_IF release];
-        [stream_ELSE release];
-        [stream_ELSEIF release];
-        [stream_template release];
-        [stream_conditional release];
+        stream_ENDIF = nil;
+        stream_RDELIM = nil;
+        stream_RPAREN = nil;
+        stream_NEWLINE = nil;
+        stream_LDELIM = nil;
+        stream_INDENT = nil;
+        stream_LPAREN = nil;
+        stream_IF = nil;
+        stream_ELSE = nil;
+        stream_ELSEIF = nil;
+        stream_template = nil;
+        stream_conditional = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -4195,13 +4046,13 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:175:5: ( andConditional ( '||' ^ andConditional )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:175:7: andConditional ( '||' ^ andConditional )* // alt
         {
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
         /* ASTParser ruleRef */
         /* ruleRef */
-        [self pushFollow:FOLLOW_andConditional_in_conditional990];
+        [self pushFollow:FOLLOW_andConditional_in_conditional991];
         andConditional55 = [self andConditional];
 
         [self popFollow];
@@ -4213,7 +4064,7 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt20=2;
             NSInteger LA20_0 = [input LA:1];
-            if ( (LA20_0==OR) ) {
+            if ( LA20_0==OR ) {
                 alt20=1;
             }
 
@@ -4223,16 +4074,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:175:24: '||' ^ andConditional // alt
                     {
 
-                    string_literal56=(CommonToken *)[self match:input TokenType:OR Follow:FOLLOW_OR_in_conditional994]; 
+                    string_literal56=(CommonToken *)[self match:input TokenType:OR Follow:FOLLOW_OR_in_conditional995]; 
                     string_literal56_tree = /* ASTParser createNodeFromToken */
-                    (CommonTree *)[[treeAdaptor create:string_literal56] retain]
+                    (CommonTree *)[treeAdaptor create:string_literal56]
                     ;
                     root_0 = (CommonTree *)[treeAdaptor becomeRoot:string_literal56_tree old:root_0];
 
                      
                     /* ASTParser ruleRef */
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_andConditional_in_conditional997];
+                    [self pushFollow:FOLLOW_andConditional_in_conditional998];
                     andConditional57 = [self andConditional];
 
                     [self popFollow];
@@ -4308,13 +4159,13 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:178:16: ( notConditional ( '&&' ^ notConditional )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:178:18: notConditional ( '&&' ^ notConditional )* // alt
         {
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
         /* ASTParser ruleRef */
         /* ruleRef */
-        [self pushFollow:FOLLOW_notConditional_in_andConditional1013];
+        [self pushFollow:FOLLOW_notConditional_in_andConditional1014];
         notConditional58 = [self notConditional];
 
         [self popFollow];
@@ -4326,7 +4177,7 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt21=2;
             NSInteger LA21_0 = [input LA:1];
-            if ( (LA21_0==AND) ) {
+            if ( LA21_0==AND ) {
                 alt21=1;
             }
 
@@ -4336,16 +4187,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:178:35: '&&' ^ notConditional // alt
                     {
 
-                    string_literal59=(CommonToken *)[self match:input TokenType:AND Follow:FOLLOW_AND_in_andConditional1017]; 
+                    string_literal59=(CommonToken *)[self match:input TokenType:AND Follow:FOLLOW_AND_in_andConditional1018]; 
                     string_literal59_tree = /* ASTParser createNodeFromToken */
-                    (CommonTree *)[[treeAdaptor create:string_literal59] retain]
+                    (CommonTree *)[treeAdaptor create:string_literal59]
                     ;
                     root_0 = (CommonTree *)[treeAdaptor becomeRoot:string_literal59_tree old:root_0];
 
                      
                     /* ASTParser ruleRef */
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_notConditional_in_andConditional1020];
+                    [self pushFollow:FOLLOW_notConditional_in_andConditional1021];
                     notConditional60 = [self notConditional];
 
                     [self popFollow];
@@ -4422,7 +4273,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt22=2;
         NSInteger LA22_0 = [input LA:1];
 
-        if ( (LA22_0==BANG) ) {
+        if ( LA22_0==BANG ) {
             alt22=1;
         }
         else if ( (LA22_0==ID||LA22_0==STRING||(LA22_0 >= T_FALSE && LA22_0 <= T_TRUE)||LA22_0==SUPER||LA22_0==LBRACK||LA22_0==LCURLY||LA22_0==AT) ) {
@@ -4441,20 +4292,20 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:181:9: '!' ^ notConditional // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
-                char_literal61=(CommonToken *)[self match:input TokenType:BANG Follow:FOLLOW_BANG_in_notConditional1038]; 
+                char_literal61=(CommonToken *)[self match:input TokenType:BANG Follow:FOLLOW_BANG_in_notConditional1039]; 
                 char_literal61_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:char_literal61] retain]
+                (CommonTree *)[treeAdaptor create:char_literal61]
                 ;
                 root_0 = (CommonTree *)[treeAdaptor becomeRoot:char_literal61_tree old:root_0];
 
                  
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_notConditional_in_notConditional1041];
+                [self pushFollow:FOLLOW_notConditional_in_notConditional1042];
                 notConditional62 = [self notConditional];
 
                 [self popFollow];
@@ -4467,13 +4318,13 @@ static conditional_Scope *conditional_scope;
             case 2 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:182:9: memberExpr // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_memberExpr_in_notConditional1051];
+                [self pushFollow:FOLLOW_memberExpr_in_notConditional1052];
                 memberExpr63 = [self memberExpr];
 
                 [self popFollow];
@@ -4544,20 +4395,20 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal65_tree=nil;
         CommonTree *char_literal67_tree=nil;
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_DOT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token DOT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token DOT"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleSubtreeStream *stream_mapExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule mapExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule mapExpr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:186:5: ( ( ID -> ID ) (p= '.' prop= ID -> ^( PROP[$p,@\"PROP\"] $notConditionalExpr $prop) |p= '.' '(' mapExpr ')' -> ^( PROP_IND[$p,@\"PROP_IND\"] $notConditionalExpr mapExpr ) )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:186:9: ( ID -> ID ) (p= '.' prop= ID -> ^( PROP[$p,@\"PROP\"] $notConditionalExpr $prop) |p= '.' '(' mapExpr ')' -> ^( PROP_IND[$p,@\"PROP_IND\"] $notConditionalExpr mapExpr ) )* // alt
         {
@@ -4566,7 +4417,7 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:186:10: ID // alt
         {
 
-        ID64=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_notConditionalExpr1071];  
+        ID64=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_notConditionalExpr1072];  
             [stream_ID addElement:ID64];
 
          
@@ -4580,17 +4431,15 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 186:12: -> ID
         {
              // TODO: args: 
-            [treeAdaptor addChild:
-                        [stream_ID nextNode]
-             toTree:root_0];
+            [treeAdaptor addChild:[stream_ID nextNode] toTree:root_0];
 
         }
 
@@ -4605,12 +4454,12 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt23=3;
             NSInteger LA23_0 = [input LA:1];
-            if ( (LA23_0==DOT) ) {
+            if ( LA23_0==DOT ) {
                 NSInteger LA23_2 = [input LA:2];
-                if ( (LA23_2==ID) ) {
+                if ( LA23_2==ID ) {
                     alt23=1;
                 }
-                else if ( (LA23_2==LPAREN) ) {
+                else if ( LA23_2==LPAREN ) {
                     alt23=2;
                 }
 
@@ -4623,16 +4472,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:187:13: p= '.' prop= ID // alt
                     {
 
-                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_notConditionalExpr1090];  
+                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_notConditionalExpr1091];  
                         [stream_DOT addElement:p];
 
                      
-                    prop=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_notConditionalExpr1094];  
+                    prop=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_notConditionalExpr1095];  
                         [stream_ID addElement:prop];
 
                      
                     // AST REWRITE
-                    // elements: notConditionalExpr, prop
+                    // elements: prop, notConditionalExpr
                     // token labels: prop
                     // rule labels: retval
                     // token list labels: 
@@ -4641,21 +4490,19 @@ static conditional_Scope *conditional_scope;
                     retval.tree = root_0;
 
                     RewriteRuleTokenStream *stream_prop =
-                        [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token prop" element:prop] retain];
+                        [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor description:@"token prop" element:prop];
                     RewriteRuleSubtreeStream *stream_retval =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                    root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                    root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                     // 187:49: -> ^( PROP[$p,@\"PROP\"] $notConditionalExpr $prop)
                     {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:187:52: ^( PROP[$p,@\"PROP\"] $notConditionalExpr $prop)
                         {
-                            CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:PROP FromToken:p Text:@"PROP"] retain]
-                             old:root_1];
+                            CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:PROP FromToken:p Text:@"PROP"] old:root_1];
 
                             [treeAdaptor addChild:[stream_retval nextTree] toTree:root_1];
 
@@ -4676,16 +4523,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:188:13: p= '.' '(' mapExpr ')' // alt
                     {
 
-                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_notConditionalExpr1145];  
+                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_notConditionalExpr1146];  
                         [stream_DOT addElement:p];
 
                      
-                    char_literal65=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_notConditionalExpr1147];  
+                    char_literal65=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_notConditionalExpr1148];  
                         [stream_LPAREN addElement:char_literal65];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_mapExpr_in_notConditionalExpr1149];
+                    [self pushFollow:FOLLOW_mapExpr_in_notConditionalExpr1150];
                     mapExpr66 = [self mapExpr];
 
                     [self popFollow];
@@ -4693,12 +4540,12 @@ static conditional_Scope *conditional_scope;
 
                     [stream_mapExpr addElement:[mapExpr66 getTree]];
                      
-                    char_literal67=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_notConditionalExpr1151];  
+                    char_literal67=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_notConditionalExpr1152];  
                         [stream_RPAREN addElement:char_literal67];
 
                      
                     // AST REWRITE
-                    // elements: notConditionalExpr, mapExpr
+                    // elements: mapExpr, notConditionalExpr
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -4707,19 +4554,17 @@ static conditional_Scope *conditional_scope;
                     retval.tree = root_0;
 
                     RewriteRuleSubtreeStream *stream_retval =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                    root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                    root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                     // 188:49: -> ^( PROP_IND[$p,@\"PROP_IND\"] $notConditionalExpr mapExpr )
                     {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:188:52: ^( PROP_IND[$p,@\"PROP_IND\"] $notConditionalExpr mapExpr )
                         {
-                            CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:PROP_IND FromToken:p Text:@"PROP_IND"] retain]
-                             old:root_1];
+                            CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:PROP_IND FromToken:p Text:@"PROP_IND"] old:root_1];
 
                             [treeAdaptor addChild:[stream_retval nextTree] toTree:root_1];
 
@@ -4752,11 +4597,11 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RPAREN release];
-        [stream_DOT release];
-        [stream_ID release];
-        [stream_LPAREN release];
-        [stream_mapExpr release];
+        stream_RPAREN = nil;
+        stream_DOT = nil;
+        stream_ID = nil;
+        stream_LPAREN = nil;
+        stream_mapExpr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -4804,17 +4649,17 @@ static conditional_Scope *conditional_scope;
 
         CommonTree *char_literal69_tree=nil;
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleSubtreeStream *stream_option =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule option"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule option"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:192:13: ( option ( ',' option )* -> ^( OPTIONS ( option )* ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:192:15: option ( ',' option )* // alt
         {
 
         /* ruleRef */
-        [self pushFollow:FOLLOW_option_in_exprOptions1201];
+        [self pushFollow:FOLLOW_option_in_exprOptions1202];
         option68 = [self option];
 
         [self popFollow];
@@ -4826,7 +4671,7 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt24=2;
             NSInteger LA24_0 = [input LA:1];
-            if ( (LA24_0==COMMA) ) {
+            if ( LA24_0==COMMA ) {
                 alt24=1;
             }
 
@@ -4836,12 +4681,12 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:192:24: ',' option // alt
                     {
 
-                    char_literal69=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_exprOptions1205];  
+                    char_literal69=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_exprOptions1206];  
                         [stream_COMMA addElement:char_literal69];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_option_in_exprOptions1207];
+                    [self pushFollow:FOLLOW_option_in_exprOptions1208];
                     option70 = [self option];
 
                     [self popFollow];
@@ -4869,19 +4714,17 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 192:38: -> ^( OPTIONS ( option )* )
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:192:41: ^( OPTIONS ( option )* )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                        [[treeAdaptor createTree:OPTIONS Text:@"OPTIONS"] retain]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:OPTIONS Text:@"OPTIONS"] old:root_1];
 
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:192:51: ( option )*
                 while ( [stream_option hasNext] ) {
@@ -4907,8 +4750,8 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_COMMA release];
-        [stream_option release];
+        stream_COMMA = nil;
+        stream_option = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -4961,19 +4804,19 @@ static conditional_Scope *conditional_scope;
         CommonTree *ID71_tree=nil;
         CommonTree *char_literal72_tree=nil;
         RewriteRuleTokenStream *stream_EQUALS =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token EQUALS"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token EQUALS"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleSubtreeStream *stream_exprNoComma =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule exprNoComma"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule exprNoComma"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:200:5: ( ID ( '=' exprNoComma -> {validOption}? ^( '=' ID exprNoComma ) ->| -> {validOption&&defVal!=nil}? ^( EQUALS[@\"=\"] ID STRING[$ID, defVal] ) ->) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:200:9: ID ( '=' exprNoComma -> {validOption}? ^( '=' ID exprNoComma ) ->| -> {validOption&&defVal!=nil}? ^( EQUALS[@\"=\"] ID STRING[$ID, defVal] ) ->) // alt
         {
 
-        ID71=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_option1239];  
+        ID71=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_option1240];  
             [stream_ID addElement:ID71];
 
          
@@ -4989,10 +4832,10 @@ static conditional_Scope *conditional_scope;
         NSInteger alt25=2;
         NSInteger LA25_0 = [input LA:1];
 
-        if ( (LA25_0==EQUALS) ) {
+        if ( LA25_0==EQUALS ) {
             alt25=1;
         }
-        else if ( (LA25_0==COMMA||LA25_0==RDELIM) ) {
+        else if ( LA25_0==COMMA||LA25_0==RDELIM ) {
             alt25=2;
         }
         else {
@@ -5006,12 +4849,12 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:206:13: '=' exprNoComma // alt
                 {
 
-                char_literal72=(CommonToken *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_option1263];  
+                char_literal72=(CommonToken *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_option1264];  
                     [stream_EQUALS addElement:char_literal72];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_exprNoComma_in_option1265];
+                [self pushFollow:FOLLOW_exprNoComma_in_option1266];
                 exprNoComma73 = [self exprNoComma];
 
                 [self popFollow];
@@ -5020,7 +4863,7 @@ static conditional_Scope *conditional_scope;
                 [stream_exprNoComma addElement:[exprNoComma73 getTree]];
                  
                 // AST REWRITE
-                // elements: EQUALS, exprNoComma, ID
+                // elements: ID, EQUALS, exprNoComma
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -5029,24 +4872,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 206:49: -> {validOption}? ^( '=' ID exprNoComma )
                 if (validOption) {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:206:67: ^( '=' ID exprNoComma )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [stream_EQUALS nextNode]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[stream_EQUALS nextNode] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         [treeAdaptor addChild:[stream_exprNoComma nextTree] toTree:root_1];
 
@@ -5088,28 +4927,22 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 213:49: -> {validOption&&defVal!=nil}? ^( EQUALS[@\"=\"] ID STRING[$ID, defVal] )
                 if (validOption&&defVal!=nil) {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:214:52: ^( EQUALS[@\"=\"] ID STRING[$ID, defVal] )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:EQUALS Text:@"="] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:EQUALS Text:@"="]  old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
-                        [treeAdaptor addChild:
-                                [[treeAdaptor createTree:STRING FromToken:ID71 Text:defVal] retain]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[treeAdaptor createTree:STRING FromToken:ID71 Text:defVal] toTree:root_1];
 
                         [treeAdaptor addChild:root_1 toTree:root_0];
                     }
@@ -5139,9 +4972,9 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_EQUALS release];
-        [stream_ID release];
-        [stream_exprNoComma release];
+        stream_EQUALS = nil;
+        stream_ID = nil;
+        stream_exprNoComma = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -5189,20 +5022,20 @@ static conditional_Scope *conditional_scope;
 
         CommonTree *char_literal75_tree=nil;
         RewriteRuleTokenStream *stream_COLON =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COLON"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COLON"];
         RewriteRuleSubtreeStream *stream_memberExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule memberExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule memberExpr"];
         RewriteRuleSubtreeStream *stream_mapTemplateRef =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule mapTemplateRef"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule mapTemplateRef"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:220:5: ( memberExpr ( ':' mapTemplateRef -> ^( MAP memberExpr mapTemplateRef ) | -> memberExpr ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:220:9: memberExpr ( ':' mapTemplateRef -> ^( MAP memberExpr mapTemplateRef ) | -> memberExpr ) // alt
         {
 
         /* ruleRef */
-        [self pushFollow:FOLLOW_memberExpr_in_exprNoComma1553];
+        [self pushFollow:FOLLOW_memberExpr_in_exprNoComma1554];
         memberExpr74 = [self memberExpr];
 
         [self popFollow];
@@ -5214,7 +5047,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt26=2;
         NSInteger LA26_0 = [input LA:1];
 
-        if ( (LA26_0==COLON) ) {
+        if ( LA26_0==COLON ) {
             alt26=1;
         }
         else if ( (LA26_0==RPAREN||(LA26_0 >= RBRACK && LA26_0 <= COMMA)||LA26_0==RDELIM) ) {
@@ -5231,12 +5064,12 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:221:11: ':' mapTemplateRef // alt
                 {
 
-                char_literal75=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_exprNoComma1565];  
+                char_literal75=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_exprNoComma1566];  
                     [stream_COLON addElement:char_literal75];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_mapTemplateRef_in_exprNoComma1567];
+                [self pushFollow:FOLLOW_mapTemplateRef_in_exprNoComma1568];
                 mapTemplateRef76 = [self mapTemplateRef];
 
                 [self popFollow];
@@ -5254,19 +5087,17 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 221:49: -> ^( MAP memberExpr mapTemplateRef )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:221:52: ^( MAP memberExpr mapTemplateRef )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:MAP Text:@"MAP"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:MAP Text:@"MAP"] old:root_1];
 
                         [treeAdaptor addChild:[stream_memberExpr nextTree] toTree:root_1];
 
@@ -5296,10 +5127,10 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 222:49: -> memberExpr
                 {
@@ -5325,9 +5156,9 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_COLON release];
-        [stream_memberExpr release];
-        [stream_mapTemplateRef release];
+        stream_COLON = nil;
+        stream_memberExpr = nil;
+        stream_mapTemplateRef = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -5375,13 +5206,13 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:226:6: ( mapExpr ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:226:8: mapExpr // alt
         {
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
         /* ASTParser ruleRef */
         /* ruleRef */
-        [self pushFollow:FOLLOW_mapExpr_in_expr1671];
+        [self pushFollow:FOLLOW_mapExpr_in_expr1672];
         mapExpr77 = [self mapExpr];
 
         [self popFollow];
@@ -5450,23 +5281,23 @@ static conditional_Scope *conditional_scope;
         CommonTree *col_tree=nil;
         CommonTree *char_literal81_tree=nil;
         RewriteRuleTokenStream *stream_COLON =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COLON"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COLON"];
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleSubtreeStream *stream_memberExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule memberExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule memberExpr"];
         RewriteRuleSubtreeStream *stream_mapTemplateRef =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule mapTemplateRef"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule mapTemplateRef"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:231:5: ( memberExpr ( (c= ',' memberExpr )+ col= ':' mapTemplateRef -> ^( ZIP[$col] ^( ELEMENTS ( memberExpr )+ ) mapTemplateRef ) | -> memberExpr ) (col= ':' x+= mapTemplateRef ({...}? => ',' x+= mapTemplateRef )* -> ^( MAP[$col] $mapExpr ( $x)+ ) )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:231:9: memberExpr ( (c= ',' memberExpr )+ col= ':' mapTemplateRef -> ^( ZIP[$col] ^( ELEMENTS ( memberExpr )+ ) mapTemplateRef ) | -> memberExpr ) (col= ':' x+= mapTemplateRef ({...}? => ',' x+= mapTemplateRef )* -> ^( MAP[$col] $mapExpr ( $x)+ ) )* // alt
         {
 
         /* ruleRef */
-        [self pushFollow:FOLLOW_memberExpr_in_mapExpr1688];
+        [self pushFollow:FOLLOW_memberExpr_in_mapExpr1689];
         memberExpr78 = [self memberExpr];
 
         [self popFollow];
@@ -5478,7 +5309,7 @@ static conditional_Scope *conditional_scope;
         NSInteger alt28=2;
         NSInteger LA28_0 = [input LA:1];
 
-        if ( (LA28_0==COMMA) ) {
+        if ( LA28_0==COMMA ) {
             alt28=1;
         }
         else if ( (LA28_0==SEMI||LA28_0==COLON||LA28_0==RPAREN||LA28_0==RDELIM) ) {
@@ -5500,7 +5331,7 @@ static conditional_Scope *conditional_scope;
                 do {
                     NSInteger alt27 = 2;
                     NSInteger LA27_0 = [input LA:1];
-                    if ( (LA27_0==COMMA) ) {
+                    if ( LA27_0==COMMA ) {
                         alt27=1;
                     }
 
@@ -5510,12 +5341,12 @@ static conditional_Scope *conditional_scope;
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:232:12: c= ',' memberExpr // alt
                             {
 
-                            c=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_mapExpr1703];  
+                            c=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_mapExpr1704];  
                                 [stream_COMMA addElement:c];
 
                              
                             /* ruleRef */
-                            [self pushFollow:FOLLOW_memberExpr_in_mapExpr1705];
+                            [self pushFollow:FOLLOW_memberExpr_in_mapExpr1706];
                             memberExpr79 = [self memberExpr];
 
                             [self popFollow];
@@ -5538,12 +5369,12 @@ static conditional_Scope *conditional_scope;
                 loop27: ;
 
                  
-                col=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_mapExpr1711];  
+                col=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_mapExpr1712];  
                     [stream_COLON addElement:col];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1713];
+                [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1714];
                 mapTemplateRef80 = [self mapTemplateRef];
 
                 [self popFollow];
@@ -5552,7 +5383,7 @@ static conditional_Scope *conditional_scope;
                 [stream_mapTemplateRef addElement:[mapTemplateRef80 getTree]];
                  
                 // AST REWRITE
-                // elements: memberExpr, mapTemplateRef
+                // elements: mapTemplateRef, memberExpr
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -5561,26 +5392,22 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 233:49: -> ^( ZIP[$col] ^( ELEMENTS ( memberExpr )+ ) mapTemplateRef )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:233:52: ^( ZIP[$col] ^( ELEMENTS ( memberExpr )+ ) mapTemplateRef )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:ZIP FromToken:col Text:@"ZIP"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:ZIP FromToken:col Text:@"ZIP"] old:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:233:64: ^( ELEMENTS ( memberExpr )+ )
                         {
-                            CommonTree *root_2 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_2 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:ELEMENTS Text:@"ELEMENTS"] retain]
-                             old:root_2];
+                            CommonTree *root_2 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_2 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:ELEMENTS Text:@"ELEMENTS"] old:root_2];
 
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:233:75: ( memberExpr )+
                             {
@@ -5623,10 +5450,10 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 234:49: -> memberExpr
                 {
@@ -5648,7 +5475,7 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt30=2;
             NSInteger LA30_0 = [input LA:1];
-            if ( (LA30_0==COLON) ) {
+            if ( LA30_0==COLON ) {
                 alt30=1;
             }
 
@@ -5662,19 +5489,19 @@ static conditional_Scope *conditional_scope;
                     if (list_x != nil) [list_x removeAllObjects];
 
                      
-                    col=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_mapExpr1870];  
+                    col=(CommonToken *)[self match:input TokenType:COLON Follow:FOLLOW_COLON_in_mapExpr1871];  
                         [stream_COLON addElement:col];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1874];
+                    [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1875];
                     x = [self mapTemplateRef];
 
                     [self popFollow];
 
 
                     [stream_mapTemplateRef addElement:[x getTree]];
-                    if (list_x == nil) list_x = [[AMutableArray arrayWithCapacity:5] retain];
+                    if (list_x == nil) list_x = [AMutableArray arrayWithCapacity:5];
                     [list_x addObject:[x getTree]];
 
                      
@@ -5696,19 +5523,19 @@ static conditional_Scope *conditional_scope;
                                     @throw [FailedPredicateException newException:@"mapExpr" predicate:@"$c==nil" stream:input];
                                 }
                                  
-                                char_literal81=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_mapExpr1880];  
+                                char_literal81=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_mapExpr1881];  
                                     [stream_COMMA addElement:char_literal81];
 
                                  
                                 /* ruleRef */
-                                [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1884];
+                                [self pushFollow:FOLLOW_mapTemplateRef_in_mapExpr1885];
                                 x = [self mapTemplateRef];
 
                                 [self popFollow];
 
 
                                 [stream_mapTemplateRef addElement:[x getTree]];
-                                if (list_x == nil) list_x = [[AMutableArray arrayWithCapacity:5] retain];
+                                if (list_x == nil) list_x = [AMutableArray arrayWithCapacity:5];
                                 [list_x addObject:[x getTree]];
 
                                  
@@ -5732,21 +5559,19 @@ static conditional_Scope *conditional_scope;
                     retval.tree = root_0;
 
                     RewriteRuleSubtreeStream *stream_retval =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token retval" element:retval!=nil?[retval getTree]:nil];
                     RewriteRuleSubtreeStream *stream_x =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token x" elements:list_x] retain];
-                    root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token x" elements:list_x];
+                    root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                     // 238:49: -> ^( MAP[$col] $mapExpr ( $x)+ )
                     {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:238:52: ^( MAP[$col] $mapExpr ( $x)+ )
                         {
-                            CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:MAP FromToken:col Text:@"MAP"] retain]
-                             old:root_1];
+                            CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:MAP FromToken:col Text:@"MAP"] old:root_1];
 
                             [treeAdaptor addChild:[stream_retval nextTree] toTree:root_1];
 
@@ -5786,14 +5611,14 @@ static conditional_Scope *conditional_scope;
         /* ASTParser ruleCleanUp */
         /* AST ruleCleanUp */
         /* token+rule list labels */
-        [list_x release];
+        list_x = nil;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_COLON release];
-        [stream_COMMA release];
-        [stream_memberExpr release];
-        [stream_mapTemplateRef release];
+        stream_COLON = nil;
+        stream_COMMA = nil;
+        stream_memberExpr = nil;
+        stream_mapTemplateRef = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -5857,23 +5682,23 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal88_tree=nil;
         CommonTree *char_literal90_tree=nil;
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleSubtreeStream *stream_argExprList =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule argExprList"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule argExprList"];
         RewriteRuleSubtreeStream *stream_args =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule args"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule args"];
         RewriteRuleSubtreeStream *stream_mapExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule mapExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule mapExpr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:248:5: ( ID '(' args ')' -> ^( INCLUDE ID ( args )? ) | subtemplate |lp= '(' mapExpr rp= ')' '(' ( argExprList )? ')' -> ^( INCLUDE_IND mapExpr ( argExprList )? ) ) //ruleblock
         NSInteger alt32=3;
         unichar charLA32 = [input LA:1];
@@ -5906,16 +5731,16 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:248:9: ID '(' args ')' // alt
                 {
 
-                ID82=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_mapTemplateRef1981];  
+                ID82=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_mapTemplateRef1982];  
                     [stream_ID addElement:ID82];
 
                  
-                char_literal83=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef1983];  
+                char_literal83=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef1984];  
                     [stream_LPAREN addElement:char_literal83];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_args_in_mapTemplateRef1985];
+                [self pushFollow:FOLLOW_args_in_mapTemplateRef1986];
                 args84 = [self args];
 
                 [self popFollow];
@@ -5923,7 +5748,7 @@ static conditional_Scope *conditional_scope;
 
                 [stream_args addElement:[args84 getTree]];
                  
-                char_literal85=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef1987];  
+                char_literal85=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef1988];  
                     [stream_RPAREN addElement:char_literal85];
 
                  
@@ -5937,24 +5762,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 248:49: -> ^( INCLUDE ID ( args )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:248:52: ^( INCLUDE ID ( args )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE Text:@"INCLUDE"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE Text:@"INCLUDE"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:248:65: ( args )?
                         if ( [stream_args hasNext] ) {
@@ -5977,13 +5798,13 @@ static conditional_Scope *conditional_scope;
             case 2 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:249:9: subtemplate // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_subtemplate_in_mapTemplateRef2032];
+                [self pushFollow:FOLLOW_subtemplate_in_mapTemplateRef2033];
                 subtemplate86 = [self subtemplate];
 
                 [self popFollow];
@@ -5997,12 +5818,12 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:250:9: lp= '(' mapExpr rp= ')' '(' ( argExprList )? ')' // alt
                 {
 
-                lp=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef2044];  
+                lp=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef2045];  
                     [stream_LPAREN addElement:lp];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_mapExpr_in_mapTemplateRef2046];
+                [self pushFollow:FOLLOW_mapExpr_in_mapTemplateRef2047];
                 mapExpr87 = [self mapExpr];
 
                 [self popFollow];
@@ -6010,11 +5831,11 @@ static conditional_Scope *conditional_scope;
 
                 [stream_mapExpr addElement:[mapExpr87 getTree]];
                  
-                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef2050];  
+                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef2051];  
                     [stream_RPAREN addElement:rp];
 
                  
-                char_literal88=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef2052];  
+                char_literal88=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_mapTemplateRef2053];  
                     [stream_LPAREN addElement:char_literal88];
 
                  
@@ -6034,7 +5855,7 @@ static conditional_Scope *conditional_scope;
                         {
 
                         /* ruleRef */
-                        [self pushFollow:FOLLOW_argExprList_in_mapTemplateRef2054];
+                        [self pushFollow:FOLLOW_argExprList_in_mapTemplateRef2055];
                         argExprList89 = [self argExprList];
 
                         [self popFollow];
@@ -6048,12 +5869,12 @@ static conditional_Scope *conditional_scope;
                 }
 
                  
-                char_literal90=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef2057];  
+                char_literal90=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_mapTemplateRef2058];  
                     [stream_RPAREN addElement:char_literal90];
 
                  
                 // AST REWRITE
-                // elements: argExprList, mapExpr
+                // elements: mapExpr, argExprList
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -6062,19 +5883,17 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 250:52: -> ^( INCLUDE_IND mapExpr ( argExprList )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:250:55: ^( INCLUDE_IND mapExpr ( argExprList )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE_IND Text:@"INCLUDE_IND"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE_IND Text:@"INCLUDE_IND"] old:root_1];
 
                         [treeAdaptor addChild:[stream_mapExpr nextTree] toTree:root_1];
 
@@ -6104,12 +5923,12 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RPAREN release];
-        [stream_ID release];
-        [stream_LPAREN release];
-        [stream_argExprList release];
-        [stream_args release];
-        [stream_mapExpr release];
+        stream_RPAREN = nil;
+        stream_ID = nil;
+        stream_LPAREN = nil;
+        stream_argExprList = nil;
+        stream_args = nil;
+        stream_mapExpr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -6163,23 +5982,23 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal93_tree=nil;
         CommonTree *char_literal95_tree=nil;
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_DOT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token DOT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token DOT"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleSubtreeStream *stream_includeExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule includeExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule includeExpr"];
         RewriteRuleSubtreeStream *stream_mapExpr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule mapExpr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule mapExpr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:254:5: ( ( includeExpr -> includeExpr ) (p= '.' ID -> ^( PROP[$p,@\"PROP\"] $memberExpr ID ) |p= '.' '(' mapExpr ')' -> ^( PROP_IND[$p,@\"PROP_IND\"] $memberExpr mapExpr ) )* ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:254:9: ( includeExpr -> includeExpr ) (p= '.' ID -> ^( PROP[$p,@\"PROP\"] $memberExpr ID ) |p= '.' '(' mapExpr ')' -> ^( PROP_IND[$p,@\"PROP_IND\"] $memberExpr mapExpr ) )* // alt
         {
@@ -6189,7 +6008,7 @@ static conditional_Scope *conditional_scope;
         {
 
         /* ruleRef */
-        [self pushFollow:FOLLOW_includeExpr_in_memberExpr2088];
+        [self pushFollow:FOLLOW_includeExpr_in_memberExpr2089];
         includeExpr91 = [self includeExpr];
 
         [self popFollow];
@@ -6207,10 +6026,10 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 254:21: -> includeExpr
         {
@@ -6229,12 +6048,12 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt33=3;
             NSInteger LA33_0 = [input LA:1];
-            if ( (LA33_0==DOT) ) {
+            if ( LA33_0==DOT ) {
                 NSInteger LA33_2 = [input LA:2];
-                if ( (LA33_2==ID) ) {
+                if ( LA33_2==ID ) {
                     alt33=1;
                 }
-                else if ( (LA33_2==LPAREN) ) {
+                else if ( LA33_2==LPAREN ) {
                     alt33=2;
                 }
 
@@ -6247,16 +6066,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:255:13: p= '.' ID // alt
                     {
 
-                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_memberExpr2107];  
+                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_memberExpr2108];  
                         [stream_DOT addElement:p];
 
                      
-                    ID92=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_memberExpr2109];  
+                    ID92=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_memberExpr2110];  
                         [stream_ID addElement:ID92];
 
                      
                     // AST REWRITE
-                    // elements: memberExpr, ID
+                    // elements: ID, memberExpr
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -6265,26 +6084,22 @@ static conditional_Scope *conditional_scope;
                     retval.tree = root_0;
 
                     RewriteRuleSubtreeStream *stream_retval =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                    root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                    root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                     // 255:49: -> ^( PROP[$p,@\"PROP\"] $memberExpr ID )
                     {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:255:52: ^( PROP[$p,@\"PROP\"] $memberExpr ID )
                         {
-                            CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:PROP FromToken:p Text:@"PROP"] retain]
-                             old:root_1];
+                            CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:PROP FromToken:p Text:@"PROP"] old:root_1];
 
                             [treeAdaptor addChild:[stream_retval nextTree] toTree:root_1];
 
                              // TODO: args: 
-                            [treeAdaptor addChild:
-                                        [stream_ID nextNode]
-                             toTree:root_1];
+                            [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                             [treeAdaptor addChild:root_1 toTree:root_0];
                         }
@@ -6301,16 +6116,16 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:256:13: p= '.' '(' mapExpr ')' // alt
                     {
 
-                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_memberExpr2164];  
+                    p=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_memberExpr2165];  
                         [stream_DOT addElement:p];
 
                      
-                    char_literal93=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_memberExpr2166];  
+                    char_literal93=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_memberExpr2167];  
                         [stream_LPAREN addElement:char_literal93];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_mapExpr_in_memberExpr2168];
+                    [self pushFollow:FOLLOW_mapExpr_in_memberExpr2169];
                     mapExpr94 = [self mapExpr];
 
                     [self popFollow];
@@ -6318,7 +6133,7 @@ static conditional_Scope *conditional_scope;
 
                     [stream_mapExpr addElement:[mapExpr94 getTree]];
                      
-                    char_literal95=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_memberExpr2170];  
+                    char_literal95=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_memberExpr2171];  
                         [stream_RPAREN addElement:char_literal95];
 
                      
@@ -6332,19 +6147,17 @@ static conditional_Scope *conditional_scope;
                     retval.tree = root_0;
 
                     RewriteRuleSubtreeStream *stream_retval =
-                        [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                            description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                        [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                            description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                    root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                    root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                     // 256:49: -> ^( PROP_IND[$p,@\"PROP_IND\"] $memberExpr mapExpr )
                     {
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:256:52: ^( PROP_IND[$p,@\"PROP_IND\"] $memberExpr mapExpr )
                         {
-                            CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                    [[treeAdaptor createTree:PROP_IND FromToken:p Text:@"PROP_IND"] retain]
-                             old:root_1];
+                            CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                            root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:PROP_IND FromToken:p Text:@"PROP_IND"] old:root_1];
 
                             [treeAdaptor addChild:[stream_retval nextTree] toTree:root_1];
 
@@ -6377,12 +6190,12 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RPAREN release];
-        [stream_DOT release];
-        [stream_ID release];
-        [stream_LPAREN release];
-        [stream_includeExpr release];
-        [stream_mapExpr release];
+        stream_RPAREN = nil;
+        stream_DOT = nil;
+        stream_ID = nil;
+        stream_LPAREN = nil;
+        stream_includeExpr = nil;
+        stream_mapExpr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -6472,37 +6285,37 @@ static conditional_Scope *conditional_scope;
         CommonTree *ID116_tree=nil;
         CommonTree *char_literal117_tree=nil;
         RewriteRuleTokenStream *stream_AT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token AT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token AT"];
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_SUPER =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token SUPER"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token SUPER"];
         RewriteRuleTokenStream *stream_DOT =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token DOT"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token DOT"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleSubtreeStream *stream_args =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule args"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule args"];
         RewriteRuleSubtreeStream *stream_expr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule expr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule expr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:262:5: ({...}? ID '(' ( expr )? ')' -> ^( EXEC_FUNC ID ( expr )? ) | 'super' '.' ID '(' args ')' -> ^( INCLUDE_SUPER ID ( args )? ) | ID '(' args ')' -> ^( INCLUDE ID ( args )? ) | '@' 'super' '.' ID '(' rp= ')' -> ^( INCLUDE_SUPER_REGION ID ) | '@' ID '(' rp= ')' -> ^( INCLUDE_REGION ID ) | primary ) //ruleblock
         NSInteger alt35=6;
         NSInteger LA35_0 = [input LA:1];
 
-        if ( (LA35_0==ID) ) {
+        if ( LA35_0==ID ) {
             NSInteger LA35_1 = [input LA:2];
 
-            if ( (LA35_1==LPAREN) ) {
+            if ( LA35_1==LPAREN ) {
                 NSInteger LA35_10 = [input LA:3];
 
                 if ( (([[Compiler funcs] getInstr:[input LT:1].text])) ) {
@@ -6529,16 +6342,16 @@ static conditional_Scope *conditional_scope;
 
             }
         }
-        else if ( (LA35_0==SUPER) ) {
+        else if ( LA35_0==SUPER ) {
             alt35=2;
         }
-        else if ( (LA35_0==AT) ) {
+        else if ( LA35_0==AT ) {
             NSInteger LA35_3 = [input LA:2];
 
-            if ( (LA35_3==SUPER) ) {
+            if ( LA35_3==SUPER ) {
                 alt35=4;
             }
-            else if ( (LA35_3==ID) ) {
+            else if ( LA35_3==ID ) {
                 alt35=5;
             }
             else {
@@ -6569,11 +6382,11 @@ static conditional_Scope *conditional_scope;
                     @throw [FailedPredicateException newException:@"includeExpr" predicate:@"[[Compiler funcs] getInstr:[input LT:1].text]" stream:input];
                 }
                  
-                ID96=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2245];  
+                ID96=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2246];  
                     [stream_ID addElement:ID96];
 
                  
-                char_literal97=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2247];  
+                char_literal97=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2248];  
                     [stream_LPAREN addElement:char_literal97];
 
                  
@@ -6593,7 +6406,7 @@ static conditional_Scope *conditional_scope;
                         {
 
                         /* ruleRef */
-                        [self pushFollow:FOLLOW_expr_in_includeExpr2249];
+                        [self pushFollow:FOLLOW_expr_in_includeExpr2250];
                         expr98 = [self expr];
 
                         [self popFollow];
@@ -6607,12 +6420,12 @@ static conditional_Scope *conditional_scope;
                 }
 
                  
-                char_literal99=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2252];  
+                char_literal99=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2253];  
                     [stream_RPAREN addElement:char_literal99];
 
                  
                 // AST REWRITE
-                // elements: expr, ID
+                // elements: ID, expr
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -6621,24 +6434,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 263:49: -> ^( EXEC_FUNC ID ( expr )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:263:52: ^( EXEC_FUNC ID ( expr )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:EXEC_FUNC Text:@"EXEC_FUNC"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:EXEC_FUNC Text:@"EXEC_FUNC"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:263:67: ( expr )?
                         if ( [stream_expr hasNext] ) {
@@ -6662,24 +6471,24 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:264:9: 'super' '.' ID '(' args ')' // alt
                 {
 
-                string_literal100=(CommonToken *)[self match:input TokenType:SUPER Follow:FOLLOW_SUPER_in_includeExpr2296];  
+                string_literal100=(CommonToken *)[self match:input TokenType:SUPER Follow:FOLLOW_SUPER_in_includeExpr2297];  
                     [stream_SUPER addElement:string_literal100];
 
                  
-                char_literal101=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_includeExpr2298];  
+                char_literal101=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_includeExpr2299];  
                     [stream_DOT addElement:char_literal101];
 
                  
-                ID102=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2300];  
+                ID102=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2301];  
                     [stream_ID addElement:ID102];
 
                  
-                char_literal103=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2302];  
+                char_literal103=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2303];  
                     [stream_LPAREN addElement:char_literal103];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_args_in_includeExpr2304];
+                [self pushFollow:FOLLOW_args_in_includeExpr2305];
                 args104 = [self args];
 
                 [self popFollow];
@@ -6687,12 +6496,12 @@ static conditional_Scope *conditional_scope;
 
                 [stream_args addElement:[args104 getTree]];
                  
-                char_literal105=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2306];  
+                char_literal105=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2307];  
                     [stream_RPAREN addElement:char_literal105];
 
                  
                 // AST REWRITE
-                // elements: ID, args
+                // elements: args, ID
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -6701,24 +6510,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 264:49: -> ^( INCLUDE_SUPER ID ( args )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:264:52: ^( INCLUDE_SUPER ID ( args )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE_SUPER Text:@"INCLUDE_SUPER"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE_SUPER Text:@"INCLUDE_SUPER"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:264:71: ( args )?
                         if ( [stream_args hasNext] ) {
@@ -6742,16 +6547,16 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:265:9: ID '(' args ')' // alt
                 {
 
-                ID106=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2339];  
+                ID106=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2340];  
                     [stream_ID addElement:ID106];
 
                  
-                char_literal107=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2341];  
+                char_literal107=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2342];  
                     [stream_LPAREN addElement:char_literal107];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_args_in_includeExpr2343];
+                [self pushFollow:FOLLOW_args_in_includeExpr2344];
                 args108 = [self args];
 
                 [self popFollow];
@@ -6759,12 +6564,12 @@ static conditional_Scope *conditional_scope;
 
                 [stream_args addElement:[args108 getTree]];
                  
-                char_literal109=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2345];  
+                char_literal109=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2346];  
                     [stream_RPAREN addElement:char_literal109];
 
                  
                 // AST REWRITE
-                // elements: args, ID
+                // elements: ID, args
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -6773,24 +6578,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 265:49: -> ^( INCLUDE ID ( args )? )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:265:52: ^( INCLUDE ID ( args )? )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE Text:@"INCLUDE"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE Text:@"INCLUDE"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:265:65: ( args )?
                         if ( [stream_args hasNext] ) {
@@ -6814,27 +6615,27 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:266:9: '@' 'super' '.' ID '(' rp= ')' // alt
                 {
 
-                char_literal110=(CommonToken *)[self match:input TokenType:AT Follow:FOLLOW_AT_in_includeExpr2390];  
+                char_literal110=(CommonToken *)[self match:input TokenType:AT Follow:FOLLOW_AT_in_includeExpr2391];  
                     [stream_AT addElement:char_literal110];
 
                  
-                string_literal111=(CommonToken *)[self match:input TokenType:SUPER Follow:FOLLOW_SUPER_in_includeExpr2392];  
+                string_literal111=(CommonToken *)[self match:input TokenType:SUPER Follow:FOLLOW_SUPER_in_includeExpr2393];  
                     [stream_SUPER addElement:string_literal111];
 
                  
-                char_literal112=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_includeExpr2394];  
+                char_literal112=(CommonToken *)[self match:input TokenType:DOT Follow:FOLLOW_DOT_in_includeExpr2395];  
                     [stream_DOT addElement:char_literal112];
 
                  
-                ID113=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2396];  
+                ID113=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2397];  
                     [stream_ID addElement:ID113];
 
                  
-                char_literal114=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2398];  
+                char_literal114=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2399];  
                     [stream_LPAREN addElement:char_literal114];
 
                  
-                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2402];  
+                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2403];  
                     [stream_RPAREN addElement:rp];
 
                  
@@ -6848,24 +6649,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 266:49: -> ^( INCLUDE_SUPER_REGION ID )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:266:52: ^( INCLUDE_SUPER_REGION ID )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE_SUPER_REGION Text:@"INCLUDE_SUPER_REGION"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE_SUPER_REGION Text:@"INCLUDE_SUPER_REGION"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         [treeAdaptor addChild:root_1 toTree:root_0];
                     }
@@ -6882,19 +6679,19 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:267:9: '@' ID '(' rp= ')' // alt
                 {
 
-                char_literal115=(CommonToken *)[self match:input TokenType:AT Follow:FOLLOW_AT_in_includeExpr2430];  
+                char_literal115=(CommonToken *)[self match:input TokenType:AT Follow:FOLLOW_AT_in_includeExpr2431];  
                     [stream_AT addElement:char_literal115];
 
                  
-                ID116=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2432];  
+                ID116=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_includeExpr2433];  
                     [stream_ID addElement:ID116];
 
                  
-                char_literal117=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2434];  
+                char_literal117=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_includeExpr2435];  
                     [stream_LPAREN addElement:char_literal117];
 
                  
-                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2438];  
+                rp=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_includeExpr2439];  
                     [stream_RPAREN addElement:rp];
 
                  
@@ -6908,24 +6705,20 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 267:49: -> ^( INCLUDE_REGION ID )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:267:52: ^( INCLUDE_REGION ID )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:INCLUDE_REGION Text:@"INCLUDE_REGION"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE_REGION Text:@"INCLUDE_REGION"] old:root_1];
 
                          // TODO: args: 
-                        [treeAdaptor addChild:
-                                    [stream_ID nextNode]
-                         toTree:root_1];
+                        [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                         [treeAdaptor addChild:root_1 toTree:root_0];
                     }
@@ -6941,13 +6734,13 @@ static conditional_Scope *conditional_scope;
             case 6 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:268:9: primary // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_primary_in_includeExpr2478];
+                [self pushFollow:FOLLOW_primary_in_includeExpr2479];
                 primary118 = [self primary];
 
                 [self popFollow];
@@ -6965,14 +6758,14 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_AT release];
-        [stream_RPAREN release];
-        [stream_SUPER release];
-        [stream_DOT release];
-        [stream_ID release];
-        [stream_LPAREN release];
-        [stream_args release];
-        [stream_expr release];
+        stream_AT = nil;
+        stream_RPAREN = nil;
+        stream_SUPER = nil;
+        stream_DOT = nil;
+        stream_ID = nil;
+        stream_LPAREN = nil;
+        stream_args = nil;
+        stream_expr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -7044,37 +6837,37 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal130_tree=nil;
         CommonTree *char_literal132_tree=nil;
         RewriteRuleTokenStream *stream_RPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RPAREN"];
         RewriteRuleTokenStream *stream_LPAREN =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LPAREN"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LPAREN"];
         RewriteRuleSubtreeStream *stream_argExprList =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule argExprList"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule argExprList"];
         RewriteRuleSubtreeStream *stream_expr =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule expr"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule expr"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:272:5: ( ID | STRING | T_TRUE | T_FALSE | subtemplate | list |{...}? => '(' ! conditional ')' !|{...}? =>lp= '(' expr ')' ( '(' ( argExprList )? ')' -> ^( INCLUDE_IND[$lp] expr ( argExprList )? ) | -> ^( TO_STR[$lp] expr ) ) ) //ruleblock
         NSInteger alt38=8;
         NSInteger LA38_0 = [input LA:1];
 
-        if ( (LA38_0==ID) ) {
+        if ( LA38_0==ID ) {
             alt38=1;
         }
-        else if ( (LA38_0==STRING) ) {
+        else if ( LA38_0==STRING ) {
             alt38=2;
         }
-        else if ( (LA38_0==T_TRUE) ) {
+        else if ( LA38_0==T_TRUE ) {
             alt38=3;
         }
-        else if ( (LA38_0==T_FALSE) ) {
+        else if ( LA38_0==T_FALSE ) {
             alt38=4;
         }
-        else if ( (LA38_0==LCURLY) ) {
+        else if ( LA38_0==LCURLY ) {
             alt38=5;
         }
-        else if ( (LA38_0==LBRACK) ) {
+        else if ( LA38_0==LBRACK ) {
             alt38=6;
         }
         else if ( (LA38_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
@@ -7103,14 +6896,14 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:272:9: ID // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
-                ID119=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_primary2497]; 
+                ID119=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_primary2498]; 
                 ID119_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:ID119] retain]
+                (CommonTree *)[treeAdaptor create:ID119]
                 ;
                 [treeAdaptor addChild:ID119_tree  toTree:root_0];
 
@@ -7120,14 +6913,14 @@ static conditional_Scope *conditional_scope;
             case 2 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:273:9: STRING // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
-                STRING120=(CommonToken *)[self match:input TokenType:STRING Follow:FOLLOW_STRING_in_primary2507]; 
+                STRING120=(CommonToken *)[self match:input TokenType:STRING Follow:FOLLOW_STRING_in_primary2508]; 
                 STRING120_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:STRING120] retain]
+                (CommonTree *)[treeAdaptor create:STRING120]
                 ;
                 [treeAdaptor addChild:STRING120_tree  toTree:root_0];
 
@@ -7137,14 +6930,14 @@ static conditional_Scope *conditional_scope;
             case 3 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:274:9: T_TRUE // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
-                T_TRUE121=(CommonToken *)[self match:input TokenType:T_TRUE Follow:FOLLOW_T_TRUE_in_primary2517]; 
+                T_TRUE121=(CommonToken *)[self match:input TokenType:T_TRUE Follow:FOLLOW_T_TRUE_in_primary2518]; 
                 T_TRUE121_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:T_TRUE121] retain]
+                (CommonTree *)[treeAdaptor create:T_TRUE121]
                 ;
                 [treeAdaptor addChild:T_TRUE121_tree  toTree:root_0];
 
@@ -7154,14 +6947,14 @@ static conditional_Scope *conditional_scope;
             case 4 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:275:9: T_FALSE // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
-                T_FALSE122=(CommonToken *)[self match:input TokenType:T_FALSE Follow:FOLLOW_T_FALSE_in_primary2527]; 
+                T_FALSE122=(CommonToken *)[self match:input TokenType:T_FALSE Follow:FOLLOW_T_FALSE_in_primary2528]; 
                 T_FALSE122_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:T_FALSE122] retain]
+                (CommonTree *)[treeAdaptor create:T_FALSE122]
                 ;
                 [treeAdaptor addChild:T_FALSE122_tree  toTree:root_0];
 
@@ -7171,13 +6964,13 @@ static conditional_Scope *conditional_scope;
             case 5 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:276:9: subtemplate // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_subtemplate_in_primary2537];
+                [self pushFollow:FOLLOW_subtemplate_in_primary2538];
                 subtemplate123 = [self subtemplate];
 
                 [self popFollow];
@@ -7190,13 +6983,13 @@ static conditional_Scope *conditional_scope;
             case 6 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:277:9: list // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_list_in_primary2547];
+                [self pushFollow:FOLLOW_list_in_primary2548];
                 list124 = [self list];
 
                 [self popFollow];
@@ -7209,7 +7002,7 @@ static conditional_Scope *conditional_scope;
             case 7 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:278:9: {...}? => '(' ! conditional ')' ! // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
@@ -7217,11 +7010,11 @@ static conditional_Scope *conditional_scope;
                     @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional count]>0" stream:input];
                 }
                  
-                char_literal125=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2561]; 
+                char_literal125=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2562]; 
                  
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_conditional_in_primary2564];
+                [self pushFollow:FOLLOW_conditional_in_primary2565];
                 conditional126 = [self conditional];
 
                 [self popFollow];
@@ -7229,7 +7022,7 @@ static conditional_Scope *conditional_scope;
 
                 [treeAdaptor addChild:[conditional126 getTree] toTree:root_0];
                  
-                char_literal127=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2566]; 
+                char_literal127=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2567]; 
                  
                 }
                 break;
@@ -7241,12 +7034,12 @@ static conditional_Scope *conditional_scope;
                     @throw [FailedPredicateException newException:@"primary" predicate:@"[$conditional count]==0" stream:input];
                 }
                  
-                lp=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2582];  
+                lp=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2583];  
                     [stream_LPAREN addElement:lp];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_expr_in_primary2584];
+                [self pushFollow:FOLLOW_expr_in_primary2585];
                 expr128 = [self expr];
 
                 [self popFollow];
@@ -7254,7 +7047,7 @@ static conditional_Scope *conditional_scope;
 
                 [stream_expr addElement:[expr128 getTree]];
                  
-                char_literal129=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2586];  
+                char_literal129=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2587];  
                     [stream_RPAREN addElement:char_literal129];
 
                  
@@ -7262,7 +7055,7 @@ static conditional_Scope *conditional_scope;
                 NSInteger alt37=2;
                 NSInteger LA37_0 = [input LA:1];
 
-                if ( (LA37_0==LPAREN) ) {
+                if ( LA37_0==LPAREN ) {
                     alt37=1;
                 }
                 else if ( (LA37_0==SEMI||LA37_0==COLON||LA37_0==RPAREN||(LA37_0 >= RBRACK && LA37_0 <= DOT)||LA37_0==RDELIM||(LA37_0 >= OR && LA37_0 <= AND)) ) {
@@ -7279,7 +7072,7 @@ static conditional_Scope *conditional_scope;
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:280:13: '(' ( argExprList )? ')' // alt
                         {
 
-                        char_literal130=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2600];  
+                        char_literal130=(CommonToken *)[self match:input TokenType:LPAREN Follow:FOLLOW_LPAREN_in_primary2601];  
                             [stream_LPAREN addElement:char_literal130];
 
                          
@@ -7299,7 +7092,7 @@ static conditional_Scope *conditional_scope;
                                 {
 
                                 /* ruleRef */
-                                [self pushFollow:FOLLOW_argExprList_in_primary2602];
+                                [self pushFollow:FOLLOW_argExprList_in_primary2603];
                                 argExprList131 = [self argExprList];
 
                                 [self popFollow];
@@ -7313,7 +7106,7 @@ static conditional_Scope *conditional_scope;
                         }
 
                          
-                        char_literal132=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2605];  
+                        char_literal132=(CommonToken *)[self match:input TokenType:RPAREN Follow:FOLLOW_RPAREN_in_primary2606];  
                             [stream_RPAREN addElement:char_literal132];
 
                          
@@ -7327,19 +7120,17 @@ static conditional_Scope *conditional_scope;
                         retval.tree = root_0;
 
                         RewriteRuleSubtreeStream *stream_retval =
-                            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                         // 280:49: -> ^( INCLUDE_IND[$lp] expr ( argExprList )? )
                         {
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:280:52: ^( INCLUDE_IND[$lp] expr ( argExprList )? )
                             {
-                                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                        [[treeAdaptor createTree:INCLUDE_IND FromToken:lp Text:@"INCLUDE_IND"] retain]
-                                 old:root_1];
+                                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:INCLUDE_IND FromToken:lp Text:@"INCLUDE_IND"] old:root_1];
 
                                 [treeAdaptor addChild:[stream_expr nextTree] toTree:root_1];
 
@@ -7374,19 +7165,17 @@ static conditional_Scope *conditional_scope;
                         retval.tree = root_0;
 
                         RewriteRuleSubtreeStream *stream_retval =
-                            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                         // 281:49: -> ^( TO_STR[$lp] expr )
                         {
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:281:52: ^( TO_STR[$lp] expr )
                             {
-                                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                        [[treeAdaptor createTree:TO_STR FromToken:lp Text:@"TO_STR"] retain]
-                                 old:root_1];
+                                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:TO_STR FromToken:lp Text:@"TO_STR"] old:root_1];
 
                                 [treeAdaptor addChild:[stream_expr nextTree] toTree:root_1];
 
@@ -7415,10 +7204,10 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RPAREN release];
-        [stream_LPAREN release];
-        [stream_argExprList release];
-        [stream_expr release];
+        stream_RPAREN = nil;
+        stream_LPAREN = nil;
+        stream_argExprList = nil;
+        stream_expr = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -7474,25 +7263,25 @@ static conditional_Scope *conditional_scope;
         CommonTree *string_literal138_tree=nil;
         CommonTree *string_literal139_tree=nil;
         RewriteRuleTokenStream *stream_ELLIPSIS =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ELLIPSIS"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ELLIPSIS"];
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleSubtreeStream *stream_namedArg =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule namedArg"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule namedArg"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:285:5: ( argExprList | namedArg ( ',' namedArg )* ( ',' '...' )? -> ( namedArg )+ ( '...' )? | '...' |) //ruleblock
         NSInteger alt41=4;
         NSInteger LA41_0 = [input LA:1];
 
-        if ( (LA41_0==ID) ) {
+        if ( LA41_0==ID ) {
             NSInteger LA41_1 = [input LA:2];
 
             if ( ((LA41_1 >= COLON && LA41_1 <= RPAREN)||(LA41_1 >= COMMA && LA41_1 <= DOT)) ) {
                 alt41=1;
             }
-            else if ( (LA41_1==EQUALS) ) {
+            else if ( LA41_1==EQUALS ) {
                 alt41=2;
             }
             else {
@@ -7508,10 +7297,10 @@ static conditional_Scope *conditional_scope;
         else if ( (LA41_0==LPAREN) && ((([conditional_stack count]>0)||([conditional_stack count]==0)))) {
             alt41=1;
         }
-        else if ( (LA41_0==ELLIPSIS) ) {
+        else if ( LA41_0==ELLIPSIS ) {
             alt41=3;
         }
-        else if ( (LA41_0==RPAREN) ) {
+        else if ( LA41_0==RPAREN ) {
             alt41=4;
         }
         else {
@@ -7524,13 +7313,13 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:285:9: argExprList // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_argExprList_in_args2713];
+                [self pushFollow:FOLLOW_argExprList_in_args2714];
                 argExprList133 = [self argExprList];
 
                 [self popFollow];
@@ -7545,7 +7334,7 @@ static conditional_Scope *conditional_scope;
                 {
 
                 /* ruleRef */
-                [self pushFollow:FOLLOW_namedArg_in_args2723];
+                [self pushFollow:FOLLOW_namedArg_in_args2724];
                 namedArg134 = [self namedArg];
 
                 [self popFollow];
@@ -7557,9 +7346,9 @@ static conditional_Scope *conditional_scope;
                 do {
                     NSInteger alt39=2;
                     NSInteger LA39_0 = [input LA:1];
-                    if ( (LA39_0==COMMA) ) {
+                    if ( LA39_0==COMMA ) {
                         NSInteger LA39_1 = [input LA:2];
-                        if ( (LA39_1==ID) ) {
+                        if ( LA39_1==ID ) {
                             alt39=1;
                         }
 
@@ -7572,12 +7361,12 @@ static conditional_Scope *conditional_scope;
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:286:20: ',' namedArg // alt
                             {
 
-                            char_literal135=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_args2727];  
+                            char_literal135=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_args2728];  
                                 [stream_COMMA addElement:char_literal135];
 
                              
                             /* ruleRef */
-                            [self pushFollow:FOLLOW_namedArg_in_args2729];
+                            [self pushFollow:FOLLOW_namedArg_in_args2730];
                             namedArg136 = [self namedArg];
 
                             [self popFollow];
@@ -7599,7 +7388,7 @@ static conditional_Scope *conditional_scope;
                 NSInteger alt40=2;
                 NSInteger LA40_0 = [input LA:1];
 
-                if ( (LA40_0==COMMA) ) {
+                if ( LA40_0==COMMA ) {
                     alt40=1;
                 }
                 switch (alt40) {
@@ -7607,11 +7396,11 @@ static conditional_Scope *conditional_scope;
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:286:37: ',' '...' // alt
                         {
 
-                        char_literal137=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_args2735];  
+                        char_literal137=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_args2736];  
                             [stream_COMMA addElement:char_literal137];
 
                          
-                        string_literal138=(CommonToken *)[self match:input TokenType:ELLIPSIS Follow:FOLLOW_ELLIPSIS_in_args2737];  
+                        string_literal138=(CommonToken *)[self match:input TokenType:ELLIPSIS Follow:FOLLOW_ELLIPSIS_in_args2738];  
                             [stream_ELLIPSIS addElement:string_literal138];
 
                          
@@ -7622,7 +7411,7 @@ static conditional_Scope *conditional_scope;
 
                  
                 // AST REWRITE
-                // elements: namedArg, ELLIPSIS
+                // elements: ELLIPSIS, namedArg
                 // token labels: 
                 // rule labels: retval
                 // token list labels: 
@@ -7631,10 +7420,10 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 286:49: -> ( namedArg )+ ( '...' )?
                 {
@@ -7653,9 +7442,7 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:286:62: ( '...' )?
                     if ( [stream_ELLIPSIS hasNext] ) {
                     	 // TODO: args: 
-                    	[treeAdaptor addChild:
-                    	            [stream_ELLIPSIS nextNode]
-                    	 toTree:root_0];
+                    	[treeAdaptor addChild:[stream_ELLIPSIS nextNode] toTree:root_0];
 
                     }
                     [stream_ELLIPSIS reset];
@@ -7671,14 +7458,14 @@ static conditional_Scope *conditional_scope;
             case 3 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:287:9: '...' // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser tokenRef */
-                string_literal139=(CommonToken *)[self match:input TokenType:ELLIPSIS Follow:FOLLOW_ELLIPSIS_in_args2757]; 
+                string_literal139=(CommonToken *)[self match:input TokenType:ELLIPSIS Follow:FOLLOW_ELLIPSIS_in_args2758]; 
                 string_literal139_tree = /* ASTParser createNodeFromToken */
-                (CommonTree *)[[treeAdaptor create:string_literal139] retain]
+                (CommonTree *)[treeAdaptor create:string_literal139]
                 ;
                 [treeAdaptor addChild:string_literal139_tree  toTree:root_0];
 
@@ -7688,7 +7475,7 @@ static conditional_Scope *conditional_scope;
             case 4 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:289:5:  // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
                 }
@@ -7701,9 +7488,9 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_ELLIPSIS release];
-        [stream_COMMA release];
-        [stream_namedArg release];
+        stream_ELLIPSIS = nil;
+        stream_COMMA = nil;
+        stream_namedArg = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -7751,17 +7538,17 @@ static conditional_Scope *conditional_scope;
 
         CommonTree *char_literal141_tree=nil;
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleSubtreeStream *stream_arg =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule arg"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule arg"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:291:13: ( arg ( ',' arg )* -> ( arg )+ ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:291:15: arg ( ',' arg )* // alt
         {
 
         /* ruleRef */
-        [self pushFollow:FOLLOW_arg_in_argExprList2776];
+        [self pushFollow:FOLLOW_arg_in_argExprList2777];
         arg140 = [self arg];
 
         [self popFollow];
@@ -7773,7 +7560,7 @@ static conditional_Scope *conditional_scope;
         do {
             NSInteger alt42=2;
             NSInteger LA42_0 = [input LA:1];
-            if ( (LA42_0==COMMA) ) {
+            if ( LA42_0==COMMA ) {
                 alt42=1;
             }
 
@@ -7783,12 +7570,12 @@ static conditional_Scope *conditional_scope;
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:291:21: ',' arg // alt
                     {
 
-                    char_literal141=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_argExprList2780];  
+                    char_literal141=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_argExprList2781];  
                         [stream_COMMA addElement:char_literal141];
 
                      
                     /* ruleRef */
-                    [self pushFollow:FOLLOW_arg_in_argExprList2782];
+                    [self pushFollow:FOLLOW_arg_in_argExprList2783];
                     arg142 = [self arg];
 
                     [self popFollow];
@@ -7816,10 +7603,10 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 291:32: -> ( arg )+
         {
@@ -7849,8 +7636,8 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_COMMA release];
-        [stream_arg release];
+        stream_COMMA = nil;
+        stream_arg = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -7898,13 +7685,13 @@ static conditional_Scope *conditional_scope;
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:293:5: ( exprNoComma ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:293:7: exprNoComma // alt
         {
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
         /* ASTParser ruleRef */
         /* ruleRef */
-        [self pushFollow:FOLLOW_exprNoComma_in_arg2799];
+        [self pushFollow:FOLLOW_exprNoComma_in_arg2800];
         exprNoComma143 = [self exprNoComma];
 
         [self popFollow];
@@ -7967,28 +7754,28 @@ static conditional_Scope *conditional_scope;
         CommonTree *ID144_tree=nil;
         CommonTree *char_literal145_tree=nil;
         RewriteRuleTokenStream *stream_EQUALS =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token EQUALS"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token EQUALS"];
         RewriteRuleTokenStream *stream_ID =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token ID"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token ID"];
         RewriteRuleSubtreeStream *stream_arg =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule arg"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule arg"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:295:10: ( ID '=' arg -> ^( '=' ID arg ) ) // ruleBlockSingleAlt
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:295:12: ID '=' arg // alt
         {
 
-        ID144=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_namedArg2808];  
+        ID144=(CommonToken *)[self match:input TokenType:ID Follow:FOLLOW_ID_in_namedArg2809];  
             [stream_ID addElement:ID144];
 
          
-        char_literal145=(CommonToken *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_namedArg2810];  
+        char_literal145=(CommonToken *)[self match:input TokenType:EQUALS Follow:FOLLOW_EQUALS_in_namedArg2811];  
             [stream_EQUALS addElement:char_literal145];
 
          
         /* ruleRef */
-        [self pushFollow:FOLLOW_arg_in_namedArg2812];
+        [self pushFollow:FOLLOW_arg_in_namedArg2813];
         arg146 = [self arg];
 
         [self popFollow];
@@ -7997,7 +7784,7 @@ static conditional_Scope *conditional_scope;
         [stream_arg addElement:[arg146 getTree]];
          
         // AST REWRITE
-        // elements: EQUALS, arg, ID
+        // elements: ID, EQUALS, arg
         // token labels: 
         // rule labels: retval
         // token list labels: 
@@ -8006,24 +7793,20 @@ static conditional_Scope *conditional_scope;
         retval.tree = root_0;
 
         RewriteRuleSubtreeStream *stream_retval =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-        root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+        root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
         // 295:23: -> ^( '=' ID arg )
         {
             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:295:26: ^( '=' ID arg )
             {
-                CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                            [stream_EQUALS nextNode]
-                 old:root_1];
+                CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                root_1 = (CommonTree *)[treeAdaptor becomeRoot:[stream_EQUALS nextNode] old:root_1];
 
                  // TODO: args: 
-                [treeAdaptor addChild:
-                            [stream_ID nextNode]
-                 toTree:root_1];
+                [treeAdaptor addChild:[stream_ID nextNode] toTree:root_1];
 
                 [treeAdaptor addChild:[stream_arg nextTree] toTree:root_1];
 
@@ -8044,9 +7827,9 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_EQUALS release];
-        [stream_ID release];
-        [stream_arg release];
+        stream_EQUALS = nil;
+        stream_ID = nil;
+        stream_arg = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -8100,28 +7883,28 @@ static conditional_Scope *conditional_scope;
         CommonTree *char_literal149_tree=nil;
         CommonTree *char_literal151_tree=nil;
         RewriteRuleTokenStream *stream_RBRACK =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token RBRACK"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token RBRACK"];
         RewriteRuleTokenStream *stream_LBRACK =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token LBRACK"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token LBRACK"];
         RewriteRuleTokenStream *stream_COMMA =
-            [[RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
-                                                             description:@"token COMMA"] retain];
+            [RewriteRuleTokenStream newRewriteRuleTokenStream:treeAdaptor
+                                                             description:@"token COMMA"];
         RewriteRuleSubtreeStream *stream_listElement =
-            [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                                                                description:@"rule listElement"] retain];
+            [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                                                                description:@"rule listElement"];
         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:297:5: ({...}?lb= '[' ']' -> LIST[$lb] |lb= '[' listElement ( ',' listElement )* ']' -> ^( LIST[$lb] ( listElement )* ) ) //ruleblock
         NSInteger alt44=2;
         NSInteger LA44_0 = [input LA:1];
 
-        if ( (LA44_0==LBRACK) ) {
+        if ( LA44_0==LBRACK ) {
             NSInteger LA44_1 = [input LA:2];
 
-            if ( (LA44_1==RBRACK) ) {
+            if ( LA44_1==RBRACK ) {
                 NSInteger LA44_2 = [input LA:3];
 
-                if ( (([input LA:2] == RBRACK)) ) {
+                if ( [input LA:2] == RBRACK ) {
                     alt44=1;
                 }
                 else if ( (YES) ) {
@@ -8159,11 +7942,11 @@ static conditional_Scope *conditional_scope;
                     @throw [FailedPredicateException newException:@"list" predicate:@"[input LA:2] == RBRACK" stream:input];
                 }
                  
-                lb=(CommonToken *)[self match:input TokenType:LBRACK Follow:FOLLOW_LBRACK_in_list2845];  
+                lb=(CommonToken *)[self match:input TokenType:LBRACK Follow:FOLLOW_LBRACK_in_list2846];  
                     [stream_LBRACK addElement:lb];
 
                  
-                char_literal147=(CommonToken *)[self match:input TokenType:RBRACK Follow:FOLLOW_RBRACK_in_list2847];  
+                char_literal147=(CommonToken *)[self match:input TokenType:RBRACK Follow:FOLLOW_RBRACK_in_list2848];  
                     [stream_RBRACK addElement:char_literal147];
 
                  
@@ -8177,16 +7960,14 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 298:20: -> LIST[$lb]
                 {
-                    [treeAdaptor addChild:
-                            [[treeAdaptor createTree:LIST FromToken:lb Text:@"LIST"] retain]
-                     toTree:root_0];
+                    [treeAdaptor addChild:[treeAdaptor createTree:LIST FromToken:lb Text:@"LIST"] toTree:root_0];
 
                 }
 
@@ -8200,12 +7981,12 @@ static conditional_Scope *conditional_scope;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:299:9: lb= '[' listElement ( ',' listElement )* ']' // alt
                 {
 
-                lb=(CommonToken *)[self match:input TokenType:LBRACK Follow:FOLLOW_LBRACK_in_list2864];  
+                lb=(CommonToken *)[self match:input TokenType:LBRACK Follow:FOLLOW_LBRACK_in_list2865];  
                     [stream_LBRACK addElement:lb];
 
                  
                 /* ruleRef */
-                [self pushFollow:FOLLOW_listElement_in_list2866];
+                [self pushFollow:FOLLOW_listElement_in_list2867];
                 listElement148 = [self listElement];
 
                 [self popFollow];
@@ -8217,7 +7998,7 @@ static conditional_Scope *conditional_scope;
                 do {
                     NSInteger alt43=2;
                     NSInteger LA43_0 = [input LA:1];
-                    if ( (LA43_0==COMMA) ) {
+                    if ( LA43_0==COMMA ) {
                         alt43=1;
                     }
 
@@ -8227,12 +8008,12 @@ static conditional_Scope *conditional_scope;
                             // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:299:30: ',' listElement // alt
                             {
 
-                            char_literal149=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_list2870];  
+                            char_literal149=(CommonToken *)[self match:input TokenType:COMMA Follow:FOLLOW_COMMA_in_list2871];  
                                 [stream_COMMA addElement:char_literal149];
 
                              
                             /* ruleRef */
-                            [self pushFollow:FOLLOW_listElement_in_list2872];
+                            [self pushFollow:FOLLOW_listElement_in_list2873];
                             listElement150 = [self listElement];
 
                             [self popFollow];
@@ -8250,7 +8031,7 @@ static conditional_Scope *conditional_scope;
                 loop43: ;
 
                  
-                char_literal151=(CommonToken *)[self match:input TokenType:RBRACK Follow:FOLLOW_RBRACK_in_list2877];  
+                char_literal151=(CommonToken *)[self match:input TokenType:RBRACK Follow:FOLLOW_RBRACK_in_list2878];  
                     [stream_RBRACK addElement:char_literal151];
 
                  
@@ -8264,19 +8045,17 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 299:53: -> ^( LIST[$lb] ( listElement )* )
                 {
                     // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:299:56: ^( LIST[$lb] ( listElement )* )
                     {
-                        CommonTree *root_1 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
-                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:
-                                [[treeAdaptor createTree:LIST FromToken:lb Text:@"LIST"] retain]
-                         old:root_1];
+                        CommonTree *root_1 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
+                        root_1 = (CommonTree *)[treeAdaptor becomeRoot:[treeAdaptor createTree:LIST FromToken:lb Text:@"LIST"] old:root_1];
 
                         // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:299:68: ( listElement )*
                         while ( [stream_listElement hasNext] ) {
@@ -8304,10 +8083,10 @@ static conditional_Scope *conditional_scope;
         [retval setStop:[input LT:-1]];
 
 
-        [stream_RBRACK release];
-        [stream_LBRACK release];
-        [stream_COMMA release];
-        [stream_listElement release];
+        stream_RBRACK = nil;
+        stream_LBRACK = nil;
+        stream_COMMA = nil;
+        stream_listElement = nil;
 
             retval.tree = (CommonTree *)[treeAdaptor rulePostProcessing:root_0];
             [treeAdaptor setTokenBoundaries:retval.tree From:retval.start To:retval.stopToken];
@@ -8375,13 +8154,13 @@ static conditional_Scope *conditional_scope;
             case 1 : ;
                 // /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g:302:15: exprNoComma // alt
                 {
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
 
 
                 /* ASTParser ruleRef */
                 /* ruleRef */
-                [self pushFollow:FOLLOW_exprNoComma_in_listElement2900];
+                [self pushFollow:FOLLOW_exprNoComma_in_listElement2901];
                 exprNoComma152 = [self exprNoComma];
 
                 [self popFollow];
@@ -8404,16 +8183,14 @@ static conditional_Scope *conditional_scope;
                 retval.tree = root_0;
 
                 RewriteRuleSubtreeStream *stream_retval =
-                    [[RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
-                        description:@"token retval" element:retval!=nil?[retval getTree]:nil] retain];
+                    [RewriteRuleSubtreeStream newRewriteRuleSubtreeStream:treeAdaptor
+                        description:@"token retval" element:retval!=nil?[retval getTree]:nil];
 
-                root_0 = (CommonTree *)[[[treeAdaptor class] newEmptyTree] retain];
+                root_0 = (CommonTree *)[[treeAdaptor class] newEmptyTree];
 
                 // 302:29: -> TNULL
                 {
-                    [treeAdaptor addChild:
-                            [[treeAdaptor createTree:TNULL Text:@"TNULL"] retain]
-                     toTree:root_0];
+                    [treeAdaptor addChild:[treeAdaptor createTree:TNULL Text:@"TNULL"] toTree:root_0];
 
                 }
 

@@ -142,8 +142,22 @@
     BOOL iterateAcrossValues;
 }
 
-+ (NSString *) DEFAULT_KEY;
-+ (NSString *) DICT_KEY;
+@property (assign) NSStringEncoding encoding; 
+@property (retain) AMutableArray *imports;
+@property (retain) AMutableArray *importsToClearOnUnload;
+@property (assign) unichar delimiterStartChar;
+@property (assign) unichar delimiterStopChar;
+@property (retain) LinkedHashMap *templates;
+@property (retain) LinkedHashMap *dictionaries;
+@property (retain) LinkedHashMap *renderers;
+@property (retain) LinkedHashMap *adaptors;
+@property (retain) LinkedHashMap *typeToAdaptorCache;
+@property (retain) LinkedHashMap *typeToRendererCache;
+@property (retain) ErrorManager *errMgr;
+@property (assign) BOOL iterateAcrossValues;
+
++ (const NSString *) DEFAULT_KEY;
++ (const NSString *) DICT_KEY;
 + (STGroup *) defaultGroup;
 + (void) resetDefaultGroup;
 
@@ -210,19 +224,5 @@
 - (id<STErrorListener>) getListener;
 - (void) setListener:(id<STErrorListener>)aListener;
 - (AMutableArray *) getTemplateNames;
-
-@property (assign) NSStringEncoding encoding; 
-@property (retain) AMutableArray *imports;
-@property (retain) AMutableArray *importsToClearOnUnload;
-@property (assign) unichar delimiterStartChar;
-@property (assign) unichar delimiterStopChar;
-@property (retain) LinkedHashMap *templates;
-@property (retain) LinkedHashMap *dictionaries;
-@property (retain) LinkedHashMap *renderers;
-@property (retain) LinkedHashMap *adaptors;
-@property (retain) LinkedHashMap *typeToAdaptorCache;
-@property (retain) LinkedHashMap *typeToRendererCache;
-@property (retain) ErrorManager *errMgr;
-@property (assign) BOOL iterateAcrossValues;
 
 @end

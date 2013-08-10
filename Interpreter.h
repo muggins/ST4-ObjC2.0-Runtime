@@ -159,6 +159,19 @@ NSString *OptionDescription(OptionEnum value);
     BOOL debug;
 }
 
+//@property (retain, getter=getOperands, setter=setOperands:) AMutableArray *operands;
+@property (assign) NSInteger sp;
+@property (assign) NSInteger current_ip;
+@property (assign) NSInteger nwline;
+@property (retain) InstanceScope *currentScope;
+@property (retain) STGroup *group;
+@property (retain) NSLocale *locale;
+@property (retain) ErrorManager *errMgr;
+@property (retain) AMutableArray *events;
+@property (retain) AMutableArray *executeTrace;
+@property (retain) LinkedHashMap *debugInfo;
+@property (assign) BOOL debug;
+
 + (NSInteger) DEFAULT_OPERAND_STACK_SIZE;
 + (LinkedHashMap *) predefinedAnonSubtemplateAttributes;
 + (Interpreter_Anon3 *) Option;
@@ -171,7 +184,6 @@ NSString *OptionDescription(OptionEnum value);
 - (id) init:(STGroup *)group locale:(NSLocale *)locale debug:(BOOL)aDebug;
 - (id) init:(STGroup *)group errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
 - (id) init:(STGroup *)aGroup locale:(NSLocale *)aLocale errMgr:(ErrorManager *)anErrMgr debug:(BOOL)aDebug;
-- (id) init:(STGroup *)group locale:(NSLocale *)locale errMgr:(ErrorManager *)errMgr debug:(BOOL)aDebug;
 
 - (void)dealloc;
 #ifdef USE_FREQ_COUNT
@@ -227,19 +239,5 @@ NSString *OptionDescription(OptionEnum value);
 - (void) trackDebugEvent:(ST *)aWho event:(InterpEvent *)e;
 - (AMutableArray *) getExecutionTrace;
 + (NSInteger) getShort:(char *)memory index:(NSInteger)index;
-
-
-//@property (retain, getter=getOperands, setter=setOperands:) AMutableArray *operands;
-@property (assign) NSInteger sp;
-@property (assign) NSInteger current_ip;
-@property (assign) NSInteger nwline;
-@property (retain) InstanceScope *currentScope;
-@property (retain) STGroup *group;
-@property (retain) NSLocale *locale;
-@property (retain) ErrorManager *errMgr;
-@property (retain) AMutableArray *events;
-@property (retain) AMutableArray *executeTrace;
-@property (retain) LinkedHashMap *debugInfo;
-@property (assign) BOOL debug;
 
 @end

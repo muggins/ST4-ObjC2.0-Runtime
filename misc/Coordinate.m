@@ -48,7 +48,7 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat:@"%d:%d", line, charPosition];
+    return [NSString stringWithFormat:@"%ld:%ld", line, charPosition];
 }
 
 @end

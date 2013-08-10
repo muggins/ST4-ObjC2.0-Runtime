@@ -29,6 +29,9 @@
 
 @implementation STGroupCompiletimeMessage
 
+@synthesize token;
+@synthesize srcName;
+
 + (id) newMessage:(ErrorTypeEnum)anError srcName:(NSString *)aSrcName t:(CommonToken *)t cause:(NSException *)aCause
 {
     return [[STGroupCompiletimeMessage alloc] init:anError srcName:aSrcName t:t cause:aCause arg:nil arg2:nil];
@@ -49,20 +52,19 @@
     self=[super init:anError who:nil cause:aCause arg:anArg arg2:anArg2 arg3:nil];
     if ( self != nil ) {
         token = t;
-        if ( token ) [token retain];
         srcName = aSrcName;
-        if ( srcName ) [srcName retain];
     }
     return self;
 }
 
-- (void) dealloc {
+- (void) dealloc
+{
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroupCompiletimeMessage" );
 #endif
-    if ( token ) [token release];
-    if ( srcName ) [srcName release];
-    [super dealloc];
+    token = nil;
+    srcName  = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -78,13 +80,11 @@
         line = re.line;
         charPos = re.charPositionInLine;
     }
-    NSString *filepos = [NSString stringWithFormat:@"%d:%d", line, charPos];
+    NSString *filepos = [NSString stringWithFormat:@"%ld:%ld", line, charPos];
     if (srcName != nil) {
         return [NSString stringWithFormat:@"%@ %@: %@", srcName, filepos, [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
     }
-    return [NSString stringWithFormat:@"%d: %@",filepos , [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
+    return [NSString stringWithFormat:@"%ld: %@", filepos , [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
 }
 
-@synthesize token;
-@synthesize srcName;
 @end

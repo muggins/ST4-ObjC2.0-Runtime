@@ -39,8 +39,8 @@ OperandType OperandTypeValueOf(NSString *text);
 NSString *OperandTypeDescription(NSInteger value);
 
 @interface Instruction : NSObject {
-    NSString *name;
-    __strong OperandType ttype[DEF_MAX_OPNDS];
+    __strong NSString *name;
+    OperandType ttype[DEF_MAX_OPNDS];
     short nopnds;
 }
 
@@ -55,6 +55,8 @@ NSString *OperandTypeDescription(NSInteger value);
 - (id) init:(NSString *)aName;
 - (id) init:(NSString *)aName a:(OperandType)a;
 - (id) init:(NSString *)aName a:(OperandType)a b:(OperandType)b;
+
+- (void)dealloc;
 
 - (short) nopnds;
 - (void) setNopnds:(short)idx;
@@ -77,7 +79,7 @@ NSString *OperandTypeDescription(NSInteger value);
 + (OperandType)T_ADDR;
 + (OperandType)T_INT;
 
-+ (Instruction **)instructions;
++ (__strong Instruction **)instructions;
 
 + (void) initialize;
 + (short) INSTR_LOAD_STR;
@@ -128,6 +130,5 @@ NSString *OperandTypeDescription(NSInteger value);
 + (short) INSTR_WRITE_STR;
 + (short) INSTR_WRITE_LOCAL;
 + (short) MAX_BYTECODE;
-
 
 @end

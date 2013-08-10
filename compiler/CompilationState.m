@@ -51,15 +51,12 @@
 {
     self=[super init];
     if ( self != nil ) {
-        impl = [[CompiledST newCompiledST] retain];
-        stringtable = [[LinkedHashMap newLinkedHashMap:8] retain];
+        impl = [CompiledST newCompiledST];
+        stringtable = [LinkedHashMap newLinkedHashMap:8];
         ip = 0;
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr retain];
         tokens = theTokens;
-        if ( tokens ) [tokens retain];
         impl.name = aName;
-        if ( impl.name ) [impl.name retain];
         impl.prefix = [Misc getPrefix:aName];
     }
     return self;
@@ -70,11 +67,11 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CompilationState" );
 #endif
-    if ( impl ) [impl release];
-    if ( stringtable ) [stringtable release];
-    if ( tokens ) [tokens release];
-    if ( errMgr ) [errMgr release];
-    [super dealloc];
+    impl = nil;
+    stringtable = nil;
+    tokens = nil;
+    errMgr = nil;
+    // [super dealloc];
 }
 
 - (NSInteger) defineString:(NSString *)s

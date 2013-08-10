@@ -31,8 +31,8 @@
     ST *st = event.scope.st;
     if ([st anonSubtemplate])
         return @"{...}";
-    if (st.debugState != nil && st.debugState.newSTEvent != nil) {
-        return [NSString stringWithFormat:@"%@ @ %@:%@", [st description], [st.debugState.newSTEvent fileName], [st.debugState.newSTEvent line]];
+    if (st.debugState != nil && st.debugState.aSTEvent != nil) {
+        return [NSString stringWithFormat:@"%@ @ %@:%@", [st description], [st.debugState.aSTEvent fileName], [st.debugState.aSTEvent line]];
     }
      else {
         return [st description];

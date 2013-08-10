@@ -106,6 +106,9 @@
 
 
 @implementation ErrorManager
+
+@synthesize listener;
+
 static id<STErrorListener>DEFAULT_ERROR_LISTENER;
 static ErrorManager *DEFAULT_ERR_MGR;
 
@@ -137,20 +140,18 @@ static ErrorManager *DEFAULT_ERR_MGR;
 
 - (id) init
 {
-    self=[super init];
+    self = [super init];
     if ( self != nil ) {
         listener = DEFAULT_ERROR_LISTENER;
-        if ( listener ) [listener retain];
     }
     return self;
 }
 
 - (id) initWithListener:(id<STErrorListener>)aListener
 {
-    self=[super init];
+    self = [super init];
     if ( self != nil ) {
         listener = aListener;
-        if ( listener ) [listener retain];
     }
     return self;
 }
@@ -160,8 +161,8 @@ static ErrorManager *DEFAULT_ERR_MGR;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in ErrorManager" );
 #endif
-    if ( listener ) [listener release];
-    [super dealloc];
+    listener = nil;
+    // [super dealloc];
 }
 
 - (void) compileTimeError:(ErrorTypeEnum)anError templateToken:(CommonToken *)aTemplateToken t:(CommonToken *)t
@@ -242,5 +243,4 @@ static ErrorManager *DEFAULT_ERR_MGR;
     [listener internalError:[STMessage newMessage:INTERNAL_ERROR who:aWho cause:e arg:aMsg]];
 }
 
-@synthesize listener;
 @end

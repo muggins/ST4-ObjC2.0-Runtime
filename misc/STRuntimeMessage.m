@@ -75,17 +75,17 @@
     self=[super init:anError who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3];
     if ( self !=nil ) {
         interp = anInterp;
-        if ( interp ) [interp retain];
         ip = anIp;
-        scope = [anInterp.currentScope retain];
+        scope = anInterp.currentScope;
     }
     return self;
 }
 
 - (void)dealloc
 {
-    if ( interp ) [interp release];
-    [super dealloc];
+    interp = nil;
+    scope = nil;
+    // [super dealloc];
 }
 
 

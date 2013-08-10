@@ -41,10 +41,10 @@
 {
     self = [super init];
     if ( self != nil ) {
-        parent = [aParent retain];
-        st = [aWho retain];
-        events = [[AMutableArray arrayWithCapacity:5] retain];
-        childEvalTemplateEvents = [[AMutableArray arrayWithCapacity:5] retain];
+        parent = aParent;
+        st = aWho;
+        events = [AMutableArray arrayWithCapacity:5];
+        childEvalTemplateEvents = [AMutableArray arrayWithCapacity:5];
     }
     return self;
 }
@@ -54,11 +54,11 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in InstanceScope" );
 #endif
-    if ( st ) [st release];
-    if ( parent ) [parent release];
-    if ( childEvalTemplateEvents ) [childEvalTemplateEvents release];
-    if ( events ) [events release];
-    [super dealloc];
+    st = nil;
+    parent = nil;
+    childEvalTemplateEvents = nil;
+    events = nil;
+    // [super dealloc];
 }
 
 #ifdef DONTUSEYET

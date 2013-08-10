@@ -35,6 +35,7 @@
 
 + (id) newBytecodeDisassembler:(CompiledST *)aCode;
 - (id) initWithCode:(CompiledST *)aCode;
+- (void)dealloc;
 - (NSString *) instrs;
 - (NSString *) disassemble;
 - (NSInteger) disassembleInstruction:(NSMutableString *)buf ip:(NSInteger)ip;

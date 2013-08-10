@@ -426,7 +426,7 @@ static BOOL trace = NO;
         locale = aLocale;
         if ( locale ) [locale retain];
         errMgr = anErrMgr;
-        if ( errMgr ) [errMgr release];
+        if ( errMgr ) [errMgr retain];
         debug = aDebug;
         if (debug) {
             events = [[AMutableArray arrayWithCapacity:5] retain];
@@ -1097,6 +1097,7 @@ static BOOL trace = NO;
     BOOL seenAValue = NO;
     id iterValue;
     ArrayIterator *it = (ArrayIterator *)obj;
+    [it retain];
     while ( [it hasNext] ) {
         iterValue = [it nextObject];
         // Emit separator if we're beyond first value
@@ -1113,6 +1114,7 @@ static BOOL trace = NO;
         n += nw;
     }
     [it release];
+    it = nil;
     return n;
 }
 
@@ -1194,6 +1196,7 @@ static BOOL trace = NO;
     id iterValue;
     
     ArrayIterator *it = (ArrayIterator *)attr;
+    [it retain];
     while ( [it hasNext] ) {
         iterValue = [it nextObject];
         if ( iterValue == nil || iterValue == [NSNull null] ) {
@@ -1214,6 +1217,7 @@ static BOOL trace = NO;
         i++;
     }
     [it release];
+    it = nil;
     return mapped;
 }
 
@@ -1278,6 +1282,7 @@ static BOOL trace = NO;
         [embedded rawSetAttribute:@"i"  value:[ACNumber numberWithInteger:i + 1]];
         for (NSInteger a = 0; a < numExprs; a++) {
             ArrayIterator *it = (ArrayIterator *)[exprs objectAtIndex:a];
+            [it retain];
             if ( it != nil && [it hasNext] ) {
                 NSString *argName = (NSString *)[formalArgumentNames objectAtIndex:a];
                 id iteratedValue = [it nextObject];
@@ -1286,8 +1291,9 @@ static BOOL trace = NO;
             else {
                 numEmpty++;
             }
+            [it release];
+            it = nil;
         }
-        //        [it release];
         if ( numEmpty == numExprs ) break;
         [results addObject:embedded];
         i++;
@@ -1313,9 +1319,12 @@ static BOOL trace = NO;
     obj = [self convertAnythingIteratableToIterator:obj];
     if ([obj isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)obj;
-        while ([it hasNext])
+        [it retain];
+        while ([it hasNext]) {
             [list addObject:[it nextObject]];
+        }
         [it release];
+        it = nil;
     }
     else {
         [list addObject:obj];
@@ -1336,9 +1345,11 @@ static BOOL trace = NO;
     v = [self convertAnythingIteratableToIterator:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
+        [it retain];
         if ((tmp = [it nextObject]) != nil) {
             r = tmp;
         }
+        [it release];
     }
     return r;
 }
@@ -1365,9 +1376,12 @@ static BOOL trace = NO;
     v = [self convertAnythingIteratableToIterator:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
-        while ([it hasNext])
+        [it retain];
+        while ([it hasNext]) {
             last = [it nextObject];
+        }
         [it release];
+        it = nil;
     }
     return last;
 }
@@ -1391,8 +1405,10 @@ static BOOL trace = NO;
     v = [self convertAnythingIteratableToIterator:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
-        if ( ![it hasNext] )
+        if ( ![it hasNext] ) {
             return nil; // if not even one value return nil
+        }
+        [it retain];
         [it nextObject]; // ignore first value
         AMutableArray *a = nil;
         if ( [it hasNext] ) { // Don't bother creating array if your not going to use it
@@ -1401,8 +1417,8 @@ static BOOL trace = NO;
                 obj = [it nextObject];
                 [a addObject:obj];
             };
-            [it release];
         }
+        [it release];
         return a;
     }
     return nil;
@@ -1425,6 +1441,7 @@ static BOOL trace = NO;
     v = [self convertAnythingIteratableToIterator:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)v;
+        [it retain];
         NSArray *array = [it allObjects];
         [it release];
         NSArray *a = [array subarrayWithRange:NSMakeRange(0, [array count]-1)];
@@ -1446,7 +1463,7 @@ static BOOL trace = NO;
     if ([v isKindOfClass:[ArrayIterator class]]) {
         AMutableArray *a = [[AMutableArray arrayWithCapacity:5] retain];
         ArrayIterator *it = (ArrayIterator *)v;
-        
+        [it retain];
         while ((obj = [it nextObject]) != nil) {
             if ( obj != nil && obj != [NSNull null] )
                 [a addObject:obj];
@@ -1470,7 +1487,7 @@ static BOOL trace = NO;
     if ([v isKindOfClass:[ArrayIterator class]]) {
         AMutableArray *a = [[AMutableArray arrayWithCapacity:5] retain];
         ArrayIterator *it = v;
-
+        [it retain];
         while ([it hasNext]) {
             [a insertObject:[it nextObject] atIndex:0];
         }
@@ -1499,6 +1516,7 @@ static BOOL trace = NO;
         i = [((NSArray *)v) count];
     else if ( [v isKindOfClass:[ArrayIterator class]] ) {
         ArrayIterator *it = v;
+        [it retain];
         int i = 0;
         while ([it hasNext]) {
             [it nextObject];
@@ -1564,6 +1582,7 @@ static BOOL trace = NO;
         it = (ArrayIterator *)obj;
     if ( it == nil )
         return obj;
+    [it retain];
     return it;
 }
 
@@ -1801,14 +1820,14 @@ static BOOL trace = NO;
     NSString *name = [NSString stringWithFormat:@"%@:", aWho.impl.name];
     if (aWho.impl.name == ST.UNKNOWN_NAME)
         name = @"";
-    [tr appendString:[NSMutableString stringWithFormat:@"%-40s%@%@\tstack=[", name, buf]];
+    [tr appendString:[NSMutableString stringWithFormat:@"%-40@%@\tstack=[", name, buf]];
     
     for (NSInteger i = 0; i <= sp; i++) {
         id obj = operands[i];
         [self printForTrace:tr obj:obj];
     }
     
-    [tr appendFormat:@" ], calls=%@, sp=%d, nw=%d", [self getEnclosingInstanceStackString:currentScope], sp, nwline];
+    [tr appendFormat:@" ], calls=%@, sp=%d, nw=%d", [self getEnclosingInstanceStackString:currentScope], (long)sp, (long)nwline];
     NSString *s = [NSString stringWithString:tr];
     if (debug)
         [executeTrace addObject:s];
@@ -1829,6 +1848,7 @@ static BOOL trace = NO;
     obj = [self convertAnythingIteratableToIterator:obj];
     if ([obj isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)obj;
+        [it retain];
         [tr appendString:@" ["];
         while ([it hasNext]) {
             id iterValue = [it nextObject];

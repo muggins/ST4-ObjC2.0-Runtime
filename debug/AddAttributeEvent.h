@@ -28,14 +28,18 @@
 #import "ConstructionEvent.h"
 
 @interface AddAttributeEvent : ConstructionEvent {
-  NSString *name;
-  NSObject *value;
+  __strong NSString *name;
+  __strong NSObject *value;
 }
+
+@property (retain) NSString *name;
+@property (retain) NSObject *value;
 
 + (AddAttributeEvent *) newAddAttributeEvent:(NSString *)aName value:(id)aValue;
 
 - (id) init:(NSString *)aName value:(id)aValue;
+- (void) dealloc;
+
 - (NSString *) description;
 
-@property (retain) NSString *name;
 @end

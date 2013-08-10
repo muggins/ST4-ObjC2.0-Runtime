@@ -64,7 +64,7 @@
     if ( [formatString isEqualToString:@"xml-encode"] ) {
         return [StringRenderer escapeHTML:s];
     }
-    char *str;
+    const char *str;
     str = [s cStringUsingEncoding:NSASCIIStringEncoding];
     return [NSString stringWithFormat:formatString, str];
 }
@@ -100,7 +100,7 @@
                 control = (c < ' ');
                 aboveASCII = (c > 126);
                 if (control || aboveASCII) {
-                    [buf appendFormat:@"&#%d;", (NSInteger)c];
+                    [buf appendFormat:@"&#%ld;", (NSInteger)c];
                 }
                 else
                     [buf appendFormat:@"%c", c];

@@ -48,7 +48,7 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat:@"%d..%d", a, b];
+    return [NSString stringWithFormat:@"%ld..%ld", a, b];
 }
 
 @end

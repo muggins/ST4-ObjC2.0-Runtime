@@ -116,14 +116,20 @@ STGroup *group;
 }
 
 @methodsDecl {
++ (void) initialize;
 + (NSInteger) TANONYMOUS_TEMPLATE;
 + (NSInteger) TBIGSTRING;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
 + (NSInteger) TTRUE;
++ (GroupParser *) newGroupParser:(id<TokenStream>)aStream;
+
+- (id) initWithTokenStream:(id<TokenStream>)aStream;
+- (void) dealloc;
 - (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;
+// - (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames;
 }
 
 @synthesize {
@@ -131,6 +137,7 @@ STGroup *group;
 }
 
 @methods {
+
 + (NSInteger) TANONYMOUS_TEMPLATE { return ANONYMOUS_TEMPLATE; }
 + (NSInteger) TBIGSTRING { return BIGSTRING; }
 + (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
@@ -161,6 +168,13 @@ STGroup *group;
     [self recover:input Exception:nil];
 }
 
+/*
+- (NSString *) getErrorMessage:(RecognitionException *)e TokenNames:(AMutableArray *)TokenNames
+{
+    return [NSString stringWithFormat:@"\%@--\%@", e.name, e.reason];
+}
+*/
+
 }
 
 @lexer::memVars {
@@ -183,7 +197,7 @@ STGroup *group;
     if ( [e isKindOfClass:[NoViableAltException class]] ) {
 #pragma error fix formatting
         unichar c = [input LA:1];
-        msg = (c == (unichar) EOF) ? @"invalid character '<EOF>'" : [NSString stringWithFormat:@"invalid character '%C'", c];
+        msg = (c == (unichar) EOF) ? @"invalid character '<EOF>'" : [NSString stringWithFormat:@"invalid character 'fC'", c];
     }
     else if ( [e isKindOfClass:[MismatchedTokenException class]] &&
               ((MismatchedTokenException *)e).expectingChar == '"' ) {
@@ -304,7 +318,7 @@ formalArg[AMutableArray *args]
             }
             }
         )
-        {[$args addObject:[[FormalArgument newFormalArgument:$ID.text token:$a] retain]];}
+        {[$args addObject:[FormalArgument newFormalArgument:$ID.text token:$a]];}
     ;
 
 /*
@@ -360,8 +374,8 @@ keyValue returns [id value]
     |   STRING              {$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
     |   T_TRUE              {$value = [ACNumber numberWithBool:YES];}
     |   T_FALSE             {$value = [ACNumber numberWithBool:NO];}
-    |   {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID
-                            {$value = STGroup.DICT_KEY;}
+    |   '[' ']'             {$value = [[AMutableDictionary alloc] init];} 
+    |                       {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID {$value = STGroup.DICT_KEY;}
     ;
     catch[RecognitionException *re] {
         [self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] text]]];

@@ -38,14 +38,14 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in CommonToken" );
 #endif
-    [super dealloc];
+    // [super dealloc];
 }
 
 - (NSString *) description
 {
     NSString *channelStr = @"";
     if (channel > 0) {
-        channelStr = [NSString stringWithFormat:@",channel=%d", channel];
+        channelStr = [NSString stringWithFormat:@",channel=%ld", channel];
     }
     NSString *txt = self.text;
     if (txt != nil)
@@ -57,7 +57,7 @@
         tokenName = @"<EOF>";
     else
         tokenName = [[STParser getTokenNames] objectAtIndex:type];
-    return [NSString stringWithFormat:@"[@%d,%d:%d='%@',<%@>%@,%d:%d]",
+    return [NSString stringWithFormat:@"[@%ld,%ld:%ld='%@',<%@>%@,%ld:%ld]",
         [self getTokenIndex], startIndex, stopIndex, txt, tokenName, channelStr, line, charPositionInLine];
 }
 

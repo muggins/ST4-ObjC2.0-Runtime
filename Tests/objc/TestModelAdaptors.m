@@ -14,7 +14,7 @@
         return ((User *)anObj).num;
     if ([aPropertyName isEqualToString:@"name"])
         return [((User *)anObj) name];
-    @throw [[STNoSuchPropertyException newException:[@"User." stringByAppendingString:aPropertyName]] autorelease];
+    @throw [STNoSuchPropertyException newException:[@"User." stringByAppendingString:aPropertyName]];
 }
 
 @end
@@ -37,8 +37,6 @@
 @end
 
 @implementation SuperUser
-
-@synthesize name;
 
 - (id) init:(int)aNum name:(NSString *)aName
 {
@@ -97,7 +95,7 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/foo.stg", tmpdir]];
     [group registerModelAdaptor:[User class] adaptor:[[UserAdaptor alloc] init]];
     ST *st = [group getInstanceOf:@"foo"];
-    [st add:@"x" value:[[[SuperUser alloc] init:100 name:@"parrt"] autorelease]];
+    [st add:@"x" value:[[SuperUser alloc] init:100 name:@"parrt"]];
     NSString *expected = @"100: super parrt";
     NSString *result = [st render];
     [self assertEquals:expected result:result];
@@ -111,7 +109,7 @@
     [group registerModelAdaptor:[User class] adaptor:[[UserAdaptor alloc] init]];
     [group getModelAdaptor:[User class]];
     [group getModelAdaptor:[SuperUser class]];
-    [group registerModelAdaptor:[User class] adaptor:[[[UserAdaptorConst alloc] init] autorelease]];
+    [group registerModelAdaptor:[User class] adaptor:[[UserAdaptorConst alloc] init]];
     ST *st = [group getInstanceOf:@"foo"];
     [st add:@"x" value:[User newUser:100 name:@"parrt"]];
     NSString *expected = @"const num value: const name value";
@@ -124,15 +122,15 @@
     NSString *templates = @"foo(x) ::= \"<x.num>: <x.name>\"\n";
     [self writeFile:tmpdir fileName:@"foo.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/foo.stg", tmpdir]];
-    [group registerModelAdaptor:[User class] adaptor:[[[UserAdaptor alloc] init] autorelease]];
-    [group registerModelAdaptor:[SuperUser class] adaptor:[[[UserAdaptorConst alloc] init] autorelease]];
+    [group registerModelAdaptor:[User class] adaptor:[[UserAdaptor alloc] init]];
+    [group registerModelAdaptor:[SuperUser class] adaptor:[[UserAdaptorConst alloc] init]];
     ST *st = [group getInstanceOf:@"foo"];
     [st add:@"x" value:[User newUser:100 name:@"parrt"]];
     NSString *expected = @"100: parrt";
     NSString *result = [st render];
     [self assertEquals:expected result:result];
     [st remove:@"x"];
-    [st add:@"x" value:[[[SuperUser alloc] init:100 name:@"parrt"] autorelease]];
+    [st add:@"x" value:[[SuperUser alloc] init:100 name:@"parrt"]];
     expected = @"const num value: const name value";
     result = [st render];
     [self assertEquals:expected result:result];

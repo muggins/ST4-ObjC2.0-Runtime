@@ -33,8 +33,8 @@
 
 - (void) dealloc
 {
-    [name release];
-    [super dealloc];
+    name = nil;
+    // [super dealloc];
 }
 
 @end
@@ -59,8 +59,8 @@
 
 - (void) dealloc
 {
-    [name release];
-    [super dealloc];
+    name = nil;
+    // [super dealloc];
 }
 
 @end
@@ -85,8 +85,8 @@
 
 - (void) dealloc
 {
-    [name release];
-    [super dealloc];
+    name  = nil;
+    // [super dealloc];
 }
 
 @end

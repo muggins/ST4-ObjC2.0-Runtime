@@ -56,6 +56,12 @@
   __strong ErrorManager *errMgr;
 }
 
+@property (retain) CompiledST *impl;
+@property (retain) LinkedHashMap *stringtable;
+@property (assign) NSInteger ip;
+@property (retain) CommonTokenStream *tokens;
+@property (retain) ErrorManager *errMgr;
+
 + (id) newCompilationState:(ErrorManager *)anErrMgr
                       name:(NSString *)name
                     stream:(CommonTokenStream *)tokens;
@@ -63,7 +69,8 @@
 - (id) init:(ErrorManager *)anErrMgr
        name:(NSString *)aName
      stream:(CommonTokenStream *)theTokens;
-     
+- (void) dealloc;
+
 - (NSInteger) defineString:(NSString *)s;
 - (void) refAttr:(CommonToken *)templateToken tree:(CommonTree *)id;
 - (void) setOption:(CommonTree *)id;
@@ -79,11 +86,5 @@
 - (void) ensureCapacity:(NSInteger)n;
 - (void) indent:(CommonTree *)indent;
 //+ (void) writeShort:(char *)memory index:(NSInteger)index value:(short)value;
-
-@property (retain) CompiledST *impl;
-@property (retain) LinkedHashMap *stringtable;
-@property (assign) NSInteger ip;
-@property (retain) CommonTokenStream *tokens;
-@property (retain) ErrorManager *errMgr;
 
 @end

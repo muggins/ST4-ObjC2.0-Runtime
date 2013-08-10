@@ -29,6 +29,9 @@
 
 @implementation AddAttributeEvent
 
+@synthesize name;
+@synthesize value;
+
 + (AddAttributeEvent *) newAddAttributeEvent:(NSString *)aName value:(id)aValue
 {
     return [[AddAttributeEvent alloc] init:aName value:aValue];
@@ -39,11 +42,19 @@
     self=[super init];
     if ( self != nil ) {
         name = aName;
-        if ( name ) [name retain];
         value = aValue;
-        if ( value ) [value retain];
     }
     return self;
+}
+
+- (void) dealloc
+{
+#ifdef DEBUG_DEALLOC
+    NSLog( @"called dealloc in AddAttributeEvent" );
+#endif
+    name = nil;
+    value = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -52,18 +63,7 @@
     if ( value == nil ) value = @"value=<nil>";
     NSString *fname = [self fileName];
     if ( fname == nil ) fname = @"fname=<nil>";
-    return [NSString stringWithFormat:@"addEvent{, name='%@', value=%@, location=%@:%d}", name, value, fname, [self line]];
+    return [NSString stringWithFormat:@"addEvent{, name='%@', value=%@, location=%@:%ld}", name, value, fname, [self line]];
 }
 
-- (void) dealloc
-{
-#ifdef DEBUG_DEALLOC
-    NSLog( @"called dealloc in AddAttributeEvent" );
-#endif
-  if ( name )  [name release];
-  if ( value ) [value release];
-  [super dealloc];
-}
-
-@synthesize name;
 @end

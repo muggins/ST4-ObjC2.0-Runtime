@@ -60,9 +60,7 @@
     if ( self != nil ) {
         alreadyLoaded = NO;
         sourceName = aSourceName;
-        if ( sourceName ) [sourceName retain];
         text = theText;
-        if ( text ) [text retain];
     }
     return self;
 }
@@ -72,9 +70,9 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroupString" );
 #endif
-    if ( sourceName ) [sourceName release];
-    if ( text ) [text release];
-    [super dealloc];
+    sourceName = nil;
+    text = nil;
+    // [super dealloc];
 }
 
 - (BOOL) isDictionary:(NSString *)name

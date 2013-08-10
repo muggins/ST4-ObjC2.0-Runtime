@@ -1,9 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
 #import "BaseTest.h"
-#import "RuleReturnScope.h"
-#import "Tree.h"
-#import "Before.h"
+#import <ANTLR/RuleReturnScope.h>
+#import <ANTLR/Tree.h>
 
 @interface TestTreeConstruction : BaseTest {
 }

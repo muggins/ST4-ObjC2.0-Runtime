@@ -792,9 +792,9 @@ id<TreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 /* ObjC start of actions.(actionScope).properties */
 
-@property (retain) conditional_Scope *conditional_scope;
-@property (retain, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
-@property (retain, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
+@property (copy) conditional_Scope *conditional_scope;
+@property (copy, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
+@property (copy, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
 
 /* ObjC end of actions.(actionScope).properties */
 /* ObjC start of properties */
@@ -810,6 +810,7 @@ id<TreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 + (id) newSTParser:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
 - (id) init:(id<TokenStream>)anInput error:(ErrorManager *)anErrMgr token:(CommonToken *)aTemplateToken;
+- (void) dealloc;
 - (id) recoverFromMismatchedToken:(id<IntStream>)anInput TokenType:(NSInteger)ttype Follow:(ANTLRBitSet *)follow;
 
 /* ObjC end of actions.(actionScope).methodsDecl */

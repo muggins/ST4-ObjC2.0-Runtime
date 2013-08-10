@@ -43,19 +43,14 @@ typedef enum {
 } typeDefEnum;
 
 @interface Field : NSObject {
-    NSString *name;
+    __strong NSString *name;
     NSInteger type;
-    NSString *typeName;
-    NSString *attr;
+    __strong NSString *typeName;
+    __strong NSString *attr;
     char tChar;
     char pChar;
-    id obj;
+    __strong id obj;
 }
-
-+ (id) newField:(NSString *)aName obj:(id)instObj;
-- (id) init:(NSString *)aName obj:instObj;
-- (Class) getClass;
-- (id) getObj;
 
 @property (retain) NSString *name;
 @property (assign) NSInteger type;
@@ -65,13 +60,22 @@ typedef enum {
 @property (assign) char pChar;
 @property (retain) id obj;
 
++ (id) newField:(NSString *)aName obj:(id)instObj;
+- (id) init:(NSString *)aName obj:instObj;
+- (Class) getClass;
+- (id) getObj;
+
 @end
 
 @interface OBJCMethod : NSObject {
-    NSString *name;
-    NSString *selString;
-    id obj;
+    __strong NSString *name;
+    __strong NSString *selString;
+    __strong id obj;
 }
+
+@property (retain) NSString *name;
+@property (retain) NSString *selString;
+@property (retain) id obj;
 
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj sel:(SEL)aSel;
 + (id) newOBJCMethod:(NSString *)methodName obj:(id)anObj selString:(NSString *)aSelString;
@@ -82,10 +86,6 @@ typedef enum {
 - (id) getObj;
 //- (objc_property_t) getProperty:(Class)c propertyName:(NSString *)propertyName;
 
-@property (retain) NSString *name;
-@property (retain) NSString *selString;
-@property (retain) id obj;
-
 @end
 
 @interface ObjectModelAdaptor : NSObject <ModelAdaptor> {
@@ -93,8 +93,10 @@ typedef enum {
     /**
      * Cache exact attribute type and property name reflection Member object
      */
-    DoubleKeyMap *classAndPropertyToMemberCache;
+    __strong DoubleKeyMap *classAndPropertyToMemberCache;
 }
+
+@property (retain) DoubleKeyMap *classAndPropertyToMemberCache;
 
 + (id) newModelAdaptor;
 
@@ -105,7 +107,5 @@ typedef enum {
 - (id) lookupMethod:(id)anObj propertyName:(NSString *)aPropertyName value:(id)value aClass:(Class)c;
 - (NSString *)convertToString:(id)anObj propertyName:(NSString *)aPropertyName;
 - (id) throwNoSuchProperty:(NSString *)aPropertyName;
-
-@property (retain) DoubleKeyMap *classAndPropertyToMemberCache;
 
 @end

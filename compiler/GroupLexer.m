@@ -248,7 +248,7 @@ const static NSInteger *dfa8_transition[] =
 
 + (DFA8 *) newDFA8WithRecognizer:(BaseRecognizer *)aRecognizer
 {
-    return [[[DFA8 alloc] initWithRecognizer:aRecognizer] retain];
+    return [[DFA8 alloc] initWithRecognizer:aRecognizer];
 }
 
 - (id) initWithRecognizer:(BaseRecognizer *) theRecognizer
@@ -270,7 +270,7 @@ const static NSInteger *dfa8_transition[] =
 - (void) dealloc
 {
     //free(transition);
-    [super dealloc];
+    // [super dealloc];
 }
 
 - (NSString *) description
@@ -314,8 +314,9 @@ const static NSInteger *dfa8_transition[] =
 
 - (void) dealloc
 {
-    [dfa8 release];
-    [super dealloc];
+    dfa8 = nil;
+    group = nil;
+    // [super dealloc];
 }
 
 /* ObjC Start of actions.lexer.methods */
@@ -332,7 +333,7 @@ const static NSInteger *dfa8_transition[] =
     }
     else if ( [e isKindOfClass:[MismatchedTokenException class]] &&
               ((MismatchedTokenException *)e).expectingChar == '"' ) {
-            msg = @"unterminated string";
+        msg = @"unterminated string";
     }
     else {
         msg = [self getErrorMessage:e TokenNames:[self getTokenNames]];
@@ -1066,9 +1067,9 @@ const static NSInteger *dfa8_transition[] =
         do {
             NSInteger alt2=5;
             NSInteger LA2_0 = [input LA:1];
-            if ( (LA2_0=='\\') ) {
+            if ( LA2_0=='\\' ) {
                 NSInteger LA2_2 = [input LA:2];
-                if ( (LA2_2=='"') ) {
+                if ( LA2_2=='"' ) {
                     alt2=1;
                 }
                 else if ( ((LA2_2 >= 0x0000 && LA2_2 <= '!')||(LA2_2 >= '#' && LA2_2 <= 0xFFFF)) ) {
@@ -1077,7 +1078,7 @@ const static NSInteger *dfa8_transition[] =
 
 
             }
-            else if ( (LA2_0=='\n') ) {
+            else if ( LA2_0=='\n' ) {
                 alt2=3;
             }
             else if ( ((LA2_0 >= 0x0000 && LA2_0 <= '\t')||(LA2_0 >= 0x000B && LA2_0 <= '!')||(LA2_0 >= '#' && LA2_0 <= '[')||(LA2_0 >= ']' && LA2_0 <= 0xFFFF)) ) {
@@ -1210,9 +1211,9 @@ const static NSInteger *dfa8_transition[] =
         do {
             NSInteger alt3=2;
             NSInteger LA3_0 = [input LA:1];
-            if ( (LA3_0=='%') ) {
+            if ( LA3_0=='%' ) {
                 NSInteger LA3_1 = [input LA:2];
-                if ( (LA3_1=='>') ) {
+                if ( LA3_1=='>' ) {
                     alt3=2;
                 }
                 else if ( ((LA3_1 >= 0x0000 && LA3_1 <= '=')||(LA3_1 >= '?' && LA3_1 <= 0xFFFF)) ) {
@@ -1288,9 +1289,9 @@ const static NSInteger *dfa8_transition[] =
         do {
             NSInteger alt4=4;
             NSInteger LA4_0 = [input LA:1];
-            if ( (LA4_0=='>') ) {
+            if ( LA4_0=='>' ) {
                 NSInteger LA4_1 = [input LA:2];
-                if ( (LA4_1=='>') ) {
+                if ( LA4_1=='>' ) {
                     alt4=4;
                 }
                 else if ( ((LA4_1 >= 0x0000 && LA4_1 <= '=')||(LA4_1 >= '?' && LA4_1 <= 0xFFFF)) ) {
@@ -1299,9 +1300,9 @@ const static NSInteger *dfa8_transition[] =
 
 
             }
-            else if ( (LA4_0=='\\') ) {
+            else if ( LA4_0=='\\' ) {
                 NSInteger LA4_2 = [input LA:2];
-                if ( (LA4_2=='>') ) {
+                if ( LA4_2=='>' ) {
                     alt4=1;
                 }
                 else if ( ((LA4_2 >= 0x0000 && LA4_2 <= '=')||(LA4_2 >= '?' && LA4_2 <= 0xFFFF)) ) {
@@ -1483,9 +1484,9 @@ const static NSInteger *dfa8_transition[] =
         do {
             NSInteger alt5=2;
             NSInteger LA5_0 = [input LA:1];
-            if ( (LA5_0=='*') ) {
+            if ( LA5_0=='*' ) {
                 NSInteger LA5_1 = [input LA:2];
-                if ( (LA5_1=='/') ) {
+                if ( LA5_1=='/' ) {
                     NSInteger LA5_3 = [input LA:3];
                     if ( ((LA5_3 >= 0x0000 && LA5_3 <= 0xFFFF)) ) {
                         alt5=1;
@@ -1603,7 +1604,7 @@ const static NSInteger *dfa8_transition[] =
         NSInteger alt7=2;
         NSInteger LA7_0 = [input LA:1];
 
-        if ( (LA7_0=='\r') ) {
+        if ( LA7_0=='\r' ) {
             alt7=1;
         }
         switch (alt7) {

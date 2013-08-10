@@ -118,7 +118,6 @@
     self=[super init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
     if ( self != nil ) {
         root = theRoot;
-        if ( root ) [root retain];
         encoding = theEncoding;
     }
     return self;
@@ -128,9 +127,9 @@
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in STGroupDir" );
 #endif
-    if ( groupDirName ) [groupDirName release];
-    if ( root ) [root release];
-    [super dealloc];
+    groupDirName = nil;
+    root = nil;
+    // [super dealloc];
 }
 
 - (void) importTemplatesWithFileName:(CommonToken *)fileNameToken

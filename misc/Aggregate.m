@@ -74,8 +74,8 @@
 
 - (void)dealloc
 {
-    if ( props ) [props release];
-    [super dealloc];
+    props = nil;
+    // [super dealloc];
 }
 
 - (void) put:(NSString *)propName value:(id) propValue

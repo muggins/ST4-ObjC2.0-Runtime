@@ -1,4 +1,5 @@
 #import "ErrorBufferAllErrors.h"
+#import <ANTLR/ANTLR.h>
 
 @implementation ErrorBufferAllErrors
 

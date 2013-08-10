@@ -24,7 +24,7 @@
     int aa[57] = { 3, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 888, 2, 1, 6, 32, 5, 6, 77, 4, 9, 20, 2, 1, 4, 63, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 6, 32, 5, 6, 77, 3, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 888, 1, 6, 32, 5 };
     NSString *templates = @"array(values) ::= <<int[] a = { <values; wrap=\"\\n\", separator=\",\"> };>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"array"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:60];
     for ( int i = 0; i < 57; i++ ) {
@@ -49,7 +49,7 @@
     int aa[57] = { 3,9,20,2,1,4,6,32,5,6,77,888,2,1,6,32,5,6,77,4,9,20,2,1,4,63,9,20,2,1,4,6,32,5,6,77,6,32,5,6,77,3,9,20,2,1,4,6,32,5,6,77,888,1,6,32,5 };
     NSString *templates = @"array(values) ::= <<int[] a = { <values; anchor, wrap, separator=\",\"> };>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"array"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:60];
     for ( int i = 0; i < 57; i++ ) {
@@ -69,15 +69,15 @@
 {
     NSString *templates = @"array(values) ::= <<{ <values; anchor, separator=\", \"> }>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
-    ST *x = [[ST newSTWithTemplate:@"<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>"] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
+    ST *x = [ST newSTWithTemplate:@"<\\n>{ <stuff; anchor, separator=\",\\n\"> }<\\n>"];
     x.groupThatCreatedThisInstance = group;
     [x add:@"stuff" value:@"1"];
     [x add:@"stuff" value:@"2"];
     [x add:@"stuff" value:@"3"];
     ST *a = [group getInstanceOf:@"array"];
     NSArray *t = [NSArray arrayWithObjects:@"a", x, @"b", nil];
-    [a add:@"values" value:[t autorelease]];
+    [a add:@"values" value:t];
     NSString *expected = @"{ a, \n  { 1,\n    2,\n    3 }\n  , b }";
     NSString *result = [a renderWithLineWidth:40];
     [self assertEquals:expected result:result];
@@ -87,7 +87,7 @@
 {
     NSString *templates = @"func(args) ::= <<       FUNCTION line( <args; wrap=\"\\n      c\", separator=\",\"> )>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"func"];
     [a add:@"args" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", @"f", nil]];
     NSString *expected = @"       FUNCTION line( a,b,c,d,\n      ce,f )";
@@ -100,7 +100,7 @@
     int aa[32] = { 3, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 888, 2, 1, 6, 32, 5, 6, 77, 4, 9, 20, 2, 1, 4, 63, 9, 20, 2, 1, 4, 6 };
     NSString *templates = @"array(values) ::= <<int[] a = { <{1,9,2,<values; wrap, separator=\",\">}; anchor> };>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"array"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:60];
     for ( int i = 0; i < 32; i++ ) {
@@ -120,7 +120,7 @@
 {
     NSString *templates = @"duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     [a add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", nil]];
     NSString *expected = @"abc\nde";
@@ -132,7 +132,7 @@
 {
     NSString *templates = @"duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     [a add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"\n", @"d", @"e", nil]];
     NSString *expected = @"ab\nde";
@@ -143,7 +143,7 @@
 {
     NSString *templates = @"duh(chars) ::= <<<chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     [a add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"\n", @"d", @"e", nil]];
     NSString *expected = @"abc\n\nde";
@@ -156,7 +156,7 @@
     int aa[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     NSString *templates = @"duh(data) ::= <<!<data; wrap>!>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:10];
     for ( int i = 0; i < 9; i++ ) {
@@ -177,7 +177,7 @@
     int aa[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     NSString *templates = @"duh(data) ::= <<!<data:{v|[<v>]}; wrap>!>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:10];
     for ( int i = 0; i < 9; i++ ) {
@@ -198,7 +198,7 @@
     int aa[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     NSString *templates = @"duh(data) ::= <<!<data:{v|[<v>]}; anchor, wrap>!>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:10];
     for ( int i = 0; i < 9; i++ ) {
@@ -219,7 +219,7 @@
     int aa[9] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     NSString *templates = @"top(s) ::= <<  <s>.>>str(data) ::= <<!<data:{v|[<v>]}; wrap=\"!+\\n!\">!>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *t = [group getInstanceOf:@"top"];
     ST *s = [group getInstanceOf:@"str"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:10];
@@ -241,7 +241,7 @@
 {
     NSString *templates = @"duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     [a add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", nil]];
     NSString *expected = @"    a\n    b\n    c\n    d\n    e";
@@ -253,7 +253,7 @@
 {
     NSString *templates = @"duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
     [a add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", nil]];
     NSString *expected = @"    ab\n    cd\n    e";
@@ -265,7 +265,7 @@
 {
     NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<  <chars; wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];
     ST *duh = [group getInstanceOf:@"duh"];
     [duh add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", nil]];
@@ -279,7 +279,7 @@
 {
     NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\"\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];
     ST *duh = [group getInstanceOf:@"duh"];
     [duh add:@"chars" value:[NSArray arrayWithObjects:@"a", @"b", @"c", @"d", @"e", nil]];
@@ -293,11 +293,11 @@
 {
     NSString *templates = @"m(args,body) ::= <<@Test public voidfoo(<args; wrap=\"\\n\",separator=\", \">) throws Ick { <body> }>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"m"];
     [a add:@"args" value:[NSArray arrayWithObjects:@"a", @"b", @"c", nil]];
     [a add:@"body" value:@"i=3;"];
-    int n = [@"@Test public voidfoo(a, b, c" length];
+    NSInteger n = [@"@Test public voidfoo(a, b, c" length];
     NSString *expected = @"@Test public voidfoo(a, b, c) throws Ick { i=3; }";
     NSString *result = [a renderWithLineWidth:n];
     [self assertEquals:expected result:result];
@@ -307,7 +307,7 @@
 {
     NSString *templates = @"m(args,body) ::= <<{ <body; anchor, wrap=\"\\n\"> }>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *m = [group getInstanceOf:@"m"];
     [m add:@"body" value:@"i=3;"];
     NSString *expected = @"{ \n  i=3; }";
@@ -318,9 +318,13 @@
 - (void) test19LineWrapInNestedExpr
 {
     int aa[57] = { 3, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 888, 2, 1, 6, 32, 5, 6, 77, 4, 9, 20, 2, 1, 4, 63, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 6, 32, 5, 6, 77, 3, 9, 20, 2, 1, 4, 6, 32, 5, 6, 77, 888, 1, 6, 32, 5 };
+/*
+ String templates = "top(arrays) ::= <<Arrays: <arrays>done>>"+newline+
+ "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>"+newline;
+ */
     NSString *templates = @"top(arrays) ::= <<Arrays: <arrays>done>>\narray(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];
     ST *a = [group getInstanceOf:@"array"];
     AMutableArray *aaObj = [AMutableArray arrayWithCapacity:10];
@@ -336,6 +340,8 @@
     [top add:@"arrays" value:a];
     NSString *expected = @"Arrays: int[] a = { 3,9,20,2,1,4,6,32,5,\n                    6,77,888,2,1,6,32,5,\n                    6,77,4,9,20,2,1,4,63,\n                    9,20,2,1,4,6,32,5,6,\n                    77,6,32,5,6,77,3,9,20,\n                    2,1,4,6,32,5,6,77,888,\n                    1,6,32,5 };\nint[] a = { 3,9,20,2,1,4,6,32,5,6,77,888,\n            2,1,6,32,5,6,77,4,9,20,2,1,4,\n            63,9,20,2,1,4,6,32,5,6,77,6,\n            32,5,6,77,3,9,20,2,1,4,6,32,\n            5,6,77,888,1,6,32,5 };\ndone";
     NSString *result = [top renderWithLineWidth:40];
+    NSLog(@"Expected = %@", expected);
+    NSLog(@"Result   = %@", result);
     [self assertEquals:expected result:result];
 }
 

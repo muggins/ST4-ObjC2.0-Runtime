@@ -103,7 +103,8 @@
   [self setLocationRelativeTo:[self owner]];
 }
 
-- (void) dealloc {
+- (void) dealloc
+{
   [overallSplitPane release];
   [mainSplitPane release];
   [topSplitPane release];

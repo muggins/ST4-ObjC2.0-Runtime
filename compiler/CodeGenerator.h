@@ -135,16 +135,17 @@ typedef enum {
 #pragma mark Dynamic Rule Scopes ruleAttributeScopeInterface
 /* start of ruleAttributeScopeInterface */
 @interface template_Scope : SymbolsScope {
-CompilationState * cstate;
+__strong CompilationState *cstate;
  
 }
 
 /* start property declarations */
-@property (assign, getter=getcstate, setter=setcstate:) CompilationState * cstate;
+@property (retain, getter=getcstate, setter=setcstate:) CompilationState *cstate;
 
 /* start method declarations */
 + (template_Scope *)newtemplate_Scope;
 - (id) init;
+- (void) dealloc;
 - (CompilationState *)getcstate;
 - (void)setcstate:(CompilationState *)aVal;
 
@@ -156,14 +157,14 @@ CompilationState * cstate;
 @interface CodeGenerator_region_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 
-NSString * name;
+__strong NSString * name;
  
 
 }
 /* start property declarations */
 
 
-@property (assign, getter=getname, setter=setname:) NSString * name;
+@property (retain, getter=getname, setter=setname:) NSString * name;
 
 
 /* start of method declarations */
@@ -185,7 +186,7 @@ NSString * name;
 @interface CodeGenerator_subtemplate_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
 
-NSString * name;
+__strong NSString * name;
 
 NSInteger nargs;
  
@@ -194,7 +195,7 @@ NSInteger nargs;
 /* start property declarations */
 
 
-@property (assign, getter=getname, setter=setname:) NSString * name;
+@property (retain, getter=getname, setter=setname:) NSString * name;
 
 @property (assign, getter=getnargs, setter=setnargs:) NSInteger nargs;
 
@@ -369,12 +370,12 @@ BOOL passThru;
 
 /* ObjC start of actions.(actionScope).properties */
 
-	@property(retain) template_Scope *template_scope;
-	@property(retain) NSString *outermostTemplateName; // name of overall template
-	@property(retain) CompiledST *outermostImpl;
-	@property(retain) CommonToken *templateToken;// overall template token
-	@property(retain) NSString *template;    // overall template text
-	@property(retain) ErrorManager *errMgr;
+	@property (retain) template_Scope *template_scope;
+	@property (retain) NSString *outermostTemplateName; // name of overall template
+	@property (retain) CompiledST *outermostImpl;
+	@property (retain) CommonToken *templateToken;// overall template token
+	@property (retain) NSString *template;    // overall template text
+	@property (retain) ErrorManager *errMgr;
 
 /* ObjC end of actions.(actionScope).properties */
 /* ObjC start of properties */
@@ -397,7 +398,7 @@ BOOL passThru;
                   token:(CommonToken *)aTemplateToken;
 
 - (void) dealloc;
-// convience funcs to hide offensive sending of emit messages to
+// convenience funcs to hide offensive sending of emit messages to
 // CompilationState temp data object.
 
 - (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)arg;

@@ -33,6 +33,10 @@
 
 @implementation EvalExprEvent
 
+@synthesize exprStartChar;
+@synthesize exprStopChar;
+@synthesize expr;
+
 + (id) newEvent:(InstanceScope *)aScope start:(NSInteger)aStart stop:(NSInteger)aStop exprStart:(NSInteger)anExprStart exprStop:(NSInteger)anExprStop
 {
     return [[EvalExprEvent alloc] init:aScope start:aStart stop:aStop exprStart:anExprStart exprStop:anExprStop];
@@ -53,17 +57,14 @@
 
 - (void) dealloc
 {
-    if ( expr ) [expr release];
-    [super dealloc];
+    expr = nil;
+    // [super dealloc];
 }
 
 - (NSString *) description
 {
     if ( expr == nil ) expr = @"expr=<nil>";
-    return [NSString stringWithFormat:@"{self=%@, expr=%@, exprStartChar=%d, exprStopChar=%d start=%d, stop=%d}", [self className], expr, exprStartChar, exprStopChar, outputStartChar, outputStopChar];
+    return [NSString stringWithFormat:@"{self=%@, expr=%@, exprStartChar=%ld, exprStopChar=%ld start=%ld, stop=%ld}", [self className], expr, exprStartChar, exprStopChar, outputStartChar, outputStopChar];
 }
 
-@synthesize exprStartChar;
-@synthesize exprStopChar;
-@synthesize expr;
 @end

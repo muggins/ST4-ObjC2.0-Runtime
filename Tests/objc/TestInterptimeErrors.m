@@ -14,9 +14,10 @@
     return name;
 }
 
-- (void) dealloc {
-    [name release];
-    [super dealloc];
+- (void) dealloc
+{
+    name = nil;
+    // [super dealloc];
 }
 
 @end
@@ -30,9 +31,10 @@
     return self;
 }
 
-- (void) dealloc {
-    [name release];
-    [super dealloc];
+- (void) dealloc
+{
+    name = nil;
+    // [super dealloc];
 }
 
 @end
@@ -44,7 +46,7 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t() ::= \"<foo()>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st render];
@@ -58,11 +60,11 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t() ::= \"<super.t()>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     NSString *templates2 = @"u() ::= \"blech\"\n";
     [self writeFile:tmpdir fileName:@"t2.stg" content:templates2];
-    STGroup *group2 = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t2.stg", tmpdir]] autorelease];
+    STGroup *group2 = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t2.stg", tmpdir]];
     [group importTemplates:group2];
     ST *st = [group getInstanceOf:@"t"];
     [st render];
@@ -76,10 +78,10 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t(u) ::= \"<u.x>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
-    [st add:@"u" value:[[User newUser:32 name:@"parrt"] autorelease]];
+    [st add:@"u" value:[User newUser:32 name:@"parrt"]];
     [st render];
     NSString *expected = @"";
     NSString *result = [errors description];
@@ -91,10 +93,10 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t(u) ::= \"<u.name>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
-    [st add:@"u" value:[[[UserHiddenName alloc] initWithName:@"parrt"] autorelease]];
+    [st add:@"u" value:[[UserHiddenName alloc] initWithName:@"parrt"]];
     [st render];
     NSString *expected = @"";
     NSString *result = [errors description];
@@ -106,10 +108,10 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t(u) ::= \"<u.name>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
-    [st add:@"u" value:[[[UserHiddenNameField alloc] initWithName:@"parrt"] autorelease]];
+    [st add:@"u" value:[[UserHiddenNameField alloc] initWithName:@"parrt"]];
     [st render];
     NSString *expected = @"";
     NSString *result = [errors description];
@@ -121,7 +123,7 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t() ::= \"<u({9})>\"\nu(x,y) ::= \"<x>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st render];
@@ -135,7 +137,7 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t() ::= \"<{9}:u()>\"\nu(x,y) ::= \"<x>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     NSString *expected = @"9";
@@ -151,7 +153,7 @@
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
     NSString *templates = @"t() ::= \"<u()>\"\nu() ::= \"<x>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
-    STGroup *group = [[STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]] autorelease];
+    STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group setListener:errors];
     //    STGroup.debug = YES;
     [STGroup setDebug];
@@ -165,9 +167,9 @@
 - (void) test09ParallelAttributeIterationWithMissingArgs
 {
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroup newSTGroup] autorelease];
+    STGroup *group = [STGroup newSTGroup];
     [group setListener:errors];
-    ST *st = [[ST newST:group template:@"<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"] autorelease];
+    ST *st = [ST newST:group template:@"<names,phones,salaries:{n,p | <n>@<p>}; separator=\", \">"];
     [st add:@"names" value:@"Ter"];
     [st add:@"names" value:@"Tom"];
     [st add:@"phones" value:@"1"];
@@ -184,9 +186,9 @@
 - (void) test10StringTypeMismatch
 {
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroup newSTGroup] autorelease];
+    STGroup *group = [STGroup newSTGroup];
     [group setListener:errors];
-    ST *st = [[ST newST:group template:@"<trim(s)>"] autorelease];
+    ST *st = [ST newST:group template:@"<trim(s)>"];
     [st add:@"s" value:[ACNumber numberWithInteger:34]];
     [st render];
     NSString *expected = @"context [anonymous] 1:1 function trim expects a string not ACNumber\n";
@@ -197,9 +199,9 @@
 - (void) test11StringTypeMismatch2
 {
     ErrorBuffer *errors = [ErrorBuffer newErrorBuffer];
-    STGroup *group = [[STGroup newSTGroup] autorelease];
+    STGroup *group = [STGroup newSTGroup];
     [group setListener:errors];
-    ST *st = [[ST newST:group template:@"<strlen(s)>"] autorelease];
+    ST *st = [ST newST:group template:@"<strlen(s)>"];
     [st add:@"s" value:[ACNumber numberWithInteger:34]];
     [st render];
     NSString *expected = @"context [anonymous] 1:1 function strlen expects a string not ACNumber\n";

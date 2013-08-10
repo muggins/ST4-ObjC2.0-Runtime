@@ -105,7 +105,6 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = @"";
-        if ( name ) [name retain];
         defaultValueToken = nil;
         compiledDefaultValue = nil;
     }
@@ -119,9 +118,7 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = aName;
-        if ( name ) [name retain];
         defaultValueToken = nil;
-        if ( defaultValueToken ) [defaultValueToken retain];
         compiledDefaultValue = nil;
     }
     return self;
@@ -134,9 +131,7 @@ static NSString *suffixes[] = {
         cardinality = REQUIRED;
         index = 0;
         name = aName;
-        if ( name ) [name retain];
         defaultValueToken = aToken;
-        if ( defaultValueToken ) [defaultValueToken retain];
         compiledDefaultValue = nil;
     }
     return self;
@@ -147,10 +142,11 @@ static NSString *suffixes[] = {
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in FormalArgument" );
 #endif
-    if ( name ) [name release];
-    if ( defaultValueToken ) [defaultValueToken release];
-    if ( compiledDefaultValue ) [compiledDefaultValue release];
-    [super dealloc];
+    name = nil;
+    defaultValueToken = nil;
+    defaultValue = nil;
+    compiledDefaultValue = nil;
+    // [super dealloc];
 }
 
 - (NSInteger) hash

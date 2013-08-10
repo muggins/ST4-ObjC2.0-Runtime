@@ -46,13 +46,20 @@
    * if in debug mode, has created instance, add attr events and eval
    * template events.
  */
-    ST *who;
+    __strong ST *who;
     ErrorTypeEnum error;
     id arg;
     id arg2;
     id arg3;
-    NSException *cause;
+    __strong NSException *cause;
 }
+
+@property (retain) ST *who;
+@property (assign) ErrorTypeEnum error;
+@property (copy) id arg;
+@property (copy) id arg2;
+@property (copy) id arg3;
+@property (retain) NSException *cause;
 
 + (id) newMessage:(ErrorTypeEnum)anError;
 + (id) newMessage:(ErrorTypeEnum)anError who:(ST *)aWho;
@@ -66,12 +73,5 @@
 
 - (void) dealloc;
 - (NSString *) description;
-
-@property (retain) ST *who;
-@property (assign) ErrorTypeEnum error;
-@property (assign) id arg;
-@property (assign) id arg2;
-@property (assign) id arg3;
-@property (retain) NSException *cause;
 
 @end
