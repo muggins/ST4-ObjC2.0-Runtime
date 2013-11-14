@@ -29,6 +29,7 @@
 #import "STErrorListener.h"
 #import "STCompiletimeMessage.h"
 #import "GroupLexer.h"
+#import "GroupParser.h"
 
 @class CommonToken;
 
@@ -88,9 +89,10 @@
     if ( token != nil ) {
         line = token.line;
         charPos = token.charPositionInLine;
-        if ( templateToken != nil ) {
+        if ( templateToken != nil && (templateToken.input != token.input) ) {
             NSInteger templateDelimiterSize = 1;
-            if ( templateToken.type == BIGSTRING ) {
+            if ( templateToken.type == GroupParser.TBIGSTRING ||
+                 templateToken.type == GroupParser.TBIGSTRING_NO_NL ) {
                 templateDelimiterSize = 2;
             }
             line += templateToken.line - 1;

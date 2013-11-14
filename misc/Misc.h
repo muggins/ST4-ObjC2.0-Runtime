@@ -37,6 +37,7 @@
 
 + (NSString *) newline;
 + (void) setNewline:(NSString *)aNewLine;
++ (BOOL) referenceEquals:(id)x obj:(id)y;
 + (NSString *) join:(ArrayIterator *)iter separator:(NSString *)separator;
 + (NSString *) strip:(NSString *)s n:(NSInteger)n;
 + (NSString *) trimOneStartingNewline:(NSString *)s;
@@ -47,12 +48,13 @@
 + (NSString *) getParent:(NSString *)name;
 + (NSString *) getPrefix:(NSString *)name;
 + (NSString *) replaceEscapes:(NSString *)s;
++ (NSString *) replaceEscapedRightAngle:(NSString *) s;
 + (Coordinate *) getLineCharPosition:(NSString *)s index:(NSInteger)index;
 + (BOOL) fileExists:(NSString *)aPath;
 + (BOOL) urlExists:(NSURL *)url;
 #pragma mark error fix accessField
-+ (id) accessField:(Ivar)f obj:(id)obj value:(id)value;
-+ (id) invokeMethod:(SEL)m obj:(id)obj value:(id)value;
-+ (SEL) getMethod:(NSString *)methodName;
+// + (id) accessField:(Ivar)f obj:(id)obj value:(id)value;
+// + (id) invokeMethod:(SEL)m obj:(id)obj value:(id)value;
+// + (SEL) getMethod:(NSString *)methodName;
 + (NSInteger) lastIndexOf:(char)aChar inString:(NSString *)aString;
 @end

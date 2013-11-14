@@ -78,6 +78,14 @@
 
 @implementation ConstructionEvent
 
+@synthesize fileName;
+@synthesize line;
+@synthesize stack;
+@synthesize sTEntryPoint;
+@synthesize addrs;
+@synthesize trace;
+
+
 + (id) newEvent
 {
     return [[ConstructionEvent alloc] init];
@@ -139,12 +147,5 @@
     it = nil;
     return trace;
 }
-
-@synthesize fileName;
-@synthesize line;
-@synthesize stack;
-@synthesize sTEntryPoint;
-@synthesize addrs;
-@synthesize trace;
 
 @end

@@ -128,10 +128,6 @@ NSString *OptionDescription(OptionEnum value);
     NSInteger current_ip;
     NSInteger nwline;
     
-    /** Stack of enclosing instances (scopes).  Used for dynamic scoping
-     *  of attributes.
-     */
-    __strong InstanceScope *currentScope;
     /**
      * Exec st with respect to this group. Once set in ST.toString(),
      * it should be fixed. ST has group also.
@@ -163,7 +159,6 @@ NSString *OptionDescription(OptionEnum value);
 @property (assign) NSInteger sp;
 @property (assign) NSInteger current_ip;
 @property (assign) NSInteger nwline;
-@property (retain) InstanceScope *currentScope;
 @property (retain) STGroup *group;
 @property (retain) NSLocale *locale;
 @property (retain) ErrorManager *errMgr;
@@ -190,53 +185,51 @@ NSString *OptionDescription(OptionEnum value);
 - (void) dumpOpcodeFreq;
 #endif
 
-- (NSInteger) exec:(Writer *)anSTWriter who:(ST *)aWho;
-- (NSInteger) _exec:(Writer *)anSTWriter who:(ST *)aWho;
+- (NSInteger) exec:(Writer *)anSTWriter scope:(InstanceScope *)aScope;
+- (NSInteger) _exec:(Writer *)anSTWriter scope:(InstanceScope *)aScope;
 - (void) load_str:(ST *)who ip:(NSInteger)ip;
-- (void) super_new:(ST *)aWho name:(NSString *)name nargs:(NSInteger)nargs;
-- (void) super_new:(ST *)aWho name:(NSString *)name attrs:(LinkedHashMap *)attrs;
-- (void) passthru:(ST *)aWho templateName:(NSString *)templateName attrs:(LinkedHashMap *)attrs;
-- (void) storeArgs:(ST *)aWho attrs:(LinkedHashMap *)attrs st:(ST *)st;
-- (void) storeArgs:(ST *)aWho nargs:(NSInteger)nargs st:(ST *)st;
-- (void) indent:(id<STWriter>)wr1 who:(ST *)aWho index:(NSInteger)strIndex;
-- (NSInteger) writeObjectNoOptions:(Writer *)wr1 who:(ST *)aWho obj:(id)obj;
-- (NSInteger) writeObjectWithOptions:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writeObject:(Writer *)anSTWriter who:(ST *)who obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writeIterator:(Writer *)anSTWriter who:(ST *)aWho obj:(id)obj options:(NSArray *)options;
-- (NSInteger) writePOJO:(Writer *)anSTWriter obj:(id)obj options:(NSArray *)options;
-- (NSInteger) getExprStartChar:(ST *)aWho;
-- (NSInteger) getExprStopChar:(ST *)aWho;
-- (void) map:(ST *)aWho attr:(id)attr st:(ST *)st;
-- (void) rot_map:(ST *)aWho attr:(id)attr prototypes:(AMutableArray *)prototypes;
-- (AMutableArray *) rot_map_iterator:(ST *)aWho iter:(id)attr proto:(AMutableArray *)prototypes;
-- (AttributeList *) zip_map:(ST *)aWho exprs:(AMutableArray *)exprs prototype:(ST *)prototype;
-- (void) setFirstArgument:(ST *)aWho st:(ST *)st attr:(id)attr;
-- (void) addToList:(AMutableArray *)list obj:(id)obj;
-- (id) first:(id)v;
-- (id) last:(id)v;
-- (id) rest:(id)v;
-- (id) trunc:(id)v;
-- (id) strip:(id)v;
-- (id) reverse:(id)v;
+- (void) super_new:(InstanceScope *)aScope name:(NSString *)name nargs:(NSInteger)nargs;
+- (void) super_new:(InstanceScope *)aScope name:(NSString *)name attrs:(LinkedHashMap *)attrs;
+- (void) passthru:(InstanceScope *)aScope templateName:(NSString *)templateName attrs:(LinkedHashMap *)attrs;
+- (void) storeArgs:(InstanceScope *)aScope attrs:(LinkedHashMap *)attrs st:(ST *)st;
+- (void) storeArgs:(InstanceScope *)aScope nargs:(NSInteger)nargs st:(ST *)st;
+- (void) indent:(id<STWriter>)wr1 scope:(InstanceScope *)aScope index:(NSInteger)strIndex;
+- (NSInteger) writeObjectNoOptions:(Writer *)wr1 scope:(InstanceScope *)aScope obj:(id)obj;
+- (NSInteger) writeObjectWithOptions:(Writer *)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writeObject:(Writer *)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writeIterator:(Writer *)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(NSArray *)options;
+- (NSInteger) writePOJO:(Writer *)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(NSArray *)options;
+- (NSInteger) getExprStartChar:(InstanceScope *)aScope;
+- (NSInteger) getExprStopChar:(InstanceScope *)aScope;
+- (void) map:(InstanceScope *)aScope attr:(id)attr st:(ST *)st;
+- (void) rot_map:(InstanceScope *)aScope attr:(id)attr prototypes:(AMutableArray *)prototypes;
+- (AMutableArray *) rot_map_iterator:(InstanceScope *)aScope iter:(id)attr proto:(AMutableArray *)prototypes;
+- (AttributeList *) zip_map:(InstanceScope *)aScope exprs:(AMutableArray *)exprs prototype:(ST *)prototype;
+- (void) setFirstArgument:(InstanceScope *)aScope st:(ST *)st attr:(id)attr;
+- (void) addToList:(InstanceScope *)aScope list:(AMutableArray *)list obj:(id)obj;
+- (id) first:(InstanceScope *)aScope obj:(id)v;
+- (id) last:(InstanceScope *)aScope obj:(id)v;
+- (id) rest:(InstanceScope *)aScope obj:(id)v;
+- (id) trunc:(InstanceScope *)aScope obj:(id)v;
+- (id) strip:(InstanceScope *)aScope obj:(id)v;
+- (id) reverse:(InstanceScope *)aScope obj:(id)v;
 - (NSInteger) length:(id)v;
-- (NSString *) description:(id<STWriter>)aWriter who:(ST *)aWho value:(id)value;
-- (id) convertAnythingIteratableToIterator:(id)obj;
-- (ArrayIterator *) convertAnythingToIterator:(id)obj;
+- (NSString *) description:(id<STWriter>)aWriter scope:(InstanceScope *)aScope value:(id)value;
+- (id) convertAnythingIteratableToIterator:(InstanceScope *)aScope attribute:(id)obj;
+- (ArrayIterator *) convertAnythingToIterator:(InstanceScope *)aScope attribute:(id)obj;
 - (BOOL) testAttributeTrue:(id)a;
-- (id) getObjectProperty:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj property:(id)property;
+- (id) getObjectProperty:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj property:(id)property;
 - (LinkedHashMap *) getDictionary:(STGroup *)g name:(NSString *)name;
-- (id) getAttribute:(ST *)aWho name:(NSString *)name;
-- (void) setDefaultArguments:(id<STWriter>)wr1 who:(ST *)invokedST;
-- (void) popScope;
-- (void) pushScope:(ST *)aWho;
+- (id) getAttribute:(InstanceScope *)aScope name:(NSString *)name;
+- (void) setDefaultArguments:(id<STWriter>)wr1 scope:(InstanceScope *)scope;
 - (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope;
 + (AMutableArray *)getEnclosingInstanceStack:(InstanceScope *)scope topdown:(BOOL)topdown;
 + (AMutableArray *) getScopeStack:(InstanceScope *)scope direction:(BOOL)topdown;
 + (AMutableArray *) getEvalTemplateEventStack:(InstanceScope *)scope direction:(BOOL)topdown;
-- (void) trace:(ST *)aWho ip:(NSInteger)ip;
-- (void) printForTrace:(NSMutableString *)tr obj:(id)obj;
+- (void) trace:(InstanceScope *)aScope ip:(NSInteger)ip;
+- (void) printForTrace:(NSMutableString *)tr scope:(InstanceScope *)aScope obj:(id)obj;
 - (AMutableArray *) getEvents;
-- (void) trackDebugEvent:(ST *)aWho event:(InterpEvent *)e;
+- (void) trackDebugEvent:(InstanceScope *)aScope event:(InterpEvent *)e;
 - (AMutableArray *) getExecutionTrace;
 + (NSInteger) getShort:(char *)memory index:(NSInteger)index;
 

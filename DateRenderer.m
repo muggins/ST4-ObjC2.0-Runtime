@@ -144,22 +144,33 @@ static DateRenderer_Anon1 *formatToInt;
     style = (ACNumber *)[formatToInt get:formatString];
     if (locale == nil ) 
         locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
+    [aFormatter setLocale:locale];
     if (style == nil) {
-        NSDateFormatter *aFormatter = [[NSDateFormatter alloc] init];
         [aFormatter setDateFormat:formatString];
+        if ( [formatString rangeOfString:@"MMMM"].location != NSNotFound ) {
+            [aFormatter setDateStyle:NSDateFormatterLongStyle];
+        }
+        else if ( [formatString rangeOfString:@"MMM"].location != NSNotFound ) {
+            [aFormatter setDateStyle:NSDateFormatterMediumStyle];
+        }
         dateStr = [aFormatter stringFromDate:d];
     }
     else {
         styleI = [style integerValue];
         if ([formatString hasPrefix:@"date:"]) {
-            dateStr = [NSDateFormatter localizedStringFromDate:d dateStyle:styleI timeStyle:NSDateFormatterNoStyle];
+            [aFormatter setDateStyle:styleI];
+            [aFormatter setTimeStyle:NSDateFormatterNoStyle];
         }
         else if ([formatString hasPrefix:@"time:"]) {
-            dateStr = [NSDateFormatter localizedStringFromDate:d dateStyle:NSDateFormatterNoStyle timeStyle:styleI];
+            [aFormatter setDateStyle:NSDateFormatterNoStyle];
+            [aFormatter setTimeStyle:styleI];
         }
         else {
-            dateStr = [NSDateFormatter localizedStringFromDate:d dateStyle:styleI timeStyle:styleI];
+            [aFormatter setDateStyle:styleI];
+            [aFormatter setTimeStyle:styleI];
         }
+        dateStr = [aFormatter stringFromDate:d];
     }
     return ((dateStr == nil) ? @"dateStr=<nil>" : dateStr );
 }

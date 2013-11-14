@@ -35,7 +35,7 @@
 /**
  * We build CommonToken tokens instead of relying on CommonToken so we
  * can override toString(). It just converts token types to
- * token names like 23 to LDELIM.
+ * token names like 33 to LDELIM.
  */
 
 /**

@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2012-04-20 15:20:55
+// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2013-08-19 08:20:58
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -81,10 +81,10 @@ typedef enum {
 #define BIGSTRING_NO_NL 11
 #define T_FALSE 12
 #define T_TRUE 13
-#define T__14 14
-#define T__15 15
-#define T__16 16
-#define T__17 17
+#define LBRACK 14
+#define RBRACK 15
+#define LPAREN 16
+#define RPAREN 17
 #define T__18 18
 #define T__19 19
 #define T__20 20
@@ -128,7 +128,7 @@ BOOL hasOptionalParameter;
 
 /* ObjC start of actions.(actionScope).memVars */
 
-    __strong STGroup *group;
+__strong STGroup *group;
 
 /* ObjC end of actions.(actionScope).memVars */
 /* ObjC start of memVars */
@@ -144,19 +144,22 @@ BOOL hasOptionalParameter;
 /* ObjC start of properties */
 /* ObjC end of properties */
 
-+ (void) initialize;
-+ (GroupParser *) newGroupParser:(id<TokenStream>)aStream;
 /* ObjC start of actions.(actionScope).methodsDecl */
 
++ (void) initialize;
 + (NSInteger) TANONYMOUS_TEMPLATE;
 + (NSInteger) TBIGSTRING;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
++ (NSInteger) TFALSE;
 + (NSInteger) TTRUE;
++ (NSInteger) TLBRACK;
++ (NSInteger) TRBRACK;
+
++ (GroupParser *) newGroupParser:(id<TokenStream>)aStream;
 
 - (id) initWithTokenStream:(id<TokenStream>)aStream;
 - (void) dealloc;
-
 - (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
 - (void) error:(NSString *)msg;

@@ -43,8 +43,10 @@
 }
 
 + (id) newException:(NSString *)aReason;
++ (id) newException:(NSString *)aReason scope:(InstanceScope *)aScope;
 
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason;
+- (id) initWithName:(NSString *)aName reason:(NSString *)aReason scope:(InstanceScope *)aScope;
 - (id) initWithName:(NSString *)aMsg reason:(NSString *)aCause userInfo:(NSDictionary *)userInfo;
 
 - (NSString *) getMessage;

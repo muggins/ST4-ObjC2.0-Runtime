@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2012-04-20 15:20:55
+// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/Group.g 2013-08-19 08:20:58
 
 /* =============================================================================
  * Standard antlr3 OBJC runtime definitions
@@ -81,10 +81,10 @@
 #define BIGSTRING_NO_NL 11
 #define T_FALSE 12
 #define T_TRUE 13
-#define T__14 14
-#define T__15 15
-#define T__16 16
-#define T__17 17
+#define LBRACK 14
+#define RBRACK 15
+#define LPAREN 16
+#define RPAREN 17
 #define T__18 18
 #define T__19 19
 #define T__20 20
@@ -100,30 +100,25 @@
 #endif
 /* interface lexer class */
 @interface GroupLexer : Lexer { // line 283
-    __strong DFA8 *dfa8;
+DFA8 *dfa8;
 /* ObjC start of actions.lexer.memVars */
 
-    __strong STGroup *group;
+__strong STGroup *group;
 
 /* ObjC end of actions.lexer.memVars */
 }
++ (void) initialize;
++ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput;
+/* ObjC start actions.lexer.methodsDecl */
 
 @property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
 
-+ (void) initialize;
-+ (GroupLexer *)newGroupLexerWithCharStream:(id<CharStream>)anInput;
 - (id) initWithCharStream:(id<CharStream>)anInput;
 - (void) dealloc;
-/* ObjC start actions.lexer.methodsDecl */
-
 - (void) reportError:(RecognitionException *)e;
 - (NSString *) getSourceName;
 
 /* ObjC end actions.lexer.methodsDecl */
-- (void) mT__14 ; 
-- (void) mT__15 ; 
-- (void) mT__16 ; 
-- (void) mT__17 ; 
 - (void) mT__18 ; 
 - (void) mT__19 ; 
 - (void) mT__20 ; 
@@ -136,8 +131,12 @@
 - (void) mT__27 ; 
 - (void) mT__28 ; 
 - (void) mT__29 ; 
-- (void) mT_TRUE ; 
 - (void) mT_FALSE ; 
+- (void) mT_TRUE ; 
+- (void) mLBRACK ; 
+- (void) mRBRACK ; 
+- (void) mLPAREN ; 
+- (void) mRPAREN ; 
 - (void) mID ; 
 - (void) mSTRING ; 
 - (void) mBIGSTRING_NO_NL ; 

@@ -49,7 +49,7 @@
     return self;
 }
 
-- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)obj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value;
     HashMap *map = (HashMap *)obj;

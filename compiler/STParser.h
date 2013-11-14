@@ -1,7 +1,7 @@
-// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g 2012-05-10 18:49:45
+// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/STParser.g 2013-08-16 08:32:34
 
 /* =============================================================================
- * Standard antlr OBJC runtime definitions
+ * Standard antlr3 OBJC runtime definitions
  */
 #import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
@@ -51,20 +51,20 @@ typedef enum {
 #define BIGSTRING_NO_NL 11
 #define T_FALSE 12
 #define T_TRUE 13
-#define IF 14
-#define ELSE 15
-#define ELSEIF 16
-#define ENDIF 17
-#define SUPER 18
-#define SEMI 19
-#define BANG 20
-#define ELLIPSIS 21
-#define EQUALS 22
-#define COLON 23
-#define LPAREN 24
-#define RPAREN 25
-#define LBRACK 26
-#define RBRACK 27
+#define LBRACK 14
+#define RBRACK 15
+#define LPAREN 16
+#define RPAREN 17
+#define IF 18
+#define ELSE 19
+#define ELSEIF 20
+#define ENDIF 21
+#define SUPER 22
+#define SEMI 23
+#define BANG 24
+#define ELLIPSIS 25
+#define EQUALS 26
+#define COLON 27
 #define COMMA 28
 #define DOT 29
 #define LCURLY 30
@@ -774,9 +774,10 @@ CommonTree *tree; /* ObjC start of memVars() */
 
 /* ObjC start of actions.(actionScope).memVars */
 
-conditional_Scope *conditional_scope;
-ErrorManager *errMgr;
-CommonToken *templateToken;
+__strong conditional_Scope *conditional_scope;
+__strong SymbolStack *conditional_stack;
+__strong ErrorManager *errMgr;
+__strong CommonToken *templateToken;
 
 /* ObjC end of actions.(actionScope).memVars */
 /* ObjC start of memVars */
@@ -792,9 +793,10 @@ id<TreeAdaptor> treeAdaptor;   /* AST parserMemVars */
 
 /* ObjC start of actions.(actionScope).properties */
 
-@property (copy) conditional_Scope *conditional_scope;
-@property (copy, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
-@property (copy, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
+@property (retain) conditional_Scope *conditional_scope;
+@property (retain) SymbolStack *conditional_stack;
+@property (retain, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
+@property (retain, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
 
 /* ObjC end of actions.(actionScope).properties */
 /* ObjC start of properties */

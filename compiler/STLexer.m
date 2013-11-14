@@ -63,20 +63,20 @@ typedef enum {
 #define BIGSTRING_NO_NL 11
 #define T_FALSE 12
 #define T_TRUE 13
-#define IF 14
-#define ELSE 15
-#define ELSEIF 16
-#define ENDIF 17
-#define SUPER 18
-#define SEMI 19
-#define BANG 20
-#define ELLIPSIS 21
-#define EQUALS 22
-#define COLON 23
-#define LPAREN 24
-#define RPAREN 25
-#define LBRACK 26
-#define RBRACK 27
+#define LBRACK 14
+#define RBRACK 15
+#define LPAREN 16
+#define RPAREN 17
+#define IF 18
+#define ELSE 19
+#define ELSEIF 20
+#define ENDIF 21
+#define SUPER 22
+#define SEMI 23
+#define BANG 24
+#define ELLIPSIS 25
+#define EQUALS 26
+#define COLON 27
 #define COMMA 28
 #define DOT 29
 #define LCURLY 30
@@ -654,6 +654,12 @@ delimiterStopChar:(unichar)aStopChar
     [self match:delimiterStopChar]; // only kill 2nd \ as outside() kills first on
     while (c == ' ' || c == '\t')
         [self consume];
+    if (c == (unichar)EOF ) {
+        RecognitionException *re = [RecognitionException newException:input];
+        re.line = [input getLine];
+        re.charPositionInLine = [input getCharPositionInLine];
+        [errMgr lexerError:[input getSourceName] msg:@"Missing newline after newline escape <\\\\>" templateToken:templateToken e:re];
+    }
     if (c == '\r') [self consume]; // scarf WS after <\\>
     if (c == '\n') [self match:'\n'];
     while (c == ' ' || c == '\t') [self consume]; // scarf any indent

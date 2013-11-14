@@ -61,10 +61,25 @@
     return [[STNoSuchAttributeException alloc] initWithName:@"ST No Such Attribute Exception" reason:aReason];
 }
 
++ (id) newException:(NSString *)aReason scope:(InstanceScope *)aScope
+{
+    return [[STNoSuchAttributeException alloc] initWithName:@"ST No Such Attribute Exception" reason:aReason scope:aScope];
+}
+
 - (id) initWithName:(NSString *)aName reason:(NSString *)aReason
 {
     self=[super initWithName:aName reason:aReason userInfo:nil];
     if (  self != nil ) {
+    }
+    return self;
+}
+
+- (id) initWithName:(NSString *)aName reason:(NSString *)aReason scope:(InstanceScope *)aScope
+{
+    self=[super initWithName:aName reason:aReason userInfo:nil];
+    if (  self != nil ) {
+        scope = aScope;
+        attrName = aName;
     }
     return self;
 }

@@ -84,7 +84,7 @@
     if (srcName != nil) {
         return [NSString stringWithFormat:@"%@ %@: %@", srcName, filepos, [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
     }
-    return [NSString stringWithFormat:@"%ld: %@", filepos , [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
+    return [NSString stringWithFormat:@"%@: %@", filepos , [NSString stringWithFormat:[ErrorType ErrorNum:error], arg, arg2]];
 }
 
 @end

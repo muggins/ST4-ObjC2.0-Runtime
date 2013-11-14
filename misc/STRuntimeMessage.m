@@ -33,6 +33,7 @@
 #import "Misc.h"
 #import "ST.h"
 #import "CompiledST.h"
+#import "InstanceScope.h"
 
 @implementation STRuntimeMessage
 
@@ -42,41 +43,41 @@
 
 + (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:nil cause:nil arg:@"" arg2:@"" arg3:@""];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:nil cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
-+ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho;
++ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:@"" arg2:@"" arg3:@""];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:aScope cause:nil arg:@"" arg2:@"" arg3:@""];
 }
 
-+ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho arg:(id)anArg;
++ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope arg:(id)anArg;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:nil arg:anArg arg2:@"" arg3:@""];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:aScope cause:nil arg:anArg arg2:@"" arg3:@""];
 }
 
-+ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg;
++ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope cause:(NSException *)e arg:(id)anArg;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:@"" arg3:@""];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:aScope cause:e arg:anArg arg2:@"" arg3:@""];
 }
 
-+ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
++ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:@""];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:aScope cause:e arg:anArg arg2:anArg2 arg3:@""];
 }
 
-+ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
++ (id) newMessage:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3;
 {
-    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3];
+    return [[STRuntimeMessage alloc] init:anInterp error:anError ip:anIp scope:aScope cause:e arg:anArg arg2:anArg2 arg3:anArg3];
 }
 
-- (id) init:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp who:(ST *)aWho cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3
+- (id) init:(Interpreter *)anInterp error:(ErrorTypeEnum)anError ip:(NSInteger)anIp scope:(InstanceScope *)aScope cause:(NSException *)e arg:(id)anArg arg2:(id)anArg2 arg3:(id)anArg3
 {
-    self=[super init:anError who:aWho cause:e arg:anArg arg2:anArg2 arg3:anArg3];
+    self=[super init:anError who:aScope.st cause:e arg:anArg arg2:anArg2 arg3:anArg3];
     if ( self !=nil ) {
         interp = anInterp;
         ip = anIp;
-        scope = anInterp.currentScope;
+        scope = aScope;
     }
     return self;
 }

@@ -43,8 +43,8 @@
   BOOL alreadyLoaded;
 }
 
-@property (copy) NSString *sourceName;
-@property (copy) NSString *text;
+@property (retain) NSString *sourceName;
+@property (retain) NSString *text;
 @property (assign) BOOL alreadyLoaded;
 
 + (id) newSTGroupString:(NSString *)aTemplate;

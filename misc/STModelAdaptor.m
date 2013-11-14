@@ -45,7 +45,7 @@
     return self;
 }
 
-- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)obj property:(id)property propertyName:(NSString *)propertyName
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)obj property:(id)property propertyName:(NSString *)propertyName
 {
     ST *st = (ST *)obj;
     return [st getAttribute:propertyName];

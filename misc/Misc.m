@@ -45,6 +45,13 @@ static NSString *newline = @"\n";
     newline = aNewLine;
 }
 
+/** Makes it clear when a comparison is intended as reference equality.
+ */
++ (BOOL) referenceEquals:(id)x obj:(id)y
+{
+    return x == y;
+}
+
 + (NSString *) join:(ArrayIterator *)it separator:(NSString *)separator
 {
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
@@ -158,6 +165,37 @@ static NSString *newline = @"\n";
     return s;
 }
 
+/** Replace >\> with >> in s. Replace \>> unless prefix of \>>> with >>.
+ *  Do NOT replace if it's <\\>
+ */
++ (NSString *) replaceEscapedRightAngle:(NSString *) s
+{
+    __strong NSString *buf = @"";
+    NSInteger i = 0;
+    while ( i < [s length] ) {
+        char c = [s characterAtIndex:i];
+        if ( c == '<' && [[s substringFromIndex:i] hasPrefix:@"<\\\\>"] ) {
+            buf = [buf stringByAppendingString:@"<\\\\>"];
+            i += [@"<\\\\>" length];
+            continue;
+        }
+        if ( c=='>' && [[s substringFromIndex:i] hasPrefix:@">\\>"] ) {
+            buf = [buf stringByAppendingString:@">>"];
+            i += [@">\\>" length];
+            continue;
+        }
+        if ( c=='\\' && [[s substringFromIndex:i] hasPrefix:@"\\>>"] &&
+            ![[s substringFromIndex:i] hasPrefix:@"\\>>>"] )
+        {
+            buf = [buf stringByAppendingString:@">>"];
+            i += [@"\\>>" length];
+            continue;
+        }
+        buf = [NSString stringWithFormat:@"%@%c", buf, c];
+        i++;
+    }
+    return buf;
+}
 
 + (BOOL) fileExists:(NSString *)aPath
 {
@@ -205,6 +243,7 @@ static NSString *newline = @"\n";
     return [Coordinate newCoordinate:line b:charPos];
 }
 
+#ifdef DONTUSENOMO
 #pragma mark error fix accessField
 + (id) accessField:(Ivar)f obj:(id)obj value:(id)value
 {
@@ -250,6 +289,7 @@ static NSString *newline = @"\n";
     }
     return m;
 }
+#endif
 
 + (NSInteger) lastIndexOf:(char)aChar inString:(NSString *)aString
 {

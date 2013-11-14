@@ -42,5 +42,5 @@
 
 - (id) init;
 - (void) dealloc;
-- (id) getProperty:(Interpreter *)interp who:(ST *)who obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

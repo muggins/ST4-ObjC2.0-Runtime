@@ -34,6 +34,7 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 @"no such template: %@",
 @"no such template: super.%@",
 @"attribute %@ isn't defined",
+@"could not pass through undefined attribute %s",
 @"implicitly-defined attribute %@ not visible",
 @"missing argument definitions",
 @"no such property or can't access: %@",
@@ -77,6 +78,12 @@ static NSString *ErrorType_Data[NUM_OF_ERRORENUMS] = {
 {
 //    return @"attribute %@ isn't defined";
     return ErrorType_Data[NO_SUCH_ATTRIBUTE];
+}
+
++ (NSString *) NO_SUCH_ATTRIBUTE_PASS_THROUGH
+{
+    //    return @"attribute %@ isn't defined";
+    return ErrorType_Data[NO_SUCH_ATTRIBUTE_PASS_THROUGH];
 }
 
 + (NSString *) REF_TO_IMPLICIT_ATTRIBUTE_OUT_OF_SCOPE

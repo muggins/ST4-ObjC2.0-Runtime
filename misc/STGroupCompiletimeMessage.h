@@ -33,8 +33,8 @@
  */
 
 @interface STGroupCompiletimeMessage : STMessage {
-  CommonToken *token;
-  NSString *srcName;
+    CommonToken *token;
+    NSString *srcName;
 }
 
 @property (retain) CommonToken *token;

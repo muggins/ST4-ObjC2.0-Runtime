@@ -1,7 +1,7 @@
-// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/CodeGenerator.g 2012-03-30 21:44:28
+// $ANTLR 3.4 /Users/acondit/source/antlr/code/stringtemplate4/objc/main/compiler/CodeGenerator.g 2013-08-16 16:06:31
 
 /* =============================================================================
- * Standard antlr OBJC runtime definitions
+ * Standard antlr3 OBJC runtime definitions
  */
 #import <Foundation/Foundation.h>
 #import <ANTLR/ANTLR.h>
@@ -82,20 +82,20 @@ typedef enum {
 #define BIGSTRING_NO_NL 11
 #define T_FALSE 12
 #define T_TRUE 13
-#define IF 14
-#define ELSE 15
-#define ELSEIF 16
-#define ENDIF 17
-#define SUPER 18
-#define SEMI 19
-#define BANG 20
-#define ELLIPSIS 21
-#define EQUALS 22
-#define COLON 23
-#define LPAREN 24
-#define RPAREN 25
-#define LBRACK 26
-#define RBRACK 27
+#define LBRACK 14
+#define RBRACK 15
+#define LPAREN 16
+#define RPAREN 17
+#define IF 18
+#define ELSE 19
+#define ELSEIF 20
+#define ENDIF 21
+#define SUPER 22
+#define SEMI 23
+#define BANG 24
+#define ELLIPSIS 25
+#define EQUALS 26
+#define COLON 27
 #define COMMA 28
 #define DOT 29
 #define LCURLY 30
@@ -235,6 +235,23 @@ NSInteger nargs;
 @end /* end of returnScopeInterface interface */
 
 
+/* returnScopeInterface CodeGenerator_exprOptions_return */
+@interface CodeGenerator_exprOptions_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
+ /* ObjC start of memVars() */
+
+}
+/* start property declarations */
+
+
+/* start of method declarations */
+
++ (CodeGenerator_exprOptions_return *)newCodeGenerator_exprOptions_return;
+/* this is start of set and get methods */
+  /* methodsDecl */
+
+@end /* end of returnScopeInterface interface */
+
+
 /* returnScopeInterface CodeGenerator_mapTemplateRef_return */
 @interface CodeGenerator_mapTemplateRef_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
@@ -329,6 +346,23 @@ BOOL passThru;
 @end /* end of returnScopeInterface interface */
 
 
+/* returnScopeInterface CodeGenerator_list_return */
+@interface CodeGenerator_list_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
+ /* ObjC start of memVars() */
+
+}
+/* start property declarations */
+
+
+/* start of method declarations */
+
++ (CodeGenerator_list_return *)newCodeGenerator_list_return;
+/* this is start of set and get methods */
+  /* methodsDecl */
+
+@end /* end of returnScopeInterface interface */
+
+
 /* returnScopeInterface CodeGenerator_listElement_return */
 @interface CodeGenerator_listElement_return : TreeRuleReturnScope { /* returnScopeInterface line 1838 */
  /* ObjC start of memVars() */
@@ -355,8 +389,8 @@ BOOL passThru;
 
 /* ObjC start of actions.(actionScope).memVars */
 
-	template_Scope *template_scope;
 	NSString *outermostTemplateName;	// name of overall template
+	template_Scope *template_scope;
 	CompiledST *outermostImpl;
 	CommonToken *templateToken;			    // overall template token
 	NSString *template;  				// overall template text
@@ -370,8 +404,8 @@ BOOL passThru;
 
 /* ObjC start of actions.(actionScope).properties */
 
-	@property (retain) template_Scope *template_scope;
 	@property (retain) NSString *outermostTemplateName; // name of overall template
+	@property (retain) template_Scope *template_scope;
 	@property (retain) CompiledST *outermostImpl;
 	@property (retain) CommonToken *templateToken;// overall template token
 	@property (retain) NSString *template;    // overall template text
@@ -405,8 +439,8 @@ BOOL passThru;
 - (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
 - (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
 - (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
-- (void) emit:(short)anOpcode;
 - (void) emit:(CommonTree *)opAST opcode:(short)anOpcode;
+- (void) emit:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(CommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
@@ -431,7 +465,7 @@ BOOL passThru;
 - (CodeGenerator_subtemplate_return *)subtemplate; 
 - (void)ifstat:(CommonTree *)indent ; 
 - (CodeGenerator_conditional_return *)conditional; 
-- (void)exprOptions; 
+- (CodeGenerator_exprOptions_return *)exprOptions; 
 - (void)option; 
 - (void)expr; 
 - (void)prop; 
@@ -440,7 +474,7 @@ BOOL passThru;
 - (CodeGenerator_primary_return *)primary; 
 - (void)arg; 
 - (CodeGenerator_args_return *)args; 
-- (void)list; 
+- (CodeGenerator_list_return *)list; 
 - (CodeGenerator_listElement_return *)listElement; 
 
 

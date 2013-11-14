@@ -37,5 +37,5 @@
 
 - (id) init;
 
-- (id) getProperty:(Interpreter *)interp who:(ST *)self obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)obj property:(id)property propertyName:(NSString *)propertyName;
 @end

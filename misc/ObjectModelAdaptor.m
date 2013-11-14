@@ -240,12 +240,25 @@ static STNoSuchPropertyException *cachedException;
     [super dealloc];
 }
 
-- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName
+- (SEL) getMethod:(NSString *)methodName
+{
+    SEL m;
+    
+    @try {
+        m = NSSelectorFromString(methodName);
+    }
+    @catch (STNoSuchMethodException *nsme) {
+        m = nil;
+    }
+    return m;
+}
+
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName
 {
     id value = nil;
     Class c = [anObj class];
     if (aProperty == nil) {
-        return [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
+        return [self throwNoSuchProperty:c property:aPropertyName cause:nil];
     }
 	// Look in cache for Member first
     id member = [classAndPropertyToMemberCache objectForKey1:NSStringFromClass(c) forKey2:aPropertyName];
@@ -260,11 +273,60 @@ static STNoSuchPropertyException *cachedException;
                 return [(Field *)member getObj];
         }
         @catch (NSException *e) {
-            [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
+            [self throwNoSuchProperty:c property:aPropertyName cause:e];
         }
     }
     return [self lookupMethod:anObj propertyName:aPropertyName value:(id)value aClass:(Class) c];
 }
+
+- (id) invokeMethod:(SEL)m obj:(id)obj value:(id)value
+{
+    
+    @try {
+        if ([obj respondsToSelector:m]) {
+            value = [obj performSelector:m];
+            //        [m setAccessible:YES];
+        }
+        else {
+            @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
+        }
+    }
+    @catch (RuntimeException *se) {
+        if ( [se isKindOfClass:[STNoSuchPropertyException class]] )
+            @throw [STNoSuchPropertyException newException:NSStringFromSelector(m)];
+    }
+#pragma mark error
+    return value;
+}
+
+#ifdef DONTUSEYET
+- (id) lookupMethod:(Class)c propertyName:(NSString *)aPropertyName
+{
+    if ( c == nil ) {
+        @throw [NullPointerException newException:@"class"];
+    }
+    if ( aPropertyName == nil ) {
+        @throw [NullPointerException newException:@"memberName"];
+    }
+    // try getXXX and isXXX properties, look up using reflection
+    NSString *methodSuffix = [NSString stringWithFormat:@"%c%@",
+                              toupper([aPropertyName characterAtIndex:0]),
+                              [aPropertyName substringWithRange:NSMakeRange(1, [aPropertyName length]-1)]];
+    SEL m = [self getMethod:aPropertyName];
+    if ( m == nil || ![anObj respondsToSelector:m] ) {
+        m = [self getMethod:[NSString stringWithFormat:@"get%@", methodSuffix]];
+        if ( m && [anObj respondsToSelector:m] )
+            return [anObj performSelector:m];
+        if ( m == nil || ![anObj respondsToSelector:m] ) {
+            m = [self getMethod:[NSString stringWithFormat:@"is%@", methodSuffix]];
+            if ( m == nil || ![anObj respondsToSelector:m] ) {
+                m = [self getMethod:[NSString stringWithFormat:@"has%@", methodSuffix]];
+            }
+        }
+    }
+    return m;
+}
+#endif
 
 - (id) lookupMethod:(id)anObj propertyName:(NSString *)aPropertyName value:(id)value aClass:(Class)c
 {
@@ -272,15 +334,15 @@ static STNoSuchPropertyException *cachedException;
     NSString *methodSuffix = [NSString stringWithFormat:@"%c%@",
                               toupper([aPropertyName characterAtIndex:0]),
                               [aPropertyName substringWithRange:NSMakeRange(1, [aPropertyName length]-1)]];
-    SEL m = [Misc getMethod:aPropertyName];
+    SEL m = [self getMethod:aPropertyName];
     if ( m == nil || ![anObj respondsToSelector:m] ) {
-        m = [Misc getMethod:[NSString stringWithFormat:@"get%@", methodSuffix]];
+        m = [self getMethod:[NSString stringWithFormat:@"get%@", methodSuffix]];
         if ( m && [anObj respondsToSelector:m] )
             return [anObj performSelector:m];
         if ( m == nil || ![anObj respondsToSelector:m] ) {
-            m = [Misc getMethod:[NSString stringWithFormat:@"is%@", methodSuffix]];
+            m = [self getMethod:[NSString stringWithFormat:@"is%@", methodSuffix]];
             if ( m == nil || ![anObj respondsToSelector:m] ) {
-                m = [Misc getMethod:[NSString stringWithFormat:@"has%@", methodSuffix]];
+                m = [self getMethod:[NSString stringWithFormat:@"has%@", methodSuffix]];
             }
         }
     }
@@ -298,16 +360,15 @@ static STNoSuchPropertyException *cachedException;
             f = object_getInstanceVariable(anObj, [aPropertyName cStringUsingEncoding:NSASCIIStringEncoding], &var);
             [classAndPropertyToMemberCache setObject:(id)f forKey1:NSStringFromClass(c) forKey2:aPropertyName];
             @try {
-                //value = [Misc accessField:(Ivar)f obj:anObj value:value];
                 value = object_getIvar(anObj, f);
             }
             @catch (IllegalAccessException *iae) {
-                [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
+                [self throwNoSuchProperty:c property:aPropertyName cause:iae];
             }
         }
     }
     @catch (NSException *e) {
-        [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
+        [self throwNoSuchProperty:c property:aPropertyName cause:e];
     }
     return value;
 }
@@ -322,9 +383,9 @@ static STNoSuchPropertyException *cachedException;
     NSInteger iVal;
     double d;
     float f;
-    SEL m = [Misc getMethod:aPropertyName];
+    SEL m = [self getMethod:aPropertyName];
     @try {
-        value = [Misc invokeMethod:m obj:anObj value:value];
+        value = [self invokeMethod:m obj:anObj value:value];
         tmp = property_getAttributes(class_getProperty([anObj class], [aPropertyName UTF8String]));
         attr = [NSString stringWithCString:tmp encoding:NSASCIIStringEncoding];
         if ([attr characterAtIndex:0] == 'T') {
@@ -395,15 +456,48 @@ static STNoSuchPropertyException *cachedException;
     }
     @catch (STNoSuchPropertyException *e) {
         NSLog( @"No such property as \"%@\"", e.reason );
-        [self throwNoSuchProperty:[NSString stringWithFormat:@"%@.%@", [anObj class], aPropertyName]];
+        [self throwNoSuchProperty:[anObj class] property:aPropertyName cause:e];
     }
     return retVal;
 }
 
-- (id) throwNoSuchProperty:(NSString *)aPropertyName
+#ifdef DONTUSEYET
+protected static Method UsertryGetMethod(Class<?> clazz, String methodName) {
+    try {
+        Method method = clazz.getMethod(methodName);
+        if (method != null) {
+            method.setAccessible(true);
+        }
+        
+        return method;
+    } catch (NoSuchMethodException ex) {
+    } catch (SecurityException ex) {
+    }
+    
+    return null;
+}
+
+protected static Field tryGetField(Class<?> clazz, String fieldName) {
+    try {
+        Field field = clazz.getField(fieldName);
+        if (field != null) {
+            field.setAccessible(true);
+        }
+        
+        return field;
+    } catch (NoSuchFieldException ex) {
+    } catch (SecurityException ex) {
+    }
+    
+    return null;
+}
+
+#endif
+
+- (id) throwNoSuchProperty:(Class)c property:(NSString *)aPropertyName cause:(NSException *)aCause
 {
     if (cachedException == nil)
-        cachedException = [STNoSuchPropertyException newException:aPropertyName];
+        cachedException = [STNoSuchPropertyException newException:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(c), aPropertyName]];
     @throw cachedException;
 }
 

@@ -103,9 +103,10 @@ typedef enum {
 - (id) init;
 
 - (void) dealloc;
-- (id) getProperty:(Interpreter *)interp who:(ST *)aWho obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
+- (SEL) getMethod:(NSString *)methodName;
+- (id) getProperty:(Interpreter *)interp scope:(InstanceScope *)aScope obj:(id)anObj property:(id)aProperty propertyName:(NSString *)aPropertyName;
+- (id) invokeMethod:(SEL)m obj:(id)obj value:(id)value;
 - (id) lookupMethod:(id)anObj propertyName:(NSString *)aPropertyName value:(id)value aClass:(Class)c;
 - (NSString *)convertToString:(id)anObj propertyName:(NSString *)aPropertyName;
-- (id) throwNoSuchProperty:(NSString *)aPropertyName;
-
+- (id) throwNoSuchProperty:(Class)c property:(NSString *)aPropertyName cause:(NSException *)aCause;
 @end

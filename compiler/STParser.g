@@ -50,13 +50,15 @@ tokens {
 }
 
 @memVars {
-conditional_Scope *conditional_scope;
-ErrorManager *errMgr;
-CommonToken *templateToken;
+__strong conditional_Scope *conditional_scope;
+__strong SymbolStack *conditional_stack;
+__strong ErrorManager *errMgr;
+__strong CommonToken *templateToken;
 }
 
 @properties {
 @property (retain) conditional_Scope *conditional_scope;
+@property (retain) SymbolStack *conditional_stack;
 @property (retain, getter=getErrorManager, setter=setErrorManager:) ErrorManager *errMgr;
 @property (retain, getter=getTemplateToken, setter=setTemplateToken:) CommonToken *templateToken;
 }

@@ -153,21 +153,31 @@ static CompiledST *NOT_FOUND_ST = nil;
         FormalArgument *fa = [formalArguments get:a];
         if (fa.defaultValueToken != nil) {
             numberOfArgsWithDefaultValues++;
-            if ( fa.defaultValueToken.type == ANONYMOUS_TEMPLATE ) {
-                NSString *argSTname = [NSString stringWithFormat:@"%@_default_value", fa.name];
-                Compiler *c2 = [Compiler newCompiler:group];
-                NSString *defArgTemplate = [Misc strip:fa.defaultValueToken.text n:1];
-                fa.compiledDefaultValue = [c2 compile:[group getFileName] name:argSTname
-                       args:nil template:defArgTemplate templateToken:fa.defaultValueToken];
-                fa.compiledDefaultValue.name = argSTname;
-				[fa.compiledDefaultValue defineImplicitlyDefinedTemplates:group];
-            }
-            else if ( fa.defaultValueToken.type == STRING ) {
-                fa.defaultValue = [Misc strip:fa.defaultValueToken.text n:1];
-            }
-            else {
-                fa.defaultValue = [ACNumber numberWithBool:((fa.defaultValueToken.type == T_TRUE)? YES : NO)];
-//                NSLog( @"%@", [fa.defaultValue description] );
+            switch (fa.defaultValueToken.type) {
+                case ANONYMOUS_TEMPLATE:
+                    {
+                    NSString *argSTname = [NSString stringWithFormat:@"%@_default_value", fa.name];
+                    Compiler *c2 = [Compiler newCompiler:group];
+                    NSString *defArgTemplate = [Misc strip:fa.defaultValueToken.text n:1];
+                    fa.compiledDefaultValue = [c2 compile:[group getFileName] name:argSTname args:nil template:defArgTemplate templateToken:fa.defaultValueToken];
+                    fa.compiledDefaultValue.name = argSTname;
+                    [fa.compiledDefaultValue defineImplicitlyDefinedTemplates:group];
+                    }
+                    break;
+                case STRING:
+                    fa.defaultValue = [Misc strip:fa.defaultValueToken.text n:1];
+                    break;
+                case LBRACK:
+                    fa.defaultValue = [AMutableDictionary dictionaryWithCapacity:5];
+                    break;
+                case T_TRUE:
+                case T_FALSE:
+                    fa.defaultValue = [ACNumber numberWithBool:((fa.defaultValueToken.type == T_TRUE)? YES : NO)];
+                    //  NSLog( @"%@", [fa.defaultValue description] );
+                    break;
+                default:
+                    @throw [UnsupportedOperationException newException:@"Unexpected default value token type."];
+                    break;
             }
         }
     }

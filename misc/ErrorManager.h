@@ -29,6 +29,7 @@
 
 #import "ST.h"
 #import "ErrorType.h"
+#import "InstanceScope.h"
 #import "STErrorListener.h"
 #import "STMessage.h"
 #import "STLexerMessage.h"
@@ -78,13 +79,13 @@
 - (void) lexerError:(NSString *)srcName msg:(NSString *)msg templateToken:(CommonToken *)aTemplateToken e:(RecognitionException *)e;
 - (void) groupSyntaxError:(ErrorTypeEnum)error srcName:(NSString *)srcName e:(RecognitionException *)e msg:(NSString *)msg;
 - (void) groupLexerError:(ErrorTypeEnum)error srcName:(NSString *)srcName e:(RecognitionException *)e msg:(NSString *)msg;
-- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)error;
-- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg;
-- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
-- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2;
-- (void) runTimeError:(Interpreter *)interp who:(ST *)aWho ip:(NSInteger)ip error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
-- (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e;
-- (void) IOError:(ST *)who error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
-- (void) internalError:(ST *)who msg:(NSString *)msg e:(NSException *)e;
+- (void) runTimeError:(Interpreter *)interp scope:(InstanceScope *)aScope error:(ErrorTypeEnum)error;
+- (void) runTimeError:(Interpreter *)interp scope:(InstanceScope *)aScope error:(ErrorTypeEnum)error arg:(id)arg;
+- (void) runTimeError:(Interpreter *)interp scope:(InstanceScope *)aScope error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
+- (void) runTimeError:(Interpreter *)interp scope:(InstanceScope *)aScope error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2;
+- (void) runTimeError:(Interpreter *)interp scope:(InstanceScope *)aScope error:(ErrorTypeEnum)error arg:(id)arg arg2:(id)arg2 arg3:(id)arg3;
+- (void) IOError:(ST *)aWho error:(ErrorTypeEnum)error e:(NSException *)e;
+- (void) IOError:(ST *)aWho error:(ErrorTypeEnum)error e:(NSException *)e arg:(id)arg;
+- (void) internalError:(ST *)aWho msg:(NSString *)msg e:(NSException *)e;
 
 @end

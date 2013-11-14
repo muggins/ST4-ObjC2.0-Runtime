@@ -352,7 +352,6 @@ static BOOL trace = NO;
 @synthesize sp;
 @synthesize current_ip;
 @synthesize nwline;
-@synthesize currentScope;
 @synthesize group;
 @synthesize locale;
 @synthesize errMgr;
@@ -420,7 +419,6 @@ static BOOL trace = NO;
         sp = -1;        // stack pointer register
         current_ip = 0; // mirrors ip in exec(), but visible to all methods
         nwline = 0;     // how many char written on this template LINE so far?
-        currentScope=nil;
         group = aGroup;
         if ( group ) [group retain];
         locale = aLocale;
@@ -442,7 +440,6 @@ static BOOL trace = NO;
 #ifdef DEBUG_DEALLOC
     NSLog( @"called dealloc in Interpreter" );
 #endif
-    if ( currentScope ) [currentScope release];
     if ( group ) [group release];
     if ( locale ) [locale release];
     if ( errMgr ) [errMgr release];
@@ -463,13 +460,12 @@ static BOOL trace = NO;
 #endif
 
 /** Execute template self and return how many characters it wrote to out */
-- (NSInteger) exec:(id<STWriter>)anSTWriter who:(ST *)aWho
+- (NSInteger) exec:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope
 {
     if ( debug ) NSLog( @"[self exec:[aWho getName]]\n" );
-    [self pushScope:aWho];
     @try {
-        [self setDefaultArguments:anSTWriter who:aWho];
-        NSInteger n = [self _exec:anSTWriter who:aWho];
+        [self setDefaultArguments:anSTWriter scope:aScope];
+        NSInteger n = [self _exec:anSTWriter scope:aScope];
         return n;
     }
     @catch (NSException *e) {
@@ -480,22 +476,18 @@ static BOOL trace = NO;
         [pw flush];
  */
         [errMgr runTimeError:self
-                         who:aWho
-                          ip:current_ip
+                       scope:aScope
                        error:INTERNAL_ERROR
                          arg:[NSString stringWithFormat:@"internal error caused by: %@ : %@ : %@",[e name], [e reason], [sw description]]];
         return 0;
     }
-    @finally {
-        [self popScope]; // pop scope
-    }
-//    return current_ip;
 }
 /**
  * Execute template self and return how many characters it wrote to out
  */
-- (NSInteger) _exec:(id<STWriter>)anSTWriter who:(ST *)aWho
+- (NSInteger) _exec:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope
 {
+    ST *aWho = aScope.st;
     NSInteger start = [anSTWriter index];
     NSInteger prevOpcode = 0;
     NSInteger n = 0;
@@ -520,10 +512,10 @@ static BOOL trace = NO;
     short opcode;
     NSInteger ip = 0;
     while ( ip < aWho.impl.codeSize ) {
-        if (trace || debug) [self trace:aWho ip:ip];
+        if (trace || debug) [self trace:aScope ip:ip];
         opcode = [code charAtIndex:ip];
         //count[opcode]++;
-        current_ip = ip;
+        aScope.ret_ip = ip;
         ip++; //jump to next instruction or first byte of operand
         switch (opcode) {
             case  DEF_INSTR_LOAD_STR:
@@ -536,11 +528,11 @@ static BOOL trace = NO;
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 name = [aWho.impl.strings objectAtIndex:nameIndex];
                 @try {
-                    obj = [self getAttribute:aWho name:name];
+                    obj = [self getAttribute:aScope name:name];
                     if ( obj == ST.EMPTY_ATTR ) obj = nil;
                 }
                 @catch (STNoSuchAttributeException *nsae) {
-                    [errMgr runTimeError:self who:aWho ip:current_ip error:NO_SUCH_ATTRIBUTE arg:name];
+                    [errMgr runTimeError:self scope:aScope error:NO_SUCH_ATTRIBUTE arg:name];
                     obj = nil;
                 }
                 operands[++sp] = obj;
@@ -558,12 +550,12 @@ static BOOL trace = NO;
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 obj = operands[sp--];
                 name = [aWho.impl.strings objectAtIndex:nameIndex];
-                operands[++sp] = [self getObjectProperty:anSTWriter who:aWho obj:obj property:name];
+                operands[++sp] = [self getObjectProperty:anSTWriter scope:aScope obj:obj property:name];
                 break;
             case  DEF_INSTR_LOAD_PROP_IND:
                 propName = operands[sp--];
                 obj = operands[sp];
-                operands[sp] = [self getObjectProperty:anSTWriter who:aWho obj:obj property:propName];
+                operands[sp] = [self getObjectProperty:anSTWriter scope:aScope obj:obj property:propName];
                 break;
             case  DEF_INSTR_NEW:
                 nameIndex = [code shortAtIndex:ip];
@@ -573,9 +565,9 @@ static BOOL trace = NO;
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 // look up in original hierarchy not enclosing template (variable group)
                 // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self who:aWho ip:ip name:name];
+                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self scope:aScope name:name];
                 // get n args and store into st's attr list
-                [self storeArgs:aWho nargs:nargs st:st];
+                [self storeArgs:aScope nargs:nargs st:st];
                 sp -= nargs;
                 operands[++sp] = st;
                 break;
@@ -583,8 +575,8 @@ static BOOL trace = NO;
                 nargs = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 name = (NSString *)operands[sp - nargs];
-                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self who:aWho ip:ip name:name];
-                [self storeArgs:aWho nargs:nargs st:st];
+                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self scope:aScope name:name];
+                [self storeArgs:aScope nargs:nargs st:st];
                 sp -= nargs;
                 sp--;
                 operands[++sp] = st;
@@ -596,9 +588,9 @@ static BOOL trace = NO;
                 LinkedHashMap *attrs = (LinkedHashMap *)operands[sp--];
                 // look up in original hierarchy not enclosing template (variable group)
                 // see TestSubtemplates.testEvalSTFromAnotherGroup()
-                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self who:aWho ip:ip name:name];
+                st = [aWho.groupThatCreatedThisInstance getEmbeddedInstanceOf:self scope:aScope name:name];
                 // get n args and store into st's attr list
-                [self storeArgs:aWho attrs:attrs st:st];
+                [self storeArgs:aScope attrs:attrs st:st];
                  operands[++sp] = st;
                 break;
 // start here checking
@@ -608,14 +600,14 @@ static BOOL trace = NO;
                 name = [aWho.impl.strings objectAtIndex:nameIndex];
                 nargs = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
-                [self super_new:aWho name:name nargs:nargs];
+                [self super_new:aScope name:name nargs:nargs];
                 break;
             case  DEF_INSTR_SUPER_NEW_BOX_ARGS:
                 nameIndex = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 name = [aWho.impl.strings objectAtIndex:nameIndex];
                 attrs = (LinkedHashMap *)operands[sp--];
-                [self super_new:aWho name:name attrs:attrs];
+                [self super_new:aScope name:name attrs:attrs];
                 break;
             case  DEF_INSTR_STORE_OPTION:
                 optionIndex = [code shortAtIndex:ip];
@@ -634,21 +626,21 @@ static BOOL trace = NO;
                 break;
             case  DEF_INSTR_WRITE:
                 obj = operands[sp--];
-                idx = [self writeObjectNoOptions:anSTWriter who:aWho obj:obj];
+                idx = [self writeObjectNoOptions:anSTWriter scope:aScope obj:obj];
                 n += idx;
                 nwline += idx;
                 break;
             case  DEF_INSTR_WRITE_OPT:
                 options = (AMutableArray *)operands[sp--]; // get options
                 obj = operands[sp--];                      // get option to write
-                idx = [self writeObjectWithOptions:anSTWriter who:aWho obj:obj options:options];
+                idx = [self writeObjectWithOptions:anSTWriter scope:aScope obj:obj options:options];
                 n += idx;
                 nwline += idx;
                 break;
             case  DEF_INSTR_MAP:
                 st = (ST *)operands[sp--]; // get prototype off stack
                 obj = operands[sp--];      // get object to map prototype across
-                [self map:aWho attr:obj st:st];
+                [self map:aScope attr:obj st:st];
                 break;
             case  DEF_INSTR_ROT_MAP:
                 nmaps = [code shortAtIndex:ip];
@@ -659,7 +651,7 @@ static BOOL trace = NO;
                 sp -= nmaps;
                 obj = operands[sp--];
                 if (obj != nil && obj != [NSNull null] )
-                    [self rot_map:aWho attr:obj prototypes:templates];
+                    [self rot_map:aScope attr:obj prototypes:templates];
                 break;
             case  DEF_INSTR_ZIP_MAP:
                 st = (ST *)operands[sp--];
@@ -671,7 +663,7 @@ static BOOL trace = NO;
                     [exprs addObject:obj];
                 }
                 sp -= nmaps;
-                operands[++sp] = [self zip_map:aWho exprs:exprs prototype:st];
+                operands[++sp] = [self zip_map:aScope exprs:exprs prototype:st];
                 break;
             case  DEF_INSTR_BR:
                 ip = [code shortAtIndex:ip];
@@ -693,7 +685,7 @@ static BOOL trace = NO;
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 name = [aWho.impl.strings objectAtIndex:nameIndex];
                 attrs = (LinkedHashMap *)operands[sp];
-                [self passthru:aWho templateName:name attrs:attrs];
+                [self passthru:aScope templateName:name attrs:attrs];
                 break;
             case  DEF_INSTR_LIST:
                 operands[++sp] = [[AMutableArray arrayWithCapacity:5] retain];
@@ -701,26 +693,26 @@ static BOOL trace = NO;
             case  DEF_INSTR_ADD:
                 obj = operands[sp--];
                 AMutableArray *list = (AMutableArray *)operands[sp];
-                [self addToList:list obj:obj];
+                [self addToList:aScope list:list obj:obj];
                 break;
             case  DEF_INSTR_TOSTR:
                 // replace with string value; early eval
-                operands[sp] = [self description:anSTWriter who:aWho value:operands[sp]];
+                operands[sp] = [self description:anSTWriter scope:aScope value:operands[sp]];
                 break;
             case  DEF_INSTR_FIRST:
-                operands[sp] = [self first:operands[sp]];
+                operands[sp] = [self first:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_LAST:
-                operands[sp] = [self last:operands[sp]];
+                operands[sp] = [self last:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_REST:
-                operands[sp] = [self rest:operands[sp]];
+                operands[sp] = [self rest:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_TRUNC:
-                operands[sp] = [self trunc:operands[sp]];
+                operands[sp] = [self trunc:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_STRIP:
-                operands[sp] = [self strip:operands[sp]];
+                operands[sp] = [self strip:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_TRIM:
                 obj = operands[sp--];
@@ -728,26 +720,26 @@ static BOOL trace = NO;
                     operands[++sp] = [((NSString *)obj) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 }
                 else {
-                    [errMgr runTimeError:self who:aWho ip:current_ip error:EXPECTING_STRING arg:@"trim" arg2:[obj className]];
+                    [errMgr runTimeError:self scope:aScope error:EXPECTING_STRING arg:@"trim" arg2:[obj className]];
                     operands[++sp] = obj;
                 }
                 break;
             case  DEF_INSTR_LENGTH:
                 obj = operands[sp];
-                operands[sp] = (id)[NSString stringWithFormat:@"%d",[self length:operands[sp]]];
+                operands[sp] = (id)[NSString stringWithFormat:@"%d", [self length:operands[sp]]];
                 break;
             case  DEF_INSTR_STRLEN:
                 obj = operands[sp--];
                 if ([obj isKindOfClass:[NSString class]]) {
-                    operands[++sp] = (id)[NSString stringWithFormat:@"%d",[((NSString *)obj) length]];
+                    operands[++sp] = (id)[NSString stringWithFormat:@"%d", [((NSString *)obj) length]];
                 }
                 else {
-                    [errMgr runTimeError:self who:aWho ip:current_ip error:EXPECTING_STRING arg:@"strlen" arg2:[obj className]];
+                    [errMgr runTimeError:self scope:aScope error:EXPECTING_STRING arg:@"strlen" arg2:[obj className]];
                     operands[++sp] = @"0";
                 }
                 break;
             case  DEF_INSTR_REVERSE:
-                operands[sp] = [self reverse:operands[sp]];
+                operands[sp] = [self reverse:aScope obj:operands[sp]];
                 break;
             case  DEF_INSTR_NOT:
                 operands[sp] = (id)(![self testAttributeTrue:operands[sp]]);
@@ -765,7 +757,7 @@ static BOOL trace = NO;
             case  DEF_INSTR_INDENT:
                 idx = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
-                [self indent:anSTWriter who:aWho index:idx];
+                [self indent:anSTWriter scope:aScope index:idx];
 //                [anSTWriter pushIndentation:[aWho.impl.strings objectAtIndex:idx]];
                 break;
             case  DEF_INSTR_DEDENT:
@@ -803,7 +795,7 @@ static BOOL trace = NO;
                 idx = [code shortAtIndex:ip];
                 ip += Bytecode.OPND_SIZE_IN_BYTES;
                 obj = [aWho.impl.strings objectAtIndex:idx];
-                n1 = [self writeObjectNoOptions:anSTWriter who:aWho obj:obj];
+                n1 = [self writeObjectNoOptions:anSTWriter scope:aScope obj:obj];
                 n += n1;
                 nwline += n1;
                 break;
@@ -812,7 +804,7 @@ static BOOL trace = NO;
 //                ip += Bytecode.OPND_SIZE_IN_BYTES;
 //                obj = [aWho.locals objectAtIndex:idx];
 //                if ( obj==ST.EMPTY_ATTR ) obj = nil;
-//                n1 = [self writeObjectNoOptions:anSTWriter who:aWho obj:obj];
+//                n1 = [self writeObjectNoOptions:anSTWriter scope:aScope obj:obj];
 //                n += n1;
 //                nwline += n1;
 //                break;
@@ -826,8 +818,8 @@ static BOOL trace = NO;
     
     if ( debug ) {
         NSInteger stop = [anSTWriter index] - 1;
-        EvalTemplateEvent *e = [EvalTemplateEvent newEvent:(InstanceScope *)currentScope start:start stop:stop];
-        [self trackDebugEvent:aWho event:e];
+        EvalTemplateEvent *e = [EvalTemplateEvent newEvent:(InstanceScope *)aScope start:start stop:stop];
+        [self trackDebugEvent:aScope event:e];
     }
     return n;
 }
@@ -840,30 +832,30 @@ static BOOL trace = NO;
 }
 
 // TODO: refactor to remove dup'd code
-- (void) super_new:(ST *)aWho name:(NSString *)name nargs:(NSInteger)nargs
+- (void) super_new:(InstanceScope *)aScope name:(NSString *)name nargs:(NSInteger)nargs
 {
     ST *st = nil;
-    CompiledST *imported = [aWho.impl.nativeGroup lookupImportedTemplate:name];
+    CompiledST *imported = [aScope.st.impl.nativeGroup lookupImportedTemplate:name];
     if (imported == nil) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:NO_IMPORTED_TEMPLATE arg:name];
-        st = [aWho.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
+        [errMgr runTimeError:self scope:aScope error:NO_IMPORTED_TEMPLATE arg:name];
+        st = [aScope.st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
     }
     else {
-        st = [imported.nativeGroup  getEmbeddedInstanceOf:self who:aWho ip:current_ip name:name];
+        st = [imported.nativeGroup getEmbeddedInstanceOf:self scope:aScope name:name];
         st.groupThatCreatedThisInstance = group;
     }
-    [self storeArgs:aWho nargs:nargs st:st];
+    [self storeArgs:aScope nargs:nargs st:st];
     sp -= nargs;
     operands[++sp] = st;
 }
 
-- (void) super_new:(ST *)aWho name:(NSString *)name attrs:(LinkedHashMap *)attrs
+- (void) super_new:(InstanceScope *)aScope name:(NSString *)name attrs:(LinkedHashMap *)attrs
 {
     ST *st = nil;
-    CompiledST *imported = [aWho.impl.nativeGroup lookupImportedTemplate:name];
+    CompiledST *imported = [aScope.st.impl.nativeGroup lookupImportedTemplate:name];
     if (imported == nil) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:NO_IMPORTED_TEMPLATE arg:name];
-        st = [aWho.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
+        [errMgr runTimeError:self scope:aScope error:NO_IMPORTED_TEMPLATE arg:name];
+        st = [aScope.st.groupThatCreatedThisInstance createStringTemplateInternally:[CompiledST newCompiledST]];
     }
     else {
         st = [imported.nativeGroup createStringTemplateInternally:imported];
@@ -871,11 +863,11 @@ static BOOL trace = NO;
     }
 
     // get n args and store into st's attr list
-    [self storeArgs:aWho attrs:attrs st:st];
+    [self storeArgs:aScope attrs:attrs st:st];
     operands[++sp] = st;
 }
 
-- (void) passthru:(ST *)aWho templateName:(NSString *)templateName attrs:(LinkedHashMap *)attrs
+- (void) passthru:(InstanceScope *)aScope templateName:(NSString *)templateName attrs:(LinkedHashMap *)attrs
 {
     CompiledST *c = [group lookupTemplate:templateName];
     if ( c == nil ) return; // will get error later
@@ -888,7 +880,7 @@ static BOOL trace = NO;
         arg = (FormalArgument *)[it next];
         if ( [attrs get:arg.name] == nil ) {
             @try {
-                obj = [self getAttribute:aWho name:arg.name];
+                obj = [self getAttribute:aScope name:arg.name];
                 // If the attribute exists but there is no value and
                 // the formal argument has no default value, make it null.
                 if ( obj == ST.EMPTY_ATTR && arg.defaultValueToken == nil ) {
@@ -902,6 +894,7 @@ static BOOL trace = NO;
                 // if no such attribute exists for arg.name, set parameter
                 // if no default value
                 if ( arg.defaultValueToken == nil ) {
+                    [errMgr runTimeError:self scope:aScope error:NO_SUCH_ATTRIBUTE_PASS_THROUGH arg:arg.name];
                     [attrs put:arg.name value:nil];
                 }
             }
@@ -910,19 +903,23 @@ static BOOL trace = NO;
     [it release];
 }
 
-- (void) storeArgs:(ST *)aWho attrs:(LinkedHashMap *)attrs st:(ST *)st
+- (void) storeArgs:(InstanceScope *)aScope attrs:(LinkedHashMap *)attrs st:(ST *)st
 {
+    if ( (attrs!=nil) && ([attrs count] > 0) &&
+        !st.impl.hasFormalArgs && st.impl.formalArguments==nil )
+    {
+        [st add:ST.IMPLICIT_ARG_NAME value:nil]; // pretend we have "it" arg
+    }
     NSInteger nformalArgs = ( st.impl.formalArguments == nil ) ? 0 : [st.impl.formalArguments count];
     NSInteger nargs = ( attrs == nil ) ? 0 : [attrs count];
     if ( nargs < (nformalArgs - st.impl.numberOfArgsWithDefaultValues) ||
         nargs > nformalArgs ) {
         [errMgr runTimeError:self
-                         who:aWho
-                          ip:current_ip
+                       scope:aScope
                        error:ARGUMENT_COUNT_MISMATCH
-                        arg:[ACNumber numberWithInteger:nargs]
+                         arg:[ACNumber numberWithInteger:nargs]
                         arg2:st.impl.name
-                       arg3:[ACNumber numberWithInteger:nformalArgs]];
+                        arg3:[ACNumber numberWithInteger:nformalArgs]];
     }
     NSString *argName;
 /*
@@ -934,8 +931,7 @@ static BOOL trace = NO;
         if ( st.impl.formalArguments == nil ||
             [st.impl.formalArguments get:argName] == nil ) {
             [errMgr runTimeError:self
-                             who:aWho
-                              ip:current_ip
+                           scope:aScope
                            error:NO_SUCH_ATTRIBUTE
                              arg:argName];
             continue;
@@ -946,8 +942,11 @@ static BOOL trace = NO;
     [it release];
 }
 
-- (void) storeArgs:(ST *)aWho nargs:(NSInteger)nargs st:(ST *)st
+- (void) storeArgs:(InstanceScope *)aScope nargs:(NSInteger)nargs st:(ST *)st
 {
+    if ( nargs > 0 && !st.impl.hasFormalArgs && st.impl.formalArguments==nil ) {
+        [st add:ST.IMPLICIT_ARG_NAME value:nil]; // pretend we have "it" arg
+    }
     NSInteger nformalArgs = ( st.impl.formalArguments == nil ) ? 0 : [st.impl.formalArguments count];
     NSInteger firstArg = sp - (nargs - 1);
     NSInteger numToStore = (nargs < nformalArgs) ? nargs : nformalArgs;
@@ -957,12 +956,11 @@ static BOOL trace = NO;
         nargs > nformalArgs )
     {
         [errMgr runTimeError:self
-                         who:aWho
-                          ip:current_ip
+                       scope:aScope
                        error:ARGUMENT_COUNT_MISMATCH
-                        arg:[ACNumber numberWithInteger:nargs]
+                         arg:[ACNumber numberWithInteger:nargs]
                         arg2:st.impl.name
-                       arg3:[ACNumber numberWithInteger:nformalArgs]];
+                        arg3:[ACNumber numberWithInteger:nformalArgs]];
     }
     if ( st.impl.formalArguments == nil ) return;
 
@@ -975,17 +973,17 @@ static BOOL trace = NO;
     }
 }
 
-- (void) indent:(id<STWriter>)wr1 who:(ST *)aWho index:(NSInteger)strIndex
+- (void) indent:(id<STWriter>)wr1 scope:(InstanceScope *)aScope index:(NSInteger)strIndex
 {
-    NSString *indent = [aWho.impl.strings objectAtIndex:strIndex];
+    NSString *indent = [aScope.st.impl.strings objectAtIndex:strIndex];
     if ( debug ) {
-        int aStart = [wr1 index]; // track char we're about to write
-        EvalExprEvent *e = [EvalExprEvent newEvent:currentScope
-                                                    start:aStart
-                                                     stop:aStart + [indent length] - 1
-                                                exprStart:[self getExprStartChar:aWho]
-                                                 exprStop:[self getExprStopChar:aWho]];
-        [self trackDebugEvent:aWho event:e];
+        NSInteger aStart = [wr1 index]; // track char we're about to write
+        EvalExprEvent *e = [EvalExprEvent newEvent:aScope
+                                             start:aStart
+                                              stop:aStart + [indent length] - 1
+                                         exprStart:[self getExprStartChar:aScope]
+                                          exprStop:[self getExprStopChar:aScope]];
+        [self trackDebugEvent:aScope event:e];
     }
     [wr1 pushIndentation:indent];
 }
@@ -993,18 +991,18 @@ static BOOL trace = NO;
 /** Write out an expression result that doesn't use expression options.
  *  E.g., <name>
  */
-- (NSInteger) writeObjectNoOptions:(id<STWriter>)wr1 who:(ST *)aWho obj:(id)obj
+- (NSInteger) writeObjectNoOptions:(id<STWriter>)wr1 scope:(InstanceScope *)aScope obj:(id)obj
 {
     if ( wr1 == nil ) @throw [NSException exceptionWithName:@"Cant send msg to nil" reason:@"wr1 is nil" userInfo:nil];
-    int aStart = [wr1 index]; // track char we're about to write
-    int n = [self writeObject:wr1 who:aWho obj:obj options:nil];
+    NSInteger aStart = [wr1 index]; // track char we're about to write
+    NSInteger n = [self writeObject:wr1 scope:aScope obj:obj options:nil];
     if ( debug ) {
-        EvalExprEvent *e = [EvalExprEvent newEvent:currentScope
+        EvalExprEvent *e = [EvalExprEvent newEvent:aScope
                                              start:aStart
                                               stop:[wr1 index] - 1
-                                         exprStart:[self getExprStartChar:aWho]
-                                          exprStop:[self getExprStopChar:aWho]];
-        [self trackDebugEvent:aWho event:e];
+                                         exprStart:[self getExprStartChar:aScope]
+                                          exprStop:[self getExprStopChar:aScope]];
+        [self trackDebugEvent:aScope event:e];
     }
     return n;
 }
@@ -1012,7 +1010,7 @@ static BOOL trace = NO;
 /** Write out an expression result that uses expression options.
  *  E.g., <names; separator=", ">
  */
-- (NSInteger) writeObjectWithOptions:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeObjectWithOptions:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(AMutableArray *)options
 {
     NSInteger start = [anSTWriter index];
     // precompute all option values (render all the way to strings)
@@ -1020,7 +1018,7 @@ static BOOL trace = NO;
     if (options != nil) {
         optionStrings = [[AMutableArray arrayWithObjects:@"", @"", @"", @"",@"", nil] retain];
         for (NSInteger i = 0; i < Compiler.NUM_OPTIONS; i++) {
-            id obj = [self description:anSTWriter who:aWho value:[options objectAtIndex:i]];
+            id obj = [self description:anSTWriter scope:aScope value:[options objectAtIndex:i]];
             [optionStrings replaceObjectAtIndex:i withObject:obj];
         }
     }
@@ -1028,17 +1026,17 @@ static BOOL trace = NO;
         [anSTWriter pushAnchorPoint];
     }
 
-    NSInteger n = [self writeObject:anSTWriter who:aWho obj:obj options:optionStrings];
+    NSInteger n = [self writeObject:anSTWriter scope:aScope obj:obj options:optionStrings];
 
     if ( options != nil && [options objectAtIndex:Interpreter.Option.ANCHOR] != nil ) {
         [anSTWriter popAnchorPoint];
     }
     if ( debug ) {
-        EvalExprEvent *e = [EvalExprEvent newEvent:currentScope
+        EvalExprEvent *e = [EvalExprEvent newEvent:aScope
                                              start:start stop:[anSTWriter index]-1
-                                         exprStart:[self getExprStartChar:aWho]
-                                          exprStop:[self getExprStopChar:aWho]];
-        [self trackDebugEvent:aWho event:e];
+                                         exprStart:[self getExprStartChar:aScope]
+                                          exprStop:[self getExprStopChar:aScope]];
+        [self trackDebugEvent:aScope event:e];
     }
     return n;
 }
@@ -1046,7 +1044,7 @@ static BOOL trace = NO;
 /** Generic method to emit text for an object. It differentiates
  *  between templates, iterable objects, and plain old Java objects (POJOs)
  */
-- (NSInteger) writeObject:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeObject:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(AMutableArray *)options
 {
     NSInteger n = 0;
     if ( obj == nil ) {
@@ -1057,8 +1055,9 @@ static BOOL trace = NO;
             return 0;
         }
     }
+    ST *st = obj;
     if ( [obj isKindOfClass:[ST class]] ) {
-        ST *st = obj;
+        aScope = [InstanceScope newInstanceScope:aScope who:st];
         if ( options != nil && [options objectAtIndex:Interpreter.Option.WRAP] != nil ) {
             // if we have a wrap string, then inform writer it
             // might need to wrap
@@ -1066,28 +1065,28 @@ static BOOL trace = NO;
                 [anSTWriter writeWrap:[options objectAtIndex:Interpreter.Option.WRAP]];
             }
             @catch (IOException *ioe) {
-                [errMgr IOError:aWho error:WRITE_IO_ERROR e:ioe];
+                [errMgr IOError:aScope.st error:WRITE_IO_ERROR e:ioe];
             }
         }
-        n = [self exec:anSTWriter who:st];
+        n = [self exec:anSTWriter scope:aScope];
     }
     else {
-        obj = [self convertAnythingIteratableToIterator:obj]; // normalize
+        obj = [self convertAnythingIteratableToIterator:aScope attribute:obj]; // normalize
         
         @try {
             if ( [obj isKindOfClass:[ArrayIterator class]] )
-                n = [self writeIterator:anSTWriter who:aWho obj:obj options:options];
+                n = [self writeIterator:anSTWriter scope:aScope obj:obj options:options];
             else
-                n = [self writePOJO:anSTWriter obj:obj options:options];
+                n = [self writePOJO:anSTWriter scope:aScope obj:obj options:options];
         }
         @catch (IOException *ioe) {
-            [errMgr IOError:aWho error:WRITE_IO_ERROR e:ioe arg:obj];
+            [errMgr IOError:aScope.st error:WRITE_IO_ERROR e:ioe arg:obj];
         }
     }
     return n;
 }
 
-- (NSInteger) writeIterator:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj options:(AMutableArray *)options
+- (NSInteger) writeIterator:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(AMutableArray *)options
 {
     if ( obj == nil ) return 0;
     NSInteger n = 0;
@@ -1108,7 +1107,7 @@ static BOOL trace = NO;
                                [options objectAtIndex:Interpreter.Option._NULL] != nil);
         if ( needSeparator )
             n += [anSTWriter writeSeparator:separator];
-        NSInteger nw = [self writeObject:anSTWriter who:aWho obj:iterValue options:options];
+        NSInteger nw = [self writeObject:anSTWriter scope:aScope obj:iterValue options:options];
         if ( nw > 0 )
             seenAValue = YES;
         n += nw;
@@ -1118,13 +1117,13 @@ static BOOL trace = NO;
     return n;
 }
 
-- (NSInteger) writePOJO:(id<STWriter>)anSTWriter obj:(id)obj options:(AMutableArray *)options {
+- (NSInteger) writePOJO:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj options:(AMutableArray *)options {
     NSString *formatString = nil;
     NSString *v;
     id<AttributeRenderer> r = nil;
     if (options != nil)
         formatString = [options objectAtIndex:Interpreter.Option.FORMAT];
-    r = [currentScope.st.impl.nativeGroup getAttributeRenderer:[obj class]];
+    r = [aScope.st.impl.nativeGroup getAttributeRenderer:[obj class]];
     if ( r != nil )
         v = [r description:obj formatString:formatString locale:locale];
     else {
@@ -1140,41 +1139,41 @@ static BOOL trace = NO;
     return n;
 }
 
-- (NSInteger) getExprStartChar:(ST *)aWho
+- (NSInteger) getExprStartChar:(InstanceScope *)aScope
 {
-    Interval *templateLocation = [aWho.impl.sourceMap objectAtIndex:current_ip];
+    Interval *templateLocation = [aScope.st.impl.sourceMap objectAtIndex:aScope.ret_ip];
     if ( templateLocation != nil ) return templateLocation.a;
     return -1;
 }
 
-- (NSInteger) getExprStopChar:(ST *)aWho
+- (NSInteger) getExprStopChar:(InstanceScope *)aScope
 {
-    Interval *templateLocation = [aWho.impl.sourceMap objectAtIndex:current_ip];
+    Interval *templateLocation = [aScope.st.impl.sourceMap objectAtIndex:aScope.ret_ip];
     if ( templateLocation != nil ) return templateLocation.b;
     return -1;
 }
 
-- (void) map:(ST *)awho attr:(id)attr st:(ST *)st
+- (void) map:(InstanceScope *)aScope attr:(id)attr st:(ST *)st
 {
-    [self rot_map:awho attr:attr prototypes:[Interpreter_Anon2 newArrayWithST:st]];
+    [self rot_map:aScope attr:attr prototypes:[Interpreter_Anon2 newArrayWithST:st]];
 }
 
-- (void) rot_map:(ST *)aWho attr:(id)attr prototypes:(AMutableArray *)prototypes
+- (void) rot_map:(InstanceScope *)aScope attr:(id)attr prototypes:(AMutableArray *)prototypes
 {
     if ( attr == nil ) {
         operands[++sp] = nil;
         return;
     }
-    attr = [self convertAnythingIteratableToIterator:attr];
+    attr = [self convertAnythingIteratableToIterator:aScope attribute:attr];
     if ( [attr isKindOfClass:[ArrayIterator class]] ) {
-        AMutableArray *mapped = [self rot_map_iterator:aWho iter:attr proto:prototypes];
+        AMutableArray *mapped = [self rot_map_iterator:aScope iter:attr proto:prototypes];
         operands[++sp] = mapped;
     }
     else {
         ST *proto = [prototypes objectAtIndex:0];
         ST *st = [group createStringTemplateInternallyWithProto:proto];
         if ( st != nil ) {
-            [self setFirstArgument:aWho st:st attr:attr];
+            [self setFirstArgument:aScope st:st attr:attr];
             if ( st.impl.isAnonSubtemplate ) {
                 [st rawSetAttribute:@"i0" value:[ACNumber numberWithInteger:0]];
                 [st rawSetAttribute:@"i" value:[ACNumber numberWithInteger:1]];
@@ -1187,7 +1186,7 @@ static BOOL trace = NO;
     }
 }
 
-- (AMutableArray *) rot_map_iterator:(ST *)aWho iter:(id)attr proto:(AMutableArray *)prototypes
+- (AMutableArray *) rot_map_iterator:(InstanceScope *)aScope iter:(id)attr proto:(AMutableArray *)prototypes
 {
     AMutableArray *mapped = [[AMutableArray arrayWithCapacity:5] retain];
     NSInteger i0 = 0;
@@ -1207,7 +1206,7 @@ static BOOL trace = NO;
         ti++;
         ST *proto = [prototypes objectAtIndex:templateIndex];
         ST *st = [group createStringTemplateInternallyWithProto:proto];
-        [self setFirstArgument:aWho st:st attr:iterValue];
+        [self setFirstArgument:aScope st:st attr:iterValue];
         if ( st.impl.isAnonSubtemplate ) {
             [st rawSetAttribute:@"i0" value:[ACNumber numberWithInteger:i0]];
             [st rawSetAttribute:@"i" value:[ACNumber numberWithInteger:i]];
@@ -1223,7 +1222,7 @@ static BOOL trace = NO;
 
 // <names,phones:{n,p | ...}> or <a,b:t()>
 // todo: i, i0 not set unless mentioned? map:{k,v | ..}?
-- (AttributeList *) zip_map:(ST *)aWho exprs:(AMutableArray *)exprs prototype:(ST *)prototype
+- (AttributeList *) zip_map:(InstanceScope *)aScope exprs:(AMutableArray *)exprs prototype:(ST *)prototype
 {
     if (exprs == nil || prototype == nil || [exprs count] == 0) {
         return nil;
@@ -1236,14 +1235,14 @@ static BOOL trace = NO;
     for ( i = 0; i < [exprs count]; i++ ) {
         id attr = [exprs objectAtIndex:i];
         if ( attr != nil )
-            [exprs replaceObjectAtIndex:i withObject:[self convertAnythingToIterator:attr]];
+            [exprs replaceObjectAtIndex:i withObject:[self convertAnythingToIterator:aScope attribute:attr]];
     }
     
     // ensure arguments line up
     CompiledST *code = prototype.impl;
     LinkedHashMap *formalArguments = code.formalArguments;
     if ( !code.hasFormalArgs || formalArguments == nil ) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:MISSING_FORMAL_ARGUMENTS];
+        [errMgr runTimeError:self scope:aScope error:MISSING_FORMAL_ARGUMENTS];
         return nil;
     }
 
@@ -1255,11 +1254,10 @@ static BOOL trace = NO;
         nformalArgs -= [predefinedAnonSubtemplateAttributes count];
     if ( nformalArgs != numExprs ) {
         [errMgr runTimeError:self
-                         who:aWho
-                          ip:current_ip
+                       scope:aScope
                        error:MAP_ARGUMENT_COUNT_MISMATCH
-                        arg:[ACNumber numberWithInteger:numExprs]
-                       arg2:[ACNumber numberWithInteger:nformalArgs]];
+                         arg:[ACNumber numberWithInteger:numExprs]
+                        arg2:[ACNumber numberWithInteger:nformalArgs]];
         // TODO just fill first n
         // truncate arg list to match smaller size
         cnt = [formalArgumentNames count];
@@ -1302,11 +1300,22 @@ static BOOL trace = NO;
     return results;
 }
 
-- (void) setFirstArgument:(ST *)aWho st:(ST *)st attr:(id)attr
+- (void) setFirstArgument:(InstanceScope *)aScope st:(ST *)st attr:(id)attr
 {
-    if (st.impl.formalArguments == nil) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:ARGUMENT_COUNT_MISMATCH arg:[ACNumber numberWithInteger:1] arg2:(id)st.impl.name arg3:[ACNumber numberWithInteger:0]];
-        return;
+    if ( !st.impl.hasFormalArgs ) {
+        if (st.impl.formalArguments == nil) {
+            [st add:ST.IMPLICIT_ARG_NAME value:attr];
+            return;
+        }
+        if ( st.impl.formalArguments == nil ) {
+            [errMgr runTimeError:self
+                       scope:aScope
+                       error:ARGUMENT_COUNT_MISMATCH
+                         arg:[ACNumber numberWithInteger:1]
+                        arg2:(id)st.impl.name
+                        arg3:[ACNumber numberWithInteger:0]];
+            return;
+        }
     }
     if ( [st.locals count] == 0 )
         [st.locals addObject:attr];
@@ -1314,9 +1323,9 @@ static BOOL trace = NO;
         [st.locals replaceObjectAtIndex:0 withObject:attr];
 }
 
-- (void) addToList:(AMutableArray *)list obj:(id)obj
+- (void) addToList:(InstanceScope *)aScope list:(AMutableArray *)list obj:(id)obj
 {
-    obj = [self convertAnythingIteratableToIterator:obj];
+    obj = [self convertAnythingIteratableToIterator:aScope attribute:obj];
     if ([obj isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)obj;
         [it retain];
@@ -1336,13 +1345,13 @@ static BOOL trace = NO;
  * Return the first attribute if multiple valued or the attribute
  * itself if single-valued.  Used in <names:first()>
  */
-- (id) first:(id)v
+- (id) first:(InstanceScope *)aScope obj:(id)v
 {
     if ( v == nil )
         return v;
     id r = v;
     id tmp;
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
         [it retain];
@@ -1360,7 +1369,7 @@ static BOOL trace = NO;
  * itself if single-valued. Unless it's a list or array, this is pretty
  * slow as it iterates until the last element.
  */
-- (id) last:(id)v
+- (id) last:(InstanceScope *)aScope obj:(id)v
 {
     if ( v == nil )
         return v;
@@ -1373,7 +1382,7 @@ static BOOL trace = NO;
         return [elems objectAtIndex:[elems count]-1];
     }
     id last = v;
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
         [it retain];
@@ -1391,7 +1400,7 @@ static BOOL trace = NO;
  * Return everything but the first attribute if multiple valued
  * or null if single-valued.
  */
-- (id) rest:(id)v
+- (id) rest:(InstanceScope *)aScope obj:(id)v
 {
     if ( v == nil )
         return v;
@@ -1402,7 +1411,7 @@ static BOOL trace = NO;
             return nil;
         return [elems subarrayWithRange:NSMakeRange(1, [elems count]-1)];
     }
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = v;
         if ( ![it hasNext] ) {
@@ -1428,7 +1437,7 @@ static BOOL trace = NO;
 /**
  * Return all but the last element.  trunc(x)=null if x is single-valued.
  */
-- (id) trunc:(id)v
+- (id) trunc:(InstanceScope *)aScope obj:(id)v
 {
     if ( v == nil )
         return v;
@@ -1438,7 +1447,7 @@ static BOOL trace = NO;
             return nil;
         return [elems subarrayWithRange:NSMakeRange(0, [elems count] - 1)];
     }
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)v;
         [it retain];
@@ -1454,12 +1463,12 @@ static BOOL trace = NO;
 /**
  * Return a new list w/o null values.
  */
-- (id) strip:(id)v
+- (id) strip:(InstanceScope *)aScope obj:(id)v
 {
     id obj;
     if ( v == nil )
         return v;
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         AMutableArray *a = [[AMutableArray arrayWithCapacity:5] retain];
         ArrayIterator *it = (ArrayIterator *)v;
@@ -1479,11 +1488,11 @@ static BOOL trace = NO;
  * Return a list with the same elements as v but in reverse order. null
  * values are NOT stripped out. use reverse(strip(v)) to do that.
  */
-- (id) reverse:(id)v
+- (id) reverse:(InstanceScope *)aScope obj:(id)v
 {
     if ( v == nil )
         return v;
-    v = [self convertAnythingIteratableToIterator:v];
+    v = [self convertAnythingIteratableToIterator:aScope attribute:v];
     if ([v isKindOfClass:[ArrayIterator class]]) {
         AMutableArray *a = [[AMutableArray arrayWithCapacity:5] retain];
         ArrayIterator *it = v;
@@ -1504,7 +1513,8 @@ static BOOL trace = NO;
  * Special case several common collections and primitive arrays for
  * speed. This method by Kay Roepke from v3.
  */
-- (NSInteger) length:(id)v {
+- (NSInteger) length:(id)v
+{
     if ( v == nil )
         return 0;
     NSInteger i = 1;
@@ -1527,7 +1537,7 @@ static BOOL trace = NO;
     return i;
 }
 
-- (NSString *) description:(id<STWriter>)wr1 who:(ST *)aWho value:(id)value
+- (NSString *) description:(id<STWriter>)wr1 scope:(InstanceScope *)aScope value:(id)value
 {
     Class writerClass;
     Writer *stw;
@@ -1547,15 +1557,22 @@ static BOOL trace = NO;
         }
         @catch (NSException *e) {
             stw = [AutoIndentWriter newWriter:sw];
-            [errMgr runTimeError:self who:aWho ip:current_ip error:WRITER_CTOR_ISSUE arg:NSStringFromClass([wr1 class])];
+            [errMgr runTimeError:self
+                           scope:aScope
+                           error:WRITER_CTOR_ISSUE
+                             arg:NSStringFromClass([wr1 class])];
         }
-        [self writeObjectNoOptions:stw who:aWho obj:value];
+        if (debug && !aScope.earlyEval) {
+            aScope = [InstanceScope newInstanceScope:aScope who:aScope.st];
+            aScope.earlyEval = YES;
+        }
+        [self writeObjectNoOptions:stw scope:aScope obj:value];
         return [sw description];
     }
     return nil;
 }
 
-- (ArrayIterator *) convertAnythingIteratableToIterator:(id)obj
+- (ArrayIterator *) convertAnythingIteratableToIterator:(InstanceScope *)aScope attribute:(id)obj
 {
     ArrayIterator *it = nil;
     if ( obj == nil )
@@ -1566,10 +1583,10 @@ static BOOL trace = NO;
     }
     else if ( [obj  isKindOfClass:[NSArray class]] )
         it = (ArrayIterator *)[ArrayIterator newIterator:(NSArray *)obj];
-    else if ( currentScope.st.groupThatCreatedThisInstance.iterateAcrossValues &&
+    else if ( aScope.st.groupThatCreatedThisInstance.iterateAcrossValues &&
              [obj isKindOfClass:[HashMap class]] )
             it = (ArrayIterator *)[ArrayIterator newIterator:[[(HashMap *)obj values] toArray]];
-    else if (  currentScope.st.groupThatCreatedThisInstance.iterateAcrossValues &&
+    else if (  aScope.st.groupThatCreatedThisInstance.iterateAcrossValues &&
              [obj isKindOfClass:[AMutableDictionary class]] )
             it = (ArrayIterator *)[obj objectEnumerator];
     else if ( [obj isKindOfClass:[HashMap class]] )
@@ -1586,9 +1603,9 @@ static BOOL trace = NO;
     return it;
 }
 
-- (ArrayIterator *) convertAnythingToIterator:(id)obj
+- (ArrayIterator *) convertAnythingToIterator:(InstanceScope *)aScope attribute:(id)obj
 {
-    obj = [self convertAnythingIteratableToIterator:obj];
+    obj = [self convertAnythingIteratableToIterator:aScope attribute:obj];
     if ([obj isKindOfClass:[ArrayIterator class]])
         return (ArrayIterator *)obj;
     AttributeList *singleton = [[AttributeList arrayWithCapacity:1] retain];
@@ -1620,19 +1637,19 @@ static BOOL trace = NO;
     return YES;
 }
 
-- (id) getObjectProperty:(id<STWriter>)anSTWriter who:(ST *)aWho obj:(id)obj property:(id)property
+- (id) getObjectProperty:(id<STWriter>)anSTWriter scope:(InstanceScope *)aScope obj:(id)obj property:(id)property
 {
     if ( obj == nil ) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:NO_SUCH_PROPERTY arg:@"null attribute"];
+        [errMgr runTimeError:self scope:aScope error:NO_SUCH_PROPERTY arg:[NSString stringWithFormat:@"null.%@", property]];
         return nil;
     }
     
     @try {
-        id<ModelAdaptor> adap = [aWho.groupThatCreatedThisInstance getModelAdaptor:[obj class]];
-        return [adap getProperty:self who:aWho obj:obj property:property propertyName:[self description:anSTWriter who:aWho value:property]];
+        id<ModelAdaptor> adap = [aScope.st.groupThatCreatedThisInstance getModelAdaptor:[obj class]];
+        return [adap getProperty:self scope:aScope obj:obj property:property propertyName:[self description:anSTWriter scope:aScope value:property]];
     }
     @catch (STNoSuchPropertyException *e) {
-        [errMgr runTimeError:self who:aWho ip:current_ip error:NO_SUCH_PROPERTY e:e arg:[NSString stringWithFormat:@"%@.%@", [obj className], property]];
+        [errMgr runTimeError:self scope:aScope error:NO_SUCH_PROPERTY e:e arg:[NSString stringWithFormat:@"%@.%@", [obj className], property]];
     }
     return nil;
 }
@@ -1644,33 +1661,31 @@ static BOOL trace = NO;
  *
  *  return EMPTY_ATTR if found def but no value
  */
-- (id) getAttribute:(ST *)aWho name:(NSString *)name
+- (id) getAttribute:(InstanceScope *)aScope name:(NSString *)name
 {
-    InstanceScope *scope = currentScope;
-    while ( scope != nil ) {
-        ST *p = scope.st;
+    InstanceScope *current = aScope;
+    while ( current != nil ) {
         FormalArgument *localArg = nil;
+        ST *p = current.st;
         if ( p.impl.formalArguments != nil )
             localArg = [p.impl.formalArguments get:name];
         if ( localArg != nil ) {
             id obj = [p.locals objectAtIndex:localArg.index];
             return obj;
         }
-        scope = scope.parent; // look up enclosing scope chain
+        current = current.parent; // look up enclosing scope chain
     }
     
     // got to root scope and no definition, try dictionaries in group and up
-    STGroup *g = aWho.impl.nativeGroup;
+    STGroup *g = aScope.st.impl.nativeGroup;
     id obj = [self getDictionary:g name:name];
     if ( obj != nil ) return obj;
     
     // not found, report unknown attr
     if ( ST.cachedNoSuchAttrException == nil ) {
-        [ST setCachedNoSuchAttrException:[STNoSuchAttributeException newException:name]];
+        [ST setCachedNoSuchAttrException:[STNoSuchAttributeException newException:name scope:aScope]];
     }
     STNoSuchAttributeException *nsae = ST.cachedNoSuchAttrException;
-    nsae.attrName = name;
-    nsae.scope = currentScope;
     @throw ST.cachedNoSuchAttrException;
 }
 
@@ -1692,22 +1707,22 @@ static BOOL trace = NO;
  *  invoking template or by setAttribute directly.  Note
  *  that the default values may be templates.
  *
- *  The evaluation context is the invokedST template itself so
+ *  The evaluation context is the scope.st template itself so
  *  template default args can see other args.
  */
-- (void) setDefaultArguments:(id<STWriter>)wr1 who:(ST *)invokedST
+- (void) setDefaultArguments:(id<STWriter>)wr1 scope:(InstanceScope *)aScope
 {
     ST *defaultArgST;
-    if ( invokedST.impl.formalArguments == nil ||
-        invokedST.impl.numberOfArgsWithDefaultValues == 0 )
+    if ( aScope.st.impl.formalArguments == nil ||
+        aScope.st.impl.numberOfArgsWithDefaultValues == 0 )
         return;
 
     FormalArgument *arg;
-    LHMValueIterator *it = [invokedST.impl.formalArguments newValueIterator];
+    LHMValueIterator *it = [aScope.st.impl.formalArguments newValueIterator];
     while ( [it hasNext] ) {
         arg = (FormalArgument *)[it next];
         // if no value for attribute and default arg, inject default arg into self
-        if ( [invokedST.locals objectAtIndex:arg.index] != ST.EMPTY_ATTR || arg.defaultValueToken == nil ) {
+        if ( [aScope.st.locals objectAtIndex:arg.index] != ST.EMPTY_ATTR || arg.defaultValueToken == nil ) {
             continue;
         }
         if ( arg.defaultValueToken.type == GroupParser.TANONYMOUS_TEMPLATE ) {
@@ -1722,42 +1737,26 @@ static BOOL trace = NO;
             NSString *defArgTemplate = arg.defaultValueToken.text;
             if ( [defArgTemplate hasPrefix:[NSString stringWithFormat:@"{%c(", group.delimiterStartChar]] &&
                 [defArgTemplate hasSuffix:[NSString stringWithFormat:@")%c}", group.delimiterStopChar]] ) {
-                [invokedST rawSetAttribute:arg.name value:[self description:wr1 who:invokedST value:defaultArgST]];
+                [aScope.st rawSetAttribute:arg.name value:[self description:wr1 scope:aScope value:defaultArgST]];
             }
             else {
-                [invokedST rawSetAttribute:arg.name value:defaultArgST];
+                [aScope.st rawSetAttribute:arg.name value:defaultArgST];
             }
         }
         else {
-            [invokedST rawSetAttribute:arg.name value:arg.defaultValue];
+            [aScope.st rawSetAttribute:arg.name value:arg.defaultValue];
         }
     }
     [it release];
-}
-
-- (void) popScope
-{
-    current_ip = currentScope.ret_ip;
-    currentScope = currentScope.parent; // pop
-}
-
-- (void) pushScope:(ST *)aWho
-{
-    currentScope = [InstanceScope newInstanceScope:currentScope who:aWho]; // push
-    if ( debug ) {
-        currentScope.events = [AMutableArray arrayWithCapacity:5];
-        currentScope.childEvalTemplateEvents = [AMutableArray arrayWithCapacity:5];
-    }
-    currentScope.ret_ip = current_ip;
 }
 
 /** If an instance of x is enclosed in a y which is in a z, return
  *  a String of these instance names in order from topmost to lowest;
  *  here that would be "[z y x]".
  */
-- (NSString *)getEnclosingInstanceStackString:(InstanceScope *)scope
+- (NSString *)getEnclosingInstanceStackString:(InstanceScope *)aScope
 {
-    AMutableArray *templates = [Interpreter getEnclosingInstanceStack:scope topdown:YES];
+    AMutableArray *templates = [Interpreter getEnclosingInstanceStack:aScope topdown:YES];
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     int i = 0;
 /*
@@ -1811,23 +1810,23 @@ static BOOL trace = NO;
     return stack;
 }
 
-- (void) trace:(ST *)aWho ip:(NSInteger)ip
+- (void) trace:(InstanceScope *)aScope ip:(NSInteger)ip
 {
     NSMutableString *tr = [NSMutableString stringWithCapacity:16];
-    BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:aWho.impl];
+    BytecodeDisassembler *dis = [BytecodeDisassembler newBytecodeDisassembler:aScope.st.impl];
     NSMutableString *buf = [NSMutableString stringWithCapacity:16];
     [dis disassembleInstruction:buf ip:ip];
-    NSString *name = [NSString stringWithFormat:@"%@:", aWho.impl.name];
-    if (aWho.impl.name == ST.UNKNOWN_NAME)
+    NSString *name = [NSString stringWithFormat:@"%@:", aScope.st.impl.name];
+    if (aScope.st.impl.name == ST.UNKNOWN_NAME)
         name = @"";
     [tr appendString:[NSMutableString stringWithFormat:@"%-40@%@\tstack=[", name, buf]];
     
     for (NSInteger i = 0; i <= sp; i++) {
         id obj = operands[i];
-        [self printForTrace:tr obj:obj];
+        [self printForTrace:tr scope:aScope obj:obj];
     }
     
-    [tr appendFormat:@" ], calls=%@, sp=%d, nw=%d", [self getEnclosingInstanceStackString:currentScope], (long)sp, (long)nwline];
+    [tr appendFormat:@" ], calls=%@, sp=%ld, nw=%ld", [self getEnclosingInstanceStackString:aScope], (long)sp, (long)nwline];
     NSString *s = [NSString stringWithString:tr];
     if (debug)
         [executeTrace addObject:s];
@@ -1836,7 +1835,7 @@ static BOOL trace = NO;
     }
 }
 
-- (void) printForTrace:(NSMutableString *)tr obj:(id)obj
+- (void) printForTrace:(NSMutableString *)tr scope:(InstanceScope *)aScope obj:(id)obj
 {
     if ([obj isKindOfClass:[ST class]]) {
         if (((ST *)obj).impl == nil)
@@ -1845,14 +1844,14 @@ static BOOL trace = NO;
             [tr appendFormat:@" %@()", ((ST *)obj).impl.name];
         return;
     }
-    obj = [self convertAnythingIteratableToIterator:obj];
+    obj = [self convertAnythingIteratableToIterator:aScope attribute:obj];
     if ([obj isKindOfClass:[ArrayIterator class]]) {
         ArrayIterator *it = (ArrayIterator *)obj;
         [it retain];
         [tr appendString:@" ["];
         while ([it hasNext]) {
             id iterValue = [it nextObject];
-            [self printForTrace:tr obj:iterValue];
+            [self printForTrace:tr scope:aScope obj:iterValue];
         }
         [it release];
         [tr appendString:@" ]"];
@@ -1872,16 +1871,16 @@ static BOOL trace = NO;
  *  create it.  If EvalTemplateEvent, store in parent's
  *  childEvalTemplateEvents list for STViz tree view.
  */
-- (void) trackDebugEvent:(ST *)aWho event:(InterpEvent *)e
+- (void) trackDebugEvent:(InstanceScope *)aScope event:(InterpEvent *)e
 {
 //  System.out.println(e);
     [self.events addObject:e];
-    [currentScope.events addObject:e];
+    [aScope.events addObject:e];
     if ( [e isKindOfClass:[EvalTemplateEvent class]] ) {
-        InstanceScope *parent = currentScope.parent;
+        InstanceScope *parent = aScope.parent;
         if ( parent != nil ) {
             // System.out.println("add eval "+e.self.getName()+" to children of "+parent.getName());
-            [currentScope.parent.childEvalTemplateEvents addObject:(EvalTemplateEvent *)e];
+            [aScope.parent.childEvalTemplateEvents addObject:(EvalTemplateEvent *)e];
         }
     }
 }

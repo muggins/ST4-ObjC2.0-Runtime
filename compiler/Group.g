@@ -32,8 +32,9 @@ options {
     tokenVocab=Group1;
 }
 
-tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL;
-            T_TRUE; T_FALSE; }
+// tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; BIGSTRING_NO_NL;
+//    T_FALSE='false'; T_TRUE='true'; LBRACK='['; RBRACK=']'; LPAREN='('; RPAREN=')';
+//    }
 
 @header {
 /*
@@ -108,7 +109,7 @@ tokens { ID; WS; STRING; ANONYMOUS_TEMPLATE; COMMENT; LINE_COMMENT; BIGSTRING; B
 }
 
 @memVars {
-STGroup *group;
+__strong STGroup *group;
 }
 
 @properties {
@@ -121,10 +122,11 @@ STGroup *group;
 + (NSInteger) TBIGSTRING;
 + (NSInteger) TBIGSTRING_NO_NL;
 + (NSInteger) TID;
++ (NSInteger) TFALSE;
 + (NSInteger) TTRUE;
-+ (GroupParser *) newGroupParser:(id<TokenStream>)aStream;
++ (NSInteger) TLBRACK;
++ (NSInteger) TRBRACK;
 
-- (id) initWithTokenStream:(id<TokenStream>)aStream;
 - (void) dealloc;
 - (void) displayRecognitionError:(AMutableArray *)tokenNames Exception:(RecognitionException *)e;
 - (NSString *) getSourceName;
@@ -137,12 +139,16 @@ STGroup *group;
 }
 
 @methods {
-
+static SymbolStack *formalArgs_stack;
+static formalArgs_Scope *formalArgs_scope;
 + (NSInteger) TANONYMOUS_TEMPLATE { return ANONYMOUS_TEMPLATE; }
 + (NSInteger) TBIGSTRING { return BIGSTRING; }
 + (NSInteger) TBIGSTRING_NO_NL { return BIGSTRING_NO_NL; }
 + (NSInteger) TID { return ID; }
++ (NSInteger) TFALSE { return T_FALSE; }
 + (NSInteger) TTRUE { return T_TRUE; }
++ (NSInteger) TLBRACK { return LBRACK; }
++ (NSInteger) TRBRACK { return RBRACK; }
 
 - (void) displayRecognitionError:(AMutableArray *) tokenNames Exception:(RecognitionException *)e
 {
@@ -178,12 +184,14 @@ STGroup *group;
 }
 
 @lexer::memVars {
-STGroup *group;
+__strong STGroup *group;
 }
 
 @lexer::methodsDecl {
 @property (retain, getter=getGroup, setter=setGroup:) STGroup *group;
 
+- (id) initWithCharStream:(id<CharStream>)anInput;
+- (void) dealloc;
 - (void) reportError:(RecognitionException *)e;
 - (NSString *) getSourceName;
 }
@@ -222,16 +230,17 @@ GroupLexer *lexer = (GroupLexer *)[input getTokenSource];
 self.group = lexer.group = $aGroup;
 }
     :   oldStyleHeader?
-		delimiters?
-    (   'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
-    |   'import' // common error: name not in string
+        delimiters?
+        ( 'import' STRING {[aGroup importTemplatesWithFileName:$STRING];}
+        | 'import' // common error: name not in string
             {
             MismatchedTokenException *mte = [MismatchedTokenException newException:STRING Stream:input];
             [self reportError:mte];
             }
             ID ('.' ID)* // might be a.b.c.d
         )*
-        def[prefix]+
+        def[prefix]*
+        EOF
     ;
 
 oldStyleHeader // ignore but lets us use this parser in AW for both v3 and v4
@@ -269,8 +278,8 @@ templateDef[NSString *prefix]
     NSString *template=nil;
     NSInteger n=0; // num char to strip from left, right of template def
 }
-    :   (   '@' enclosing=ID '.' name=ID '(' ')'
-        |   name=ID '(' formalArgs ')'
+    :   (   '@' enclosing=ID '.' name=ID LPAREN RPAREN
+        |   name=ID LPAREN formalArgs RPAREN
         )
         '::='
         {CommonToken *templateToken = [input LT:1];}
@@ -289,8 +298,12 @@ templateDef[NSString *prefix]
             template = [Misc strip:template n:n];
             NSString *templateName = $name.text;
             if ( [prefix length] > 0 ) templateName = [NSString stringWithFormat: @"\%@\%@", prefix, $name.text];
+            NSString *enclosingTemplateName = $enclosing.text;
+            if ( enclosingTemplateName != nil && ([enclosingTemplateName length] > 0) && ([prefix length] > 0) ) {
+                enclosingTemplateName = [NSString stringWithFormat:@"\%@\%@", prefix, enclosingTemplateName];
+            }
             [group defineTemplateOrRegion:templateName
-            regionSurroundingTemplateName:$enclosing.text
+            regionSurroundingTemplateName:enclosingTemplateName
                             templateToken:templateToken
                                  template:template
                                 nameToken:$name
@@ -312,6 +325,7 @@ scope {
 formalArg[AMutableArray *args]
     :   ID
         (   '=' a=(STRING|ANONYMOUS_TEMPLATE|T_TRUE|T_FALSE) {$formalArgs::hasOptionalParameter = YES;}
+        |   '=' a=LBRACK RBRACK {$formalArgs::hasOptionalParameter = YES;}
         |   {
             if ( $formalArgs::hasOptionalParameter ) {
                 [group.errMgr compileTimeError:REQUIRED_PARAMETER_AFTER_OPTIONAL templateToken:nil t:$ID];
@@ -347,7 +361,7 @@ dictDef
 
 dict returns [LinkedHashMap *mapping]
 @init {mapping=[LinkedHashMap newLinkedHashMap:16];}
-    :   '[' dictPairs[mapping] ']'
+    :   LBRACK dictPairs[mapping] RBRACK
     ;
 
 dictPairs[LinkedHashMap *mapping]
@@ -372,18 +386,26 @@ keyValue returns [id value]
     |   BIGSTRING_NO_NL     {$value = [group createSingleton:$BIGSTRING_NO_NL];}
     |   ANONYMOUS_TEMPLATE  {$value = [group createSingleton:$ANONYMOUS_TEMPLATE];}
     |   STRING              {$value = [Misc replaceEscapes:[Misc strip:$STRING.text n:1]];}
-    |   T_TRUE              {$value = [ACNumber numberWithBool:YES];}
     |   T_FALSE             {$value = [ACNumber numberWithBool:NO];}
-    |   '[' ']'             {$value = [[AMutableDictionary alloc] init];} 
+    |   T_TRUE              {$value = [ACNumber numberWithBool:YES];}
+    |   LBRACK RBRACK       {$value = [AMutableDictionary dictionaryWithCapacity:5];} 
     |                       {[[[input LT:1] text] isEqualToString:@"key"]}?=> ID {$value = STGroup.DICT_KEY;}
     ;
     catch[RecognitionException *re] {
         [self error:[NSString stringWithFormat:@"missing value for key at '\%@'", [[input LT:1] text]]];
     }
 
+T_FALSE : 'false' ;
+
 T_TRUE : 'true' ;
 
-T_FALSE : 'false' ;
+LBRACK : '[' ;
+
+RBRACK : ']' ;
+
+LPAREN : '(' ;
+
+RPAREN : ')' ;
 
 ID  :   ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'-'|'_')*
     ;
@@ -402,25 +424,36 @@ STRING
         )*
         '"'
         {
-        NSString *txt = [self.text  stringByReplacingOccurrencesOfString:@"\\\\\"" withString:@"\""];
+        NSString *txt = [self.text stringByReplacingOccurrencesOfString:@"\\\\\"" withString:@"\""];
         [self setText:txt];
         }
     ;
 
 BIGSTRING_NO_NL // same as BIGSTRING but means ignore newlines later
-    :   '<%' (options {greedy=false;} : .)* '%>'
+    :   '<%' ( . )* '%>'
+        // %\> is the escape to avoid end of string
+        {
+            NSString *txt = [self.text stringByReplacingOccurrencesOfString:@"\%\\\\>" withString:@"\%>"];
+            [self setText:txt];
+        }
     ;
 
+/** Match <<...>> but also allow <<..<x>>> so we can have tag on end.
+    Escapes: >\> means >> inside of <<...>>.
+    Escapes: \>> means >> inside of <<...>> unless at end like <<...\>>>>.
+    In that case, use <%..>>%> instead.
+ */
 BIGSTRING
     :   '<<'
-        (   options {greedy=false;}
+        (   options {greedy=NO;}
         :   '\\' '>'  // \> escape
-        |   '\\' ~'>'
+        |   '\\' ~'>' // allow this but don't collapse in action
         |   ~'\\'
         )*
         '>>'
         {
-        NSString *txt = [self.text stringByReplacingOccurrencesOfString:@"\\\\>" withString:@">"];
+        NSString *txt = self.text;
+        txt = [Misc replaceEscapedRightAngle:txt]; // replace \> with > unless <\\>
         [self setText:txt];
         }
     ;

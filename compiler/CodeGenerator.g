@@ -72,8 +72,8 @@ options {
 }
 
 @memVars {
-	template_Scope *template_scope;
 	NSString *outermostTemplateName;	// name of overall template
+	template_Scope *template_scope;
 	CompiledST *outermostImpl;
 	CommonToken *templateToken;			    // overall template token
 	NSString *template;  				// overall template text
@@ -81,8 +81,8 @@ options {
 }
 
 @properties {
-	@property (retain) template_Scope *template_scope;
 	@property (retain) NSString *outermostTemplateName; // name of overall template
+	@property (retain) template_Scope *template_scope;
 	@property (retain) CompiledST *outermostImpl;
 	@property (retain) CommonToken *templateToken;// overall template token
 	@property (retain) NSString *template;    // overall template text
@@ -110,8 +110,8 @@ options {
 - (void) emit1:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)arg;
 - (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode arg:(NSInteger)anArg arg2:(NSInteger)anArg2;
 - (void) emit2:(CommonTree *)opAST opcode:(short)anOpcode s:(NSString *)s arg2:(NSInteger)anArg;
-- (void) emit:(short)anOpcode;
 - (void) emit:(CommonTree *)opAST opcode:(short)anOpcode;
+- (void) emit:(short)anOpcode;
 - (void) insert:(NSInteger)addr opcode:(short)anOpcode s:(NSString *)s;
 - (void) setOption:(CommonTree *)anID;
 - (void) write:(NSInteger)addr value:(short)value;
@@ -122,8 +122,8 @@ options {
 }
 
 @synthesize {
-	@synthesize template_scope;
 	@synthesize outermostTemplateName; // name of overall template
+	@synthesize template_scope;
 	@synthesize outermostImpl;
 	@synthesize templateToken;// overall template token
 	@synthesize template; // overall template text
@@ -276,7 +276,7 @@ singleElement
             [self emit1:$TEXT opcode:Bytecode.INSTR_WRITE_STR s:$TEXT.text];
 		}
         }
-	|	NEWLINE {[self emit:Bytecode.INSTR_NEWLINE];}
+	|	NEWLINE {[self emit:$NEWLINE opcode:Bytecode.INSTR_NEWLINE];}
 	;
 
 compoundElement[CommonTree *indent]
@@ -302,7 +302,7 @@ region[CommonTree *indent] returns [NSString *name]
 			template[$name,nil]
 			{
 			CompiledST *sub = $template.impl;
-	        sub.isRegion = true;
+	        sub.isRegion = YES;
 	        sub.regionDefType = /* ST.RegionType. */ EMBEDDED;
 	        sub.templateDefStartToken = $ID.token;
 			//sub.dump();
@@ -411,13 +411,13 @@ ifstat[CommonTree *indent]
 	;
 // STARTHERE
 conditional
-	:	^('||' conditional conditional)		{[self emit:Bytecode.INSTR_OR];}
-	|	^('&&' conditional conditional)		{[self emit:Bytecode.INSTR_AND];}
-	|	^('!' conditional)					{[self emit:Bytecode.INSTR_NOT];}
+	:	^(OR conditional conditional)		{[self emit:$OR opcode:Bytecode.INSTR_OR];}
+	|	^(AND conditional conditional)		{[self emit:$AND opcode:Bytecode.INSTR_AND];}
+	|	^(BANG conditional)					{[self emit:$BANG opcode:Bytecode.INSTR_NOT];}
 	|	expr // not all expr are valid, but reuse code gen (parser restricts syntax)
 	;
 
-exprOptions : {[self emit:Bytecode.INSTR_OPTIONS];} ^(OPTIONS option*) ;
+exprOptions : {[self emit:$start opcode:Bytecode.INSTR_OPTIONS];} ^(OPTIONS option*) ;
 
 option : ^('=' ID expr) {[self setOption:$ID];} ;
 
@@ -536,7 +536,7 @@ args returns [NSInteger n=0, BOOL namedArgs=NO, BOOL passThru]
 	|
  	;
 
-list:	{[self emit:Bytecode.INSTR_LIST];}
+list:	{[self emit:$start opcode:Bytecode.INSTR_LIST];}
 		^(LIST (listElement {[self emit:$listElement.start opcode:Bytecode.INSTR_ADD];})* )
 	;
 
