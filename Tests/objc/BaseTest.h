@@ -83,6 +83,7 @@ extern NSString *const newline;
 - (void) checkTokens:(NSString *)template expected:(NSString *)expected delimiterStartChar:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (NSString *)getRandomDir;
 - (void) assertEquals:(NSString *)expected result:(NSString *)result;
+- (void) assertNotNil:(id)ptr msg:(NSString *)msg;
 
 @end
 

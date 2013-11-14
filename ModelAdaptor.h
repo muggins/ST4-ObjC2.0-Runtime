@@ -39,14 +39,16 @@
  */
 #import <Foundation/Foundation.h>
 
+
 @class Interpreter;
+@class InstanceScope;
 @class ST;
 @class NSString;
 
 @protocol ModelAdaptor<NSObject>
 
 - (id) getProperty:(Interpreter *)interp
-               who:(ST *)aWho
+             scope:(InstanceScope *)aScope
                obj:(id)anObj
           property:(id)aProperty
       propertyName:(NSString *)aPropertyName;

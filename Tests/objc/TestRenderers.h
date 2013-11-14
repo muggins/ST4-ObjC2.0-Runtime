@@ -11,6 +11,19 @@
 //#import "GregorianCalendar.h"
 
 @interface TestRenderers : BaseTest {
+    NSCalendar *gregorian;
+    NSLocale *origLocale;
+    NSDateFormatter *origDateFormatter;
+    NSDateFormatterBehavior origBehavior;
+    NSString *origDateFormat;
+    NSDateFormatterStyle origDateStyle;
+    NSDateFormatterStyle origTimeStyle;
+    NSLocale *curLocale;
+    NSDateFormatter *curDateFormatter;
+    NSDateFormatterBehavior curBehavior;
+    NSString *curDateFormat;
+    NSDateFormatterStyle curDateStyle;
+    NSDateFormatterStyle curTimeStyle;
 }
 
 - (void) test01RendererForGroup;

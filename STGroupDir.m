@@ -31,6 +31,7 @@
 #import "STException.h"
 #import "GroupLexer.h"
 #import "GroupParser.h"
+#import "ErrorManager.h"
 
 /** A directory or directory tree full of templates and/or group files.
  *  We load files on-demand. Dir search path: current working dir then
@@ -154,49 +155,26 @@
     //        return [self loadTemplateFile:@"/" fileName:[NSString stringWithFormat:@"%@.st", aName]];
     //    }
     NSURL *groupFileURL = nil;
-    NSString *groupFile = nil;
     @try {
-        // fileName = [NSString stringWithFormat:@"%@.stg", parent] stringByStandardizingPath];
-        // groupFileURL = [NSURL fileURLWithPath:[[root URLByAppendingPathComponent:@"%@.stg", parent] stringByStandardizingPath]];
-        groupFile = [NSString stringWithString:groupDirName];
-        if ( [groupFile hasSuffix:@".stg"] ) {
-            groupFileURL = [[NSURL fileURLWithPath:groupFile] URLByStandardizingPath];
-        }
-        else {
-            groupFileURL = [[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@.stg", [root path], parent]] URLByStandardizingPath];
-        }
-        NSLog( @"groupFileURL = %@\n", [groupFileURL path] );
+        groupFileURL = [[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@%@", [root path], parent, STGroup.GROUP_FILE_EXTENSION]] URLByStandardizingPath];
+        if ( STGroup.verbose ) NSLog( @"groupFileURL = %@\n", [groupFileURL path] );
     }
     @catch (MalformedURLException *e) {
-        [errMgr internalError:nil msg:[NSString stringWithFormat:@"bad URL: %@%@.stg", [root path], parent] e:e];
+        [errMgr internalError:nil msg:[NSString stringWithFormat:@"bad URL: %@%@%@", [root path], parent, STGroup.GROUP_FILE_EXTENSION] e:e];
         return nil;
     }
-    if ( [Misc urlExists:groupFileURL] ) {
-        NSLog( @"groupFileURL = %@\nroot+parent = %@%@\n", groupFileURL, [root path], parent );
-        //        [self loadGroupFile:prefix fileName:[NSString stringWithFormat:@"%@%@.stg", [root path], parent]];
-        [self loadGroupFile:prefix fileName:[groupFileURL path]];
-        return [self rawGetTemplate:aName];
+    @try {
+        if ( ![Misc urlExists:groupFileURL] ) {
+            IOException *ioe = [IOException newException:@"not a fileReferenceURL"];
+            @throw ioe;
+        }
     }
-    else {
-        @try {
-            NSString *unqualifiedName = [Misc getFileName:aName];
-            return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
-        }
-#ifdef DONTUSENOMO
-        @try {
-            @throw [FileNotFoundException newException:[NSString stringWithFormat:@"fnfe error on %@", groupFileURL]];
-        }
-        @catch (FileNotFoundException *fnfe) {
-            NSString *unqualifiedName = [Misc getFileName:aName];
-            return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
-        }
-#endif
-        @catch (IOException *ioe) {
-            [errMgr internalError:nil msg:[@"can't load template file " stringByAppendingString:aName] e:ioe];
-        }
+    @catch (IOException *ioe) {
         NSString *unqualifiedName = [Misc getFileName:aName];
-        return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@.st", unqualifiedName]];
+        return [self loadTemplateFile:prefix fileName:[NSString stringWithFormat:@"%@%@", unqualifiedName, STGroup.TEMPLATE_FILE_EXTENSION]];
     }
+    [self loadGroupFile:prefix fileName:[NSString stringWithFormat:@"%@%@%@", [root path], parent, STGroup.GROUP_FILE_EXTENSION]];
+    return [self rawGetTemplate:aName];
 }
 
 
@@ -215,7 +193,7 @@
         }
     }
     @catch (MalformedURLException *me) {
-        [errMgr runTimeError:nil who:nil ip:0 error:INVALID_TEMPLATE_NAME e:me arg:[f path]];
+        [errMgr runTimeError:nil scope:nil error:INVALID_TEMPLATE_NAME e:me arg:[f path]];
         return nil;
     }
     

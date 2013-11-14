@@ -2,7 +2,7 @@
 
 @implementation TestGroupSyntax
 
-- (void) testSimpleGroup
+- (void) test01SimpleGroup
 {
     NSString *templates = @"t() ::= <<foo>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -12,7 +12,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testMultiTemplates
+- (void) test02MultiTemplates
 {
     NSString *templates = @"ta(x) ::= \"[<x>]\"\nduh() ::= <<hi there>>\nwow() ::= <<last>>\\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -22,7 +22,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testSingleTemplateWithArgs
+- (void) test03SingleTemplateWithArgs
 {
     NSString *templates = @"t(a,b) ::= \"[<a>]\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -32,7 +32,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testDefaultValues
+- (void) test04DefaultValues
 {
     NSString *templates = @"t(a={def1},b=\"def2\") ::= \"[<a>]\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -42,7 +42,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testDefaultValueTemplateWithArg
+- (void) test05DefaultValueTemplateWithArg
 {
     NSString *templates = @"t(a={x | 2*<x>}) ::= \"[<a>]\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -52,7 +52,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testNestedTemplateInGroupFile
+- (void) test06NestedTemplateInGroupFile
 {
     NSString *templates = @"t(a) ::= \"<a:{x | <x:{y | <y>}>}>\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -62,7 +62,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testNestedDefaultValueTemplate
+- (void) test07NestedDefaultValueTemplate
 {
     NSString *templates = @"t(a={x | <x:{y|<y>}>}) ::= \"ick\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -73,7 +73,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testNestedDefaultValueTemplateWithEscapes
+- (void) test08NestedDefaultValueTemplateWithEscapes
 {
     NSString *templates = @"t(a={x | \\< <x:{y|<y>\\}}>}) ::= \"[<a>]\"\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -83,7 +83,7 @@
     [self assertEquals:expected result:result];
 }
 
-- (void) testMessedUpTemplateDoesntCauseRuntimeError
+- (void) test09MessedUpTemplateDoesntCauseRuntimeError
 {
     NSString *templates = @"main(p) ::= <<\n<f(x=\"abc\")>\n>>\n\nf() ::= <<\n<x>\n>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
@@ -96,6 +96,6 @@
     NSString *expected = @"[context [/main] 1:1 passed 1 arg(s) to template /f with 0 declared arg(s), context [/main] 1:1 attribute x isn't defined, context [/main /f] 1:1 attribute x isn't defined]";
     NSString *result = [errors.errors description];
     [self assertEquals:expected result:result];
-    }
+}
     
-    @end
+@end

@@ -139,6 +139,9 @@ static STGroup      *aDefaultGroup = nil;
  */
 static const NSString *DICT_KEY = @"key";
 static const NSString *DEFAULT_KEY = @"default";
+static const NSString *GROUP_FILE_EXTENSION = @".stg";
+static const NSString *TEMPLATE_FILE_EXTENSION = @".st";
+
 static BOOL debug = NO;
 static BOOL verbose = YES;
 static BOOL trackCreationEvents = NO;
@@ -178,6 +181,16 @@ static BOOL trackCreationEvents = NO;
 + (const NSString *) DICT_KEY
 {
     return DICT_KEY;
+}
+
++ (const NSString *) GROUP_FILE_EXTENSION
+{
+    return GROUP_FILE_EXTENSION;
+}
+
++ (const NSString *) TEMPLATE_FILE_EXTENSION
+{
+    return TEMPLATE_FILE_EXTENSION;
 }
 
 + (STGroup *) defaultGroup
@@ -283,12 +296,10 @@ static BOOL trackCreationEvents = NO;
 }
 
 - (ST *) getEmbeddedInstanceOf:(Interpreter *)interp
-                           who:(ST *)enclosingInstance
-                            ip:(NSInteger)ip
+                         scope:(InstanceScope *)aScope
                           name:(NSString *)aName
 {
     NSString *fullyQualifiedName = aName;
-    NSString *unQualifiedName;
     if ( [aName characterAtIndex:0] != '/' ) {
     /*
      * This fixes a problem in TestImports
@@ -296,20 +307,23 @@ static BOOL trackCreationEvents = NO;
      * Maybe at some point I will find where this should be handled
      * and this code can be reverted
      */
-        if ( [enclosingInstance.impl.prefix length] > 1 &&
+        fullyQualifiedName = [NSString stringWithFormat:@"%@%@", aScope.st.impl.prefix, aName];
+#ifdef DONTUSENOMO
+        if ( [aScope.st.impl.prefix length] > 1 &&
              ![aName hasPrefix:@"region__"] ) {
             unQualifiedName = [Misc getFileName:aName];
-            fullyQualifiedName = [NSString stringWithFormat:@"%@%@", enclosingInstance.impl.prefix, unQualifiedName];
+            fullyQualifiedName = [NSString stringWithFormat:@"%@%@", aScope.st.impl.prefix, unQualifiedName];
         }
         else {
-            fullyQualifiedName = [NSString stringWithFormat:@"%@%@", enclosingInstance.impl.prefix, aName];
+            fullyQualifiedName = [NSString stringWithFormat:@"%@%@", aScope.st.impl.prefix, aName];
         }
+#endif
     }
     if ( verbose ) NSLog( @"[self getEmbeddedInstanceOf:%@]\n", fullyQualifiedName);
     ST *st = [self getInstanceOf:fullyQualifiedName];
     if ( st == nil ) {
-        [errMgr runTimeError:interp who:enclosingInstance
-                          ip:ip
+        [errMgr runTimeError:interp
+                      scope:aScope
                        error:NO_SUCH_TEMPLATE
                          arg:fullyQualifiedName];
         return [self createStringTemplateInternally:[CompiledST newCompiledST]];
@@ -671,8 +685,8 @@ static BOOL trackCreationEvents = NO;
     aFileName = [Misc strip:aFileName n:1];
     
     //NSLog(@"import %@", aFileName);
-    BOOL isGroupFile = [aFileName hasSuffix:@".stg"];
-    BOOL isTemplateFile = [aFileName hasSuffix:@".st"];
+    BOOL isGroupFile = [aFileName hasSuffix:GROUP_FILE_EXTENSION];
+    BOOL isTemplateFile = [aFileName hasSuffix:TEMPLATE_FILE_EXTENSION];
     BOOL isGroupDir = !(isGroupFile || isTemplateFile);
     
     STGroup *g = nil;

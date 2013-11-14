@@ -207,7 +207,7 @@ NSString *const newline = @"\n"/* Misc.newline */;
 {
     STLexer *lexer = [STLexer newSTLexer:ErrorManager.DEFAULT_ERR_MGR input:[ANTLRStringStream newANTLRStringStream:template] templateToken:nil delimiterStartChar:delimiterStartChar delimiterStopChar:delimiterStopChar];
     CommonTokenStream *tokens = [CommonTokenStream newCommonTokenStreamWithTokenSource:lexer];
-    NSMutableString *buf = [NSMutableString stringWithCapacity:30];
+    NSMutableString *buf = [NSMutableString stringWithCapacity:35];
     [buf appendString:@"["];
     NSInteger i = 1;
     CommonToken *t = [tokens LT:i];
@@ -244,6 +244,11 @@ NSString *const newline = @"\n"/* Misc.newline */;
 - (void) assertEquals:(NSString *)expected result:(NSString *)result
 {
     STAssertTrue( [expected isEqualTo:result], @"Expected \"%@\" BUT GOT \"%@\"", expected, result );
+}
+
+- (void) assertNotNil:(id)ptr msg:(NSString *)msg
+{
+    STAssertNotNil( ptr, @"%@ equal to nil", (msg==nil?@"":msg)  );
 }
 
 @end

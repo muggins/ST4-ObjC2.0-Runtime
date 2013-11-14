@@ -5,19 +5,19 @@
 
 - (void) test01Attr
 {
-    NSLog( @"Start test01.Attr" );
+    // NSLog( @"Start test01.Attr" );
     NSString *aTemplate = @"hi <name>";
-    NSLog( @"aTemplate = %@", aTemplate );
+    // NSLog( @"aTemplate = %@", aTemplate );
     CompiledST *code = [[Compiler newCompiler] compile:aTemplate];
-    NSLog( @"returned from newCompiler" );
+    // NSLog( @"returned from newCompiler" );
     NSString *asmExpected = @"write_str 0, load_attr 1, write";
     NSString *asmResult = [code dis_instrs];
     [self assertEquals:asmExpected result:asmResult];
-    NSLog( @"returned from first assert" );
+    // NSLog( @"returned from first assert" );
     NSString *expected = @"[hi , name]";
     NSString *result = [[Strings newStringsWithArray:code.strings] description];
     [self assertEquals:expected result:result];
-    NSLog( @"end test01.Attr" );
+    // NSLog( @"end test01.Attr" );
     return;
 }
 
@@ -51,12 +51,12 @@
 - (void) test02bIncludeWithPartialPassThrough
 {
     NSString *template = @"hi <foo(x=y,...)>";
-    CompiledST *code = [[Compiler newCompiler] compile:template];
     NSString *asmExpected =
         @"write_str 0, args, load_attr 1, store_arg 2, passthru 3, new_box_args 3, write";
+    NSString *expected = @"[hi , y, x, foo]";
+    CompiledST *code = [[Compiler newCompiler] compile:template];
     NSString *asmResult = [code dis_instrs];
     [self assertEquals:asmExpected result:asmResult];
-    NSString *expected = @"[hi , y, x, foo]";
     NSString *result = [[Strings newStringsWithArray:code.strings] description];
     [self assertEquals:expected result:result];
     return;

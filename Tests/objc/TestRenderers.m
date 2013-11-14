@@ -2,6 +2,31 @@
 
 @implementation TestRenderers
 
+- (void) setUp
+{
+    origLocale = [NSLocale currentLocale];
+    origBehavior = [NSDateFormatter defaultFormatterBehavior];
+    origDateFormatter = [[NSDateFormatter alloc] init];
+    [origDateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm"];
+    origDateFormat = [NSDateFormatter dateFormatFromTemplate:@"yMMMMd" options:0 locale:origLocale];
+    origDateStyle = [origDateFormatter dateStyle];
+    origTimeStyle = [origDateFormatter timeStyle];
+    origDateFormat = [origDateFormatter dateFormat];
+    gregorian = [NSCalendar currentCalendar];
+    [gregorian setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    curDateFormatter = [[NSDateFormatter alloc] init];
+    [curDateFormatter setDateStyle:NSDateFormatterLongStyle];
+    [curDateFormatter setTimeStyle:NSDateFormatterLongStyle];
+    curLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    [curDateFormatter setLocale:curLocale];
+    [super setUp];
+}
+
+- (void) tearDown
+{
+    [super tearDown];
+}
+
 - (void) test01RendererForGroup
 {
     NSString *templates = @"dateThing(created) ::= \"datetime: <created>\"\n";
@@ -9,7 +34,6 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -19,19 +43,18 @@
     [comps setSecond:0];
     NSDate *aDate = [gregorian dateFromComponents:comps];
     [st add:@"created" value:aDate];
-    NSString *expecting = @"datetime: 7/5/05 12:00 AM";
+    NSString *expecting = @"datetime: 7/5/05, 12:00 AM";
     NSString *result = [st render];
     [self assertEquals:expecting result:result];
 }
 
 - (void) test02RendererWithFormat
 {
-    NSString *templates = @"dateThing(created) ::= << date: <created; format=\"yyyy.MM.dd\"> >>\n";
+    NSString *templates = @"dateThing(created) ::= << date: <created; format=\"YYYY'.'MM'.'dd\"> >>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -53,7 +76,6 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -63,7 +85,7 @@
     [comps setSecond:0];
     NSDate *aDate = [gregorian dateFromComponents:comps];
     [st add:@"created" value:aDate];
-    NSString *expecting = @" datetime: 7/5/05 12:00 AM ";
+    NSString *expecting = @" datetime: 7/5/05, 12:00 AM ";
     NSString *result = [st render];
     [self assertEquals:expecting result:result];
 }
@@ -75,7 +97,6 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -85,7 +106,7 @@
     [comps setSecond:0];
     NSDate *aDate = [gregorian dateFromComponents:comps];
     [st add:@"created" value:aDate];
-    NSString *expecting = @" datetime: Tuesday, July 5, 2005 12:00:00 AM Pacific Daylight Time ";
+    NSString *expecting = @" datetime: Tuesday, July 5, 2005 at 12:00:00 AM Pacific Daylight Time ";
     NSString *result = [st render];
     [self assertEquals:expecting result:result];
 }
@@ -97,7 +118,6 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -119,7 +139,6 @@
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
     ST *st = [group getInstanceOf:@"dateThing"];
-    NSCalendar *gregorian = [NSCalendar currentCalendar];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setYear:2005];
     [comps setMonth:07];
@@ -239,4 +258,43 @@
     [self assertEquals:expecting result:result];
 }
 
+/*
+@Test public void testDateRendererWithLocale() {
+    String input = "<date; format=\"dd 'de' MMMMM 'de' yyyy\">";
+    STGroup group = new STGroup();
+    group.registerRenderer(Calendar.class, new DateRenderer());
+    ST st = new ST(group, input);
+    
+    Calendar cal = Calendar.getInstance();
+    cal.set(2012, Calendar.JUNE, 12);
+    st.add("date", cal);
+    
+    assertEquals("12 de Junho de 2012", st.render(new Locale("pt")));
+}
+ */
+
+- (void) test14DateRendererWithLocale
+{
+    NSString *input = @"<date; format=\"dd 'de' MMMMM 'de' yyyy\">";
+    STGroup *group = [STGroup newSTGroup];
+    [group registerRenderer:[NSDate class] r:[DateRenderer newRenderer]];
+    ST *st = [ST newST:group template:input];
+    
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setYear:2012];
+    [comps setMonth:06];
+    [comps setDay:12];
+    [comps setHour:0];
+    [comps setMinute:0];
+    [comps setSecond:0];
+    NSDate *aDate = [gregorian dateFromComponents:comps];
+
+    [st add:@"date" value:aDate];
+    NSString *expected = @"12 de junho de 2012";
+    curLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"pt_POR"];
+    [gregorian setLocale:curLocale];
+    // NSString *result = [st render];
+    NSString *result = [st render:curLocale];
+    [self assertEquals:expected result:result];
+}
 @end

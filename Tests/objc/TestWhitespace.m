@@ -8,8 +8,6 @@
 #import "StringWriter.h"
 #import "TestWhitespace.h"
 
-#define STAssertTrue GHAssertTrue
-
 @implementation TestWhitespace
 
 - (void) test01TrimmedSubtemplates

@@ -17,6 +17,7 @@
 	NSInteger ret_ip; 				// return address
     __strong AMutableArray *events;
     __strong AMutableArray *childEvalTemplateEvents;
+    BOOL earlyEval;
 }
 
 + (id) newInstanceScope:(InstanceScope *)aParent who:(ST *)aWho;
@@ -28,5 +29,6 @@
 @property (assign) NSInteger ret_ip;
 @property (retain) AMutableArray *events;
 @property (retain) AMutableArray *childEvalTemplateEvents;
+@property (assign) BOOL earlyEval;
 
 @end

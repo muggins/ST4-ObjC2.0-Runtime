@@ -79,6 +79,7 @@
 - (void) test18dPassThruNoMissingArgs;
 //#endif
 - (void) test19IncludeWithNestedArgs;
+- (void) test19aPassThru;
 - (void) test20DefineTemplate;
 - (void) test21Map;
 - (void) test22IndirectMap;
@@ -93,6 +94,8 @@
 - (void) test31MapNullValue;
 - (void) test32MapNullValueInList;
 - (void) test33RepeatedMap;
+- (void) test33aRepeatedMapWithNullValue;
+- (void) test33bRepeatedMapWithNullValueAndNullOption;
 - (void) test34RoundRobinMap;
 - (void) test35TrueCond;
 - (void) test36EmptyIFTemplate;
@@ -116,10 +119,15 @@
 - (void) test54And;
 - (void) test55AndNot;
 - (void) test56CharLiterals;
-//- (void) test57UnicodeLiterals;
+// - (void) test57UnicodeLiterals;
 - (void) test58SubtemplateExpr;
 - (void) test59Separator;
 - (void) test60SeparatorInList;
+- (void) test60aSeparatorInList2;
+- (void) test60bSeparatorInArray;
+- (void) test60cSeparatorInArray2;
+- (void) test60dSeparatorInPrimitiveArray;
+- (void) test60eSeparatorInPrimitiveArray2;
 - (void) test61EarlyEvalIndent;
 - (void) test62EarlyEvalNoIndent;
 - (void) test63ArrayOfTemplates;
@@ -127,5 +135,6 @@
 - (void) test65ListOfTemplates;     
 - (void) test66ListOfTemplatesInTemplate;
 - (void) playing;
+- (void) test67Prototype;
 
 @end

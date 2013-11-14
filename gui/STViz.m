@@ -299,17 +299,17 @@
 
 - (void) dealloc
 {
-    [root release];
-    [currentScope release];
-    [allEvents release];
-    [tmodel release];
-    [errMgr release];
-    [interp release];
-    [output release];
-    [trace release];
-    [errors release];
-    [viewFrame release];
-    [super dealloc];
+    root = nil;
+    currentScope = nil;
+    allEvents = nil;
+    tmodel = nil;
+    errMgr = nil;
+    interp = nil;
+    output = nil;
+    trace = nil;
+    errors = nil;
+    viewFrame = nil;
+    // [super dealloc];
 }
 
 @end

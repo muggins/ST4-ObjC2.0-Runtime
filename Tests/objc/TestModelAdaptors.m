@@ -1,11 +1,12 @@
 #import "TestModelAdaptors.h"
 #import "STException.h"
 #import "ErrorBufferAllErrors.h"
+#import "InstanceScope.h"
 
 @implementation UserAdaptor
 
 - (id) getProperty:(Interpreter *)interp
-               who:(ST *)aWho
+            scope:(InstanceScope *)aScope 
                obj:(id)anObj
           property:(id)aProperty
       propertyName:(NSString *)aPropertyName
@@ -22,7 +23,7 @@
 @implementation UserAdaptorConst
 
 - (id) getProperty:(Interpreter *)interp
-               who:(ST *)aWho
+             scope:(InstanceScope *)aScope
                obj:(id)anObj
           property:(id)aProperty
       propertyName:(NSString *)aPropertyName

@@ -10,13 +10,13 @@
 @interface TestGroupSyntax : BaseTest {
 }
 
-- (void) testSimpleGroup;
-- (void) testMultiTemplates;
-- (void) testSingleTemplateWithArgs;
-- (void) testDefaultValues;
-- (void) testDefaultValueTemplateWithArg;
-- (void) testNestedTemplateInGroupFile;
-- (void) testNestedDefaultValueTemplate;
-- (void) testNestedDefaultValueTemplateWithEscapes;
-- (void) testMessedUpTemplateDoesntCauseRuntimeError;
+- (void) test01SimpleGroup;
+- (void) test02MultiTemplates;
+- (void) test03SingleTemplateWithArgs;
+- (void) test04DefaultValues;
+- (void) test05DefaultValueTemplateWithArg;
+- (void) test06NestedTemplateInGroupFile;
+- (void) test07NestedDefaultValueTemplate;
+- (void) test08NestedDefaultValueTemplateWithEscapes;
+- (void) test09MessedUpTemplateDoesntCauseRuntimeError;
 @end

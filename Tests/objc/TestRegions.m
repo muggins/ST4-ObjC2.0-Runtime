@@ -88,6 +88,26 @@
     [self assertEquals:expected result:result];
 }
 
+#ifdef DONTUSEYET
+- (void) testAnonymousTemplateInRegionInSubdir
+{
++		//fails since it makes region name /region__/g/a/_r
++		NSString *dir = [self getRandomDir];
++		NSString *g = @"a() ::= <<[<@r()>]>>\n" +
++				   "@a.r() ::= <<\n" +
++				   "<[\"foo\"]:{x|<x>}>\n" +
++				   ">>\n";
++		writeFile(dir, "g.stg", g);
++
++		STGroup.verbose = true;
++		STGroup group = new STGroupDir(dir);
++		ST st = group.getInstanceOf("g/a");
++		String expected = "[foo]";
++		String result = st.render();
++		assertEquals(expected, result);
++	}
+
+#endif
 - (void) test07AnonymousTemplateInRegion
 {
     NSString *dir = [self getRandomDir];
@@ -225,7 +245,7 @@
 - (void) test16UnknownRegionDefError
 {
     NSString *dir = [self getRandomDir];
-    NSString *g = @"a() ::= <<\nX<@r()>Y>>\n@a.q() ::= \"foo\"\n";
+    NSString *g = @"a() ::= <<\nX<@r()>Y\n>>\n@a.q() ::= \"foo\"\n";
     id<STErrorListener> errors = [ErrorBuffer newErrorBuffer];
     [self writeFile:dir fileName:@"g.stg" content:g];
     STGroupFile *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/g.stg", dir]];
@@ -233,7 +253,7 @@
     ST *st = [group getInstanceOf:@"a"];
     [st render];
     NSString *result = [errors description];
-    NSString *expecting = @"g.stg 3:3: template a doesn't have a region called q\n";
+    NSString *expecting = @"g.stg 4:3: template /a doesn't have a region called q\n";
     [self assertEquals:expecting result:result];
 }
 

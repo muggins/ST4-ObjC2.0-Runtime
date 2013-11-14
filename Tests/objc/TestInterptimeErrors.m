@@ -50,7 +50,7 @@
     [group setListener:errors];
     ST *st = [group getInstanceOf:@"t"];
     [st render];
-    NSString *expected = @"context [/t] 1:0 no such template: /foo\n";
+    NSString *expected = @"context [/t] 1:1 no such template: /foo\n";
     NSString *result = [errors description];
     [self assertEquals:expected result:result];
 }

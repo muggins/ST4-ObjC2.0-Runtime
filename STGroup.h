@@ -31,6 +31,8 @@
 #import <ANTLR/CommonToken.h>
 #import "ModelAdaptor.h"
 #import "AttributeRenderer.h"
+#import "InstanceScope.h"
+#import "Interpreter.h"
 
 @class ErrorManager;
 @class STErrorListener;
@@ -158,6 +160,9 @@
 
 + (const NSString *) DEFAULT_KEY;
 + (const NSString *) DICT_KEY;
++ (const NSString *) GROUP_FILE_EXTENSION;
++ (const NSString *) TEMPLATE_FILE_EXTENSION;
+
 + (STGroup *) defaultGroup;
 + (void) resetDefaultGroup;
 
@@ -174,7 +179,7 @@
 - (id) init:(unichar)delimiterStartChar delimiterStopChar:(unichar)delimiterStopChar;
 - (void)dealloc;
 - (ST *) getInstanceOf:(NSString *)name;
-- (ST *) getEmbeddedInstanceOf:(Interpreter *)interp who:(ST *)enclosingInstance ip:(NSInteger)ip name:(NSString *)name;
+- (ST *) getEmbeddedInstanceOf:(Interpreter *)interp scope:(InstanceScope *)aScope name:(NSString *)name;
 - (ST *) createSingleton:(CommonToken *)templateToken;
 - (BOOL) isDefined:(NSString *)name;
 - (CompiledST *) lookupTemplate:(NSString *)name;

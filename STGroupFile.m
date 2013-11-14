@@ -94,8 +94,8 @@
     BOOL fExists, isDir;
     self = [super init:aDelimiterStartChar delimiterStopChar:aDelimiterStopChar];
     if ( self != nil ) {
-        if (![aFileName hasSuffix:@".stg"]) {
-            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"Group file names must end in .stg: %@", aFileName]];
+        if (![aFileName hasSuffix:STGroup.GROUP_FILE_EXTENSION]) {
+            @throw [IllegalArgumentException newException:[NSString stringWithFormat:@"Group file names must end in %@: %@", STGroup.GROUP_FILE_EXTENSION, aFileName]];
         }
         @try {
             fileName = aFileName;
@@ -234,8 +234,7 @@
 	}
     @catch (MalformedURLException *me) {
 		[errMgr runTimeError:nil
-                         who:nil
-                          ip:0
+                       scope:nil
                        error:INVALID_TEMPLATE_NAME
                            e:me
                          arg:fileName];
@@ -245,7 +244,7 @@
     //			return new File(parent).toURI().toURL();
     //		}
     //		catch (MalformedURLException me) {
-    //			errMgr.runTimeError(null, 0, ErrorType.INVALID_TEMPLATE_NAME,
+    //			errMgr.runTimeError(nil, nil, ErrorType.INVALID_TEMPLATE_NAME,
     //								me, parent);
     //		}
     //		return null;

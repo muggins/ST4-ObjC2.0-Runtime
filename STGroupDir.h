@@ -30,7 +30,7 @@
 #import "CompiledST.h"
 #import "ErrorType.h"
 #import "Misc.h"
-
+#import "InstanceScope.h"
 /**
  * A directory or directory tree full of templates and/or group files.
  * We load files on-demand. Dir search path: current working dir then

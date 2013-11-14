@@ -190,6 +190,7 @@ static STNoSuchAttributeException *cachedNoSuchAttrException;
 static NSInteger NO_WRAP = 80;
 const
 NSString * VERSION = @"@version@";
+static NSString *IMPLICIT_ARG_NAME = @"it";
 static NSString *UNKNOWN_NAME = @"anonymous";
 static NSString *EMPTY_ATTR = @"";
 static DebugState *st_debugState = nil;
@@ -243,6 +244,11 @@ static DebugState *st_debugState = nil;
 + (NSInteger)NO_WRAP
 {
     return NO_WRAP;
+}
+
++ (NSString *)IMPLICIT_ARG_NAME
+{
+    return @"it";
 }
 
 + (NSString *)UNKNOWN_NAME
@@ -336,17 +342,16 @@ static DebugState *st_debugState = nil;
     if ( self != nil ) {
         if (EMPTY_ATTR == nil) {
             EMPTY_ATTR = @"";
-            // [EMPTY_ATTR retain];
         }
         impl = proto.impl;
-        enclosingInstance = proto.enclosingInstance;
         if (proto.locals != nil) {
             NSLog( @"%@", [proto.locals description]);
             locals = [AMutableArray arrayWithArray:proto.locals];
-            //            locals = [AMutableArray arrayWithCapacity:proto.locals.count];
-            //            [locals addObjectsFromArray:proto.locals];
             NSLog( @"%@", [locals description]);
         }
+		else if ( (impl.formalArguments != nil) && ([impl.formalArguments count] > 0)) {
+			locals = [AMutableArray arrayWithCapacity:[((AMutableArray *)proto.impl.formalArguments) count]];
+		}
         groupThatCreatedThisInstance = proto.groupThatCreatedThisInstance;
     }
     return self;
@@ -377,8 +382,10 @@ static DebugState *st_debugState = nil;
  */
 - (ST *) add:(NSString *)aName value:(id)value
 {
-    if ( aName == nil )
+    if ( aName == nil ) {
+        @throw [NullPointerException newException:(NSString *)@"null attribute name"];
         return self;
+    }
     //    NSLog( @"Entered add with aName = %@, value = %@\n", aName, value);
     NSRange aRange;
     aRange = [aName rangeOfString:@"."];
@@ -420,6 +427,8 @@ static DebugState *st_debugState = nil;
     }
     id curvalue;
     AttributeList *multi;
+    if ( [locals count] == 0 )
+        [locals addObject:EMPTY_ATTR];
     curvalue = [locals objectAtIndex:arg.index];
     if (curvalue == EMPTY_ATTR) {
         [locals replaceObjectAtIndex:arg.index withObject:value];
@@ -619,25 +628,29 @@ static DebugState *st_debugState = nil;
 - (NSInteger) write:(id<STWriter>)wr1
 {
     Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:[NSLocale currentLocale] errMgr:impl.nativeGroup.errMgr debug:NO];
-    return [interp exec:(Writer *)wr1 who:self];
+    InstanceScope *scope = [InstanceScope newInstanceScope:nil who:self];
+    return [interp exec:(Writer *)wr1 scope:scope];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale
 {
     Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale errMgr:impl.nativeGroup.errMgr debug:NO];
-    return [interp exec:wr1 who:self];
+    InstanceScope *scope = [InstanceScope newInstanceScope:nil who:self];
+    return [interp exec:(Writer *)wr1 scope:scope];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 listener:(id<STErrorListener>)listener
 {
     Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:[NSLocale currentLocale] errMgr:impl.nativeGroup.errMgr debug:NO];
-    return [interp exec:wr1 who:self];
+    InstanceScope *scope = [InstanceScope newInstanceScope:nil who:self];
+    return [interp exec:(Writer *)wr1 scope:scope];
 }
 
 - (NSInteger) write:(id<STWriter>)wr1 locale:(NSLocale *)locale listener:(id<STErrorListener>)listener
 {
     Interpreter *interp = [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale errMgr:[ErrorManager newErrorManagerWithListener:listener] debug:NO];
-    return [interp exec:wr1 who:self];
+    InstanceScope *scope = [InstanceScope newInstanceScope:nil who:self];
+    return [interp exec:(Writer *)wr1 scope:scope];
 }
 
 - (NSInteger) writeFile:(NSString *)outputFile
@@ -785,7 +798,8 @@ static DebugState *st_debugState = nil;
     wr.lineWidth =lineWidth;
     Interpreter *interp =
             [Interpreter newInterpreter:groupThatCreatedThisInstance locale:locale debug:YES];
-    [interp exec:wr who:self]; // render and track events
+    InstanceScope *scope = [InstanceScope newInstanceScope:nil who:self];
+    [interp exec:wr scope:scope]; // render and track events
     return [interp getEvents];
 }
 

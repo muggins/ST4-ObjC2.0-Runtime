@@ -239,7 +239,7 @@
 
 - (void) test13IndentBeyondLineWidth
 {
-    NSString *templates = @"duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>\n";
+    NSString *templates = @"duh(chars) ::= <<\n    <chars; wrap=\"\\n\"\\>\n>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
@@ -251,7 +251,7 @@
 
 - (void) test14IndentedExpr
 {
-    NSString *templates = @"duh(chars) ::= <<    <chars; wrap=\"\\n\"\\>>>\n";
+    NSString *templates = @"duh(chars) ::= <<\n    <chars; wrap=\"\\n\"\\>\n>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *a = [group getInstanceOf:@"duh"];
@@ -263,7 +263,7 @@
 
 - (void) test15NestedIndentedExpr
 {
-    NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<  <chars; wrap=\"\\n\"\\>>>\n";
+    NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<\n  <chars; wrap=\"\\n\"\\>\n>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];
@@ -277,7 +277,7 @@
 
 - (void) test16NestedWithIndentAndTrackStartOfExpr
 {
-    NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<x: <chars; anchor, wrap=\"\\n\"\\>>>\n";
+    NSString *templates = @"top(d) ::= <<  <d>!>>\nduh(chars) ::= <<\nx: <chars; anchor, wrap=\"\\n\">\n>>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];
@@ -322,7 +322,7 @@
  String templates = "top(arrays) ::= <<Arrays: <arrays>done>>"+newline+
  "array(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>"+newline;
  */
-    NSString *templates = @"top(arrays) ::= <<Arrays: <arrays>done>>\narray(values) ::= <<int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n\\>>>\n";
+    NSString *templates = @"top(arrays) ::= <<Arrays: <arrays>done>>\narray(values) ::= <%int[] a = { <values; anchor, wrap=\"\\n\", separator=\",\"> };<\\n>%>\n";
     [self writeFile:tmpdir fileName:@"t.stg" content:templates];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/t.stg", tmpdir]];
     ST *top = [group getInstanceOf:@"top"];

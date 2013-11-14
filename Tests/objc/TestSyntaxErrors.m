@@ -180,9 +180,12 @@
     group = [STGroupFile newSTGroupFile:[NSString stringWithFormat: @"%@/t.stg", tmpdir]];
     [group setListener:errors];
     [group load];
-    NSString *expected = @"t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing\n";
+    // NSString *expected = @"t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing\n";
+    NSString *expected = @"t.stg 1:20: Nonterminated comment starting at 1:1: '!>' missing\nt.stg 1:20: premature EOF\n";
     NSString *result = [errors description];
+    NSLog(@"\nExpected:%@\nResult  :%@\n", expected, result);
     [self assertEquals:expected result:result];
+    NSLog(@"\nExpected:%@\nResult  :%@\n", expected, result);
 }
 
 - (void) test13MissingRPAREN

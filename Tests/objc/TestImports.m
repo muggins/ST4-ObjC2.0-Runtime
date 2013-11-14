@@ -91,16 +91,85 @@
     NSString *dir = [self getRandomDir];
     NSString *gstr = @"import \"subdir\"\na() ::= <<dir1 a>>\n";
     [self writeFile:dir fileName:@"g.stg" content:gstr];
-    NSString *a = @"a() ::= <<dir2 a>>\n";
-    NSString *b = @"b() ::= <<dir2 b>>\n";
+    NSString *a = @"a() ::= <<subdir a>>\n";
+    NSString *b = @"b() ::= <<subdir b>>\n";
+    NSString *c = @"c() ::= <<subdir c>>\n";
     [self writeFile:dir fileName:@"subdir/a.st" content:a];
     [self writeFile:dir fileName:@"subdir/b.st" content:b];
+    [self writeFile:dir fileName:@"subdir/c.st" content:c];
     STGroup *group = [STGroupFile newSTGroupFile:[NSString stringWithFormat:@"%@/g.stg", dir]];
     ST *st = [group getInstanceOf:@"b"];
-    NSString *expected = @"dir2 b";
+    NSString *expected = @"subdir b";
     NSString *result = [st render];
     [self assertEquals:expected result:result];
+    st = [group getInstanceOf:@"c"];
+    expected = @"subdir c";
+    result = [st render];
+    [self assertEquals:expected result:result];
 }
+
+#ifdef DONTUSEYET
+@Test public void testImportRelativeDirInJarViaCLASSPATH() throws Exception {
+    /*
+     org/foo/templates
+     g.stg has a() that imports subdir with relative path
+     subdir
+     a.st
+     b.st
+     c.st
+     */
+    String root = getRandomDir();
+    System.out.println(root);
+    String dir = root+"/org/foo/templates";
+    String gstr =
+    "import \"subdir\"\n" + // finds subdir in dir
+    "a() ::= <<dir1 a>>\n";
+    writeFile(dir, "g.stg", gstr);
+    
+    String a = "a() ::= <<subdir a>>\n";
+    String b = "b() ::= <<subdir b>>\n";
+    String c = "c() ::= <<subdir b>>\n";
+    writeFile(dir, "subdir/a.st", a);
+    writeFile(dir, "subdir/b.st", b);
+    writeFile(dir, "subdir/c.st", c);
+    
+    jar("test.jar", new String[] {"org"}, root);
+    deleteFile(root + "/org");
+    
+    File path = new File(root + File.separatorChar + "test.jar");
+    assertTrue(path.isFile());
+    URLClassLoader loader = new URLClassLoader(new URL[] { path.toURI().toURL() });
+    STGroup group = new STGroupFile(loader.getResource("org/foo/templates/g.stg"), "UTF-8", '<', '>');
+    ST st = group.getInstanceOf("b");
+    String result = st.render();
+    
+    String expected = "subdir b";
+    assertEquals(expected, result);
+}
+
+@Test public void testEmptyGroupImportGroupFileSameDir() throws Exception {
+    /*
+     dir
+     group1.stg		that imports group2.stg in same dir with just filename
+     group2.stg		has c()
+     */
+    String dir = getRandomDir();
+    String groupFile =
+    "import \"group2.stg\"\n";
+    writeFile(dir, "group1.stg", groupFile);
+    
+    groupFile =
+    "c() ::= \"g2 c\"\n";
+    writeFile(dir, "group2.stg", groupFile);
+    
+    STGroup group1 = new STGroupFile(dir+"/group1.stg");
+    ST st = group1.getInstanceOf("c"); // should see c()
+    String expected = "g2 c";
+    String result = st.render();
+    assertEquals(expected, result);
+}
+
+#endif
 
 - (void) test06ImportGroupFileSameDir
 {
@@ -217,8 +286,8 @@
 - (void) test13ImportTemplateFromSubdir
 {
     NSString *dir = [self getRandomDir];
-    NSString *a = @"a() ::= << <subdir/b()> >>\n";
-    NSString *b = @"b() ::= <<x's subdir/b>>\n";
+    NSString *a = @"a() ::= << </subdir/b()> >>";
+    NSString *b = @"b() ::= <<x's subdir/b>>";
     [self writeFile:dir fileName:@"x/subdir/a.st" content:a];
     [self writeFile:dir fileName:@"y/subdir/b.st" content:b];
     STGroup *group1 = [STGroupDir newSTGroupDir:[NSString stringWithFormat:@"%@/x", dir]];
@@ -233,7 +302,7 @@
 - (void) test14ImportTemplateFromGroupFile
 {
     NSString *dir = [self getRandomDir];
-    NSString *a = @"a() ::= << <subdir/b()> >>\n";
+    NSString *a = @"a() ::= << </subdir/b()> >>";
     [self writeFile:dir fileName:@"x/subdir/a.st" content:a];
     NSString *groupFile = @"a() ::= \"group file: a\"\nb() ::= \"group file: b\"\n";
     [self writeFile:dir fileName:@"y/subdir.stg" content:groupFile];

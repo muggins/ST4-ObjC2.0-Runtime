@@ -18,6 +18,7 @@
 @synthesize ret_ip;
 @synthesize events;
 @synthesize childEvalTemplateEvents;
+@synthesize earlyEval;
 
 /* Includes the EvalTemplateEvent for this template.  This
  *  is a subset of Interpreter.events field. The final
@@ -45,6 +46,7 @@
         st = aWho;
         events = [AMutableArray arrayWithCapacity:5];
         childEvalTemplateEvents = [AMutableArray arrayWithCapacity:5];
+        earlyEval = ((parent != nil) && parent.earlyEval);
     }
     return self;
 }

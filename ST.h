@@ -164,6 +164,7 @@ typedef enum {
 
 + (NSInteger) NO_WRAP;
 + (NSString *)UNKNOWN_NAME;
++ (NSString *)IMPLICIT_ARG_NAME;
 + (NSString *) EMPTY_ATTR;
 + (DebugState *)debugState;
 //+ (AttributeList *) attributeList;
