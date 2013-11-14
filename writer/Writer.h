@@ -33,7 +33,7 @@
 @interface Writer : NSMutableString<STWriter> {
     NSInteger capacity;
     NSMutableData *data;
-    __strong char *ptr;
+    char *ptr;
     NSInteger ip;
     id lock;
 
@@ -69,10 +69,10 @@
 - (void) getChars:(NSString *)orig offset:(NSInteger)offset srcLen:(NSInteger)sLen dest:(char *)buf dstLen:(NSInteger)dLen;
 
 @property (assign) NSInteger capacity;
-@property (retain) NSMutableData *data;
+@property (copy) NSMutableData *data;
 @property (assign) char *ptr;
 @property (assign) NSInteger ip;
-@property (retain) id lock;
+@property (copy) id lock;
 
 @end
 
@@ -94,7 +94,7 @@
 //- (void) writeChunk:(char *)cbuf offset:(NSInteger)off len:(NSInteger)len;
 //- (void) writeStr:(NSString *)str offset:(NSInteger)off len:(NSInteger)len;
 
-@property (retain) Writer *writer;
+@property (copy) Writer *writer;
 @property (assign) NSInteger nChars;
 @property (assign) NSInteger nextChar;
 @end
@@ -138,8 +138,8 @@
 - (void) close;
 
 @property (assign) NSInteger fd;
-@property (retain) NSFileHandle *fh;
-@property (retain) NSString *fn;
+@property (copy) NSFileHandle *fh;
+@property (copy) NSString *fn;
 @property (assign) BOOL append;
 
 @end
